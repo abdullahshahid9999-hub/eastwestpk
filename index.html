@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — East & West Travel Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--navy:#0A1628;--navy-mid:#0F2040;--navy-light:#162847;--teal:#0EA5E9;--teal-dark:#0284C7;--teal-glow:rgba(14,165,233,0.15);--gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--border-gold:rgba(201,168,76,0.3);--white:#fff;--text:#E8EDF2;--text-dim:#8899AA;--border:rgba(255,255,255,0.08);--red:#EF4444;--radius:14px}
+    body{font-family:'DM Sans',sans-serif;min-height:100vh;background:var(--navy);display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+    body::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(14,165,233,0.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,0.04) 0%,transparent 50%)}
+    .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px}
+    h1,h2,h3{font-family:'Playfair Display',serif}
+    em{color:var(--gold);font-style:italic}
+
+    .login-card{background:var(--navy-light);border:1px solid var(--border);border-radius:24px;padding:48px 44px;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+    .logo-wrap{text-align:center;margin-bottom:36px}
+    .logo-wrap img{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);padding:3px;object-fit:contain;background:white;margin-bottom:14px}
+    .logo-wrap h2{font-size:28px;color:var(--white)}
+    .logo-wrap p{font-size:13px;color:var(--text-dim);margin-top:6px}
+    .admin-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--border-gold);color:var(--gold);padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:10px}
+
+    .form-group{margin-bottom:18px}
+    .form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:7px}
+    .inp-wrap{position:relative}
+    .inp-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:13px;pointer-events:none}
+    .form-group input{width:100%;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:10px;padding:12px 42px 12px 38px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--white);outline:none;transition:all 0.3s}
+    .form-group input::placeholder{color:var(--text-dim);opacity:0.6}
+    .form-group input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
+    .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;font-size:13px;transition:color 0.2s}
+    .eye-btn:hover{color:var(--white)}
+
+    .alert{border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:10px}
+    .alert.show{display:flex}
+    .alert-err{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:#FCA5A5}
+
+    .attempts-bar{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15);border-radius:8px;padding:8px 14px;font-size:12px;color:rgba(239,68,68,0.7);margin-bottom:16px;display:none;text-align:center}
+    .attempts-bar.show{display:block}
+
+    .login-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:white;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.3s;letter-spacing:0.3px}
+    .login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,0.35)}
+    .login-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+    .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;display:none;flex-shrink:0}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .back-link{text-align:center;margin-top:20px}
+    .back-link a{font-size:13px;color:var(--text-dim);display:inline-flex;align-items:center;gap:6px;transition:color 0.2s}
+    .back-link a:hover{color:var(--teal)}
+
+    .security-note{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-dim);margin-top:20px;padding:10px 14px;background:rgba(14,165,233,0.05);border-radius:8px;border:1px solid rgba(14,165,233,0.1)}
+    .security-note i{color:var(--teal);flex-shrink:0}
+  </style>
+</head>
+<body>
+<div class="grid"></div>
+<div class="login-card">
+  <div class="logo-wrap">
+    <img src="../logo.jpg" alt="East & West" onerror="this.style.display='none'">
+    <h2>Admin <em>Portal</em></h2>
+    <p>East & West Travel Services</p>
+    <div class="admin-badge"><i class="fa fa-shield-alt"></i> Secure Admin Access</div>
+  </div>
+
+  <div class="alert alert-err" id="errBox"><i class="fa fa-exclamation-circle"></i><span id="errTxt"></span></div>
+  <div class="attempts-bar" id="attemptsBar"></div>
+
+  <div class="form-group">
+    <label>Admin Email</label>
+    <div class="inp-wrap">
+      <i class="fa fa-envelope inp-ico"></i>
+      <input type="email" id="adminEmail" placeholder="admin@eastwestpk.com" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <div class="inp-wrap">
+      <i class="fa fa-lock inp-ico"></i>
+      <input type="password" id="adminPwd" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="eye-btn" type="button" onclick="togglePwd()"><i class="fa fa-eye" id="eyeIco"></i></button>
+    </div>
+  </div>
+
+  <button class="login-btn" id="loginBtn" onclick="doLogin()">
+    <div class="spin" id="loginSpin"></div>
+    <i class="fa fa-lock-open" id="loginIco"></i>
+    <span id="loginTxt">Access Admin Panel</span>
+  </button>
+
+  <div class="security-note"><i class="fa fa-shield-alt"></i> This panel is protected. Unauthorized access attempts are logged.</div>
+  <div class="back-link"><a href="../index.html"><i class="fa fa-arrow-left"></i> Back to Website</a></div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Already logged in?
+if (sessionStorage.getItem('ew_admin')) window.location.href = 'dashboard.html';
+
+// Rate limiting — max 5 attempts per 15 min
+let attempts = parseInt(sessionStorage.getItem('admin_attempts')||'0');
+let lockUntil = parseInt(sessionStorage.getItem('admin_lock')||'0');
+
+function checkLocked() {
+  if (Date.now() < lockUntil) {
+    const rem = Math.ceil((lockUntil - Date.now())/60000);
+    document.getElementById('attemptsBar').textContent = `Too many attempts. Try again in ${rem} minute(s).`;
+    document.getElementById('attemptsBar').classList.add('show');
+    document.getElementById('loginBtn').disabled = true;
+    return true;
+  }
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('attemptsBar').classList.remove('show');
+  return false;
+}
+checkLocked();
+
+window.doLogin = async () => {
+  if (checkLocked()) return;
+  const email = document.getElementById('adminEmail').value.trim();
+  const pwd   = document.getElementById('adminPwd').value;
+  const err   = document.getElementById('errBox');
+  if (!email||!pwd) { showErr('Enter email and password.'); return; }
+
+  document.getElementById('loginBtn').disabled = true;
+  document.getElementById('loginSpin').style.display = 'inline-block';
+  document.getElementById('loginIco').style.display  = 'none';
+  document.getElementById('loginTxt').textContent    = 'Verifying...';
+
+  // Use Supabase auth — admin must be a registered user
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
+
+  if (error || !data?.user) {
+    attempts++;
+    sessionStorage.setItem('admin_attempts', attempts);
+    if (attempts >= 5) {
+      sessionStorage.setItem('admin_lock', Date.now() + 15*60*1000);
+      showErr('Too many failed attempts. Locked for 15 minutes.');
+    } else {
+      showErr(`Wrong email or password. ${5-attempts} attempt(s) remaining.`);
+    }
+    resetBtn(); return;
+  }
+
+  // Verify this is actually the admin email (from supabase_config admin_email)
+  const ADMIN_EMAIL = 'abdullahshahid9999@gmail.com'; // Change here if needed
+  if (data.user.email !== ADMIN_EMAIL) {
+    await sb.auth.signOut();
+    attempts++;
+    sessionStorage.setItem('admin_attempts', attempts);
+    showErr('Access denied. This account is not an admin.');
+    resetBtn(); return;
+  }
+
+  // Success
+  sessionStorage.setItem('ew_admin', JSON.stringify({ email: data.user.email, time: Date.now() }));
+  sessionStorage.setItem('admin_attempts', '0');
+  window.location.href = 'dashboard.html';
+};
+
+function showErr(msg) {
+  document.getElementById('errTxt').textContent = msg;
+  document.getElementById('errBox').classList.add('show');
+}
+function resetBtn() {
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginSpin').style.display = 'none';
+  document.getElementById('loginIco').style.display  = 'inline';
+  document.getElementById('loginTxt').textContent    = 'Access Admin Panel';
+}
+window.togglePwd = () => {
+  const inp = document.getElementById('adminPwd');
+  const ico = document.getElementById('eyeIco');
+  inp.type = inp.type==='password'?'text':'password';
+  ico.className = inp.type==='password'?'fa fa-eye':'fa fa-eye-slash';
+};
+</script>
+</body>
+</html>
