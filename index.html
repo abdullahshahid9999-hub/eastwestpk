@@ -3,490 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>East & West Travel Services — Faisalabad</title>
-  <meta name="description" content="East & West Travel Services — Umrah packages, Dubai tours, Thailand, visa services from Faisalabad, Pakistan.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Admin Login — East & West Travel Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
   <style>
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      background: var(--navy);
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-    }
-    /* Animated orbs */
-    .orb {
-      position: absolute; border-radius: 50%;
-      filter: blur(80px); animation: float 8s ease-in-out infinite;
-    }
-    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%); top: -200px; right: -100px; animation-delay: 0s; }
-    .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%); bottom: -100px; left: 100px; animation-delay: 3s; }
-    .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%); top: 30%; left: 30%; animation-delay: 5s; }
-    @keyframes float { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)} }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--navy:#0A1628;--navy-mid:#0F2040;--navy-light:#162847;--teal:#0EA5E9;--teal-dark:#0284C7;--teal-glow:rgba(14,165,233,0.15);--gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--border-gold:rgba(201,168,76,0.3);--white:#fff;--text:#E8EDF2;--text-dim:#8899AA;--border:rgba(255,255,255,0.08);--red:#EF4444;--radius:14px}
+    body{font-family:'DM Sans',sans-serif;min-height:100vh;background:var(--navy);display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+    body::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(14,165,233,0.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,0.04) 0%,transparent 50%)}
+    .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px}
+    h1,h2,h3{font-family:'Playfair Display',serif}
+    em{color:var(--gold);font-style:italic}
 
-    /* Grid lines */
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
+    .login-card{background:var(--navy-light);border:1px solid var(--border);border-radius:24px;padding:48px 44px;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+    .logo-wrap{text-align:center;margin-bottom:36px}
+    .logo-wrap img{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);padding:3px;object-fit:contain;background:white;margin-bottom:14px}
+    .logo-wrap h2{font-size:28px;color:var(--white)}
+    .logo-wrap p{font-size:13px;color:var(--text-dim);margin-top:6px}
+    .admin-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--border-gold);color:var(--gold);padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:10px}
 
-    .hero-content {
-      position: relative; z-index: 2;
-      max-width: 1200px; margin: 0 auto; padding: 0 28px;
-      width: 100%;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-      padding-top: 80px;
-    }
-    .hero-left { }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
-      padding: 7px 16px; border-radius: 50px;
-      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 28px;
-    }
-    .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.6)} }
+    .form-group{margin-bottom:18px}
+    .form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:7px}
+    .inp-wrap{position:relative}
+    .inp-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:13px;pointer-events:none}
+    .form-group input{width:100%;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:10px;padding:12px 42px 12px 38px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--white);outline:none;transition:all 0.3s}
+    .form-group input::placeholder{color:var(--text-dim);opacity:0.6}
+    .form-group input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
+    .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;font-size:13px;transition:color 0.2s}
+    .eye-btn:hover{color:var(--white)}
 
-    .hero-left h1 {
-      font-size: clamp(42px, 5.5vw, 68px);
-      color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 24px;
-    }
-    .hero-left h1 .line2 { color: var(--teal); display: block; }
-    .hero-left h1 em { color: var(--gold); }
-    .hero-left p { font-size: 16px; color: var(--text-dim); line-height: 1.8; margin-bottom: 40px; max-width: 480px; }
-    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; }
+    .alert{border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:10px}
+    .alert.show{display:flex}
+    .alert-err{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:#FCA5A5}
 
-    .hero-stats-row { display: flex; gap: 36px; border-top: 1px solid var(--border); padding-top: 28px; flex-wrap: wrap; }
-    .h-stat { }
-    .h-stat strong { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--white); display: block; line-height: 1; }
-    .h-stat span { font-size: 12px; color: var(--text-dim); margin-top: 4px; display: block; }
+    .attempts-bar{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15);border-radius:8px;padding:8px 14px;font-size:12px;color:rgba(239,68,68,0.7);margin-bottom:16px;display:none;text-align:center}
+    .attempts-bar.show{display:block}
 
-    /* Hero right — image mosaic */
-    .hero-right { position: relative; }
-    .hero-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 220px 220px; gap: 14px; }
-    .mosaic-img { border-radius: 14px; overflow: hidden; position: relative; }
-    .mosaic-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-    .mosaic-img:hover img { transform: scale(1.06); }
-    .mosaic-img-1 { grid-row: 1/3; }
-    .mosaic-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,22,40,0.7) 100%); }
-    .mosaic-label { position: absolute; bottom: 14px; left: 14px; font-size: 12px; font-weight: 600; color: white; background: rgba(14,165,233,0.85); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 6px; }
+    .login-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:white;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.3s;letter-spacing:0.3px}
+    .login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,0.35)}
+    .login-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+    .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;display:none;flex-shrink:0}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    .hero-badge {
-      position: absolute; bottom: -20px; left: -20px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      color: var(--navy); padding: 18px 22px; border-radius: 16px;
-      font-weight: 700; box-shadow: var(--shadow-gold); z-index: 3;
-    }
-    .hero-badge .num { font-family: 'Playfair Display', serif; font-size: 28px; display: block; line-height: 1; }
-    .hero-badge .lbl { font-size: 11px; font-weight: 600; opacity: 0.8; }
+    .back-link{text-align:center;margin-top:20px}
+    .back-link a{font-size:13px;color:var(--text-dim);display:inline-flex;align-items:center;gap:6px;transition:color 0.2s}
+    .back-link a:hover{color:var(--teal)}
 
-    /* ── DESTINATIONS STRIP ── */
-    .dest-strip { background: var(--navy-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; overflow: hidden; }
-    .dest-scroll { display: flex; gap: 0; animation: scroll-x 20s linear infinite; width: max-content; }
-    .dest-scroll:hover { animation-play-state: paused; }
-    .dest-item { display: flex; align-items: center; gap: 10px; padding: 0 40px; border-right: 1px solid var(--border); color: var(--text-dim); font-size: 13px; font-weight: 500; white-space: nowrap; }
-    .dest-item i { color: var(--teal); font-size: 15px; }
-    @keyframes scroll-x { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-    /* ── FEATURED SECTION INTRO ── */
-    .packages-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; gap: 20px; flex-wrap: wrap; }
-    .packages-intro .section-header { text-align: left; margin-bottom: 0; }
-    .packages-intro .section-header h2 { margin-bottom: 8px; }
-
-    /* ── CTA BANNER ── */
-    .cta-band {
-      background: linear-gradient(135deg, var(--navy-mid) 0%, rgba(14,165,233,0.08) 50%, var(--navy-mid) 100%);
-      border: 1px solid var(--border);
-      border-radius: 24px; padding: 60px 56px;
-      display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
-      position: relative; overflow: hidden;
-    }
-    .cta-band::before { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%); border-radius: 50%; }
-    .cta-band h2 { font-size: clamp(28px, 3.5vw, 42px); color: var(--white); margin-bottom: 10px; }
-    .cta-band p { color: var(--text-dim); font-size: 15px; }
-    .cta-band-actions { display: flex; gap: 12px; flex-shrink: 0; flex-wrap: wrap; }
-
-    @media(max-width: 900px) {
-      .hero-content { grid-template-columns: 1fr; gap: 50px; padding-top: 60px; }
-      .hero-right { display: none; }
-      .cta-band { grid-template-columns: 1fr; }
-      .packages-intro { flex-direction: column; align-items: flex-start; }
-    }
+    .security-note{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-dim);margin-top:20px;padding:10px 14px;background:rgba(14,165,233,0.05);border-radius:8px;border:1px solid rgba(14,165,233,0.1)}
+    .security-note i{color:var(--teal);flex-shrink:0}
   </style>
 </head>
 <body>
-
-<!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <a href="index.html" class="nav-logo">
-    <img src="logo.jpg" alt="East & West Travel Services">
-    <span class="nav-logo-text">East & <span>West</span></span>
-  </a>
-  <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
-    <a href="index.html" class="active">Home</a>
-    <a href="packages.html">Packages</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
-    <a href="booking.html" class="nav-cta">Book Now</a>
-  </div>
-  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="hero-grid"></div>
+<div class="grid"></div>
+<div class="login-card">
+  <div class="logo-wrap">
+    <img src="../logo.jpg" alt="East & West" onerror="this.style.display='none'">
+    <h2>Admin <em>Portal</em></h2>
+    <p>East & West Travel Services</p>
+    <div class="admin-badge"><i class="fa fa-shield-alt"></i> Secure Admin Access</div>
   </div>
 
-  <div class="hero-content">
-    <div class="hero-left">
-      <div class="hero-tag">Faisalabad's Trusted Travel Partner</div>
-      <h1>
-        Your Journey<br>
-        <span class="line2">Starts Here</span>
-        <em> —</em>
-      </h1>
-      <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and 8 years of experience. No shortcuts. No hidden charges.</p>
-      <div class="hero-btns">
-        <a href="packages.html" class="btn-gold"><i class="fa fa-compass"></i> Explore Packages</a>
-        <a href="contact.html" class="btn-ghost"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
-      </div>
-      <div class="hero-stats-row">
-        <div class="h-stat"><strong>5,000+</strong><span>Travelers Served</span></div>
-        <div class="h-stat"><strong>8+</strong><span>Years in Business</span></div>
-        <div class="h-stat"><strong>15+</strong><span>Destinations</span></div>
-        <div class="h-stat"><strong>500+</strong><span>Umrah Pilgrims</span></div>
-      </div>
-    </div>
+  <div class="alert alert-err" id="errBox"><i class="fa fa-exclamation-circle"></i><span id="errTxt"></span></div>
+  <div class="attempts-bar" id="attemptsBar"></div>
 
-    <div class="hero-right">
-      <div class="hero-mosaic">
-        <div class="mosaic-img mosaic-img-1">
-          <img src="makarem_1.jpeg" alt="Makarem Ajyad Makkah">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Makkah</span>
-        </div>
-        <div class="mosaic-img">
-          <img src="pullman_1.jpeg" alt="Pullman ZamZam Madinah">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Madinah</span>
-        </div>
-        <div class="mosaic-img">
-          <img src="makarem_4.jpeg" alt="Hotel Room">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Premium Rooms</span>
-        </div>
-      </div>
-      <div class="hero-badge">
-        <span class="num">4.9★</span>
-        <span class="lbl">Customer Rating</span>
-      </div>
+  <div class="form-group">
+    <label>Admin Email</label>
+    <div class="inp-wrap">
+      <i class="fa fa-envelope inp-ico"></i>
+      <input type="email" id="adminEmail" placeholder="admin@eastwestpk.com" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
   </div>
-</section>
-
-<!-- DESTINATIONS SCROLL -->
-<div class="dest-strip">
-  <div class="dest-scroll" id="destScroll">
-    <div class="dest-item"><i class="fa fa-kaaba"></i> Umrah & Hajj</div>
-    <div class="dest-item"><i class="fa fa-mosque"></i> Makkah & Madinah</div>
-    <div class="dest-item"><i class="fa fa-city"></i> Dubai, UAE</div>
-    <div class="dest-item"><i class="fa fa-umbrella-beach"></i> Thailand</div>
-    <div class="dest-item"><i class="fa fa-mountain"></i> Bali, Indonesia</div>
-    <div class="dest-item"><i class="fa fa-users"></i> Family Packages</div>
-    <div class="dest-item"><i class="fa fa-passport"></i> Visa Services</div>
-    <div class="dest-item"><i class="fa fa-plane"></i> Air Tickets</div>
-    <div class="dest-item"><i class="fa fa-hotel"></i> Hotel Booking</div>
-    <!-- duplicate for infinite scroll -->
-    <div class="dest-item"><i class="fa fa-kaaba"></i> Umrah & Hajj</div>
-    <div class="dest-item"><i class="fa fa-mosque"></i> Makkah & Madinah</div>
-    <div class="dest-item"><i class="fa fa-city"></i> Dubai, UAE</div>
-    <div class="dest-item"><i class="fa fa-umbrella-beach"></i> Thailand</div>
-    <div class="dest-item"><i class="fa fa-mountain"></i> Bali, Indonesia</div>
-    <div class="dest-item"><i class="fa fa-users"></i> Family Packages</div>
-    <div class="dest-item"><i class="fa fa-passport"></i> Visa Services</div>
-    <div class="dest-item"><i class="fa fa-plane"></i> Air Tickets</div>
-    <div class="dest-item"><i class="fa fa-hotel"></i> Hotel Booking</div>
+  <div class="form-group">
+    <label>Password</label>
+    <div class="inp-wrap">
+      <i class="fa fa-lock inp-ico"></i>
+      <input type="password" id="adminPwd" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="eye-btn" type="button" onclick="togglePwd()"><i class="fa fa-eye" id="eyeIco"></i></button>
+    </div>
   </div>
+
+  <button class="login-btn" id="loginBtn" onclick="doLogin()">
+    <div class="spin" id="loginSpin"></div>
+    <i class="fa fa-lock-open" id="loginIco"></i>
+    <span id="loginTxt">Access Admin Panel</span>
+  </button>
+
+  <div class="security-note"><i class="fa fa-shield-alt"></i> This panel is protected. Unauthorized access attempts are logged.</div>
+  <div class="back-link"><a href="../index.html"><i class="fa fa-arrow-left"></i> Back to Website</a></div>
 </div>
 
-<!-- FEATURED PACKAGES -->
-<section class="section">
-  <div class="container">
-    <div class="packages-intro">
-      <div class="section-header">
-        <div class="eyebrow">Our Packages</div>
-        <h2>Handpicked <em>Tours</em></h2>
-      </div>
-      <a href="packages.html" class="btn-ghost" style="padding:11px 22px;font-size:13px">View All <i class="fa fa-arrow-right"></i></a>
-    </div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-    <div class="packages-grid">
-      <!-- Umrah -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="makarem_7.jpg" alt="Umrah Package">
-          <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
-        </div>
-        <div class="pkg-body">
-          <h3>7 Night Umrah Package</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
-            <span><i class="fa fa-users"></i> 4 Sharing</span>
-            <span><i class="fa fa-hotel"></i> 4★ + 5★ Hotels</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 85,000</span><small>per person</small></div>
-            <a href="booking.html?tour=7+Night+Umrah+Package&price=Rs.+85%2C000&duration=7N%2F8D&type=Umrah" class="btn-teal" style="padding:9px 18px;font-size:13px">Book Now</a>
-          </div>
-        </div>
-      </div>
+// Already logged in?
+if (sessionStorage.getItem('ew_admin')) window.location.href = 'dashboard.html';
 
-      <!-- Dubai -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="pullman_2.jpg" alt="Dubai Tour">
-          <span class="pkg-badge hot"><i class="fa fa-fire"></i> Hot Deal</span>
-        </div>
-        <div class="pkg-body">
-          <h3>Dubai Premium Tour</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 5 Nights / 6 Days</span>
-            <span><i class="fa fa-plane"></i> Visa Included</span>
-            <span><i class="fa fa-star"></i> 4.8</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 1,20,000</span><small>per person</small></div>
-            <a href="booking.html?tour=Dubai+Premium+Tour&price=Rs.+1%2C20%2C000&duration=5N%2F6D&type=Holiday" class="btn-teal" style="padding:9px 18px;font-size:13px">Book Now</a>
-          </div>
-        </div>
-      </div>
+// Rate limiting — max 5 attempts per 15 min
+let attempts = parseInt(sessionStorage.getItem('admin_attempts')||'0');
+let lockUntil = parseInt(sessionStorage.getItem('admin_lock')||'0');
 
-      <!-- 14 Night Umrah -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="makarem_3.jpeg" alt="14 Night Umrah">
-          <span class="pkg-badge gold-badge"><i class="fa fa-crown"></i> Premium</span>
-        </div>
-        <div class="pkg-body">
-          <h3>14 Night Umrah Package</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 14 Nights / 15 Days</span>
-            <span><i class="fa fa-users"></i> All Sharing</span>
-            <span><i class="fa fa-star"></i> 5.0</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 1,50,000</span><small>per person</small></div>
-            <a href="booking.html?tour=14+Night+Umrah+Package&price=Rs.+1%2C50%2C000&duration=14N%2F15D&type=Umrah" class="btn-teal" style="padding:9px 18px;font-size:13px">Book Now</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+function checkLocked() {
+  if (Date.now() < lockUntil) {
+    const rem = Math.ceil((lockUntil - Date.now())/60000);
+    document.getElementById('attemptsBar').textContent = `Too many attempts. Try again in ${rem} minute(s).`;
+    document.getElementById('attemptsBar').classList.add('show');
+    document.getElementById('loginBtn').disabled = true;
+    return true;
+  }
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('attemptsBar').classList.remove('show');
+  return false;
+}
+checkLocked();
 
-<!-- WHY US -->
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">Why Choose Us</div>
-      <h2>We Do Things <em>Differently</em></h2>
-      <p>Eight years of building trust — one journey at a time.</p>
-    </div>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-shield-alt"></i></div>
-        <h3>Zero Hidden Charges</h3>
-        <p>What we quote is what you pay. No surprise fees. No fine print. Complete transparency from day one.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-star-and-crescent"></i></div>
-        <h3>100% Halal Travel</h3>
-        <p>Every package is designed with Islamic values in mind — halal food, prayer times, family-friendly accommodations.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-headset"></i></div>
-        <h3>24/7 On-Ground Support</h3>
-        <p>From Faisalabad airport to your hotel abroad — our team is reachable around the clock, every day.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-certificate"></i></div>
-        <h3>Licensed & Trusted</h3>
-        <p>Officially licensed, Umrah Ministry approved, and trusted by 5,000+ Pakistani families over 8 years.</p>
-      </div>
-    </div>
-  </div>
-</section>
+window.doLogin = async () => {
+  if (checkLocked()) return;
+  const email = document.getElementById('adminEmail').value.trim();
+  const pwd   = document.getElementById('adminPwd').value;
+  const err   = document.getElementById('errBox');
+  if (!email||!pwd) { showErr('Enter email and password.'); return; }
 
-<!-- STATS -->
-<div class="stats-band">
-  <div class="container">
-    <div class="stats-row">
-      <div class="stat-item"><span>5,000+</span><p>Travelers Served</p></div>
-      <div class="stat-item"><span>500+</span><p>Umrah Pilgrims</p></div>
-      <div class="stat-item"><span>15+</span><p>Destinations</p></div>
-      <div class="stat-item"><span>8+</span><p>Years Experience</p></div>
-      <div class="stat-item"><span>4.9★</span><p>Average Rating</p></div>
-    </div>
-  </div>
-</div>
+  document.getElementById('loginBtn').disabled = true;
+  document.getElementById('loginSpin').style.display = 'inline-block';
+  document.getElementById('loginIco').style.display  = 'none';
+  document.getElementById('loginTxt').textContent    = 'Verifying...';
 
-<!-- TESTIMONIALS -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">Real Reviews</div>
-      <h2>Words from Our <em>Travelers</em></h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p>"The Umrah package was exceptional. Hotel was right next to Haram, meals were great, and the team was available whenever we needed. Will definitely book again for my parents."</p>
-        <div class="testi-author">
-          <div class="testi-author-avatar">M</div>
-          <div><strong>Muhammad Asif</strong><span>Faisalabad — Umrah 2024</span></div>
-        </div>
-      </div>
-      <div class="testi-card" style="border-color: var(--border-gold)">
-        <div class="stars">★★★★★</div>
-        <p>"Booked the Dubai tour for my family — visa, flights, hotel, everything handled. Not a single problem throughout the trip. These people are genuine professionals."</p>
-        <div class="testi-author">
-          <div class="testi-author-avatar" style="background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy)">F</div>
-          <div><strong>Fatima Khalid</strong><span>Lahore — Dubai Tour 2024</span></div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p>"14-night Umrah was the most peaceful experience of my life. Abdullah bhai personally made sure everything was perfect. Jazakallah khair to the whole team."</p>
-        <div class="testi-author">
-          <div class="testi-author-avatar" style="background: linear-gradient(135deg, #0EA5E9, #0284C7)">H</div>
-          <div><strong>Haji Zubair Ahmed</strong><span>Faisalabad — Umrah 2023</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  // Use Supabase auth — admin must be a registered user
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
 
-<!-- FAQ -->
-<section class="section" style="padding-top: 0">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">FAQ</div>
-      <h2>Common <em>Questions</em></h2>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How much advance payment is required to confirm a booking? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>50% advance per person is required to confirm your booking. The remaining balance is due 15 days before departure. Bank account details are provided after booking confirmation.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What documents are needed for Umrah visa? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Valid passport (minimum 6 months validity), 2 passport-size photos, and CNIC copy. We handle the entire visa application process — normally takes 7–15 working days.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Can I book from outside Faisalabad? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Absolutely. We serve clients from all across Pakistan. Everything — documents, payments, confirmations — can be handled online through WhatsApp and email.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What is the cancellation policy? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Cancellations 30+ days before departure: 70% refund. 15–30 days: 50% refund. Less than 15 days: no refund. Unexpected airline fare changes remain the passenger's responsibility.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Are halal meals guaranteed on international tours? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Yes. We specifically partner with halal-certified hotels and restaurants on all our international tours including Dubai, Thailand, and Bali.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
+  if (error || !data?.user) {
+    attempts++;
+    sessionStorage.setItem('admin_attempts', attempts);
+    if (attempts >= 5) {
+      sessionStorage.setItem('admin_lock', Date.now() + 15*60*1000);
+      showErr('Too many failed attempts. Locked for 15 minutes.');
+    } else {
+      showErr(`Wrong email or password. ${5-attempts} attempt(s) remaining.`);
+    }
+    resetBtn(); return;
+  }
 
-<!-- CTA BAND -->
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <div class="cta-band">
-      <div>
-        <h2>Ready to Plan Your <em>Next Journey?</em></h2>
-        <p>Talk to us today — no obligation, just honest advice about the best package for you.</p>
-      </div>
-      <div class="cta-band-actions">
-        <a href="booking.html" class="btn-gold"><i class="fa fa-calendar-check"></i> Book a Tour</a>
-        <a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+want+to+enquire+about+a+travel+package." class="btn-ghost" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</section>
+  // Verify this is actually the admin email (from supabase_config admin_email)
+  const ADMIN_EMAIL = 'abdullahshahid9999@gmail.com'; // Change here if needed
+  if (data.user.email !== ADMIN_EMAIL) {
+    await sb.auth.signOut();
+    attempts++;
+    sessionStorage.setItem('admin_attempts', attempts);
+    showErr('Access denied. This account is not an admin.');
+    resetBtn(); return;
+  }
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="nav-logo" style="margin-bottom:18px">
-          <img src="logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
-          <span class="nav-logo-text">East & <span style="color:var(--teal)">West</span></span>
-        </div>
-        <p>East & West Travel Services — Faisalabad's trusted partner for Umrah, Hajj, and international travel since 2016.</p>
-        <div class="footer-socials">
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://wa.me/923136515349" target="_blank"><i class="fab fa-whatsapp"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      <div class="footer-links">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Packages</a></li>
-          <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
-          <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Umrah Packages</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Dubai Tours</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Thailand / Bali</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Family Packages</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Air Tickets</a></li>
-        </ul>
-      </div>
-      <div class="footer-contact">
-        <h4>Contact</h4>
-        <p><i class="fa fa-map-marker-alt"></i> Faisalabad, Punjab, Pakistan</p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349">0313-6515349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="mailto:abdullahshahid9999@gmail.com">abdullahshahid9999@gmail.com</a></p>
-        <p><i class="fa fa-clock"></i> Mon – Sat: 9AM – 7PM</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 East & West Travel Services, Faisalabad. All rights reserved.</p>
-      <p><a href="#">Privacy Policy</a> · <a href="#">Terms & Conditions</a></p>
-    </div>
-  </div>
-</footer>
+  // Success
+  sessionStorage.setItem('ew_admin', JSON.stringify({ email: data.user.email, time: Date.now() }));
+  sessionStorage.setItem('admin_attempts', '0');
+  window.location.href = 'dashboard.html';
+};
 
-<a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+want+to+enquire+about+travel+packages." class="wa-float" target="_blank" title="Chat on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
-</a>
-
-<script src="script.js"></script>
+function showErr(msg) {
+  document.getElementById('errTxt').textContent = msg;
+  document.getElementById('errBox').classList.add('show');
+}
+function resetBtn() {
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginSpin').style.display = 'none';
+  document.getElementById('loginIco').style.display  = 'inline';
+  document.getElementById('loginTxt').textContent    = 'Access Admin Panel';
+}
+window.togglePwd = () => {
+  const inp = document.getElementById('adminPwd');
+  const ico = document.getElementById('eyeIco');
+  inp.type = inp.type==='password'?'text':'password';
+  ico.className = inp.type==='password'?'fa fa-eye':'fa fa-eye-slash';
+};
+</script>
 </body>
 </html>
