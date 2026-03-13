@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packages — EastWestPK Travel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <a href="index.html" class="logo">
+    <img src="logo.png" alt="EastWestPK" onerror="this.style.display='none'">
+    <span class="logo-text">East<span>West</span>PK</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <i class="fa fa-times" id="closeBtn" onclick="closeMenu()"></i>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="packages.html" class="active">Packages</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="booking.html" class="nav-cta">Book Now</a></li>
+    </ul>
+  </div>
+  <i class="fa fa-bars" id="menuBtn" onclick="openMenu()"></i>
+</nav>
+
+<div class="page-header">
+  <div class="ph-bg" style="background-image:url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80')"></div>
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><i class="fa fa-chevron-right"></i><span>Packages</span></div>
+    <h1>Our Travel <em>Packages</em></h1>
+    <p>Umrah, Dubai, Thailand, Family tours aur bahut kuch — sab yahan</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <div class="filter-tabs">
+      <button class="filter-btn active" onclick="filterPkg('all',this)">All Packages</button>
+      <button class="filter-btn" onclick="filterPkg('umrah',this)">Umrah & Hajj</button>
+      <button class="filter-btn" onclick="filterPkg('holiday',this)">Holiday Tours</button>
+      <button class="filter-btn" onclick="filterPkg('family',this)">Family</button>
+      <button class="filter-btn" onclick="filterPkg('visa',this)">Visa & Tickets</button>
+    </div>
+
+    <div class="packages-grid" id="pkgGrid">
+
+      <!-- UMRAH 1 -->
+      <div class="pkg-card" data-cat="umrah">
+        <div class="pkg-img">
+          <img src="makarem_7.jpg" alt="Makarem Ajyad Makkah — Umrah Package">
+          <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
+        </div>
+        <div class="pkg-body">
+          <h3>7 Night Economy Umrah</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 7N / 8D</span>
+            <span><i class="fa fa-users"></i> 4 Sharing</span>
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 4.9</span>
+          </div>
+          <div class="pkg-includes">
+            <span>🕌 Makkah 4N — Makarem Ajyad</span>
+            <span>🕌 Madinah 3N — Pullman Zamzam</span>
+            <span>🍳 Breakfast Daily</span>
+            <span>🚌 Airport Transfers</span>
+            <span>🧭 Ziyarat Tours</span>
+            <span>🕐 24/7 Support</span>
+          </div>
+          <div style="background:var(--blue-light);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--blue)">
+            <strong>Excludes:</strong> Round trip flights · Umrah Visa · ZamZam Water · Umrah Kit
+          </div>
+
+          <!-- HOTEL ACCORDION -->
+          <button class="hotel-acc-btn" onclick="toggleHotel(this)">
+            <span><i class="fa fa-hotel"></i> Hotel Details Dekhein</span>
+            <i class="fa fa-chevron-down acc-arrow"></i>
+          </button>
+          <div class="hotel-acc-body">
+
+            <!-- Hotel 1: Makarem Ajyad -->
+            <div class="hotel-section">
+              <div class="hotel-header">
+                <div class="hotel-stars">★★★★</div>
+                <div>
+                  <h4>Makarem Ajyad Hotel — Makkah</h4>
+                  <p class="hotel-sub"><i class="fa fa-map-marker-alt"></i> Ajyad St, Masjid al-Haram, Makkah · 4 Nights</p>
+                </div>
+              </div>
+              <p class="hotel-desc">Masjid al-Haram ke bilkul qareeb waqe' yeh hotel apni mumtaz location, pur-aitebar service aur aali-shumaar suhooliyat ki wajah se Umrah zaireen ki pehli pasand hai. Burj al-Bait ki shan-dar nazar aur roze-marra naashtay ki sahoolat ke saath, aapka Makkah mein qiyaam naa-bhoolnay wala hoga.</p>
+              <div class="hotel-gallery">
+                <img src="makarem_7.jpg" alt="Makarem Ajyad Exterior" onclick="openLightbox(this.src)">
+                <img src="makarem_1.jpeg" alt="Makarem Ajyad Lobby" onclick="openLightbox(this.src)">
+                <img src="makarem_2.jpeg" alt="Makarem Ajyad Room" onclick="openLightbox(this.src)">
+                <img src="makarem_3.jpeg" alt="Makarem Ajyad Restaurant" onclick="openLightbox(this.src)">
+                <img src="makarem_4.jpeg" alt="Makarem Ajyad Dining" onclick="openLightbox(this.src)">
+                <img src="makarem_5.jpeg" alt="Makarem Ajyad Lounge" onclick="openLightbox(this.src)">
+              </div>
+              <div class="hotel-amenities">
+                <span><i class="fa fa-wifi"></i> Free WiFi</span>
+                <span><i class="fa fa-utensils"></i> Breakfast Included</span>
+                <span><i class="fa fa-concierge-bell"></i> 24/7 Room Service</span>
+                <span><i class="fa fa-kaaba"></i> Haram View</span>
+                <span><i class="fa fa-car"></i> Shuttle to Haram</span>
+              </div>
+            </div>
+
+            <div class="hotel-divider"><i class="fa fa-plane"></i> Transfer to Madinah</div>
+
+            <!-- Hotel 2: Pullman Zamzam -->
+            <div class="hotel-section">
+              <div class="hotel-header">
+                <div class="hotel-stars">★★★★★</div>
+                <div>
+                  <h4>Pullman ZamZam Hotel — Madinah</h4>
+                  <p class="hotel-sub"><i class="fa fa-map-marker-alt"></i> Al-Anbariyah District, Madinah · 3 Nights</p>
+                </div>
+              </div>
+              <p class="hotel-desc">Masjid-e-Nabwi (ﷺ) ke samne waqe' yeh 5-star hotel apne dilkash manazir aur bе-misaal khidmat ki wajah se mashoor hai. Zamzam Pullman mein qiyam ke dauran Roza-e-Rasool (ﷺ) ki ziyarat mazeed asaan aur pur-sakoon ho jaati hai. Luxury rooms, wasi restaurant aur pur-sukoon maahol is hotel ko khas banata hai.</p>
+              <div class="hotel-gallery">
+                <img src="pullman_1.jpeg" alt="Pullman Zamzam Exterior" onclick="openLightbox(this.src)">
+                <img src="pullman_2.jpg" alt="Pullman Zamzam Room" onclick="openLightbox(this.src)">
+                <img src="pullman_3.jpeg" alt="Pullman Zamzam Suite" onclick="openLightbox(this.src)">
+                <img src="pullman_4.jpeg" alt="Pullman Zamzam Bathroom" onclick="openLightbox(this.src)">
+              </div>
+              <div class="hotel-amenities">
+                <span><i class="fa fa-wifi"></i> Free WiFi</span>
+                <span><i class="fa fa-utensils"></i> Breakfast Included</span>
+                <span><i class="fa fa-mosque"></i> Masjid-e-Nabwi View</span>
+                <span><i class="fa fa-spa"></i> Fitness Center</span>
+                <span><i class="fa fa-concierge-bell"></i> Concierge Service</span>
+              </div>
+            </div>
+
+          </div>
+          <!-- END HOTEL ACCORDION -->
+
+          <div class="pkg-footer" style="margin-top:16px">
+            <div class="pkg-price"><span>Rs. 85,000</span><small>per person (4 sharing)</small></div>
+            <a href="booking.html?tour=7+Night+Economy+Umrah&duration=7+Nights+%2F+8+Days&price=Rs.+85%2C000&type=Umrah&includes=Makkah+Hotel%2C+Madinah+Hotel%2C+Breakfast%2C+Transfers%2C+Ziyarat&img=makarem_7.jpg" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- UMRAH 2 -->
+      <div class="pkg-card" data-cat="umrah">
+        <div class="pkg-img">
+          <img src="pullman_1.jpeg" alt="Pullman Zamzam Madinah">
+          <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
+        </div>
+        <div class="pkg-body">
+          <h3>14 Night Umrah Package</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 14N / 15D</span>
+            <span><i class="fa fa-users"></i> 4 Sharing</span>
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 5.0</span>
+          </div>
+          <div class="pkg-includes">
+            <span>🕌 Makkah 7N — Makarem Ajyad</span>
+            <span>🕌 Madinah 7N — Pullman Zamzam</span>
+            <span>🍳 Breakfast Daily</span>
+            <span>🚌 Transfers</span>
+            <span>🧭 Full Ziyarat</span>
+          </div>
+          <div style="background:var(--blue-light);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--blue)">
+            <strong>Excludes:</strong> Round trip flights · Umrah Visa · ZamZam Water · Umrah Kit
+          </div>
+
+          <!-- HOTEL ACCORDION -->
+          <button class="hotel-acc-btn" onclick="toggleHotel(this)">
+            <span><i class="fa fa-hotel"></i> Hotel Details Dekhein</span>
+            <i class="fa fa-chevron-down acc-arrow"></i>
+          </button>
+          <div class="hotel-acc-body">
+
+            <div class="hotel-section">
+              <div class="hotel-header">
+                <div class="hotel-stars">★★★★</div>
+                <div>
+                  <h4>Makarem Ajyad Hotel — Makkah</h4>
+                  <p class="hotel-sub"><i class="fa fa-map-marker-alt"></i> Ajyad St, Masjid al-Haram, Makkah · 7 Nights</p>
+                </div>
+              </div>
+              <p class="hotel-desc">Masjid al-Haram ke bilkul qareeb waqe' yeh hotel apni mumtaz location, pur-aitebar service aur aali-shumaar suhooliyat ki wajah se Umrah zaireen ki pehli pasand hai. Burj al-Bait ki shan-dar nazar aur roze-marra naashtay ki sahoolat ke saath, aapka Makkah mein qiyaam naa-bhoolnay wala hoga.</p>
+              <div class="hotel-gallery">
+                <img src="makarem_7.jpg" alt="Makarem Exterior" onclick="openLightbox(this.src)">
+                <img src="makarem_1.jpeg" alt="Makarem Lobby" onclick="openLightbox(this.src)">
+                <img src="makarem_2.jpeg" alt="Makarem Room" onclick="openLightbox(this.src)">
+                <img src="makarem_3.jpeg" alt="Makarem Restaurant" onclick="openLightbox(this.src)">
+                <img src="makarem_4.jpeg" alt="Makarem Dining" onclick="openLightbox(this.src)">
+                <img src="makarem_6.jpeg" alt="Makarem Lounge" onclick="openLightbox(this.src)">
+              </div>
+              <div class="hotel-amenities">
+                <span><i class="fa fa-wifi"></i> Free WiFi</span>
+                <span><i class="fa fa-utensils"></i> Breakfast</span>
+                <span><i class="fa fa-kaaba"></i> Haram View</span>
+                <span><i class="fa fa-car"></i> Shuttle</span>
+                <span><i class="fa fa-concierge-bell"></i> 24/7 Service</span>
+              </div>
+            </div>
+
+            <div class="hotel-divider"><i class="fa fa-plane"></i> Transfer to Madinah</div>
+
+            <div class="hotel-section">
+              <div class="hotel-header">
+                <div class="hotel-stars">★★★★★</div>
+                <div>
+                  <h4>Pullman ZamZam Hotel — Madinah</h4>
+                  <p class="hotel-sub"><i class="fa fa-map-marker-alt"></i> Al-Anbariyah District, Madinah · 7 Nights</p>
+                </div>
+              </div>
+              <p class="hotel-desc">Masjid-e-Nabwi (ﷺ) ke samne waqe' yeh 5-star hotel apne dilkash manazir aur be-misaal khidmat ki wajah se mashoor hai. Luxury rooms, wasi restaurant aur pur-sukoon maahol is hotel ko khas banata hai.</p>
+              <div class="hotel-gallery">
+                <img src="pullman_1.jpeg" alt="Pullman Exterior" onclick="openLightbox(this.src)">
+                <img src="pullman_2.jpg" alt="Pullman Room" onclick="openLightbox(this.src)">
+                <img src="pullman_3.jpeg" alt="Pullman Suite" onclick="openLightbox(this.src)">
+                <img src="pullman_4.jpeg" alt="Pullman Bathroom" onclick="openLightbox(this.src)">
+              </div>
+              <div class="hotel-amenities">
+                <span><i class="fa fa-wifi"></i> Free WiFi</span>
+                <span><i class="fa fa-utensils"></i> Breakfast</span>
+                <span><i class="fa fa-mosque"></i> Nabwi View</span>
+                <span><i class="fa fa-spa"></i> Fitness Center</span>
+                <span><i class="fa fa-concierge-bell"></i> Concierge</span>
+              </div>
+            </div>
+
+          </div>
+          <!-- END HOTEL ACCORDION -->
+
+          <div class="pkg-footer" style="margin-top:16px">
+            <div class="pkg-price"><span>Rs. 1,50,000</span><small>per person</small></div>
+            <a href="booking.html?tour=14+Night+Umrah+Package&duration=14+Nights+%2F+15+Days&price=Rs.+1%2C50%2C000&type=Umrah&includes=Makkah+Hotel%2C+Madinah+Hotel%2C+Breakfast%2C+Transfers%2C+Full+Ziyarat&img=pullman_1.jpeg" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUBAI -->
+      <div class="pkg-card" data-cat="holiday">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Dubai">
+          <span class="pkg-badge hot"><i class="fa fa-fire"></i> Hot Deal</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Dubai Premium Tour</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 5N / 6D</span>
+            <span><i class="fa fa-plane"></i> Visa Incl.</span>
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 4.8</span>
+          </div>
+          <div class="pkg-includes">
+            <span>✈️ Flights</span>
+            <span>🏨 4★ Hotel</span>
+            <span>🛂 UAE Visa</span>
+            <span>🚌 Transfers</span>
+            <span>🏙️ City Tour</span>
+            <span>🎡 Burj Khalifa</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Rs. 1,20,000</span><small>per person</small></div>
+            <a href="booking.html?tour=Dubai+Premium+Tour&duration=5+Nights+%2F+6+Days&price=Rs.+1%2C20%2C000&type=Holiday&includes=Flights%2C+4★+Hotel%2C+UAE+Visa%2C+Transfers%2C+City+Tour&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1528360983277-13d401cdc186%3Fw%3D600%26q%3D80" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- THAILAND -->
+      <div class="pkg-card" data-cat="holiday">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80" alt="Thailand">
+          <span class="pkg-badge" style="background:#0891B2">Thailand</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Thailand Adventure</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 7N / 8D</span>
+            <span><i class="fa fa-plane"></i> Visa Incl.</span>
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 4.7</span>
+          </div>
+          <div class="pkg-includes">
+            <span>✈️ Flights</span>
+            <span>🏨 Resort Stay</span>
+            <span>🛂 Thailand Visa</span>
+            <span>🍜 Halal Meals</span>
+            <span>🏝️ Island Tours</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Rs. 95,000</span><small>per person</small></div>
+            <a href="booking.html?tour=Thailand+Adventure&duration=7+Nights+%2F+8+Days&price=Rs.+95%2C000&type=Holiday&includes=Flights%2C+Resort%2C+Thailand+Visa%2C+Halal+Meals%2C+Island+Tours&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1506665531195-3566af2b4dfa%3Fw%3D600%26q%3D80" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BALI -->
+      <div class="pkg-card" data-cat="holiday">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali">
+          <span class="pkg-badge" style="background:#0891B2">Bali</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Bali Honeymoon / Couple</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 6N / 7D</span>
+            <span><i class="fa fa-heart"></i> Couple Special</span>
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 4.9</span>
+          </div>
+          <div class="pkg-includes">
+            <span>✈️ Flights</span>
+            <span>🏨 Villa Stay</span>
+            <span>🛂 Visa</span>
+            <span>🌺 Spa</span>
+            <span>🌅 Sunset Dinner</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Rs. 1,80,000</span><small>per couple</small></div>
+            <a href="booking.html?tour=Bali+Honeymoon+Package&duration=6+Nights+%2F+7+Days&price=Rs.+1%2C80%2C000+%2Fcouple&type=Honeymoon&includes=Flights%2C+Villa+Stay%2C+Visa%2C+Spa%2C+Sunset+Dinner&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1537996194471-e657df975ab4%3Fw%3D600%26q%3D80" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAMILY -->
+      <div class="pkg-card" data-cat="family">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Family">
+          <span class="pkg-badge" style="background:#059669">Family</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Family Holiday Package</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 7N / 8D</span>
+            <span><i class="fa fa-users"></i> 4–6 Pax</span>
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 4.9</span>
+          </div>
+          <div class="pkg-includes">
+            <span>✈️ Flights</span>
+            <span>🏨 Family Room</span>
+            <span>🛂 All Visas</span>
+            <span>🍽️ All Meals</span>
+            <span>🎡 Kids Activities</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Rs. 3,20,000</span><small>family of 4</small></div>
+            <a href="booking.html?tour=Family+Holiday+Package&duration=7+Nights+%2F+8+Days&price=Rs.+3%2C20%2C000&type=Family&includes=Flights%2C+Family+Room%2C+All+Visas%2C+All+Meals%2C+Activities&img=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1476514525535-07fb3b4ae5f1%3Fw%3D600%26q%3D80" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISA -->
+      <div class="pkg-card" data-cat="visa">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=600&q=80" alt="Visa">
+          <span class="pkg-badge" style="background:#D97706">Visa</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Visa Assistance Service</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-clock"></i> 7–15 Days</span>
+            <span><i class="fa fa-check-circle" style="color:var(--green)"></i> 95% Success</span>
+          </div>
+          <div class="pkg-includes">
+            <span>🇦🇪 UAE Visa</span>
+            <span>🇹🇭 Thailand Visa</span>
+            <span>🇮🇩 Bali Visa</span>
+            <span>🇸🇦 Saudi Visa</span>
+            <span>📋 Documentation Help</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Rs. 12,000</span><small>starting from</small></div>
+            <a href="contact.html" class="btn-primary" style="padding:9px 18px;font-size:13px">Enquire</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AIR TICKETS -->
+      <div class="pkg-card" data-cat="visa">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80" alt="Air Tickets">
+          <span class="pkg-badge" style="background:#6D28D9">Flights</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Air Ticket Booking</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-bolt"></i> Instant Confirmation</span>
+            <span><i class="fa fa-tag"></i> Best Price</span>
+          </div>
+          <div class="pkg-includes">
+            <span>🌍 All Airlines</span>
+            <span>💺 Economy/Business</span>
+            <span>🔄 Return Tickets</span>
+            <span>📱 E-Ticket</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Best Rate</span><small>guaranteed</small></div>
+            <a href="contact.html" class="btn-primary" style="padding:9px 18px;font-size:13px">Get Quote</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOTEL BOOKING -->
+      <div class="pkg-card" data-cat="visa">
+        <div class="pkg-img">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" alt="Hotel">
+          <span class="pkg-badge" style="background:#7C3AED">Hotel</span>
+        </div>
+        <div class="pkg-body">
+          <h3>Hotel Booking Service</h3>
+          <div class="pkg-meta">
+            <span><i class="fa fa-star" style="color:var(--gold)"></i> 3★ to 5★</span>
+            <span><i class="fa fa-check"></i> Best Rates</span>
+          </div>
+          <div class="pkg-includes">
+            <span>🕌 Haram Hotels</span>
+            <span>🌍 Worldwide</span>
+            <span>🏨 All Star Ratings</span>
+            <span>📞 24/7 Support</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-price"><span>Rs. 5,000</span><small>starting per night</small></div>
+            <a href="contact.html" class="btn-primary" style="padding:9px 18px;font-size:13px">Book Hotel</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Umrah Notes Section -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">Important Notes</span>
+      <h2>Umrah Package — <em>Terms & Conditions</em></h2>
+    </div>
+    <div class="notes-grid">
+      <div class="note-card"><i class="fa fa-info-circle"></i><p>Package price is per person (4 sharing basis)</p></div>
+      <div class="note-card"><i class="fa fa-money-bill-wave"></i><p>50% advance required to confirm booking</p></div>
+      <div class="note-card"><i class="fa fa-calendar-times"></i><p>Remaining balance due 15 days before departure</p></div>
+      <div class="note-card"><i class="fa fa-plane"></i><p>Flights not included — can be arranged separately</p></div>
+      <div class="note-card"><i class="fa fa-passport"></i><p>Umrah visa & insurance not included</p></div>
+      <div class="note-card"><i class="fa fa-tint"></i><p>ZamZam water & Umrah kit not included</p></div>
+      <div class="note-card"><i class="fa fa-exchange-alt"></i><p>Unexpected fare changes to be borne by passengers</p></div>
+      <div class="note-card"><i class="fa fa-file-alt"></i><p>All standard terms & conditions apply</p></div>
+    </div>
+  </div>
+</section>
+
+<a href="https://wa.me/923136515349?text=Assalam%20o%20Alaikum!%20I%20want%20to%20enquire%20about%20travel%20packages." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="color:white;margin-bottom:14px">
+          <span>East<span style="color:var(--sky)">West</span>PK</span>
+        </a>
+        <p>Pakistan ki ek bharosemand travel agency.</p>
+        <div class="socials" style="margin-top:16px">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="https://wa.me/923136515349"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="packages.html">Packages</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="booking.html">Book Now</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Packages</h4><ul>
+        <li><a href="#">Umrah Packages</a></li>
+        <li><a href="#">Dubai Tours</a></li>
+        <li><a href="#">Thailand / Bali</a></li>
+        <li><a href="#">Family Packages</a></li>
+        <li><a href="#">Visa Services</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact</h4>
+        <p><i class="fa fa-map-marker-alt"></i> Faisalabad, Punjab</p>
+        <p><i class="fab fa-whatsapp"></i> 0313-6515349</p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="35545751405959545d465d545d5c510c0c0c0c755258545c591b565a58">[email&#160;protected]</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 EastWestPK Travel & Tours.</p></div>
+  </div>
+</footer>
+
+<style>
+/* ── NOTES GRID ── */
+.notes-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.note-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:18px; display:flex; align-items:flex-start; gap:12px; }
+.note-card i { color:var(--blue); font-size:16px; margin-top:2px; flex-shrink:0; }
+.note-card p { font-size:13px; color:var(--text-light); line-height:1.5; }
+@media(max-width:768px){ .notes-grid{ grid-template-columns:1fr 1fr; } }
+@media(max-width:480px){ .notes-grid{ grid-template-columns:1fr; } }
+
+/* ── HOTEL ACCORDION BUTTON ── */
+.hotel-acc-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--blue-light), #dbeafe);
+  border: 1.5px solid rgba(26,86,219,0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue);
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.3s;
+  margin-bottom: 0;
+}
+.hotel-acc-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+.hotel-acc-btn:hover .acc-arrow { color: white; }
+.hotel-acc-btn span { display: flex; align-items: center; gap: 8px; }
+.acc-arrow { font-size: 11px; color: var(--blue); transition: transform 0.35s ease; }
+.hotel-acc-btn.open .acc-arrow { transform: rotate(180deg); }
+.hotel-acc-btn.open { background: var(--blue); color: white; }
+.hotel-acc-btn.open .acc-arrow { color: white; }
+
+/* ── ACCORDION BODY ── */
+.hotel-acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease, padding 0.3s ease;
+  padding: 0;
+}
+.hotel-acc-body.open {
+  max-height: 2000px;
+  padding: 18px 0 4px;
+}
+
+/* ── HOTEL SECTION ── */
+.hotel-section {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: var(--white);
+  margin-bottom: 14px;
+}
+.hotel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.hotel-stars {
+  background: #FEF3C7;
+  color: #D97706;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.hotel-header h4 {
+  font-size: 15px;
+  color: var(--gray-800);
+  margin-bottom: 4px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+}
+.hotel-sub {
+  font-size: 12px;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.hotel-sub i { color: var(--blue); }
+.hotel-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+/* ── HOTEL PHOTO GALLERY ── */
+.hotel-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.hotel-gallery img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s, filter 0.3s;
+  border-radius: 6px;
+}
+.hotel-gallery img:hover {
+  transform: scale(1.04);
+  filter: brightness(1.08);
+}
+
+/* ── HOTEL AMENITIES ── */
+.hotel-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.hotel-amenities span {
+  background: var(--blue-light);
+  color: var(--blue);
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.hotel-amenities i { font-size: 10px; }
+
+/* ── DIVIDER BETWEEN HOTELS ── */
+.hotel-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 4px 0 14px;
+}
+.hotel-divider::before,
+.hotel-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+.hotel-divider i { color: var(--blue); font-size: 14px; }
+
+/* ── LIGHTBOX ── */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0,0,0,0.92);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: zoom-out;
+}
+#lightbox.show { display: flex; }
+#lightbox img {
+  max-width: 92vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  cursor: default;
+  animation: lbIn 0.25s ease;
+}
+@keyframes lbIn { from { opacity:0; transform:scale(0.93); } to { opacity:1; transform:scale(1); } }
+#lightbox .lb-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+#lightbox .lb-close:hover { background: rgba(255,255,255,0.25); }
+
+/* ── LOGO UPDATE ── */
+.navbar .logo img, .footer .logo img { height: 44px; width: auto; object-fit: contain; border-radius: 50%; }
+</style>
+
+<!-- LIGHTBOX OVERLAY -->
+<div id="lightbox" onclick="closeLightbox(event)">
+  <span class="lb-close" onclick="document.getElementById('lightbox').classList.remove('show')">
+    <i class="fa fa-times"></i>
+  </span>
+  <img id="lbImg" src="" alt="Hotel Photo">
+</div>
+
+<script src="script.js"></script>
+<script>
+function filterPkg(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pkg-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
+  });
+}
+
+function toggleHotel(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.hotel-acc-body.open').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.hotel-acc-btn.open').forEach(b => b.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    btn.classList.add('open');
+    setTimeout(() => btn.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+  }
+}
+
+function openLightbox(src) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (e.target.id === 'lightbox') {
+    document.getElementById('lightbox').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('lightbox').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+});
+
+document.querySelectorAll('.logo img').forEach(img => {
+  img.src = 'logo.jpg';
+  img.onerror = () => img.style.display = 'none';
+});
+</script>
+</body>
+</html>

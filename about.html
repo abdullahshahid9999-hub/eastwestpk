@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — EastWestPK Travel & Tours</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0f2460 0%, #1A56DB 60%, #38BDF8 100%); padding: 140px 0 80px; text-align: center; color: white; position: relative; overflow: hidden; }
+    .page-hero::before { content:''; position:absolute; inset:0; background: url('https://images.unsplash.com/photo-1564769625688-5f9f8b3a1e7c?w=1600&q=30') center/cover; opacity:0.08; }
+    .page-hero h1 { font-size: clamp(36px,5vw,58px); color:white; position:relative; }
+    .page-hero h1 em { color: #BAE6FD; }
+    .page-hero p { font-size:16px; color:rgba(255,255,255,0.8); margin-top:14px; position:relative; }
+    .breadcrumb { display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.6); margin-top:16px; position:relative; }
+    .breadcrumb a { color:rgba(255,255,255,0.7); } .breadcrumb a:hover { color:white; }
+
+    .about-split { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    .about-img-wrap { position:relative; border-radius:var(--radius-lg); overflow:hidden; }
+    .about-img-wrap img { width:100%; height:420px; object-fit:cover; border-radius:var(--radius-lg); }
+    .about-badge-box { position:absolute; bottom:24px; left:24px; background:var(--blue); color:white; padding:16px 22px; border-radius:var(--radius); text-align:center; box-shadow:0 8px 24px rgba(26,86,219,0.4); }
+    .about-badge-box span { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; display:block; }
+    .about-badge-box small { font-size:12px; opacity:0.8; }
+    .about-text .tag { display:inline-block; margin-bottom:14px; }
+    .about-text h2 { margin-bottom:20px; }
+    .about-text p { color:var(--text-light); line-height:1.8; margin-bottom:16px; font-size:15px; }
+    .about-checklist { list-style:none; margin:20px 0 28px; display:flex; flex-direction:column; gap:10px; }
+    .about-checklist li { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--gray-600); }
+    .about-checklist li i { color:var(--green); font-size:15px; }
+
+    .mvv-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .mvv-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:32px 26px; text-align:center; transition:all 0.3s; }
+    .mvv-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); border-color:var(--blue); }
+    .mvv-icon { width:60px; height:60px; background:var(--blue-light); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:24px; color:var(--blue); }
+    .mvv-card h3 { font-size:20px; margin-bottom:12px; }
+    .mvv-card p { color:var(--text-light); font-size:14px; line-height:1.7; }
+
+    .team-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .team-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); overflow:hidden; text-align:center; transition:all 0.3s; }
+    .team-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); }
+    .team-card img { width:100%; height:200px; object-fit:cover; }
+    .team-card-body { padding:18px; }
+    .team-card-body h4 { font-size:17px; margin-bottom:4px; }
+    .team-card-body span { font-size:12px; color:var(--blue); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+    .team-card-body p { font-size:13px; color:var(--text-light); margin-top:8px; }
+
+    .note-card { background:var(--blue-light); border:1px solid var(--blue-mid); border-radius:var(--radius); padding:32px; display:flex; gap:20px; align-items:flex-start; }
+    .note-card i { font-size:28px; color:var(--blue); flex-shrink:0; margin-top:4px; }
+    .note-card h3 { font-size:22px; margin-bottom:8px; }
+    .note-card p { color:var(--gray-600); font-size:14px; line-height:1.7; }
+
+    @media(max-width:900px) { .about-split{grid-template-columns:1fr;gap:36px;} .mvv-grid{grid-template-columns:1fr 1fr;} .team-grid{grid-template-columns:1fr 1fr;} }
+    @media(max-width:600px) { .mvv-grid{grid-template-columns:1fr;} .team-grid{grid-template-columns:1fr 1fr;} }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="logo"><img src="logo.jpg" alt="EastWestPK" onerror="this.style.display='none'"><span class="logo-text">East<span>West</span>PK</span></a>
+  <div class="nav-links" id="navLinks">
+    <i class="fa fa-times" id="closeBtn" onclick="closeMenu()"></i>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="packages.html">Packages</a></li>
+      <li><a href="about.html" class="active">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth/login.html"><i class="fa fa-user"></i> Login</a></li>
+      <li><a href="booking.html" class="nav-cta">Book Now</a></li>
+    </ul>
+  </div>
+  <i class="fa fa-bars" id="menuBtn" onclick="openMenu()"></i>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="tag" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.2)">✦ Our Story</div>
+    <h1>About <em>EastWestPK</em></h1>
+    <p>Pakistan ki ek bharosemand travel agency — Faisalabad se shuru, duniya tak</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> <i class="fa fa-chevron-right" style="font-size:10px"></i> <span>About Us</span></div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="about-split">
+      <div class="about-img-wrap">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80" alt="EastWestPK Team">
+        <div class="about-badge-box"><span>8+</span><small>Years of Trust</small></div>
+      </div>
+      <div class="about-text">
+        <span class="tag">Our Story</span>
+        <h2>Pakistan Se Duniya Tak — <em>Har Safar Aasaan</em></h2>
+        <p>EastWestPK (East & West Travel Services) ki bunyaad Faisalabad mein rakhi gayi thi ek sapne ke saath — ke har Pakistani ghar asani se duniya ki sair kar sake aur Umrah ki ziyarat ada kar sake.</p>
+        <p>8 saalon mein humne 5,000+ musafiron ko unke manzil tak pohonchaya hai — Makkah Madinah se Dubai, Thailand aur Bali tak. Hamare har package mein quality, transparency aur Islamic values shamil hain.</p>
+        <ul class="about-checklist">
+          <li><i class="fa fa-check-circle"></i> IATA Affiliated & Licensed Travel Agency</li>
+          <li><i class="fa fa-check-circle"></i> Umrah & Hajj Ministry Approved</li>
+          <li><i class="fa fa-check-circle"></i> 100% Halal & Transparent Packages</li>
+          <li><i class="fa fa-check-circle"></i> 24/7 Customer Support — WhatsApp & Call</li>
+          <li><i class="fa fa-check-circle"></i> No Hidden Charges — Jo Quote Ho Wohi Final</li>
+        </ul>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <a href="booking.html" class="btn-primary"><i class="fa fa-calendar-check"></i> Book a Tour</a>
+          <a href="contact.html" class="btn-outline"><i class="fa fa-phone"></i> Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-band">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item"><span>5,000+</span><p>Happy Travelers</p></div>
+      <div class="stat-item"><span>500+</span><p>Umrah Pilgrims</p></div>
+      <div class="stat-item"><span>15+</span><p>Destinations</p></div>
+      <div class="stat-item"><span>8+</span><p>Years Experience</p></div>
+      <div class="stat-item"><span>4.9★</span><p>Customer Rating</p></div>
+    </div>
+  </div>
+</div>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header"><span class="tag">Our Values</span><h2>Mission, Vision & <em>Values</em></h2><p>Jo principles hamare har kaam ki buniyad hain</p></div>
+    <div class="mvv-grid">
+      <div class="mvv-card">
+        <div class="mvv-icon"><i class="fa fa-bullseye"></i></div>
+        <h3>Our Mission</h3>
+        <p>Har Pakistani ko affordable, safe aur memorable travel experience dena — chaahe wo Umrah ho ya holiday. Hum dil se kaam karte hain.</p>
+      </div>
+      <div class="mvv-card">
+        <div class="mvv-icon"><i class="fa fa-eye"></i></div>
+        <h3>Our Vision</h3>
+        <p>Pakistan ki #1 trusted travel brand banna — jahan har customer ko ghar jaisa feel ho aur safar mein koi tension na ho.</p>
+      </div>
+      <div class="mvv-card">
+        <div class="mvv-icon"><i class="fa fa-heart"></i></div>
+        <h3>Our Values</h3>
+        <p>Honesty, transparency aur Islamic values hamare kaam ki bunyad hain. Customer ka trust hamare liye sab se bada asset hai.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header"><span class="tag">Our Team</span><h2>Miliye Hamare <em>Dedicated Team</em> Se</h2><p>Experienced professionals jo aapke har safar ki zimmedari lete hain</p></div>
+    <div class="team-grid">
+      <div class="team-card">
+        <img src="https://i.pravatar.cc/300?img=51" alt="Abdullah Shahid">
+        <div class="team-card-body"><h4>Abdullah Shahid</h4><span>Founder & CEO</span><p>8+ saal travel industry mein. Umrah & Hajj specialist.</p></div>
+      </div>
+      <div class="team-card">
+        <img src="https://i.pravatar.cc/300?img=52" alt="Operations Manager">
+        <div class="team-card-body"><h4>Ahmed Raza</h4><span>Operations Manager</span><p>Visa processing, hotel bookings aur tours coordination.</p></div>
+      </div>
+      <div class="team-card">
+        <img src="https://i.pravatar.cc/300?img=32" alt="Customer Relations">
+        <div class="team-card-body"><h4>Sara Malik</h4><span>Customer Relations</span><p>Customer queries, bookings aur post-travel support.</p></div>
+      </div>
+      <div class="team-card">
+        <img src="https://i.pravatar.cc/300?img=55" alt="Tour Guide">
+        <div class="team-card-body"><h4>Usman Tariq</h4><span>Senior Tour Guide</span><p>Umrah Ziyarat, Madinah aur international tours specialist.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header"><span class="tag">Transparency</span><h2>Hamari <em>Payment Policy</em></h2></div>
+    <div class="note-card">
+      <i class="fa fa-info-circle"></i>
+      <div>
+        <h3>Booking Terms & Conditions</h3>
+        <p><strong>Advance Payment:</strong> Booking confirm karne ke liye 50% advance per person dena hoga.<br>
+        <strong>Balance Payment:</strong> Remaining amount departure se 15 din pehle dena hoga.<br>
+        <strong>Cancellation:</strong> 30 din pehle — 70% refund. 15 din pehle — 50% refund. Iske baad refund available nahi.<br>
+        <strong>Fare Changes:</strong> Unexpected airline fare changes passenger ki zimmedari hogi.<br>
+        <strong>Documents:</strong> Valid passport (6 months), NIC copy, photos required hain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="color:white;margin-bottom:14px"><img src="logo.jpg" alt="" style="height:40px" onerror="this.style.display='none'"><span>East<span style="color:var(--sky)">West</span>PK</span></a>
+        <p>Pakistan ki ek bharosemand travel agency.</p>
+        <div class="socials" style="margin-top:16px"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="https://wa.me/923136515349" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+      </div>
+      <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="packages.html">Packages</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="auth/login.html">Customer Login</a></li></ul></div>
+      <div class="footer-links"><h4>Services</h4><ul><li><a href="packages.html">Umrah Packages</a></li><li><a href="packages.html">Dubai Tours</a></li><li><a href="packages.html">Thailand / Bali</a></li><li><a href="packages.html">Family Packages</a></li><li><a href="packages.html">Visa Services</a></li></ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> Faisalabad, Punjab, Pakistan</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349" style="color:#94A3B8">0313-6515349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:abdullahshahid9999@gmail.com" style="color:#94A3B8">abdullahshahid9999@gmail.com</a></p>
+        <p><i class="fa fa-clock"></i> Mon–Sat: 9AM – 7PM</p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 EastWestPK Travel & Tours. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923136515349?text=Assalam%20o%20Alaikum!%20I%20want%20to%20enquire%20about%20travel%20packages." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<script src="script.js"></script>
+</body>
+</html>

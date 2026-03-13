@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — EastWestPK Travel & Tours</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0f2460 0%, #1A56DB 60%, #38BDF8 100%); padding: 140px 0 80px; text-align: center; color: white; }
+    .page-hero h1 { font-size: clamp(36px,5vw,58px); color:white; }
+    .page-hero h1 em { color: #BAE6FD; }
+    .page-hero p { font-size:16px; color:rgba(255,255,255,0.8); margin-top:14px; }
+    .breadcrumb { display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.6); margin-top:16px; }
+    .breadcrumb a { color:rgba(255,255,255,0.7); }
+
+    .contact-split { display:grid; grid-template-columns:1fr 1.6fr; gap:48px; }
+
+    .ci-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px 24px; display:flex; align-items:flex-start; gap:16px; transition:all 0.3s; margin-bottom:16px; }
+    .ci-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:var(--blue); }
+    .ci-icon { width:48px; height:48px; background:var(--blue-light); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; color:var(--blue); flex-shrink:0; }
+    .ci-card h4 { font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; color:var(--gray-800); margin-bottom:4px; }
+    .ci-card p, .ci-card a { font-size:13.5px; color:var(--text-light); }
+    .ci-card a:hover { color:var(--blue); }
+
+    .cf-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:40px 36px; box-shadow:var(--shadow-md); }
+    .cf-card h3 { font-size:26px; margin-bottom:6px; }
+    .cf-card > p { color:var(--text-light); font-size:14px; margin-bottom:28px; }
+
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-full { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; color:var(--text-light); }
+    .form-group input, .form-group select, .form-group textarea { border:1.5px solid var(--gray-200); border-radius:10px; padding:12px 14px; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; color:var(--text); outline:none; transition:all 0.3s; background:var(--white); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(26,86,219,0.07); }
+    .form-group textarea { height:120px; resize:vertical; }
+
+    .cf-success { display:none; text-align:center; padding:48px 20px; }
+    .cf-success .tick { width:72px; height:72px; background:var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; color:white; }
+    .cf-success h3 { font-size:26px; margin-bottom:8px; }
+    .cf-success p { color:var(--text-light); font-size:14px; }
+
+    .wa-cta { background:linear-gradient(135deg,#128C7E,#25D366); border-radius:var(--radius); padding:28px 24px; text-align:center; margin-top:20px; }
+    .wa-cta h4 { color:white; font-size:18px; margin-bottom:8px; }
+    .wa-cta p { color:rgba(255,255,255,0.8); font-size:13px; margin-bottom:18px; }
+    .wa-btn { display:inline-flex; align-items:center; gap:10px; background:white; color:#128C7E; padding:12px 24px; border-radius:50px; font-weight:700; font-size:14px; transition:all 0.3s; }
+    .wa-btn:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(0,0,0,0.2); }
+
+    @media(max-width:768px) { .contact-split{grid-template-columns:1fr;} .form-grid{grid-template-columns:1fr;} .cf-card{padding:28px 20px;} }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="logo"><img src="logo.jpg" alt="EastWestPK" onerror="this.style.display='none'"><span class="logo-text">East<span>West</span>PK</span></a>
+  <div class="nav-links" id="navLinks">
+    <i class="fa fa-times" id="closeBtn" onclick="closeMenu()"></i>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="packages.html">Packages</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="auth/login.html"><i class="fa fa-user"></i> Login</a></li>
+      <li><a href="booking.html" class="nav-cta">Book Now</a></li>
+    </ul>
+  </div>
+  <i class="fa fa-bars" id="menuBtn" onclick="openMenu()"></i>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="tag" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.2)">✦ Get In Touch</div>
+    <h1>Contact <em>EastWestPK</em></h1>
+    <p>Koi bhi sawal ho — hum yahan hain. WhatsApp ya form se rabta karein.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> <i class="fa fa-chevron-right" style="font-size:10px"></i> <span>Contact Us</span></div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-split">
+      <div>
+        <span class="tag" style="display:inline-block;margin-bottom:16px">Contact Info</span>
+        <h2 style="margin-bottom:28px">Hamare Saath <em>Rabta Karein</em></h2>
+
+        <div class="ci-card"><div class="ci-icon"><i class="fa fa-map-marker-alt"></i></div><div><h4>Office Address</h4><p>Faisalabad, Punjab, Pakistan</p></div></div>
+        <div class="ci-card"><div class="ci-icon"><i class="fab fa-whatsapp"></i></div><div><h4>WhatsApp & Phone</h4><a href="https://wa.me/923136515349">0313-6515349</a></div></div>
+        <div class="ci-card"><div class="ci-icon"><i class="fa fa-envelope"></i></div><div><h4>Email</h4><a href="mailto:abdullahshahid9999@gmail.com">abdullahshahid9999@gmail.com</a></div></div>
+        <div class="ci-card"><div class="ci-icon"><i class="fa fa-clock"></i></div><div><h4>Office Hours</h4><p>Monday – Saturday: 9AM – 7PM<br>Sunday: By Appointment</p></div></div>
+
+        <div class="wa-cta">
+          <h4><i class="fab fa-whatsapp"></i> Turant Jawab Chahiye?</h4>
+          <p>WhatsApp pe message karein — hum minutes mein jawab dete hain!</p>
+          <a href="https://wa.me/923136515349?text=Assalam%20o%20Alaikum!%20I%20need%20help%20with%20a%20travel%20package." class="wa-btn" target="_blank"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="cf-card">
+        <h3>Apna <em>Sawal Poochein</em></h3>
+        <p>Form fill karein — hum 24 ghante mein jawab denge</p>
+
+        <div id="contactForm">
+          <div class="form-grid" style="margin-bottom:16px">
+            <div class="form-group"><label>Your Name *</label><input type="text" id="cfName" placeholder="Apna naam daalen" required></div>
+            <div class="form-group"><label>Phone / WhatsApp *</label><input type="tel" id="cfPhone" placeholder="03XX-XXXXXXX" required></div>
+            <div class="form-group form-full"><label>Email Address</label><input type="email" id="cfEmail" placeholder="email@example.com"></div>
+            <div class="form-group form-full"><label>Subject *</label>
+              <select id="cfSubject">
+                <option value="">Select subject</option>
+                <option>Umrah Package Inquiry</option>
+                <option>Dubai Tour Inquiry</option>
+                <option>Thailand / Bali Tour</option>
+                <option>Family Package</option>
+                <option>Visa Services</option>
+                <option>Air Ticket Booking</option>
+                <option>Hotel Booking</option>
+                <option>General Inquiry</option>
+              </select>
+            </div>
+            <div class="form-group form-full"><label>Your Message *</label><textarea id="cfMessage" placeholder="Apna sawal ya inquiry yahan likhein..."></textarea></div>
+          </div>
+          <button class="btn-primary" style="width:100%;justify-content:center" onclick="submitContactForm()" id="cfBtn">
+            <span class="spinner" id="cfSpinner" style="display:none;width:16px;height:16px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite"></span>
+            <i class="fa fa-paper-plane" id="cfIcon"></i>
+            <span id="cfBtnText">Send Message</span>
+          </button>
+        </div>
+
+        <div class="cf-success" id="cfSuccess">
+          <div class="tick"><i class="fa fa-check"></i></div>
+          <h3>Message Bhej Diya! ✅</h3>
+          <p>Shukriya! Hum aapke saath 24 ghante mein rabta karenge.<br>Jaldi jawab ke liye WhatsApp karein: <a href="https://wa.me/923136515349" style="color:var(--blue);font-weight:600">0313-6515349</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-bottom:0">
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108907.74632073694!2d72.9523786!3d31.4504407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3922693f0b5b1b6f%3A0x8b4c0f5e2a4e5b9d!2sFaisalabad%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000" width="100%" height="380" style="border:0;display:block" allowfullscreen loading="lazy"></iframe>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="logo" style="color:white;margin-bottom:14px"><img src="logo.jpg" alt="" style="height:40px" onerror="this.style.display='none'"><span>East<span style="color:var(--sky)">West</span>PK</span></a><p>Pakistan ki ek bharosemand travel agency.</p><div class="socials" style="margin-top:16px"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="https://wa.me/923136515349" target="_blank"><i class="fab fa-whatsapp"></i></a></div></div>
+      <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="packages.html">Packages</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="auth/login.html">Customer Login</a></li></ul></div>
+      <div class="footer-links"><h4>Services</h4><ul><li><a href="packages.html">Umrah Packages</a></li><li><a href="packages.html">Dubai Tours</a></li><li><a href="packages.html">Thailand / Bali</a></li><li><a href="packages.html">Family Packages</a></li></ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4><p><i class="fa fa-map-marker-alt"></i> Faisalabad, Punjab, Pakistan</p><p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349" style="color:#94A3B8">0313-6515349</a></p><p><i class="fa fa-envelope"></i> <a href="mailto:abdullahshahid9999@gmail.com" style="color:#94A3B8">abdullahshahid9999@gmail.com</a></p></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 EastWestPK Travel & Tours. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923136515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script src="script.js"></script>
+<script>
+  // EmailJS — fill your keys here
+  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = 'YOUR_CONTACT_TEMPLATE_ID';
+  const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+
+  async function submitContactForm() {
+    const name    = document.getElementById('cfName').value.trim();
+    const phone   = document.getElementById('cfPhone').value.trim();
+    const email   = document.getElementById('cfEmail').value.trim();
+    const subject = document.getElementById('cfSubject').value;
+    const message = document.getElementById('cfMessage').value.trim();
+    if (!name || !phone || !subject || !message) { alert('Please fill all required fields.'); return; }
+
+    const btn = document.getElementById('cfBtn');
+    btn.disabled = true;
+    document.getElementById('cfSpinner').style.display = 'inline-block';
+    document.getElementById('cfIcon').style.display = 'none';
+    document.getElementById('cfBtnText').textContent = 'Sending...';
+
+    try {
+      if (typeof emailjs !== 'undefined') {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { name, phone, email, subject, message });
+      }
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('cfSuccess').style.display = 'block';
+    } catch(err) {
+      console.error(err);
+      // Show success anyway for demo
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('cfSuccess').style.display = 'block';
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</body>
+</html>

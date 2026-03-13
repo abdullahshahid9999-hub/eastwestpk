@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Now — East & West Travel Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── PAGE HERO ── */
+    .page-hero { background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.07) 0%, transparent 70%); }
+    .page-hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .page-hero h1 { font-size: clamp(34px, 5vw, 56px); color: var(--white); position: relative; }
+    .page-hero > .container > p { color: var(--text-dim); margin-top: 12px; font-size: 15px; position: relative; }
+    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-dim); margin-top: 16px; position: relative; }
+    .breadcrumb a { color: var(--teal); }
+
+    /* ── STEP TABS ── */
+    .steps-bar { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 48px; flex-wrap: wrap; gap: 8px; }
+    .step-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 50px; font-size: 13px; font-weight: 600; color: var(--text-dim); background: var(--navy-light); border: 1px solid var(--border); transition: all 0.3s; }
+    .step-item.active { background: var(--teal); color: white; border-color: var(--teal); box-shadow: var(--shadow-teal); }
+    .step-item.done { background: var(--navy-light); color: var(--gold); border-color: var(--border-gold); }
+    .step-item .step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .step-item.active .step-num { background: rgba(255,255,255,0.25); }
+    .step-item.done .step-num { background: var(--gold-dim); color: var(--gold); }
+
+    /* ── LAYOUT ── */
+    .booking-layout { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start; }
+
+    /* ── FORM CARD ── */
+    .form-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; }
+    .form-card h3 { font-size: 22px; color: var(--white); margin-bottom: 6px; }
+    .form-card > p { color: var(--text-dim); font-size: 13.5px; margin-bottom: 28px; }
+    .form-section { margin-bottom: 32px; }
+    .form-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .col-full { grid-column: 1 / -1; }
+
+    /* ── FORM INPUTS ── */
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); }
+    .form-group label .req { color: var(--gold); }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--navy-mid); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 11px 14px; font-size: 14px;
+      font-family: 'DM Sans', sans-serif; color: var(--white); outline: none; transition: all 0.3s;
+    }
+    .form-group input::placeholder { color: var(--text-dim); opacity: 0.7; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
+    .form-group input.error { border-color: #EF4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
+    .field-error { font-size: 11px; color: #EF4444; margin-top: 2px; display: none; }
+    .field-error.show { display: block; }
+    option { background: #0F2040; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    /* ── PAX COUNTER ── */
+    .pax-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .pax-box { background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; transition: border-color 0.3s; }
+    .pax-box:has(input:focus) { border-color: var(--teal); }
+    .pax-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 4px; }
+    .pax-sublabel { font-size: 10px; color: var(--text-dim); opacity: 0.6; margin-bottom: 12px; }
+    .pax-counter { display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .pax-btn { width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid var(--border); background: none; color: var(--white); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; line-height: 1; }
+    .pax-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .pax-val { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--white); min-width: 32px; text-align: center; }
+
+    /* ── TRAVELER CARDS ── */
+    .traveler-cards { display: flex; flex-direction: column; gap: 16px; }
+    .traveler-card { background: var(--navy-mid); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; position: relative; }
+    .traveler-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .traveler-badge { background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.3); color: var(--teal); padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .traveler-badge.child { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.3); color: var(--gold); }
+    .traveler-badge.infant { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); color: #10B981; }
+
+    /* ── GUEST / LOGGED IN BANNER ── */
+    .auth-banner { background: var(--navy-mid); border: 1px solid var(--border-gold); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .auth-banner p { font-size: 13.5px; color: var(--text-dim); }
+    .auth-banner p strong { color: var(--gold); }
+    .auth-banner-btns { display: flex; gap: 8px; }
+
+    /* ── SUMMARY CARD ── */
+    .summary-card { background: var(--navy-light); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 28px; position: sticky; top: 100px; }
+    .summary-card h4 { font-size: 18px; color: var(--white); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .summary-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 18px; }
+    .sum-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; font-size: 13.5px; gap: 8px; }
+    .sum-row span:first-child { color: var(--text-dim); flex-shrink: 0; }
+    .sum-row span:last-child { font-weight: 600; color: var(--white); text-align: right; }
+    .sum-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+    .sum-total span { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold) !important; }
+    .info-box { background: var(--navy-mid); border-radius: 10px; padding: 14px; font-size: 12.5px; color: var(--text-dim); line-height: 1.6; margin-top: 16px; }
+    .info-box i { color: var(--teal); }
+
+    /* ── TERMS ── */
+    .terms-row { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; }
+    .terms-row input[type="checkbox"] { margin-top: 3px; accent-color: var(--teal); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+    .terms-row label { font-size: 13px; color: var(--text-dim); cursor: pointer; line-height: 1.5; }
+    .terms-row a { color: var(--teal); }
+
+    /* ── SUCCESS STATE ── */
+    .booking-success { display: none; }
+    .success-hero { background: linear-gradient(135deg, var(--navy-mid), var(--navy-light)); border: 1px solid var(--border-gold); border-radius: 24px; padding: 52px 40px; text-align: center; margin-bottom: 32px; position: relative; overflow: hidden; }
+    .success-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%); }
+    .success-icon { width: 80px; height: 80px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 32px; color: white; box-shadow: 0 8px 28px rgba(16,185,129,0.4); position: relative; }
+    .success-hero h2 { font-size: 36px; color: var(--white); margin-bottom: 10px; position: relative; }
+    .success-hero p { color: var(--text-dim); font-size: 15px; position: relative; }
+    .booking-ref-badge { display: inline-block; background: var(--gold-dim); border: 1px solid var(--border-gold); color: var(--gold); padding: 8px 22px; border-radius: 50px; font-size: 14px; font-weight: 700; letter-spacing: 2px; margin-top: 18px; position: relative; }
+
+    /* ── PAYMENT CARDS ── */
+    .payment-section { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; margin-bottom: 24px; }
+    .payment-section h3 { font-size: 24px; color: var(--white); margin-bottom: 8px; }
+    .payment-section > p { color: var(--text-dim); font-size: 13.5px; margin-bottom: 24px; }
+    .advance-alert { background: rgba(201,168,76,0.08); border: 1px solid var(--border-gold); border-radius: 10px; padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 28px; }
+    .advance-alert i { color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+    .advance-alert p { font-size: 13.5px; color: var(--text-dim); line-height: 1.6; }
+    .advance-alert strong { color: var(--gold); }
+
+    .bank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .bank-card { background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color 0.3s; }
+    .bank-card:hover { border-color: var(--border-gold); }
+    .bank-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .bank-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: white; flex-shrink: 0; }
+    .bank-name { font-size: 14px; font-weight: 700; color: var(--white); }
+    .bank-name small { display: block; font-size: 11px; color: var(--text-dim); font-weight: 400; }
+    .bank-field { margin-bottom: 10px; }
+    .bank-field-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 3px; }
+    .bank-field-row { display: flex; align-items: center; gap: 8px; }
+    .bank-val { font-size: 12.5px; font-weight: 600; color: var(--white); font-family: 'Courier New', monospace; flex: 1; word-break: break-all; }
+    .copy-btn { background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.3); color: var(--teal); padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 4px; }
+    .copy-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
+    .copy-btn.copied { background: rgba(16,185,129,0.2); color: #10B981; border-color: rgba(16,185,129,0.3); }
+
+    .next-steps { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; }
+    .next-steps h4 { font-size: 20px; color: var(--white); margin-bottom: 20px; }
+    .step-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .step-list li { display: flex; gap: 14px; align-items: flex-start; font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+    .step-circle { width: 30px; height: 30px; background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--teal); flex-shrink: 0; }
+    .step-list strong { color: var(--white); }
+
+    @media(max-width: 900px) { .booking-layout { grid-template-columns: 1fr; } .bank-grid { grid-template-columns: 1fr; } .form-grid-2 { grid-template-columns: 1fr; } .form-grid-3 { grid-template-columns: 1fr; } .pax-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    @media(max-width: 500px) { .pax-grid { grid-template-columns: 1fr; } .form-card { padding: 22px 18px; } .payment-section { padding: 22px 18px; } .success-hero { padding: 36px 20px; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.jpg" alt="East & West Travel Services">
+    <span class="nav-logo-text">East & <span>West</span></span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html">Home</a>
+    <a href="packages.html">Packages</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="booking.html" class="nav-cta active">Book Now</a>
+  </div>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow">Secure Booking</div>
+    <h1>Book Your <em>Tour</em></h1>
+    <p>Fill the form — we confirm within 24 hours</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> <i class="fa fa-chevron-right" style="font-size:9px"></i> <span>Book Now</span></div>
+  </div>
+</div>
+
+<section class="section" style="padding-top:60px">
+  <div class="container">
+
+    <!-- STEPS BAR -->
+    <div class="steps-bar">
+      <div class="step-item active" id="step1-tab"><span class="step-num">1</span> Search & Select</div>
+      <div class="step-item" id="step2-tab"><span class="step-num">2</span> Traveler Details</div>
+      <div class="step-item" id="step3-tab"><span class="step-num">3</span> Confirm</div>
+    </div>
+
+    <!-- BOOKING FORM -->
+    <div id="bookingFlow">
+      <div class="booking-layout">
+        <div>
+
+          <!-- AUTH BANNER -->
+          <div class="auth-banner" id="authBanner">
+            <p id="authBannerText">Already have an account? <strong>Login to auto-fill your details.</strong></p>
+            <div class="auth-banner-btns">
+              <a href="auth/login.html" class="btn-teal" style="padding:8px 16px;font-size:13px">Login</a>
+              <a href="auth/login.html?signup=1" class="btn-ghost" style="padding:8px 16px;font-size:13px">Sign Up</a>
+            </div>
+          </div>
+
+          <!-- STEP 1: SEARCH -->
+          <div class="form-card" id="step1">
+            <h3>Step 1 — <em>Select Tour</em></h3>
+            <p>Choose your destination and travel details</p>
+
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa fa-compass"></i> Destination & Package</div>
+              <div class="form-grid-2" style="margin-bottom:16px">
+                <div class="form-group col-full">
+                  <label>Destination <span class="req">*</span></label>
+                  <select id="destination" onchange="updatePackagesByDest()">
+                    <option value="">— Select Destination —</option>
+                    <option value="umrah">Umrah / Makkah & Madinah</option>
+                    <option value="dubai">Dubai, UAE</option>
+                    <option value="thailand">Thailand / Bangkok</option>
+                    <option value="bali">Bali, Indonesia</option>
+                    <option value="family">Family Package</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Duration / Nights <span class="req">*</span></label>
+                  <select id="duration" onchange="updatePackageByDuration()">
+                    <option value="">— Select Duration —</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Package <span class="req">*</span></label>
+                  <select id="packageSelect">
+                    <option value="">— Select Package —</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Preferred Travel Date <span class="req">*</span></label>
+                <input type="date" id="travelDate">
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa fa-users"></i> Number of Travelers</div>
+              <div class="pax-grid">
+                <div class="pax-box">
+                  <div class="pax-label">Adults</div>
+                  <div class="pax-sublabel">Age 12+</div>
+                  <div class="pax-counter">
+                    <button class="pax-btn" onclick="changePax('adults',-1)">−</button>
+                    <div class="pax-val" id="pax-adults-val">1</div>
+                    <button class="pax-btn" onclick="changePax('adults',1)">+</button>
+                  </div>
+                </div>
+                <div class="pax-box">
+                  <div class="pax-label">Children</div>
+                  <div class="pax-sublabel">Age 2–11</div>
+                  <div class="pax-counter">
+                    <button class="pax-btn" onclick="changePax('children',-1)">−</button>
+                    <div class="pax-val" id="pax-children-val">0</div>
+                    <button class="pax-btn" onclick="changePax('children',1)">+</button>
+                  </div>
+                </div>
+                <div class="pax-box">
+                  <div class="pax-label">Infants</div>
+                  <div class="pax-sublabel">Age 0–1</div>
+                  <div class="pax-counter">
+                    <button class="pax-btn" onclick="changePax('infants',-1)">−</button>
+                    <div class="pax-val" id="pax-infants-val">0</div>
+                    <button class="pax-btn" onclick="changePax('infants',1)">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa fa-bed"></i> Room Preference</div>
+              <div class="form-group">
+                <label>Room Type</label>
+                <select id="roomType">
+                  <option value="4 Sharing">4 Sharing (Most Economical)</option>
+                  <option value="3 Sharing">3 Sharing</option>
+                  <option value="Double Room">Double Room</option>
+                  <option value="Single Room">Single Room (Premium)</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn-teal" style="width:100%;justify-content:center;padding:14px" onclick="goToStep2()">
+              Continue — Traveler Details <i class="fa fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- STEP 2: TRAVELER DETAILS -->
+          <div class="form-card" id="step2" style="display:none">
+            <h3>Step 2 — <em>Traveler Details</em></h3>
+            <p>Fill details for each traveler exactly as per passport</p>
+
+            <!-- Contact Details -->
+            <div class="form-section" id="contactSection">
+              <div class="form-section-title"><i class="fa fa-phone"></i> Contact Details</div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Full Name <span class="req">*</span></label>
+                  <input type="text" id="contactName" placeholder="Booking person name">
+                </div>
+                <div class="form-group">
+                  <label>Phone / WhatsApp <span class="req">*</span></label>
+                  <input type="tel" id="contactPhone" placeholder="03XX-XXXXXXX">
+                </div>
+                <div class="form-group col-full">
+                  <label>Email Address <span class="req">*</span></label>
+                  <input type="email" id="contactEmail" placeholder="email@example.com">
+                </div>
+              </div>
+            </div>
+
+            <!-- Traveler Cards — dynamically rendered -->
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa fa-id-card"></i> Passport Details — All Travelers</div>
+              <div class="traveler-cards" id="travelerCards"></div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa fa-comment-alt"></i> Additional Info</div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label>Contact Preference</label>
+                  <select id="contactPref">
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Phone Call">Phone Call</option>
+                    <option value="Email">Email</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Meal Preference</label>
+                  <select id="mealPref">
+                    <option>Halal (Default)</option>
+                    <option>Vegetarian</option>
+                    <option>No Preference</option>
+                  </select>
+                </div>
+                <div class="form-group col-full">
+                  <label>Special Requests</label>
+                  <textarea id="specialReq" placeholder="Wheelchair, medical conditions, room preferences, etc..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="terms-row">
+              <input type="checkbox" id="termsCheck">
+              <label for="termsCheck">I have read and agree to the <a href="about.html">Booking Terms & Conditions</a>. I understand that 50% advance payment is required to confirm this booking.</label>
+            </div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button class="btn-ghost" onclick="goToStep1()" style="padding:13px 22px"><i class="fa fa-arrow-left"></i> Back</button>
+              <button class="btn-gold" style="flex:1;justify-content:center;padding:14px" onclick="submitBooking()" id="submitBtn">
+                <span id="submitSpinner" style="display:none;width:18px;height:18px;border:2.5px solid rgba(0,0,0,0.2);border-top-color:var(--navy);border-radius:50%;animation:spin 0.8s linear infinite"></span>
+                <i class="fa fa-calendar-check" id="submitIcon"></i>
+                <span id="submitTxt"> Confirm Booking Request</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SUMMARY SIDEBAR -->
+        <div>
+          <div class="summary-card">
+            <h4>Booking <em>Summary</em></h4>
+            <img id="summaryImg" src="makarem_7.jpg" alt="Tour" onerror="this.style.display='none'">
+            <div class="sum-row"><span>Package</span><span id="sumPackage">—</span></div>
+            <div class="sum-row"><span>Destination</span><span id="sumDest">—</span></div>
+            <div class="sum-row"><span>Duration</span><span id="sumDur">—</span></div>
+            <div class="sum-row"><span>Travel Date</span><span id="sumDate">—</span></div>
+            <hr class="sum-divider">
+            <div class="sum-row"><span>Adults</span><span id="sumAdults">1</span></div>
+            <div class="sum-row"><span>Children</span><span id="sumChildren">0</span></div>
+            <div class="sum-row"><span>Infants</span><span id="sumInfants">0</span></div>
+            <div class="sum-row"><span>Room</span><span id="sumRoom">4 Sharing</span></div>
+            <hr class="sum-divider">
+            <div class="sum-row sum-total"><span>Price From</span><span id="sumPrice">—</span></div>
+            <div class="info-box"><i class="fa fa-info-circle"></i> <strong>50% advance</strong> required to confirm. Balance due 15 days before departure.</div>
+          </div>
+          <div style="margin-top:14px;background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:18px">
+            <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px">Need help choosing?</p>
+            <a href="https://wa.me/923136515349?text=I+need+help+with+a+booking" class="btn-teal" style="width:100%;justify-content:center;font-size:13px;padding:10px" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="booking-success" id="bookingSuccess">
+      <div class="success-hero">
+        <div class="success-icon"><i class="fa fa-check"></i></div>
+        <h2>Booking Request <em>Received!</em></h2>
+        <p>Thank you! Your booking request has been submitted successfully.<br>We will contact you within <strong style="color:var(--gold)">24 hours</strong> to confirm.</p>
+        <div class="booking-ref-badge" id="refBadge">Ref: EW-XXXXXX</div>
+        <p style="margin-top:14px;font-size:13px">A confirmation email has been sent to <strong id="successEmail" style="color:var(--teal)">your email</strong></p>
+      </div>
+
+      <!-- PAYMENT SECTION -->
+      <div class="payment-section">
+        <h3>Payment <em>Details</em></h3>
+        <p>Transfer 50% advance to any of the accounts below to confirm your booking.</p>
+        <div class="advance-alert">
+          <i class="fa fa-exclamation-triangle"></i>
+          <p>After payment, send the screenshot on WhatsApp: <a href="https://wa.me/923136515349" style="color:var(--gold);font-weight:700">0313-6515349</a> with your booking reference number.</p>
+        </div>
+        <div class="bank-grid">
+          <div class="bank-card">
+            <div class="bank-head"><div class="bank-icon" style="background:linear-gradient(135deg,#00695C,#00897B)">M</div><div class="bank-name">Meezan Bank<small>Islamic Banking</small></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account Title</span><div class="bank-field-row"><span class="bank-val">East & West Travel Services</span><button class="copy-btn" onclick="copyVal(this,'East & West Travel Services')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account No</span><div class="bank-field-row"><span class="bank-val">0401 0101810050</span><button class="copy-btn" onclick="copyVal(this,'04010101810050')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">IBAN</span><div class="bank-field-row"><span class="bank-val">PK30MEZN0004010101810050</span><button class="copy-btn" onclick="copyVal(this,'PK30MEZN0004010101810050')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Branch</span><span class="bank-val">Meezan Bank Branch</span></div>
+          </div>
+          <div class="bank-card">
+            <div class="bank-head"><div class="bank-icon" style="background:linear-gradient(135deg,#0066CC,#0088FF)">A</div><div class="bank-name">Bank Alfalah<small>Conventional</small></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account Title</span><div class="bank-field-row"><span class="bank-val">East & West Travel Services</span><button class="copy-btn" onclick="copyVal(this,'East & West Travel Services')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account No</span><div class="bank-field-row"><span class="bank-val">0106 001004974807</span><button class="copy-btn" onclick="copyVal(this,'0106001004974807')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">IBAN</span><div class="bank-field-row"><span class="bank-val">PK95ALFH0106001004974807</span><button class="copy-btn" onclick="copyVal(this,'PK95ALFH0106001004974807')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Branch</span><span class="bank-val">Bank Alfalah Branch</span></div>
+          </div>
+          <div class="bank-card">
+            <div class="bank-head"><div class="bank-icon" style="background:linear-gradient(135deg,#1a237e,#283593)">H</div><div class="bank-name">Habib Bank (HBL)<small>Conventional</small></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account Title</span><div class="bank-field-row"><span class="bank-val">East & West Travel Services</span><button class="copy-btn" onclick="copyVal(this,'East & West Travel Services')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account No</span><div class="bank-field-row"><span class="bank-val">0611 7900354703</span><button class="copy-btn" onclick="copyVal(this,'06117900354703')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">IBAN</span><div class="bank-field-row"><span class="bank-val">PK75HABB0006117900354703</span><button class="copy-btn" onclick="copyVal(this,'PK75HABB0006117900354703')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Branch</span><span class="bank-val">HBL Branch</span></div>
+          </div>
+          <div class="bank-card">
+            <div class="bank-head"><div class="bank-icon" style="background:linear-gradient(135deg,#b71c1c,#c62828)">U</div><div class="bank-name">United Bank (UBL)<small>Conventional</small></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account Title</span><div class="bank-field-row"><span class="bank-val">East & West Travel Services</span><button class="copy-btn" onclick="copyVal(this,'East & West Travel Services')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Account No</span><div class="bank-field-row"><span class="bank-val">1487 4003806673</span><button class="copy-btn" onclick="copyVal(this,'14874003806673')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">IBAN</span><div class="bank-field-row"><span class="bank-val">PK81UNIL011487003806673</span><button class="copy-btn" onclick="copyVal(this,'PK81UNIL011487003806673')"><i class="fa fa-copy"></i> Copy</button></div></div>
+            <div class="bank-field"><span class="bank-field-lbl">Branch</span><span class="bank-val">UBL Branch</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="next-steps">
+        <h4>What Happens <em>Next?</em></h4>
+        <ul class="step-list">
+          <li><div class="step-circle">1</div><span>Transfer <strong>50% advance payment</strong> to any account above.</span></li>
+          <li><div class="step-circle">2</div><span>Send payment screenshot on WhatsApp <strong>0313-6515349</strong> with your booking ref.</span></li>
+          <li><div class="step-circle">3</div><span>We confirm your booking within <strong>24 hours</strong> and send all details.</span></li>
+          <li><div class="step-circle">4</div><span>Pay the remaining balance <strong>15 days before departure</strong>.</span></li>
+        </ul>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
+          <a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+just+submitted+a+booking+request." class="btn-gold" target="_blank"><i class="fab fa-whatsapp"></i> Send Payment Proof</a>
+          <a href="index.html" class="btn-ghost">Back to Home</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<a href="https://wa.me/923136515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+<script src="script.js"></script>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { SUPABASE_URL, SUPABASE_ANON } from './supabase-config.js';
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ── PACKAGES DATA ──
+const PACKAGES = {
+  umrah: [
+    { nights: '7 Nights / 8 Days',  label: '7 Night Economy Umrah',   price: 'Rs. 85,000',  img: 'makarem_7.jpg', type:'Umrah' },
+    { nights: '14 Nights / 15 Days', label: '14 Night Umrah Package',  price: 'Rs. 1,50,000', img: 'makarem_3.jpeg', type:'Umrah' },
+  ],
+  dubai: [
+    { nights: '5 Nights / 6 Days',  label: 'Dubai Premium Tour',       price: 'Rs. 1,20,000', img: 'pullman_2.jpg',  type:'Holiday' },
+  ],
+  thailand: [
+    { nights: '7 Nights / 8 Days',  label: 'Thailand Adventure',       price: 'Rs. 95,000',  img: 'pullman_3.jpeg', type:'Holiday' },
+  ],
+  bali: [
+    { nights: '6 Nights / 7 Days',  label: 'Bali Honeymoon Package',   price: 'Rs. 1,80,000', img: 'makarem_5.jpeg', type:'Holiday' },
+  ],
+  family: [
+    { nights: '7 Nights / 8 Days',  label: 'Family Holiday Package',   price: 'Rs. 3,20,000', img: 'makarem_6.jpeg', type:'Family' },
+  ],
+};
+
+const DEST_LABELS = { umrah:'Umrah / Makkah & Madinah', dubai:'Dubai, UAE', thailand:'Thailand / Bangkok', bali:'Bali, Indonesia', family:'Family Package' };
+
+// ── PAX STATE ──
+let pax = { adults: 1, children: 0, infants: 0 };
+
+window.changePax = (type, delta) => {
+  if (type === 'adults') pax.adults = Math.max(1, pax.adults + delta);
+  else if (type === 'children') pax.children = Math.max(0, pax.children + delta);
+  else pax.infants = Math.max(0, pax.infants + delta);
+  document.getElementById('pax-adults-val').textContent   = pax.adults;
+  document.getElementById('pax-children-val').textContent = pax.children;
+  document.getElementById('pax-infants-val').textContent  = pax.infants;
+  updateSummary();
+};
+
+// ── UPDATE PACKAGES BY DESTINATION ──
+window.updatePackagesByDest = () => {
+  const dest = document.getElementById('destination').value;
+  const durSel = document.getElementById('duration');
+  const pkgSel = document.getElementById('packageSelect');
+  durSel.innerHTML = '<option value="">— Select Duration —</option>';
+  pkgSel.innerHTML = '<option value="">— Select Package —</option>';
+  if (!dest || !PACKAGES[dest]) return;
+  const pkgs = PACKAGES[dest];
+  const nights = [...new Set(pkgs.map(p => p.nights))];
+  nights.forEach(n => {
+    const opt = document.createElement('option');
+    opt.value = n; opt.textContent = n;
+    durSel.appendChild(opt);
+  });
+  if (nights.length === 1) { durSel.value = nights[0]; updatePackageByDuration(); }
+  updateSummary();
+};
+
+window.updatePackageByDuration = () => {
+  const dest = document.getElementById('destination').value;
+  const dur  = document.getElementById('duration').value;
+  const pkgSel = document.getElementById('packageSelect');
+  pkgSel.innerHTML = '<option value="">— Select Package —</option>';
+  if (!dest || !dur) return;
+  const filtered = PACKAGES[dest].filter(p => p.nights === dur);
+  filtered.forEach((p, i) => {
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = `${p.label} — ${p.price}`;
+    pkgSel.appendChild(opt);
+  });
+  if (filtered.length === 1) { pkgSel.value = 0; }
+  updateSummary();
+};
+
+function getSelectedPkg() {
+  const dest = document.getElementById('destination').value;
+  const dur  = document.getElementById('duration').value;
+  const idx  = document.getElementById('packageSelect').value;
+  if (!dest || dur === '' || idx === '') return null;
+  const filtered = PACKAGES[dest].filter(p => p.nights === dur);
+  return filtered[parseInt(idx)] || null;
+}
+
+function updateSummary() {
+  const pkg  = getSelectedPkg();
+  const date = document.getElementById('travelDate').value;
+  document.getElementById('sumPackage').textContent  = pkg ? pkg.label : '—';
+  document.getElementById('sumDest').textContent     = DEST_LABELS[document.getElementById('destination').value] || '—';
+  document.getElementById('sumDur').textContent      = document.getElementById('duration').value || '—';
+  document.getElementById('sumDate').textContent     = date ? new Date(date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  document.getElementById('sumAdults').textContent   = pax.adults;
+  document.getElementById('sumChildren').textContent = pax.children;
+  document.getElementById('sumInfants').textContent  = pax.infants;
+  document.getElementById('sumRoom').textContent     = document.getElementById('roomType').value;
+  document.getElementById('sumPrice').textContent    = pkg ? pkg.price : '—';
+  if (pkg?.img) { const img = document.getElementById('summaryImg'); img.src = pkg.img; img.style.display='block'; }
+  document.addEventListener('change', updateSummary);
+}
+
+// ── STEP 1 → STEP 2 ──
+window.goToStep2 = () => {
+  const dest = document.getElementById('destination').value;
+  const dur  = document.getElementById('duration').value;
+  const pkg  = document.getElementById('packageSelect').value;
+  const date = document.getElementById('travelDate').value;
+  if (!dest) { alert('Please select a destination.'); return; }
+  if (!dur)  { alert('Please select duration.'); return; }
+  if (pkg === '') { alert('Please select a package.'); return; }
+  if (!date) { alert('Please select a travel date.'); return; }
+
+  // Date must be in future
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (new Date(date) <= today) { alert('Travel date must be a future date.'); return; }
+
+  // Build traveler cards
+  buildTravelerCards();
+
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+  document.getElementById('step1-tab').classList.remove('active');
+  document.getElementById('step1-tab').classList.add('done');
+  document.getElementById('step2-tab').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Pre-fill contact if logged in
+  const user = JSON.parse(sessionStorage.getItem('ew_user') || 'null');
+  if (user) {
+    document.getElementById('contactEmail').value = user.email || '';
+    document.getElementById('contactPhone').value = user.phone || '';
+    document.getElementById('contactName').value  = user.name  || '';
+    document.getElementById('contactEmail').closest('.form-group').style.display = 'none'; // already known
+    document.getElementById('authBanner').style.display = 'none';
+  }
+};
+
+window.goToStep1 = () => {
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step2-tab').classList.remove('active');
+  document.getElementById('step1-tab').classList.remove('done');
+  document.getElementById('step1-tab').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// ── BUILD TRAVELER CARDS ──
+function buildTravelerCards() {
+  const container = document.getElementById('travelerCards');
+  container.innerHTML = '';
+  const today = new Date();
+  const minPassportExpiry = new Date(today.getFullYear(), today.getMonth() + 6, today.getDate()).toISOString().split('T')[0];
+  const maxDob = today.toISOString().split('T')[0];
+
+  const types = [
+    ...Array(pax.adults).fill('adult'),
+    ...Array(pax.children).fill('child'),
+    ...Array(pax.infants).fill('infant'),
+  ];
+
+  types.forEach((type, i) => {
+    const label  = type === 'adult' ? 'Adult' : type === 'child' ? 'Child' : 'Infant';
+    const badgeCls = type === 'adult' ? '' : type === 'child' ? 'child' : 'infant';
+    const num    = types.slice(0,i).filter(t=>t===type).length + 1;
+    const card   = document.createElement('div');
+    card.className = 'traveler-card';
+    card.innerHTML = `
+      <div class="traveler-card-header">
+        <span class="traveler-badge ${badgeCls}">${label} ${num}</span>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group col-full">
+          <label>Full Name (as on Passport) <span class="req">*</span></label>
+          <input type="text" data-field="name" data-idx="${i}" placeholder="First Middle Last" oninput="validateTraveler(${i})">
+          <span class="field-error" id="err-name-${i}">Full name is required</span>
+        </div>
+        <div class="form-group">
+          <label>Nationality <span class="req">*</span></label>
+          <input type="text" data-field="nationality" data-idx="${i}" placeholder="e.g. Pakistani" value="Pakistani">
+        </div>
+        <div class="form-group">
+          <label>Passport Number <span class="req">*</span></label>
+          <input type="text" data-field="passport_no" data-idx="${i}" placeholder="e.g. AA1234567" oninput="this.value=this.value.toUpperCase()">
+          <span class="field-error" id="err-passport-${i}">Passport number required</span>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" data-field="dob" data-idx="${i}" max="${maxDob}" oninput="validateDob(this, ${i})">
+          <span class="field-error" id="err-dob-${i}">Date of birth must be before today</span>
+        </div>
+        <div class="form-group">
+          <label>Passport Expiry Date <span class="req">*</span></label>
+          <input type="date" data-field="passport_expiry" data-idx="${i}" min="${minPassportExpiry}" oninput="validateExpiry(this, ${i})">
+          <span class="field-error" id="err-expiry-${i}">Passport must be valid for at least 6 months</span>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+window.validateDob = (inp, i) => {
+  const today = new Date(); today.setHours(23,59,59);
+  const dob   = new Date(inp.value);
+  const err   = document.getElementById(`err-dob-${i}`);
+  if (dob >= today) { inp.classList.add('error'); err.classList.add('show'); }
+  else { inp.classList.remove('error'); err.classList.remove('show'); }
+};
+
+window.validateExpiry = (inp, i) => {
+  const today    = new Date();
+  const min6m    = new Date(today.getFullYear(), today.getMonth()+6, today.getDate());
+  const expiry   = new Date(inp.value);
+  const err      = document.getElementById(`err-expiry-${i}`);
+  if (expiry < min6m) { inp.classList.add('error'); err.classList.add('show'); }
+  else { inp.classList.remove('error'); err.classList.remove('show'); }
+};
+
+window.validateTraveler = (i) => {
+  const inp = document.querySelector(`[data-field="name"][data-idx="${i}"]`);
+  const err = document.getElementById(`err-name-${i}`);
+  if (!inp.value.trim()) { inp.classList.add('error'); err.classList.add('show'); }
+  else { inp.classList.remove('error'); err.classList.remove('show'); }
+};
+
+// ── COLLECT TRAVELER DATA ──
+function collectTravelers() {
+  const types = [
+    ...Array(pax.adults).fill('adult'),
+    ...Array(pax.children).fill('child'),
+    ...Array(pax.infants).fill('infant'),
+  ];
+  const travelers = [];
+  let valid = true;
+  types.forEach((type, i) => {
+    const get = field => document.querySelector(`[data-field="${field}"][data-idx="${i}"]`)?.value?.trim() || '';
+    const name     = get('name');
+    const nat      = get('nationality');
+    const passport = get('passport_no');
+    const dob      = get('dob');
+    const expiry   = get('passport_expiry');
+    if (!name) { document.querySelector(`[data-field="name"][data-idx="${i}"]`).classList.add('error'); document.getElementById(`err-name-${i}`).classList.add('show'); valid = false; }
+    if (!passport) { document.querySelector(`[data-field="passport_no"][data-idx="${i}"]`).classList.add('error'); document.getElementById(`err-passport-${i}`).classList.add('show'); valid = false; }
+    if (!dob) { document.querySelector(`[data-field="dob"][data-idx="${i}"]`).classList.add('error'); document.getElementById(`err-dob-${i}`).classList.add('show'); valid = false; }
+    if (!expiry) { document.querySelector(`[data-field="passport_expiry"][data-idx="${i}"]`).classList.add('error'); document.getElementById(`err-expiry-${i}`).classList.add('show'); valid = false; }
+    travelers.push({ type, name, nationality:nat, passport_no:passport, dob, passport_expiry:expiry });
+  });
+  return { travelers, valid };
+}
+
+// ── SUBMIT BOOKING ──
+window.submitBooking = async () => {
+  // Validate contacts
+  const cName  = document.getElementById('contactName').value.trim();
+  const cPhone = document.getElementById('contactPhone').value.trim();
+  const cEmail = document.getElementById('contactEmail').value.trim();
+  if (!cName)  { alert('Please enter contact name.'); return; }
+  if (!cPhone) { alert('Please enter WhatsApp/phone number.'); return; }
+  if (!cEmail || !/\S+@\S+\.\S+/.test(cEmail)) { alert('Please enter a valid email address.'); return; }
+  if (!document.getElementById('termsCheck').checked) { alert('Please accept the terms & conditions.'); return; }
+
+  const { travelers, valid } = collectTravelers();
+  if (!valid) { alert('Please fill all traveler details correctly.'); return; }
+
+  const pkg = getSelectedPkg();
+  const ref = 'EW-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const dest = document.getElementById('destination').value;
+
+  const booking = {
+    booking_ref:      ref,
+    customer_name:    cName,
+    customer_email:   cEmail,
+    customer_phone:   cPhone,
+    is_guest:         !sessionStorage.getItem('ew_user'),
+    tour_name:        pkg?.label || '',
+    tour_type:        pkg?.type  || '',
+    duration:         document.getElementById('duration').value,
+    price:            pkg?.price || '',
+    travel_date:      document.getElementById('travelDate').value,
+    pax_adults:       pax.adults,
+    pax_children:     pax.children,
+    pax_infants:      pax.infants,
+    room_type:        document.getElementById('roomType').value,
+    travelers:        travelers,
+    special_requests: document.getElementById('specialReq').value,
+    contact_pref:     document.getElementById('contactPref').value,
+    meal_pref:        document.getElementById('mealPref').value,
+    status:           'new',
+  };
+
+  // Loading
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('submitSpinner').style.display = 'inline-block';
+  document.getElementById('submitIcon').style.display    = 'none';
+  document.getElementById('submitTxt').textContent       = ' Submitting...';
+
+  try {
+    // Save to Supabase
+    const { error } = await sb.from('bookings').insert([booking]);
+    if (error) console.error('Supabase error:', error);
+
+    // Save/upsert customer
+    await sb.from('customers').upsert([{ email: cEmail, phone: cPhone, full_name: cName }], { onConflict: 'email', ignoreDuplicates: false });
+
+    // Send email via EmailJS (if configured)
+    if (window.emailjs && window.EJS_SVC !== 'YOUR_SERVICE_ID') {
+      window.emailjs.init(window.EJS_KEY);
+      await window.emailjs.send(window.EJS_SVC, window.EJS_TPL, {
+        to_email:    cEmail,
+        to_name:     cName,
+        booking_ref: ref,
+        tour_name:   booking.tour_name,
+        travel_date: booking.travel_date,
+        pax:         `${pax.adults} Adult(s), ${pax.children} Child(ren), ${pax.infants} Infant(s)`,
+        phone:       cPhone,
+      });
+    }
+
+  } catch(e) {
+    console.error(e);
+  }
+
+  // Show success
+  document.getElementById('refBadge').textContent = `Booking Ref: ${ref}`;
+  document.getElementById('successEmail').textContent = cEmail;
+  document.getElementById('bookingFlow').style.display  = 'none';
+  document.getElementById('bookingSuccess').style.display = 'block';
+  document.getElementById('step2-tab').classList.remove('active');
+  document.getElementById('step2-tab').classList.add('done');
+  document.getElementById('step3-tab').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// ── COPY BUTTON ──
+window.copyVal = (btn, text) => {
+  navigator.clipboard.writeText(text).catch(() => {
+    const t = document.createElement('textarea'); t.value = text;
+    document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t);
+  });
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="fa fa-check"></i> Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+};
+
+// ── INIT ──
+document.querySelectorAll('[data-field="travel_date"], #destination, #duration, #packageSelect, #roomType').forEach(el => el.addEventListener('change', updateSummary));
+updateSummary();
+
+// Pre-fill from URL params
+const p = new URLSearchParams(window.location.search);
+if (p.get('dest')) { document.getElementById('destination').value = p.get('dest'); updatePackagesByDest(); }
+</script>
+<!-- EmailJS (optional, for confirmation emails) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // EmailJS keys (optional — set these after creating EmailJS account)
+  window.EJS_SVC = 'YOUR_SERVICE_ID';
+  window.EJS_TPL = 'YOUR_TEMPLATE_ID';
+  window.EJS_KEY = 'YOUR_PUBLIC_KEY';
+</script>
+</body>
+</html>
