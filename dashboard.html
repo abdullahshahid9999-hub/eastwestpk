@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — East & West Travel Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--navy:#0A1628;--navy-mid:#0F2040;--navy-light:#162847;--teal:#0EA5E9;--teal-dark:#0284C7;--teal-glow:rgba(14,165,233,0.15);--gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--border-gold:rgba(201,168,76,0.3);--white:#fff;--text:#E8EDF2;--text-dim:#8899AA;--border:rgba(255,255,255,0.08);--green:#10B981;--red:#EF4444;--radius:12px}
+    body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif}
+    em{color:var(--gold);font-style:italic}
+    a{text-decoration:none;color:inherit}
+    input,select,textarea,button{font-family:'DM Sans',sans-serif}
+
+    /* SIDEBAR */
+    .sb{width:240px;background:#060E1A;border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
+    .sb-brand{padding:24px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .sb-brand img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
+    .sb-brand-txt{font-family:'Playfair Display',serif;font-size:17px;color:var(--white)}
+    .sb-brand-txt span{color:var(--teal)}
+    .sb-section-lbl{padding:20px 20px 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+    .sb-nav{padding:0 12px;flex:1}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--text-dim);transition:all 0.2s;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left}
+    .sb-item:hover{background:rgba(255,255,255,0.05);color:var(--white)}
+    .sb-item.active{background:var(--teal-glow);color:var(--teal);border:1px solid rgba(14,165,233,0.2)}
+    .sb-item i{width:16px;text-align:center;font-size:13px}
+    .sb-badge{margin-left:auto;background:var(--red);color:white;padding:2px 7px;border-radius:50px;font-size:10px;font-weight:700}
+    .sb-footer{padding:16px;border-top:1px solid var(--border)}
+    .sb-logout{width:100%;background:none;border:1px solid rgba(239,68,68,0.25);color:rgba(239,68,68,0.7);padding:9px;border-radius:9px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.2s}
+    .sb-logout:hover{border-color:var(--red);color:var(--red)}
+
+    /* MAIN */
+    .main{margin-left:240px;flex:1;padding:36px;min-height:100vh;overflow-x:auto}
+    .page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px}
+    .page-hdr h2{font-size:30px;color:var(--white)}
+    .page-hdr p{font-size:13px;color:var(--text-dim);margin-top:3px}
+
+    /* STAT CARDS */
+    .stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:32px}
+    .stat{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color 0.3s}
+    .stat:hover{border-color:var(--border-gold)}
+    .stat-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:14px}
+    .stat-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--white);line-height:1}
+    .stat-lbl{font-size:12px;color:var(--text-dim);margin-top:5px}
+
+    /* SECTION CARD */
+    .section-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .sc-hdr{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .sc-hdr h3{font-size:18px;color:var(--white)}
+    .sc-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .sc-search{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--white);outline:none;width:220px;transition:border-color 0.3s}
+    .sc-search:focus{border-color:var(--teal)}
+    .sc-search::placeholder{color:var(--text-dim)}
+    .sc-filter{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--white);outline:none;cursor:pointer}
+    option{background:#0F2040}
+
+    /* TABLE */
+    .tbl-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse}
+    thead th{padding:12px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);text-align:left;background:var(--navy-mid);white-space:nowrap}
+    tbody tr{border-bottom:1px solid var(--border);transition:background 0.2s}
+    tbody tr:hover{background:rgba(255,255,255,0.02)}
+    tbody td{padding:13px 16px;font-size:13.5px;color:var(--text-dim);vertical-align:middle}
+    tbody td strong{color:var(--white)}
+    .empty-row td{text-align:center;padding:48px;color:var(--text-dim)}
+
+    /* STATUS BADGES */
+    .pill{padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+    .pill-new{background:rgba(14,165,233,0.12);color:var(--teal);border:1px solid rgba(14,165,233,0.25)}
+    .pill-pending{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border-gold)}
+    .pill-confirmed{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
+    .pill-cancelled{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
+    .pill-published{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
+    .pill-draft{background:rgba(255,255,255,0.06);color:var(--text-dim);border:1px solid var(--border)}
+    .pill-verified{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
+    .pill-unverified{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
+
+    /* ACTION BTNS */
+    .act-btn{background:none;border:1px solid var(--border);color:var(--text-dim);padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif}
+    .act-btn:hover{border-color:var(--teal);color:var(--teal)}
+    .act-btn.del:hover{border-color:var(--red);color:var(--red)}
+    .act-btn.verify:hover{border-color:var(--green);color:var(--green)}
+
+    /* SELECT STATUS */
+    .status-sel{background:var(--navy-mid);border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-size:12px;color:var(--white);cursor:pointer;outline:none;transition:border-color 0.2s}
+    .status-sel:focus{border-color:var(--teal)}
+
+    /* BUTTONS */
+    .btn-teal{background:var(--teal);color:white;border:none;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all 0.25s}
+    .btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+    .btn-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all 0.2s}
+    .btn-ghost:hover{border-color:var(--white);color:var(--white)}
+    .btn-gold{background:linear-gradient(135deg,var(--gold),#E8C97A);color:var(--navy);border:none;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all 0.25s}
+    .btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,168,76,0.25)}
+
+    /* MODAL */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .modal-bg.open{display:flex}
+    .modal{background:var(--navy-light);border:1px solid var(--border);border-radius:20px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
+    .m-hdr{padding:20px 26px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--navy-light);z-index:2}
+    .m-hdr h3{font-size:20px;color:var(--white)}
+    .m-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:all 0.2s}
+    .m-close:hover{background:rgba(255,255,255,0.07);color:var(--white)}
+    .m-body{padding:24px 26px}
+
+    /* FORM IN MODAL */
+    .fm-group{margin-bottom:16px}
+    .fm-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:7px}
+    .fm-group input,.fm-group select,.fm-group textarea{width:100%;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:9px;padding:11px 13px;font-size:14px;color:var(--white);outline:none;transition:all 0.3s}
+    .fm-group input:focus,.fm-group select:focus,.fm-group textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
+    .fm-group input::placeholder,.fm-group textarea::placeholder{color:var(--text-dim);opacity:0.6}
+    .fm-group textarea{resize:vertical;min-height:200px}
+    .fm-group select option{background:#0F2040}
+    .fm-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+    /* TRAVELER DETAIL TABLE */
+    .traveler-mini{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
+    .traveler-mini th{padding:8px 12px;background:var(--navy-mid);color:var(--text-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:700;text-align:left}
+    .traveler-mini td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text-dim)}
+    .traveler-mini td strong{color:var(--white)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:28px;right:28px;background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:13.5px;color:var(--white);box-shadow:0 8px 28px rgba(0,0,0,0.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.35s;display:flex;align-items:center;gap:10px;max-width:320px}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast-suc{border-color:rgba(16,185,129,0.3)}
+    .toast-suc i{color:#10B981}
+    .toast-err{border-color:rgba(239,68,68,0.3)}
+    .toast-err i{color:var(--red)}
+
+    /* HIDDEN PAGES */
+    .page{display:none}
+    .page.active{display:block}
+
+    /* RICH TEXT HINT */
+    .rich-hint{font-size:11px;color:var(--text-dim);margin-top:6px}
+    .rich-hint code{background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:4px;font-size:11px}
+
+    @media(max-width:1100px){.stats-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:768px){.sb{display:none}.main{margin-left:0;padding:20px}.stats-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-brand">
+    <img src="../logo.jpg" alt="Logo" onerror="this.style.display='none'">
+    <div class="sb-brand-txt">East & <span>West</span></div>
+  </div>
+  <div style="padding:16px 20px 8px;font-size:12px;color:var(--text-dim);border-bottom:1px solid var(--border)">
+    <i class="fa fa-shield-alt" style="color:var(--teal)"></i> <span id="adminEmailDisplay">Admin</span>
+  </div>
+  <div class="sb-nav" style="padding-top:12px">
+    <div class="sb-section-lbl">Main</div>
+    <button class="sb-item active" onclick="showPage('dashboard')"><i class="fa fa-chart-line"></i> Dashboard</button>
+    <button class="sb-item" onclick="showPage('bookings')"><i class="fa fa-calendar-check"></i> Bookings <span class="sb-badge" id="newBadge" style="display:none">0</span></button>
+    <button class="sb-item" onclick="showPage('customers')"><i class="fa fa-users"></i> Customers</button>
+    <div class="sb-section-lbl">Content</div>
+    <button class="sb-item" onclick="showPage('blogs')"><i class="fa fa-blog"></i> Blog Posts</button>
+    <div class="sb-section-lbl">System</div>
+    <button class="sb-item" onclick="showPage('settings')"><i class="fa fa-cog"></i> Settings</button>
+    <a class="sb-item" href="../index.html" target="_blank"><i class="fa fa-external-link-alt"></i> View Website</a>
+  </div>
+  <div class="sb-footer">
+    <button class="sb-logout" onclick="doLogout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- DASHBOARD PAGE -->
+  <div class="page active" id="pg-dashboard">
+    <div class="page-hdr">
+      <div><h2>Dashboard <em>Overview</em></h2><p id="dashDate">Loading...</p></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-ico" style="background:var(--teal-glow)"><i class="fa fa-calendar-check" style="color:var(--teal)"></i></div><div class="stat-num" id="ds-total">—</div><div class="stat-lbl">Total Bookings</div></div>
+      <div class="stat"><div class="stat-ico" style="background:rgba(14,165,233,0.1)"><i class="fa fa-star" style="color:var(--teal)"></i></div><div class="stat-num" id="ds-new">—</div><div class="stat-lbl">New Bookings</div></div>
+      <div class="stat"><div class="stat-ico" style="background:rgba(16,185,129,0.1)"><i class="fa fa-check-circle" style="color:#10B981"></i></div><div class="stat-num" id="ds-confirmed">—</div><div class="stat-lbl">Confirmed</div></div>
+      <div class="stat"><div class="stat-ico" style="background:var(--gold-dim)"><i class="fa fa-users" style="color:var(--gold)"></i></div><div class="stat-num" id="ds-customers">—</div><div class="stat-lbl">Customers</div></div>
+      <div class="stat"><div class="stat-ico" style="background:rgba(201,168,76,0.08)"><i class="fa fa-blog" style="color:var(--gold)"></i></div><div class="stat-num" id="ds-blogs">—</div><div class="stat-lbl">Blog Posts</div></div>
+    </div>
+    <div class="section-card">
+      <div class="sc-hdr"><h3>Recent <em>Bookings</em></h3><button class="btn-teal" onclick="showPage('bookings')"><i class="fa fa-arrow-right"></i> All Bookings</button></div>
+      <div class="tbl-wrap"><table><thead><tr><th>Ref</th><th>Name</th><th>Tour</th><th>Travel Date</th><th>PAX</th><th>Status</th><th>Actions</th></tr></thead><tbody id="dash-bk-tbody"><tr class="empty-row"><td colspan="7"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- BOOKINGS PAGE -->
+  <div class="page" id="pg-bookings">
+    <div class="page-hdr">
+      <div><h2>All <em>Bookings</em></h2><p>Manage and update booking statuses</p></div>
+    </div>
+    <div class="section-card">
+      <div class="sc-hdr">
+        <h3>Bookings List</h3>
+        <div class="sc-toolbar">
+          <input class="sc-search" type="text" placeholder="Search name, ref, email..." oninput="filterBookings(this.value)" id="bkSearch">
+          <select class="sc-filter" onchange="filterBookingStatus(this.value)">
+            <option value="">All Status</option>
+            <option value="new">New</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Ref</th><th>Customer</th><th>Tour</th><th>Date</th><th>PAX</th><th>Room</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="bk-tbody"><tr class="empty-row"><td colspan="8"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- CUSTOMERS PAGE -->
+  <div class="page" id="pg-customers">
+    <div class="page-hdr">
+      <div><h2>All <em>Customers</em></h2><p>Manage customer verification status</p></div>
+    </div>
+    <div class="section-card">
+      <div class="sc-hdr">
+        <h3>Customer List</h3>
+        <input class="sc-search" type="text" placeholder="Search name, email, phone..." oninput="filterCustomers(this.value)" id="custSearch">
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="cust-tbody"><tr class="empty-row"><td colspan="6"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- BLOGS PAGE -->
+  <div class="page" id="pg-blogs">
+    <div class="page-hdr">
+      <div><h2>Blog <em>Posts</em></h2><p>Create and manage travel blog content</p></div>
+      <button class="btn-gold" onclick="openBlogModal()"><i class="fa fa-plus"></i> New Post</button>
+    </div>
+    <div class="section-card">
+      <div class="sc-hdr"><h3>All Posts</h3></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+        <tbody id="blog-tbody"><tr class="empty-row"><td colspan="5"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div class="page" id="pg-settings">
+    <div class="page-hdr"><div><h2>Admin <em>Settings</em></h2><p>Update your admin password</p></div></div>
+    <div class="section-card" style="max-width:480px">
+      <div class="sc-hdr"><h3>Change Password</h3></div>
+      <div style="padding:28px">
+        <div class="fm-group"><label>Current Password</label><input type="password" id="curPwd" placeholder="••••••••"></div>
+        <div class="fm-group"><label>New Password</label><input type="password" id="newPwd" placeholder="Min 8 characters"></div>
+        <div class="fm-group"><label>Confirm New Password</label><input type="password" id="conPwd" placeholder="Repeat new password"></div>
+        <button class="btn-teal" onclick="changePassword()"><i class="fa fa-lock"></i> Update Password</button>
+        <div id="pwdMsg" style="margin-top:14px;font-size:13px;display:none"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- BOOKING DETAIL MODAL -->
+<div class="modal-bg" id="bkModal">
+  <div class="modal">
+    <div class="m-hdr"><h3>Booking <em>Details</em></h3><button class="m-close" onclick="closeModal('bkModal')"><i class="fa fa-times"></i></button></div>
+    <div class="m-body" id="bkModalBody"></div>
+  </div>
+</div>
+
+<!-- BLOG EDITOR MODAL -->
+<div class="modal-bg" id="blogModal">
+  <div class="modal" style="max-width:720px">
+    <div class="m-hdr"><h3 id="blogModalTitle">New <em>Blog Post</em></h3><button class="m-close" onclick="closeModal('blogModal')"><i class="fa fa-times"></i></button></div>
+    <div class="m-body">
+      <input type="hidden" id="blogId">
+      <div class="fm-row">
+        <div class="fm-group"><label>Title *</label><input type="text" id="blogTitle" placeholder="Post title..."></div>
+        <div class="fm-group"><label>Category</label>
+          <select id="blogCat">
+            <option>Travel Tips</option><option>Umrah Guide</option><option>Destinations</option>
+            <option>Dubai</option><option>Thailand</option><option>Bali</option><option>Visa Info</option><option>News</option>
+          </select>
+        </div>
+      </div>
+      <div class="fm-group"><label>Excerpt / Short Description</label><input type="text" id="blogExcerpt" placeholder="1-2 line summary shown on blog listing..."></div>
+      <div class="fm-group"><label>Cover Image URL</label><input type="text" id="blogImg" placeholder="https://... or leave blank"></div>
+      <div class="fm-group">
+        <label>Content (HTML supported)</label>
+        <textarea id="blogContent" placeholder="Write your blog content here. You can use basic HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt; etc."></textarea>
+        <div class="rich-hint">Tip: Use <code>&lt;h2&gt;</code> for headings, <code>&lt;p&gt;</code> for paragraphs, <code>&lt;strong&gt;</code> for bold text.</div>
+      </div>
+      <div class="fm-group">
+        <label>Status</label>
+        <select id="blogStatus"><option value="false">Draft (not visible)</option><option value="true">Published (live)</option></select>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button class="btn-teal" onclick="saveBlog()"><i class="fa fa-save"></i> Save Post</button>
+        <button class="btn-ghost" onclick="closeModal('blogModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa fa-check-circle" id="toastIco"></i><span id="toastTxt"></span></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Auth guard
+const admin = JSON.parse(sessionStorage.getItem('ew_admin')||'null');
+if (!admin) { window.location.href = 'index.html'; }
+// Session timeout: 8 hours
+if (admin && Date.now() - admin.time > 8*60*60*1000) { sessionStorage.removeItem('ew_admin'); window.location.href = 'index.html'; }
+document.getElementById('adminEmailDisplay').textContent = admin?.email || 'Admin';
+document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+
+// ── CACHE ──
+let allBookings = [], allCustomers = [], allBlogs = [];
+
+// ── LOAD ALL ──
+async function loadAll() {
+  const [bkRes, custRes, blogRes] = await Promise.all([
+    sb.from('bookings').select('*').order('created_at',{ascending:false}),
+    sb.from('customers').select('*').order('created_at',{ascending:false}),
+    sb.from('blogs').select('*').order('created_at',{ascending:false}),
+  ]);
+  allBookings  = bkRes.data   || [];
+  allCustomers = custRes.data || [];
+  allBlogs     = blogRes.data || [];
+  renderDashboard();
+  renderBookings(allBookings);
+  renderCustomers(allCustomers);
+  renderBlogs(allBlogs);
+}
+loadAll();
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const newCount = allBookings.filter(b=>b.status==='new').length;
+  document.getElementById('ds-total').textContent     = allBookings.length;
+  document.getElementById('ds-new').textContent       = newCount;
+  document.getElementById('ds-confirmed').textContent = allBookings.filter(b=>b.status==='confirmed').length;
+  document.getElementById('ds-customers').textContent = allCustomers.length;
+  document.getElementById('ds-blogs').textContent     = allBlogs.length;
+  if (newCount > 0) { const b=document.getElementById('newBadge'); b.textContent=newCount; b.style.display='inline'; }
+  // Recent 5
+  renderBookingsTable(allBookings.slice(0,5), 'dash-bk-tbody', true);
+}
+
+// ── BOOKINGS ──
+function renderBookings(data) { renderBookingsTable(data, 'bk-tbody', false); }
+function renderBookingsTable(data, tbodyId, mini) {
+  const tb = document.getElementById(tbodyId);
+  if (!data.length) { tb.innerHTML=`<tr class="empty-row"><td colspan="8">No bookings found</td></tr>`; return; }
+  tb.innerHTML = data.map(b => `
+    <tr>
+      <td><code style="font-size:12px;color:var(--teal)">${b.booking_ref||b.id?.slice(0,8)}</code></td>
+      <td><strong>${b.customer_name||'—'}</strong><br><span style="font-size:11px">${b.customer_email||''}</span></td>
+      <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><strong>${b.tour_name||'—'}</strong></td>
+      <td>${b.travel_date? new Date(b.travel_date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+      <td>${b.pax_adults||1}A ${b.pax_children>0?(b.pax_children+'C'):''} ${b.pax_infants>0?(b.pax_infants+'I'):''}</td>
+      ${!mini?`<td>${b.room_type||'—'}</td>`:''}
+      <td>
+        ${!mini
+          ? `<select class="status-sel" onchange="updateStatus('${b.id}',this.value)">
+              <option value="new"       ${b.status==='new'       ?'selected':''}>New</option>
+              <option value="pending"   ${b.status==='pending'   ?'selected':''}>Pending</option>
+              <option value="confirmed" ${b.status==='confirmed' ?'selected':''}>Confirmed</option>
+              <option value="cancelled" ${b.status==='cancelled' ?'selected':''}>Cancelled</option>
+             </select>`
+          : `<span class="pill pill-${b.status||'new'}">${b.status||'new'}</span>`
+        }
+      </td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="act-btn" onclick="viewBooking('${b.id}')"><i class="fa fa-eye"></i> View</button>
+        ${!mini?`<button class="act-btn del" onclick="deleteBooking('${b.id}')"><i class="fa fa-trash"></i></button>`:''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.updateStatus = async (id, status) => {
+  const { error } = await sb.from('bookings').update({ status }).eq('id', id);
+  if (!error) { allBookings = allBookings.map(b => b.id===id?{...b,status}:b); toast('Status updated!'); renderDashboard(); }
+  else toast('Error: '+error.message, true);
+};
+
+window.deleteBooking = async (id) => {
+  if (!confirm('Delete this booking permanently?')) return;
+  const { error } = await sb.from('bookings').delete().eq('id', id);
+  if (!error) { allBookings = allBookings.filter(b => b.id!==id); renderBookings(allBookings); renderDashboard(); toast('Booking deleted.'); }
+  else toast('Error: '+error.message, true);
+};
+
+window.viewBooking = (id) => {
+  const b = allBookings.find(x=>x.id===id); if (!b) return;
+  const travelers = Array.isArray(b.travelers) ? b.travelers : [];
+  document.getElementById('bkModalBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Booking Ref</div><div style="font-size:14px;font-weight:700;color:var(--teal)">${b.booking_ref}</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Status</div><span class="pill pill-${b.status||'new'}">${b.status||'new'}</span></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Tour</div><div style="font-size:13.5px;color:var(--white)">${b.tour_name}</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Travel Date</div><div style="font-size:13.5px;color:var(--white)">${b.travel_date||'—'}</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Contact Name</div><div style="font-size:13.5px;color:var(--white)">${b.customer_name}</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Phone</div><a href="https://wa.me/${b.customer_phone?.replace(/\D/g,'')}" style="color:var(--teal)">${b.customer_phone||'—'}</a></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Email</div><div style="font-size:13px;color:var(--white)">${b.customer_email||'—'}</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">PAX</div><div style="font-size:13px;color:var(--white)">${b.pax_adults||1} Adult(s), ${b.pax_children||0} Child(ren), ${b.pax_infants||0} Infant(s)</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Room Type</div><div style="font-size:13px;color:var(--white)">${b.room_type||'—'}</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">Duration</div><div style="font-size:13px;color:var(--white)">${b.duration||'—'}</div></div>
+    </div>
+    ${b.special_requests?`<div style="background:var(--navy-mid);border-radius:9px;padding:14px;margin-bottom:16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Special Requests</div><p style="font-size:13.5px;color:var(--white)">${b.special_requests}</p></div>`:''}
+    ${travelers.length?`
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:10px"><i class="fa fa-id-card"></i> Traveler Details</div>
+      <div style="overflow-x:auto">
+        <table class="traveler-mini">
+          <thead><tr><th>#</th><th>Name</th><th>Type</th><th>Nationality</th><th>Passport</th><th>DOB</th><th>Expiry</th></tr></thead>
+          <tbody>${travelers.map((t,i)=>`<tr><td>${i+1}</td><td><strong>${t.name}</strong></td><td>${t.type}</td><td>${t.nationality||'—'}</td><td>${t.passport_no||'—'}</td><td>${t.dob||'—'}</td><td>${t.passport_expiry||'—'}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    `:''}
+    <div style="margin-top:20px;display:flex;gap:10px">
+      <a href="https://wa.me/${b.customer_phone?.replace(/\D/g,'')}?text=Assalam+o+Alaikum+${encodeURIComponent(b.customer_name)}!+Your+booking+ref+${b.booking_ref}+has+been+confirmed." class="btn-teal" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Customer</a>
+    </div>
+  `;
+  openModal('bkModal');
+};
+
+window.filterBookings = (q) => {
+  q = q.toLowerCase();
+  const filtered = allBookings.filter(b =>
+    (b.customer_name||'').toLowerCase().includes(q) ||
+    (b.booking_ref||'').toLowerCase().includes(q) ||
+    (b.customer_email||'').toLowerCase().includes(q) ||
+    (b.tour_name||'').toLowerCase().includes(q)
+  );
+  renderBookings(filtered);
+};
+window.filterBookingStatus = (s) => {
+  const filtered = s ? allBookings.filter(b => b.status===s) : allBookings;
+  const q = document.getElementById('bkSearch').value;
+  renderBookings(q ? filtered.filter(b=>(b.customer_name||'').toLowerCase().includes(q.toLowerCase())) : filtered);
+};
+
+// ── CUSTOMERS ──
+function renderCustomers(data) {
+  const tb = document.getElementById('cust-tbody');
+  if (!data.length) { tb.innerHTML=`<tr class="empty-row"><td colspan="6">No customers yet</td></tr>`; return; }
+  tb.innerHTML = data.map(c => `
+    <tr>
+      <td><strong>${c.full_name||'—'}</strong></td>
+      <td>${c.email||'—'}</td>
+      <td>${c.phone||'—'}</td>
+      <td>${c.created_at? new Date(c.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+      <td><span class="pill ${c.is_verified?'pill-verified':'pill-unverified'}">${c.is_verified?'Verified':'Unverified'}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="act-btn verify" onclick="toggleVerify('${c.id}',${c.is_verified})">
+          <i class="fa ${c.is_verified?'fa-times-circle':'fa-check-circle'}"></i> ${c.is_verified?'Unverify':'Verify'}
+        </button>
+        <button class="act-btn del" onclick="deleteCustomer('${c.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('');
+}
+window.toggleVerify = async (id, current) => {
+  const { error } = await sb.from('customers').update({ is_verified: !current }).eq('id', id);
+  if (!error) { allCustomers = allCustomers.map(c => c.id===id?{...c,is_verified:!current}:c); renderCustomers(allCustomers); toast(current?'Customer unverified.':'Customer verified!'); }
+  else toast('Error: '+error.message, true);
+};
+window.deleteCustomer = async (id) => {
+  if (!confirm('Delete this customer?')) return;
+  const { error } = await sb.from('customers').delete().eq('id', id);
+  if (!error) { allCustomers = allCustomers.filter(c => c.id!==id); renderCustomers(allCustomers); toast('Customer deleted.'); }
+  else toast('Error: '+error.message, true);
+};
+window.filterCustomers = (q) => {
+  q = q.toLowerCase();
+  renderCustomers(allCustomers.filter(c => (c.full_name||'').toLowerCase().includes(q)||(c.email||'').toLowerCase().includes(q)||(c.phone||'').toLowerCase().includes(q)));
+};
+
+// ── BLOGS ──
+function renderBlogs(data) {
+  const tb = document.getElementById('blog-tbody');
+  if (!data.length) { tb.innerHTML=`<tr class="empty-row"><td colspan="5">No blog posts yet. <button class="act-btn" onclick="openBlogModal()">Create first post</button></td></tr>`; return; }
+  tb.innerHTML = data.map(b => `
+    <tr>
+      <td><strong>${b.title}</strong></td>
+      <td>${b.category||'—'}</td>
+      <td><span class="pill ${b.published?'pill-published':'pill-draft'}">${b.published?'Published':'Draft'}</span></td>
+      <td>${b.created_at? new Date(b.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
+      <td style="display:flex;gap:6px">
+        <button class="act-btn" onclick="editBlog('${b.id}')"><i class="fa fa-edit"></i> Edit</button>
+        <button class="act-btn del" onclick="deleteBlog('${b.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('');
+}
+window.openBlogModal = () => {
+  document.getElementById('blogModalTitle').innerHTML = 'New <em>Blog Post</em>';
+  document.getElementById('blogId').value = '';
+  document.getElementById('blogTitle').value = '';
+  document.getElementById('blogExcerpt').value = '';
+  document.getElementById('blogImg').value = '';
+  document.getElementById('blogContent').value = '';
+  document.getElementById('blogCat').value = 'Travel Tips';
+  document.getElementById('blogStatus').value = 'false';
+  openModal('blogModal');
+};
+window.editBlog = (id) => {
+  const b = allBlogs.find(x=>x.id===id); if (!b) return;
+  document.getElementById('blogModalTitle').innerHTML = 'Edit <em>Blog Post</em>';
+  document.getElementById('blogId').value       = b.id;
+  document.getElementById('blogTitle').value    = b.title||'';
+  document.getElementById('blogExcerpt').value  = b.excerpt||'';
+  document.getElementById('blogImg').value      = b.cover_image||'';
+  document.getElementById('blogContent').value  = b.content||'';
+  document.getElementById('blogCat').value      = b.category||'Travel Tips';
+  document.getElementById('blogStatus').value   = String(b.published||false);
+  openModal('blogModal');
+};
+window.saveBlog = async () => {
+  const id       = document.getElementById('blogId').value;
+  const title    = document.getElementById('blogTitle').value.trim();
+  const excerpt  = document.getElementById('blogExcerpt').value.trim();
+  const img      = document.getElementById('blogImg').value.trim();
+  const content  = document.getElementById('blogContent').value.trim();
+  const category = document.getElementById('blogCat').value;
+  const published= document.getElementById('blogStatus').value === 'true';
+  if (!title) { toast('Title is required!', true); return; }
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const payload = { title, slug, excerpt, cover_image:img, content, category, published, updated_at: new Date().toISOString() };
+  let error;
+  if (id) {
+    const res = await sb.from('blogs').update(payload).eq('id', id);
+    error = res.error;
+    if (!error) allBlogs = allBlogs.map(b => b.id===id?{...b,...payload,id}:b);
+  } else {
+    const res = await sb.from('blogs').insert([payload]).select();
+    error = res.error;
+    if (!error && res.data) allBlogs = [res.data[0], ...allBlogs];
+  }
+  if (!error) { closeModal('blogModal'); renderBlogs(allBlogs); renderDashboard(); toast(id?'Blog post updated!':'Blog post created!'); }
+  else toast('Error: '+error.message, true);
+};
+window.deleteBlog = async (id) => {
+  if (!confirm('Delete this blog post?')) return;
+  const { error } = await sb.from('blogs').delete().eq('id', id);
+  if (!error) { allBlogs = allBlogs.filter(b => b.id!==id); renderBlogs(allBlogs); renderDashboard(); toast('Blog post deleted.'); }
+  else toast('Error: '+error.message, true);
+};
+
+// ── SETTINGS ──
+window.changePassword = async () => {
+  const cur = document.getElementById('curPwd').value;
+  const nw  = document.getElementById('newPwd').value;
+  const cn  = document.getElementById('conPwd').value;
+  const msg = document.getElementById('pwdMsg');
+  if (!cur||!nw||!cn) { showPwdMsg('All fields required.','error'); return; }
+  if (nw !== cn) { showPwdMsg('Passwords do not match.','error'); return; }
+  if (nw.length < 8) { showPwdMsg('Password must be 8+ characters.','error'); return; }
+  // Re-auth then update
+  const ADMIN_EMAIL = admin?.email;
+  const { error: loginErr } = await sb.auth.signInWithPassword({ email:ADMIN_EMAIL, password:cur });
+  if (loginErr) { showPwdMsg('Current password is incorrect.','error'); return; }
+  const { error } = await sb.auth.updateUser({ password: nw });
+  if (!error) { showPwdMsg('Password updated successfully!','success'); document.getElementById('curPwd').value=''; document.getElementById('newPwd').value=''; document.getElementById('conPwd').value=''; }
+  else showPwdMsg('Error: '+error.message,'error');
+};
+function showPwdMsg(txt,type) {
+  const m = document.getElementById('pwdMsg');
+  m.textContent = txt;
+  m.style.color = type==='success'?'#10B981':'#EF4444';
+  m.style.display = 'block';
+}
+
+// ── HELPERS ──
+window.showPage = (name) => {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pg-'+name).classList.add('active');
+  event?.target?.classList.add('active');
+};
+window.openModal  = (id) => document.getElementById(id).classList.add('open');
+window.closeModal = (id) => document.getElementById(id).classList.remove('open');
+document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
+window.doLogout = () => { sb.auth.signOut(); sessionStorage.removeItem('ew_admin'); window.location.href='index.html'; };
+
+let toastTimer;
+window.toast = (msg, isErr=false) => {
+  const t=document.getElementById('toast');
+  const i=document.getElementById('toastIco');
+  document.getElementById('toastTxt').textContent=msg;
+  t.className='toast show '+(isErr?'toast-err':'toast-suc');
+  i.className='fa '+(isErr?'fa-exclamation-circle':'fa-check-circle');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+};
+</script>
+</body>
+</html>
