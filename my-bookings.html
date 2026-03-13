@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings — East & West Travel Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body{background:var(--navy);min-height:100vh;display:flex;flex-direction:column}
+    .cust-wrap{display:grid;grid-template-columns:250px 1fr;flex:1;min-height:100vh}
+
+    /* SIDEBAR */
+    .sidebar{background:#060E1A;border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+    .sb-top{padding:28px 20px;border-bottom:1px solid var(--border)}
+    .sb-brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;text-decoration:none}
+    .sb-brand img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
+    .sb-brand-name{font-family:'Playfair Display',serif;font-size:18px;color:var(--white)}
+    .sb-brand-name span{color:var(--teal)}
+    .sb-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;border:2px solid var(--border-gold);margin-bottom:10px}
+    .sb-name{font-size:15px;font-weight:700;color:var(--white)}
+    .sb-email{font-size:11px;color:var(--text-dim);margin-top:3px}
+    .sb-nav{padding:16px 12px;flex:1}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--text-dim);transition:all 0.2s;margin-bottom:2px;text-decoration:none;border:none;background:none;width:100%;font-family:'DM Sans',sans-serif;cursor:pointer}
+    .sb-link:hover{background:rgba(255,255,255,0.05);color:var(--white)}
+    .sb-link.active{background:var(--teal-glow);color:var(--teal);border:1px solid rgba(14,165,233,0.2)}
+    .sb-link i{width:16px;text-align:center;font-size:13px}
+    .sb-footer{padding:16px;border-top:1px solid var(--border)}
+    .logout-btn{width:100%;background:none;border:1px solid rgba(239,68,68,0.25);color:rgba(239,68,68,0.7);padding:10px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
+    .logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+    /* MAIN */
+    .cust-main{background:var(--navy);padding:40px;overflow-y:auto}
+    .main-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:14px}
+    .main-top h2{font-size:32px;color:var(--white)}
+    .main-top p{color:var(--text-dim);font-size:14px;margin-top:4px}
+
+    /* STAT CARDS */
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px}
+    .stat-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:flex;align-items:center;gap:16px}
+    .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .stat-num{font-family:'Playfair Display',serif;font-size:30px;color:var(--white);line-height:1}
+    .stat-lbl{font-size:12px;color:var(--text-dim);margin-top:5px}
+
+    /* BOOKING CARDS */
+    .bk-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px;transition:all 0.3s}
+    .bk-card:hover{border-color:var(--border-gold);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+    .bk-top{display:flex;gap:20px;padding:24px;align-items:flex-start}
+    .bk-img{width:96px;height:76px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+    .bk-info{flex:1}
+    .bk-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .bk-title{font-size:18px;color:var(--white)}
+    .status-pill{padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+    .status-new{background:rgba(14,165,233,0.15);color:var(--teal);border:1px solid rgba(14,165,233,0.3)}
+    .status-pending{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid var(--border-gold)}
+    .status-confirmed{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.3)}
+    .status-cancelled{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.25)}
+    .bk-meta{display:flex;flex-wrap:wrap;gap:10px}
+    .bk-meta-item{font-size:12.5px;color:var(--text-dim);display:flex;align-items:center;gap:5px}
+    .bk-meta-item i{color:var(--teal);font-size:11px}
+    .bk-footer{background:rgba(0,0,0,0.15);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+    .bk-ref{font-size:12px;color:var(--text-dim);font-family:'Courier New',monospace;background:var(--navy-mid);padding:4px 10px;border-radius:6px}
+    .bk-action{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--teal);background:var(--teal-glow);border:1px solid rgba(14,165,233,0.25);padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-decoration:none}
+    .bk-action:hover{background:var(--teal);color:white;border-color:var(--teal)}
+
+    /* EMPTY STATE */
+    .empty{text-align:center;padding:80px 20px}
+    .empty-icon{font-size:52px;color:var(--border);margin-bottom:20px}
+    .empty h3{font-size:26px;color:var(--text-dim);margin-bottom:8px}
+    .empty p{color:var(--text-dim);font-size:14px;margin-bottom:28px}
+
+    /* LOADING */
+    .loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:60px;color:var(--text-dim)}
+    .loading i{color:var(--teal);font-size:24px}
+
+    /* PAYMENT MODAL */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .modal-bg.open{display:flex}
+    .modal{background:var(--navy-light);border:1px solid var(--border);border-radius:20px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
+    .modal-hdr{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--navy-light);z-index:2}
+    .modal-hdr h3{font-size:22px;color:var(--white)}
+    .modal-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:all 0.2s}
+    .modal-close:hover{background:rgba(255,255,255,0.07);color:var(--white)}
+    .modal-body{padding:24px 28px}
+    .bank-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .bank-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+    .bank-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border)}
+    .bank-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:white;flex-shrink:0}
+    .bank-nm{font-size:13px;font-weight:700;color:var(--white)}
+    .bank-nm small{display:block;font-size:11px;color:var(--text-dim);font-weight:400}
+    .bf{margin-bottom:9px}
+    .bf-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);font-weight:700;display:block;margin-bottom:2px}
+    .bf-row{display:flex;align-items:center;gap:7px}
+    .bf-val{font-size:12px;font-weight:600;color:var(--white);font-family:'Courier New',monospace;flex:1;word-break:break-all}
+    .cp-btn{background:var(--teal-glow);border:1px solid rgba(14,165,233,0.25);color:var(--teal);padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+    .cp-btn:hover{background:var(--teal);color:white;border-color:var(--teal)}
+    .cp-btn.copied{background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.3)}
+
+    @media(max-width:900px){.cust-wrap{grid-template-columns:1fr}.sidebar{display:none}.cust-main{padding:24px}.stat-row{grid-template-columns:1fr 1fr}.bank-grid{grid-template-columns:1fr}}
+    @media(max-width:500px){.stat-row{grid-template-columns:1fr}.bk-top{flex-direction:column}.bk-img{width:100%;height:160px}}
+  </style>
+</head>
+<body>
+<div class="cust-wrap">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <a href="../index.html" class="sb-brand">
+        <img src="../logo.jpg" alt="Logo" onerror="this.style.display='none'">
+        <div class="sb-brand-name">East & <span>West</span></div>
+      </a>
+      <div class="sb-avatar" id="sbAvatar">?</div>
+      <div class="sb-name"  id="sbName">Loading...</div>
+      <div class="sb-email" id="sbEmail"></div>
+    </div>
+    <nav class="sb-nav">
+      <a class="sb-link active" href="my-bookings.html"><i class="fa fa-calendar-check"></i> My Bookings</a>
+      <a class="sb-link" href="../packages.html"><i class="fa fa-compass"></i> Browse Packages</a>
+      <a class="sb-link" href="../booking.html"><i class="fa fa-plus-circle"></i> New Booking</a>
+      <a class="sb-link" href="../contact.html"><i class="fa fa-headset"></i> Support</a>
+      <a class="sb-link" href="../index.html"><i class="fa fa-home"></i> Back to Website</a>
+    </nav>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="doLogout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="cust-main">
+    <div class="main-top">
+      <div>
+        <h2>My <em>Bookings</em></h2>
+        <p id="mainSub">Loading your bookings...</p>
+      </div>
+      <a href="../booking.html" class="btn-teal" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-size:13px"><i class="fa fa-plus"></i> New Booking</a>
+    </div>
+
+    <div class="stat-row" id="statRow" style="display:none">
+      <div class="stat-card"><div class="stat-icon" style="background:var(--teal-glow)"><i class="fa fa-list" style="color:var(--teal)"></i></div><div><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">Total Bookings</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:rgba(16,185,129,0.1)"><i class="fa fa-check-circle" style="color:#10B981"></i></div><div><div class="stat-num" id="statConfirmed">0</div><div class="stat-lbl">Confirmed</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--gold-dim)"><i class="fa fa-clock" style="color:var(--gold)"></i></div><div><div class="stat-num" id="statPending">0</div><div class="stat-lbl">Pending</div></div></div>
+    </div>
+
+    <div id="bkList"><div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading your bookings...</div></div>
+  </main>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-bg" id="payModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>Payment <em>Details</em></h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:10px;padding:14px 18px;display:flex;gap:12px;margin-bottom:22px">
+        <i class="fa fa-exclamation-triangle" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i>
+        <p style="font-size:13.5px;color:var(--text-dim);line-height:1.6">Transfer <strong style="color:var(--gold)">50% advance</strong> to confirm booking. Send screenshot on WhatsApp: <a href="https://wa.me/923136515349" style="color:var(--gold);font-weight:700">0313-6515349</a></p>
+      </div>
+      <div class="bank-grid">
+        <div class="bank-card"><div class="bank-head"><div class="bank-ico" style="background:linear-gradient(135deg,#00695C,#00897B)">M</div><div class="bank-nm">Meezan Bank<small>Islamic Banking</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0401 0101810050</span><button class="cp-btn" onclick="cp(this,'04010101810050')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK30MEZN0004010101810050</span><button class="cp-btn" onclick="cp(this,'PK30MEZN0004010101810050')">Copy</button></div></div></div>
+        <div class="bank-card"><div class="bank-head"><div class="bank-ico" style="background:linear-gradient(135deg,#0066CC,#0088FF)">A</div><div class="bank-nm">Bank Alfalah<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0106 001004974807</span><button class="cp-btn" onclick="cp(this,'0106001004974807')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK95ALFH0106001004974807</span><button class="cp-btn" onclick="cp(this,'PK95ALFH0106001004974807')">Copy</button></div></div></div>
+        <div class="bank-card"><div class="bank-head"><div class="bank-ico" style="background:linear-gradient(135deg,#1a237e,#283593)">H</div><div class="bank-nm">HBL<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0611 7900354703</span><button class="cp-btn" onclick="cp(this,'06117900354703')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK75HABB0006117900354703</span><button class="cp-btn" onclick="cp(this,'PK75HABB0006117900354703')">Copy</button></div></div></div>
+        <div class="bank-card"><div class="bank-head"><div class="bank-ico" style="background:linear-gradient(135deg,#b71c1c,#c62828)">U</div><div class="bank-nm">UBL<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">1487 4003806673</span><button class="cp-btn" onclick="cp(this,'14874003806673')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK81UNIL011487003806673</span><button class="cp-btn" onclick="cp(this,'PK81UNIL011487003806673')">Copy</button></div></div></div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I've+made+the+advance+payment." class="btn-gold" target="_blank" style="display:inline-flex;gap:8px;align-items:center"><i class="fab fa-whatsapp"></i> Send Payment Proof</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const user = JSON.parse(sessionStorage.getItem('ew_user') || 'null');
+if (!user) { window.location.href = 'login.html'; }
+
+// Set profile
+const name = user?.name || user?.email?.split('@')[0] || 'Traveler';
+document.getElementById('sbAvatar').textContent = name[0].toUpperCase();
+document.getElementById('sbName').textContent   = name;
+document.getElementById('sbEmail').textContent  = user?.email || '';
+document.getElementById('mainSub').textContent  = `Welcome back, ${name}!`;
+
+// Load bookings
+const { data: bookings, error } = await sb.from('bookings')
+  .select('*').eq('customer_email', user.email).order('created_at', { ascending: false });
+
+const list = document.getElementById('bkList');
+if (error || !bookings?.length) {
+  list.innerHTML = `<div class="empty"><div class="empty-icon"><i class="fa fa-calendar-times"></i></div><h3>No Bookings Yet</h3><p>You haven't booked any tour yet. Explore our packages!</p><a href="../packages.html" class="btn-teal" style="display:inline-flex;gap:8px;align-items:center;text-decoration:none"><i class="fa fa-compass"></i> Browse Packages</a></div>`;
+  return;
+}
+
+// Stats
+const total     = bookings.length;
+const confirmed = bookings.filter(b => b.status==='confirmed').length;
+const pending   = bookings.filter(b => ['new','pending'].includes(b.status)).length;
+document.getElementById('statTotal').textContent     = total;
+document.getElementById('statConfirmed').textContent = confirmed;
+document.getElementById('statPending').textContent   = pending;
+document.getElementById('statRow').style.display     = 'grid';
+
+const IMGS = { umrah:'../makarem_7.jpg', dubai:'../pullman_2.jpg', thailand:'../pullman_3.jpeg', bali:'../makarem_5.jpeg', family:'../makarem_6.jpeg' };
+function getImg(t='') { t=t.toLowerCase(); if(t.includes('umrah'))return IMGS.umrah; if(t.includes('dubai'))return IMGS.dubai; if(t.includes('bali'))return IMGS.bali; if(t.includes('thailand'))return IMGS.thailand; if(t.includes('family'))return IMGS.family; return IMGS.umrah; }
+function statusCls(s){ const m={new:'status-new',pending:'status-pending',confirmed:'status-confirmed',cancelled:'status-cancelled'}; return m[s]||'status-new'; }
+function statusLbl(s){ const m={new:'New',pending:'Pending',confirmed:'Confirmed',cancelled:'Cancelled'}; return m[s]||'New'; }
+function fmtDate(d){ return d? new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+
+list.innerHTML = bookings.map(b => `
+  <div class="bk-card">
+    <div class="bk-top">
+      <img class="bk-img" src="${getImg(b.tour_name)}" alt="${b.tour_name||''}">
+      <div class="bk-info">
+        <div class="bk-title-row">
+          <h4 class="bk-title">${b.tour_name||'Travel Package'}</h4>
+          <span class="status-pill ${statusCls(b.status)}">${statusLbl(b.status)}</span>
+        </div>
+        <div class="bk-meta">
+          <span class="bk-meta-item"><i class="fa fa-calendar"></i> ${fmtDate(b.travel_date)}</span>
+          <span class="bk-meta-item"><i class="fa fa-users"></i> ${(b.pax_adults||1)} Adult${b.pax_adults>1?'s':''} ${b.pax_children>0?', '+b.pax_children+' Child':''} ${b.pax_infants>0?', '+b.pax_infants+' Infant':''}</span>
+          ${b.room_type?`<span class="bk-meta-item"><i class="fa fa-bed"></i> ${b.room_type}</span>`:''}
+          ${b.duration?`<span class="bk-meta-item"><i class="fa fa-clock"></i> ${b.duration}</span>`:''}
+        </div>
+      </div>
+    </div>
+    <div class="bk-footer">
+      <span class="bk-ref">${b.booking_ref||b.id?.slice(0,10)}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="bk-action" onclick="openModal()"><i class="fa fa-university"></i> Payment Details</button>
+        <a class="bk-action" href="https://wa.me/923136515349?text=Hi!+Booking+Ref:+${b.booking_ref}+—+Need+help." target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+window.doLogout = () => { sessionStorage.removeItem('ew_user'); window.location.href='login.html'; };
+window.openModal  = () => document.getElementById('payModal').classList.add('open');
+window.closeModal = () => document.getElementById('payModal').classList.remove('open');
+document.getElementById('payModal').addEventListener('click', e => { if(e.target===document.getElementById('payModal')) closeModal(); });
+window.cp = (btn,txt) => { navigator.clipboard.writeText(txt).catch(()=>{}); btn.textContent='✓ Copied!'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000); };
+</script>
+</body>
+</html>
