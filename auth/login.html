@@ -155,7 +155,7 @@
     <div class="unverified-notice" id="unverifiedNotice">
       <p>⚠️ Your account is <strong>not verified</strong> yet. Please contact us to verify your account:<br>
       📱 <strong>WhatsApp: 0313-6515349</strong><br>
-      📧 <strong>abdullahshahid9999@gmail.com</strong></p>
+      📧 <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="34555650415858555c475c555c5d500d0d0d0d745359555d581a575b59">[email&#160;protected]</a></strong></p>
     </div>
 
     <!-- LOGIN -->
@@ -212,10 +212,13 @@
     </div>
 
     <div class="back-link"><a href="../index.html"><i class="fa fa-arrow-left"></i> Back to Website</a></div>
+    <div style="text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06)">
+      <a href="../admin/index.html" style="font-size:11.5px;color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:5px;transition:color 0.2s" onmouseover="this.style.color='rgba(201,168,76,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'"><i class="fa fa-shield-alt" style="font-size:10px"></i> Admin Login</a>
+    </div>
   </div>
 </div>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
 
@@ -322,10 +325,4 @@ window.doSignup = async () => {
 window.doForgotPassword = async () => {
   const email = document.getElementById('loginEmail').value.trim();
   if (!email) { showErr('Enter your email address first, then click Forgot Password.'); return; }
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/auth/reset-password.html' });
-  if (error) { showErr(error.message); return; }
-  showSuc('Password reset link sent to your email!');
-};
-</script>
-</body>
-</html>
+  const { error } = await s
