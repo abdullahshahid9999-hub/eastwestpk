@@ -3,119 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Bookings — East & West Travel Services</title>
+  <title>My Account — East & West Travel Services</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css">
   <style>
-    body{background:var(--navy);min-height:100vh;display:flex;flex-direction:column}
-    .cust-wrap{display:grid;grid-template-columns:250px 1fr;flex:1;min-height:100vh}
+    body { background: var(--navy); min-height: 100vh; display: flex; flex-direction: column; }
+    .cust-wrap { display: grid; grid-template-columns: 270px 1fr; flex: 1; min-height: 100vh; }
 
-    /* SIDEBAR */
-    .sidebar{background:#060E1A;border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-    .sb-top{padding:28px 20px;border-bottom:1px solid var(--border)}
-    .sb-brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;text-decoration:none}
-    .sb-brand img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
-    .sb-brand-name{font-family:'Playfair Display',serif;font-size:18px;color:var(--white)}
-    .sb-brand-name span{color:var(--teal)}
-    .sb-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;border:2px solid var(--border-gold);margin-bottom:10px}
-    .sb-name{font-size:15px;font-weight:700;color:var(--white)}
-    .sb-email{font-size:11px;color:var(--text-dim);margin-top:3px}
-    .sb-nav{padding:16px 12px;flex:1}
-    .sb-link{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--text-dim);transition:all 0.2s;margin-bottom:2px;text-decoration:none;border:none;background:none;width:100%;font-family:'DM Sans',sans-serif;cursor:pointer}
-    .sb-link:hover{background:rgba(255,255,255,0.05);color:var(--white)}
-    .sb-link.active{background:var(--teal-glow);color:var(--teal);border:1px solid rgba(14,165,233,0.2)}
-    .sb-link i{width:16px;text-align:center;font-size:13px}
-    .sb-footer{padding:16px;border-top:1px solid var(--border)}
-    .logout-btn{width:100%;background:none;border:1px solid rgba(239,68,68,0.25);color:rgba(239,68,68,0.7);padding:10px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
-    .logout-btn:hover{border-color:var(--red);color:var(--red)}
+    /* ── SIDEBAR ── */
+    .sidebar { background: #060E1A; border-right: 1px solid var(--border); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .sb-top { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
+    .sb-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; text-decoration: none; }
+    .sb-brand img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); padding: 2px; object-fit: contain; background: white; }
+    .sb-brand-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--white); }
+    .sb-brand-name span { color: var(--teal); }
 
-    /* MAIN */
-    .cust-main{background:var(--navy);padding:40px;overflow-y:auto}
-    .main-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:14px}
-    .main-top h2{font-size:32px;color:var(--white)}
-    .main-top p{color:var(--text-dim);font-size:14px;margin-top:4px}
+    /* Profile pic */
+    .sb-profile { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 0; }
+    .sb-avatar-wrap { position: relative; cursor: pointer; }
+    .sb-avatar { width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--border-gold); object-fit: cover; display: block; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); }
+    .sb-avatar-text { width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--border-gold); background: linear-gradient(135deg, var(--teal), #0369A1); display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700; color: white; }
+    .sb-avatar-edit { position: absolute; bottom: 0; right: 0; width: 24px; height: 24px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #0A1628; border: 2px solid #060E1A; }
+    .sb-name { font-size: 15px; font-weight: 700; color: var(--white); text-align: center; }
+    .sb-email { font-size: 11px; color: var(--text-dim); text-align: center; }
+    .sb-edit-profile-btn { font-size: 11px; color: var(--teal); background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.2); padding: 4px 12px; border-radius: 50px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; margin-top: 4px; }
+    .sb-edit-profile-btn:hover { background: var(--teal); color: white; }
+
+    .sb-nav { padding: 16px 12px; flex: 1; }
+    .sb-link { display: flex; align-items: center; gap: 10px; padding: 11px 13px; border-radius: 10px; font-size: 13.5px; font-weight: 500; color: var(--text-dim); transition: all 0.2s; margin-bottom: 2px; text-decoration: none; border: none; background: none; width: 100%; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+    .sb-link:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+    .sb-link.active { background: var(--teal-glow); color: var(--teal); border: 1px solid rgba(14,165,233,0.2); }
+    .sb-link i { width: 16px; text-align: center; font-size: 13px; }
+    .sb-footer { padding: 16px; border-top: 1px solid var(--border); }
+    .logout-btn { width: 100%; background: none; border: 1px solid rgba(239,68,68,0.25); color: rgba(239,68,68,0.7); padding: 10px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+    .logout-btn:hover { border-color: #EF4444; color: #EF4444; background: rgba(239,68,68,0.05); }
+
+    /* ── MAIN ── */
+    .cust-main { background: var(--navy); padding: 40px; overflow-y: auto; }
+    .main-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 14px; }
+    .main-top h2 { font-size: 30px; color: var(--white); }
+    .main-top p { color: var(--text-dim); font-size: 14px; margin-top: 4px; }
 
     /* STAT CARDS */
-    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px}
-    .stat-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:flex;align-items:center;gap:16px}
-    .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-    .stat-num{font-family:'Playfair Display',serif;font-size:30px;color:var(--white);line-height:1}
-    .stat-lbl{font-size:12px;color:var(--text-dim);margin-top:5px}
+    .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; display: flex; align-items: center; gap: 16px; }
+    .stat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--white); line-height: 1; }
+    .stat-lbl { font-size: 12px; color: var(--text-dim); margin-top: 5px; }
+
+    /* TABS */
+    .page-tabs { display: flex; gap: 6px; margin-bottom: 28px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+    .page-tab { padding: 10px 20px; font-size: 13.5px; font-weight: 600; color: var(--text-dim); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+    .page-tab:hover { color: var(--white); }
+    .page-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+    /* TAB PANELS */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
     /* BOOKING CARDS */
-    .bk-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px;transition:all 0.3s}
-    .bk-card:hover{border-color:var(--border-gold);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
-    .bk-top{display:flex;gap:20px;padding:24px;align-items:flex-start}
-    .bk-img{width:96px;height:76px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
-    .bk-info{flex:1}
-    .bk-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
-    .bk-title{font-size:18px;color:var(--white)}
-    .status-pill{padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
-    .status-new{background:rgba(14,165,233,0.15);color:var(--teal);border:1px solid rgba(14,165,233,0.3)}
-    .status-pending{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid var(--border-gold)}
-    .status-confirmed{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.3)}
-    .status-cancelled{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.25)}
-    .bk-meta{display:flex;flex-wrap:wrap;gap:10px}
-    .bk-meta-item{font-size:12.5px;color:var(--text-dim);display:flex;align-items:center;gap:5px}
-    .bk-meta-item i{color:var(--teal);font-size:11px}
-    .bk-footer{background:rgba(0,0,0,0.15);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-    .bk-ref{font-size:12px;color:var(--text-dim);font-family:'Courier New',monospace;background:var(--navy-mid);padding:4px 10px;border-radius:6px}
-    .bk-action{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--teal);background:var(--teal-glow);border:1px solid rgba(14,165,233,0.25);padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-decoration:none}
-    .bk-action:hover{background:var(--teal);color:white;border-color:var(--teal)}
+    .bk-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 18px; transition: all 0.3s; }
+    .bk-card:hover { border-color: var(--border-gold); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .bk-top { display: flex; gap: 20px; padding: 22px; align-items: flex-start; }
+    .bk-img { width: 90px; height: 72px; border-radius: 10px; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); }
+    .bk-info { flex: 1; }
+    .bk-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .bk-title { font-size: 17px; color: var(--white); font-weight: 700; }
+    .status-pill { padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+    .status-new       { background: rgba(14,165,233,0.15); color: var(--teal); border: 1px solid rgba(14,165,233,0.3); }
+    .status-pending   { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid var(--border-gold); }
+    .status-confirmed { background: rgba(16,185,129,0.12); color: #10B981; border: 1px solid rgba(16,185,129,0.3); }
+    .status-cancelled { background: rgba(239,68,68,0.1); color: #EF4444; border: 1px solid rgba(239,68,68,0.25); }
+    .bk-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .bk-meta-item { font-size: 12.5px; color: var(--text-dim); display: flex; align-items: center; gap: 5px; }
+    .bk-meta-item i { color: var(--teal); font-size: 11px; }
+    .bk-footer { background: rgba(0,0,0,0.15); border-top: 1px solid var(--border); padding: 13px 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .bk-ref { font-size: 12px; color: var(--text-dim); font-family: 'Courier New', monospace; background: var(--navy-mid); padding: 4px 10px; border-radius: 6px; }
+    .bk-action { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--teal); background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.25); padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; text-decoration: none; }
+    .bk-action:hover { background: var(--teal); color: white; border-color: var(--teal); }
 
     /* EMPTY STATE */
-    .empty{text-align:center;padding:80px 20px}
-    .empty-icon{font-size:52px;color:var(--border);margin-bottom:20px}
-    .empty h3{font-size:26px;color:var(--text-dim);margin-bottom:8px}
-    .empty p{color:var(--text-dim);font-size:14px;margin-bottom:28px}
+    .empty { text-align: center; padding: 80px 20px; }
+    .empty-icon { width: 90px; height: 90px; border-radius: 50%; background: var(--navy-light); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 36px; color: var(--text-dim); }
+    .empty h3 { font-size: 24px; color: var(--white); margin-bottom: 8px; }
+    .empty p { color: var(--text-dim); font-size: 14px; margin-bottom: 28px; max-width: 380px; margin-left: auto; margin-right: auto; }
 
-    /* LOADING */
-    .loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:60px;color:var(--text-dim)}
-    .loading i{color:var(--teal);font-size:24px}
+    /* PROFILE FORM */
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .profile-pic-section { grid-column: 1/-1; display: flex; align-items: center; gap: 24px; background: var(--navy-light); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+    .profile-pic-big { position: relative; flex-shrink: 0; }
+    .profile-pic-big img, .profile-pic-big .avatar-big { width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--border-gold); object-fit: cover; display: block; }
+    .profile-pic-big .avatar-big { background: linear-gradient(135deg, var(--teal), #0369A1); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: white; }
+    .pic-upload-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.3); color: var(--teal); padding: 9px 18px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+    .pic-upload-btn:hover { background: var(--teal); color: white; }
+    .pic-note { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+    .profile-form-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: 16px; padding: 28px; grid-column: 1/-1; }
+    .pf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .pf-full { grid-column: 1/-1; }
+    .fg { display: flex; flex-direction: column; gap: 7px; }
+    .fg label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); }
+    .fg input, .fg select, .fg textarea { background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--white); outline: none; transition: all 0.3s; }
+    .fg input::placeholder { color: var(--text-dim); opacity: 0.6; }
+    .fg input:focus, .fg select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
+    option { background: #0F2040; }
+    .save-btn { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: white; border: none; padding: 13px 32px; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; margin-top: 8px; }
+    .save-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-teal); }
+    .save-success { display: none; align-items: center; gap: 8px; font-size: 13px; color: #10B981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 8px 16px; border-radius: 8px; margin-top: 8px; }
 
     /* PAYMENT MODAL */
-    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-    .modal-bg.open{display:flex}
-    .modal{background:var(--navy-light);border:1px solid var(--border);border-radius:20px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
-    .modal-hdr{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--navy-light);z-index:2}
-    .modal-hdr h3{font-size:22px;color:var(--white)}
-    .modal-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:all 0.2s}
-    .modal-close:hover{background:rgba(255,255,255,0.07);color:var(--white)}
-    .modal-body{padding:24px 28px}
-    .bank-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .bank-card{background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
-    .bank-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border)}
-    .bank-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:white;flex-shrink:0}
-    .bank-nm{font-size:13px;font-weight:700;color:var(--white)}
-    .bank-nm small{display:block;font-size:11px;color:var(--text-dim);font-weight:400}
-    .bf{margin-bottom:9px}
-    .bf-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);font-weight:700;display:block;margin-bottom:2px}
-    .bf-row{display:flex;align-items:center;gap:7px}
-    .bf-val{font-size:12px;font-weight:600;color:var(--white);font-family:'Courier New',monospace;flex:1;word-break:break-all}
-    .cp-btn{background:var(--teal-glow);border:1px solid rgba(14,165,233,0.25);color:var(--teal);padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-    .cp-btn:hover{background:var(--teal);color:white;border-color:var(--teal)}
-    .cp-btn.copied{background:rgba(16,185,129,0.2);color:#10B981;border-color:rgba(16,185,129,0.3)}
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); }
+    .modal-bg.open { display: flex; }
+    .modal { background: var(--navy-light); border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; }
+    .modal-hdr { padding: 22px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--navy-light); z-index: 2; }
+    .modal-hdr h3 { font-size: 22px; color: var(--white); }
+    .modal-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; }
+    .modal-close:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .modal-body { padding: 24px 28px; }
+    .bank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .bank-card { background: var(--navy-mid); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .bank-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 11px; border-bottom: 1px solid var(--border); }
+    .bank-ico { width: 40px; height: 40px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; color: white; flex-shrink: 0; }
+    .bank-nm { font-size: 13px; font-weight: 700; color: var(--white); }
+    .bank-nm small { display: block; font-size: 11px; color: var(--text-dim); font-weight: 400; }
+    .bf { margin-bottom: 9px; }
+    .bf-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 2px; }
+    .bf-row { display: flex; align-items: center; gap: 7px; }
+    .bf-val { font-size: 12px; font-weight: 600; color: var(--white); font-family: 'Courier New', monospace; flex: 1; word-break: break-all; }
+    .cp-btn { background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.25); color: var(--teal); padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+    .cp-btn:hover { background: var(--teal); color: white; }
+    .cp-btn.copied { background: rgba(16,185,129,0.2); color: #10B981; border-color: rgba(16,185,129,0.3); }
 
-    @media(max-width:900px){.cust-wrap{grid-template-columns:1fr}.sidebar{display:none}.cust-main{padding:24px}.stat-row{grid-template-columns:1fr 1fr}.bank-grid{grid-template-columns:1fr}}
-    @media(max-width:500px){.stat-row{grid-template-columns:1fr}.bk-top{flex-direction:column}.bk-img{width:100%;height:160px}}
+    @media(max-width:960px) { .cust-wrap { grid-template-columns: 1fr; } .sidebar { display: none; } .cust-main { padding: 24px; } .stat-row { grid-template-columns: 1fr 1fr; } .bank-grid { grid-template-columns: 1fr; } .pf-grid { grid-template-columns: 1fr; } }
+    @media(max-width:500px) { .stat-row { grid-template-columns: 1fr; } .bk-top { flex-direction: column; } .bk-img { width: 100%; height: 160px; } .profile-pic-section { flex-direction: column; text-align: center; } }
   </style>
 </head>
 <body>
 <div class="cust-wrap">
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sb-top">
       <a href="../index.html" class="sb-brand">
-        <img src="../logo.jpg" alt="Logo" onerror="this.style.display='none'">
+        <img src="../logo.jpg" alt="Logo">
         <div class="sb-brand-name">East & <span>West</span></div>
       </a>
-      <div class="sb-avatar" id="sbAvatar">?</div>
-      <div class="sb-name"  id="sbName">Loading...</div>
-      <div class="sb-email" id="sbEmail"></div>
+      <div class="sb-profile">
+        <div class="sb-avatar-wrap" onclick="switchTab('profile')" title="Edit Profile">
+          <div class="sb-avatar-text" id="sbAvatarText">?</div>
+          <div class="sb-avatar-edit"><i class="fa fa-pen"></i></div>
+        </div>
+        <div class="sb-name"  id="sbName">Loading...</div>
+        <div class="sb-email" id="sbEmail"></div>
+        <button class="sb-edit-profile-btn" onclick="switchTab('profile')"><i class="fa fa-pen" style="font-size:9px"></i> Edit Profile</button>
+      </div>
     </div>
     <nav class="sb-nav">
-      <a class="sb-link active" href="my-bookings.html"><i class="fa fa-calendar-check"></i> My Bookings</a>
+      <button class="sb-link active" id="tab-btn-bookings" onclick="switchTab('bookings')"><i class="fa fa-calendar-check"></i> My Bookings</button>
+      <button class="sb-link" id="tab-btn-profile" onclick="switchTab('profile')"><i class="fa fa-user-circle"></i> My Profile</button>
       <a class="sb-link" href="../packages.html"><i class="fa fa-compass"></i> Browse Packages</a>
       <a class="sb-link" href="../booking.html"><i class="fa fa-plus-circle"></i> New Booking</a>
       <a class="sb-link" href="../contact.html"><i class="fa fa-headset"></i> Support</a>
@@ -128,21 +173,83 @@
 
   <!-- MAIN -->
   <main class="cust-main">
-    <div class="main-top">
-      <div>
-        <h2>My <em>Bookings</em></h2>
-        <p id="mainSub">Loading your bookings...</p>
+
+    <!-- BOOKINGS TAB -->
+    <div class="tab-panel active" id="panel-bookings">
+      <div class="main-top">
+        <div>
+          <h2>My <em>Bookings</em></h2>
+          <p id="mainSub">Loading...</p>
+        </div>
+        <a href="../packages.html" class="btn-teal" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-size:13px"><i class="fa fa-plus"></i> New Booking</a>
       </div>
-      <a href="../booking.html" class="btn-teal" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-size:13px"><i class="fa fa-plus"></i> New Booking</a>
+
+      <div class="stat-row" id="statRow" style="display:none">
+        <div class="stat-card"><div class="stat-icon" style="background:var(--teal-glow)"><i class="fa fa-list" style="color:var(--teal)"></i></div><div><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">Total Bookings</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:rgba(16,185,129,0.1)"><i class="fa fa-check-circle" style="color:#10B981"></i></div><div><div class="stat-num" id="statConfirmed">0</div><div class="stat-lbl">Confirmed</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--gold-dim)"><i class="fa fa-clock" style="color:var(--gold)"></i></div><div><div class="stat-num" id="statPending">0</div><div class="stat-lbl">Pending</div></div></div>
+      </div>
+
+      <div id="bkList">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;padding:60px;color:var(--text-dim)">
+          <i class="fa fa-spinner fa-spin" style="color:var(--teal);font-size:22px"></i> Loading your bookings...
+        </div>
+      </div>
     </div>
 
-    <div class="stat-row" id="statRow" style="display:none">
-      <div class="stat-card"><div class="stat-icon" style="background:var(--teal-glow)"><i class="fa fa-list" style="color:var(--teal)"></i></div><div><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">Total Bookings</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(16,185,129,0.1)"><i class="fa fa-check-circle" style="color:#10B981"></i></div><div><div class="stat-num" id="statConfirmed">0</div><div class="stat-lbl">Confirmed</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--gold-dim)"><i class="fa fa-clock" style="color:var(--gold)"></i></div><div><div class="stat-num" id="statPending">0</div><div class="stat-lbl">Pending</div></div></div>
+    <!-- PROFILE TAB -->
+    <div class="tab-panel" id="panel-profile">
+      <div class="main-top">
+        <div>
+          <h2>My <em>Profile</em></h2>
+          <p>Manage your personal information and preferences</p>
+        </div>
+      </div>
+
+      <!-- Profile pic -->
+      <div class="profile-pic-section" style="margin-bottom:24px">
+        <div class="profile-pic-big">
+          <div class="avatar-big" id="profileAvatarBig">?</div>
+        </div>
+        <div>
+          <div style="font-size:18px;font-weight:700;color:var(--white);margin-bottom:4px" id="profileNameDisplay">Your Name</div>
+          <div style="font-size:13px;color:var(--text-dim);margin-bottom:14px" id="profileEmailDisplay"></div>
+          <label class="pic-upload-btn"><i class="fa fa-camera"></i> Change Photo <input type="file" accept="image/*" style="display:none" onchange="uploadProfilePic(this)"></label>
+          <div class="pic-note">JPG, PNG — max 2MB. Photo is stored locally on this device.</div>
+        </div>
+      </div>
+
+      <!-- Profile form -->
+      <div class="profile-form-card">
+        <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid var(--border)"><i class="fa fa-user"></i> Personal Information</div>
+        <div class="pf-grid">
+          <div class="fg"><label>Full Name</label><input type="text" id="pfName" placeholder="Muhammad Ali"></div>
+          <div class="fg"><label>Phone / WhatsApp</label><input type="tel" id="pfPhone" placeholder="+92 3XX XXXXXXX"></div>
+          <div class="fg pf-full"><label>Email Address</label><input type="email" id="pfEmail" placeholder="you@email.com" readonly style="opacity:0.6;cursor:not-allowed"></div>
+          <div class="fg"><label>City</label><input type="text" id="pfCity" placeholder="Faisalabad"></div>
+          <div class="fg"><label>Country</label>
+            <select id="pfCountry">
+              <option value="Pakistan" selected>Pakistan</option>
+              <option value="UK">United Kingdom</option>
+              <option value="UAE">UAE</option>
+              <option value="USA">USA</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Date of Birth</label><input type="date" id="pfDob"></div>
+          <div class="fg"><label>Passport Number</label><input type="text" id="pfPassport" placeholder="AB1234567"></div>
+          <div class="fg"><label>Passport Expiry</label><input type="date" id="pfPassportExp"></div>
+          <div class="fg pf-full"><label>Emergency Contact Name</label><input type="text" id="pfEmgName" placeholder="Contact person name"></div>
+          <div class="fg pf-full"><label>Emergency Contact Number</label><input type="tel" id="pfEmgPhone" placeholder="+92 3XX XXXXXXX"></div>
+        </div>
+        <div style="margin-top:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <button class="save-btn" onclick="saveProfile()"><i class="fa fa-save"></i> Save Profile</button>
+          <div class="save-success" id="saveSuccess"><i class="fa fa-check-circle"></i> Profile saved successfully!</div>
+        </div>
+      </div>
     </div>
 
-    <div id="bkList"><div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading your bookings...</div></div>
   </main>
 </div>
 
@@ -156,7 +263,7 @@
     <div class="modal-body">
       <div style="background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:10px;padding:14px 18px;display:flex;gap:12px;margin-bottom:22px">
         <i class="fa fa-exclamation-triangle" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i>
-        <p style="font-size:13.5px;color:var(--text-dim);line-height:1.6">Transfer <strong style="color:var(--gold)">50% advance</strong> to confirm booking. Send screenshot on WhatsApp: <a href="https://wa.me/923136515349" style="color:var(--gold);font-weight:700">0313-6515349</a></p>
+        <p style="font-size:13.5px;color:var(--text-dim);line-height:1.6">Transfer <strong style="color:var(--gold)">50% advance</strong> to confirm your booking. Send screenshot on WhatsApp: <a href="https://wa.me/923336515349" style="color:var(--gold);font-weight:700">+92 333 651 5349</a></p>
       </div>
       <div class="bank-grid">
         <div class="bank-card"><div class="bank-head"><div class="bank-ico" style="background:linear-gradient(135deg,#00695C,#00897B)">M</div><div class="bank-nm">Meezan Bank<small>Islamic Banking</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0401 0101810050</span><button class="cp-btn" onclick="cp(this,'04010101810050')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK30MEZN0004010101810050</span><button class="cp-btn" onclick="cp(this,'PK30MEZN0004010101810050')">Copy</button></div></div></div>
@@ -165,7 +272,7 @@
         <div class="bank-card"><div class="bank-head"><div class="bank-ico" style="background:linear-gradient(135deg,#b71c1c,#c62828)">U</div><div class="bank-nm">UBL<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">1487 4003806673</span><button class="cp-btn" onclick="cp(this,'14874003806673')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK81UNIL011487003806673</span><button class="cp-btn" onclick="cp(this,'PK81UNIL011487003806673')">Copy</button></div></div></div>
       </div>
       <div style="text-align:center;margin-top:20px">
-        <a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I've+made+the+advance+payment." class="btn-gold" target="_blank" style="display:inline-flex;gap:8px;align-items:center"><i class="fab fa-whatsapp"></i> Send Payment Proof</a>
+        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I've+made+the+advance+payment+for+my+booking." class="btn-gold" target="_blank" style="display:inline-flex;gap:8px;align-items:center;text-decoration:none;padding:12px 24px;border-radius:50px;background:linear-gradient(135deg,var(--gold),#B8860B);color:#0A1628;font-weight:700;font-size:14px"><i class="fab fa-whatsapp"></i> Send Payment Proof on WhatsApp</a>
       </div>
     </div>
   </div>
@@ -173,76 +280,187 @@
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
+
+const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const user = JSON.parse(sessionStorage.getItem('ew_user') || 'null');
-if (!user) { window.location.href = 'login.html'; }
+// ── CHECK AUTH ──
+const { data: { session } } = await sb.auth.getSession();
+if (!session) { window.location.href = 'login.html'; }
+const user = session.user;
 
-// Set profile
-const name = user?.name || user?.email?.split('@')[0] || 'Traveler';
-document.getElementById('sbAvatar').textContent = name[0].toUpperCase();
-document.getElementById('sbName').textContent   = name;
-document.getElementById('sbEmail').textContent  = user?.email || '';
-document.getElementById('mainSub').textContent  = `Welcome back, ${name}!`;
+// ── SET SIDEBAR ──
+const savedProfile = JSON.parse(localStorage.getItem('ew_profile_' + user.id) || '{}');
+const displayName = savedProfile.name || user.user_metadata?.full_name || user.email.split('@')[0];
+const initials    = displayName.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
 
-// Load bookings
-const { data: bookings, error } = await sb.from('bookings')
-  .select('*').eq('customer_email', user.email).order('created_at', { ascending: false });
-
-const list = document.getElementById('bkList');
-if (error || !bookings?.length) {
-  list.innerHTML = `<div class="empty"><div class="empty-icon"><i class="fa fa-calendar-times"></i></div><h3>No Bookings Yet</h3><p>You haven't booked any tour yet. Explore our packages!</p><a href="../packages.html" class="btn-teal" style="display:inline-flex;gap:8px;align-items:center;text-decoration:none"><i class="fa fa-compass"></i> Browse Packages</a></div>`;
-  return;
+function setAvatar(el, initial, picKey) {
+  const savedPic = localStorage.getItem('ew_pic_' + user.id);
+  if (savedPic) {
+    el.style.background = 'none';
+    el.innerHTML = `<img src="${savedPic}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+  } else {
+    el.textContent = initial;
+  }
 }
 
-// Stats
-const total     = bookings.length;
-const confirmed = bookings.filter(b => b.status==='confirmed').length;
-const pending   = bookings.filter(b => ['new','pending'].includes(b.status)).length;
-document.getElementById('statTotal').textContent     = total;
-document.getElementById('statConfirmed').textContent = confirmed;
-document.getElementById('statPending').textContent   = pending;
-document.getElementById('statRow').style.display     = 'grid';
+setAvatar(document.getElementById('sbAvatarText'), initials);
+setAvatar(document.getElementById('profileAvatarBig'), initials);
+document.getElementById('sbName').textContent          = displayName;
+document.getElementById('sbEmail').textContent         = user.email;
+document.getElementById('mainSub').textContent         = `Welcome back, ${displayName}!`;
+document.getElementById('profileNameDisplay').textContent  = displayName;
+document.getElementById('profileEmailDisplay').textContent = user.email;
 
-const IMGS = { umrah:'../makarem_7.jpg', dubai:'../pullman_2.jpg', thailand:'../pullman_3.jpeg', bali:'../makarem_5.jpeg', family:'../makarem_6.jpeg' };
-function getImg(t='') { t=t.toLowerCase(); if(t.includes('umrah'))return IMGS.umrah; if(t.includes('dubai'))return IMGS.dubai; if(t.includes('bali'))return IMGS.bali; if(t.includes('thailand'))return IMGS.thailand; if(t.includes('family'))return IMGS.family; return IMGS.umrah; }
-function statusCls(s){ const m={new:'status-new',pending:'status-pending',confirmed:'status-confirmed',cancelled:'status-cancelled'}; return m[s]||'status-new'; }
-function statusLbl(s){ const m={new:'New',pending:'Pending',confirmed:'Confirmed',cancelled:'Cancelled'}; return m[s]||'New'; }
-function fmtDate(d){ return d? new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+// ── PREFILL PROFILE FORM ──
+document.getElementById('pfEmail').value       = user.email;
+document.getElementById('pfName').value        = savedProfile.name        || '';
+document.getElementById('pfPhone').value       = savedProfile.phone       || '';
+document.getElementById('pfCity').value        = savedProfile.city        || '';
+document.getElementById('pfCountry').value     = savedProfile.country     || 'Pakistan';
+document.getElementById('pfDob').value         = savedProfile.dob         || '';
+document.getElementById('pfPassport').value    = savedProfile.passport    || '';
+document.getElementById('pfPassportExp').value = savedProfile.passportExp || '';
+document.getElementById('pfEmgName').value     = savedProfile.emgName     || '';
+document.getElementById('pfEmgPhone').value    = savedProfile.emgPhone    || '';
 
-list.innerHTML = bookings.map(b => `
-  <div class="bk-card">
-    <div class="bk-top">
-      <img class="bk-img" src="${getImg(b.tour_name)}" alt="${b.tour_name||''}">
-      <div class="bk-info">
-        <div class="bk-title-row">
-          <h4 class="bk-title">${b.tour_name||'Travel Package'}</h4>
-          <span class="status-pill ${statusCls(b.status)}">${statusLbl(b.status)}</span>
-        </div>
-        <div class="bk-meta">
-          <span class="bk-meta-item"><i class="fa fa-calendar"></i> ${fmtDate(b.travel_date)}</span>
-          <span class="bk-meta-item"><i class="fa fa-users"></i> ${(b.pax_adults||1)} Adult${b.pax_adults>1?'s':''} ${b.pax_children>0?', '+b.pax_children+' Child':''} ${b.pax_infants>0?', '+b.pax_infants+' Infant':''}</span>
-          ${b.room_type?`<span class="bk-meta-item"><i class="fa fa-bed"></i> ${b.room_type}</span>`:''}
-          ${b.duration?`<span class="bk-meta-item"><i class="fa fa-clock"></i> ${b.duration}</span>`:''}
+// ── LOAD BOOKINGS ──
+const { data: bookings, error } = await sb.from('bookings')
+  .select('*')
+  .eq('customer_email', user.email)
+  .order('created_at', { ascending: false });
+
+const list = document.getElementById('bkList');
+
+if (error || !bookings || bookings.length === 0) {
+  document.getElementById('statRow').style.display = 'none';
+  list.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon"><i class="fa fa-suitcase-rolling"></i></div>
+      <h3>No Bookings Yet</h3>
+      <p>You haven't booked any package yet. Explore our amazing travel packages and start your journey!</p>
+      <a href="../packages.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:white;padding:12px 28px;border-radius:50px;font-weight:700;font-size:14px;text-decoration:none;transition:all 0.3s">
+        <i class="fa fa-compass"></i> Browse Packages
+      </a>
+    </div>`;
+} else {
+  const total     = bookings.length;
+  const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+  const pending   = bookings.filter(b => ['new','pending'].includes(b.status)).length;
+  document.getElementById('statTotal').textContent     = total;
+  document.getElementById('statConfirmed').textContent = confirmed;
+  document.getElementById('statPending').textContent   = pending;
+  document.getElementById('statRow').style.display     = 'grid';
+
+  const IMGS = { umrah: '../makarem_7.jpg', dubai: '../pullman_2.jpg', thailand: '../pullman_3.jpeg', bali: '../makarem_5.jpeg', family: '../makarem_6.jpeg' };
+  function getImg(t='') { t=t.toLowerCase(); if(t.includes('umrah'))return IMGS.umrah; if(t.includes('dubai'))return IMGS.dubai; if(t.includes('bali'))return IMGS.bali; if(t.includes('thailand'))return IMGS.thailand; if(t.includes('family'))return IMGS.family; return IMGS.umrah; }
+  function statusCls(s){ const m={new:'status-new',pending:'status-pending',confirmed:'status-confirmed',cancelled:'status-cancelled'}; return m[s]||'status-new'; }
+  function statusLbl(s){ const m={new:'New',pending:'Pending',confirmed:'Confirmed',cancelled:'Cancelled'}; return m[s]||'New'; }
+  function fmtDate(d){ return d? new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+
+  list.innerHTML = bookings.map(b => `
+    <div class="bk-card">
+      <div class="bk-top">
+        <img class="bk-img" src="${getImg(b.tour_name)}" alt="${b.tour_name||''}">
+        <div class="bk-info">
+          <div class="bk-title-row">
+            <h4 class="bk-title">${b.tour_name||'Travel Package'}</h4>
+            <span class="status-pill ${statusCls(b.status)}">${statusLbl(b.status)}</span>
+          </div>
+          <div class="bk-meta">
+            <span class="bk-meta-item"><i class="fa fa-calendar"></i> Booked: ${fmtDate(b.created_at)}</span>
+            <span class="bk-meta-item"><i class="fa fa-users"></i> ${b.pax_adults||1} Adult${(b.pax_adults||1)>1?'s':''} ${(b.pax_children||0)>0?', '+(b.pax_children)+' Child':''} ${(b.pax_infants||0)>0?', '+b.pax_infants+' Infant':''}</span>
+            ${b.duration?`<span class="bk-meta-item"><i class="fa fa-clock"></i> ${b.duration}</span>`:''}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="bk-footer">
-      <span class="bk-ref">${b.booking_ref||b.id?.slice(0,10)}</span>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="bk-action" onclick="openModal()"><i class="fa fa-university"></i> Payment Details</button>
-        <a class="bk-action" href="https://wa.me/923136515349?text=Hi!+Booking+Ref:+${b.booking_ref}+—+Need+help." target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <div class="bk-footer">
+        <span class="bk-ref">${b.booking_ref||('BK-'+b.id?.slice(0,8).toUpperCase())}</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="bk-action" onclick="document.getElementById('payModal').classList.add('open')"><i class="fa fa-university"></i> Payment Details</button>
+          <a class="bk-action" href="https://wa.me/923336515349?text=Hi!+Booking+Ref:+${b.booking_ref||b.id?.slice(0,8)}+—+Need+help." target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
       </div>
-    </div>
-  </div>
-`).join('');
+    </div>`).join('');
+}
 
-window.doLogout = () => { sessionStorage.removeItem('ew_user'); window.location.href='login.html'; };
-window.openModal  = () => document.getElementById('payModal').classList.add('open');
+// ── PROFILE PIC UPLOAD ──
+window.uploadProfilePic = (input) => {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { alert('Image too large — max 2MB'); return; }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    localStorage.setItem('ew_pic_' + user.id, dataUrl);
+    // Update both avatars
+    ['sbAvatarText','profileAvatarBig'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.background = 'none';
+      el.innerHTML = `<img src="${dataUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+    });
+  };
+  reader.readAsDataURL(file);
+};
+
+// ── SAVE PROFILE ──
+window.saveProfile = () => {
+  const profile = {
+    name:        document.getElementById('pfName').value.trim(),
+    phone:       document.getElementById('pfPhone').value.trim(),
+    city:        document.getElementById('pfCity').value.trim(),
+    country:     document.getElementById('pfCountry').value,
+    dob:         document.getElementById('pfDob').value,
+    passport:    document.getElementById('pfPassport').value.trim(),
+    passportExp: document.getElementById('pfPassportExp').value,
+    emgName:     document.getElementById('pfEmgName').value.trim(),
+    emgPhone:    document.getElementById('pfEmgPhone').value.trim(),
+  };
+  localStorage.setItem('ew_profile_' + user.id, JSON.stringify(profile));
+
+  // Update display
+  if (profile.name) {
+    const ini = profile.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('sbName').textContent         = profile.name;
+    document.getElementById('profileNameDisplay').textContent = profile.name;
+    document.getElementById('mainSub').textContent        = `Welcome back, ${profile.name}!`;
+    const savedPic = localStorage.getItem('ew_pic_' + user.id);
+    if (!savedPic) {
+      document.getElementById('sbAvatarText').textContent      = ini;
+      document.getElementById('profileAvatarBig').textContent  = ini;
+    }
+  }
+
+  const suc = document.getElementById('saveSuccess');
+  suc.style.display = 'flex';
+  setTimeout(() => { suc.style.display = 'none'; }, 3000);
+};
+
+// ── LOGOUT ──
+window.doLogout = async () => {
+  await sb.auth.signOut();
+  window.location.href = 'login.html';
+};
+
+// ── TABS ──
+window.switchTab = (tab) => {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('[id^="tab-btn-"]').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  const btn = document.getElementById('tab-btn-' + tab);
+  if (btn) btn.classList.add('active');
+};
+
 window.closeModal = () => document.getElementById('payModal').classList.remove('open');
-document.getElementById('payModal').addEventListener('click', e => { if(e.target===document.getElementById('payModal')) closeModal(); });
-window.cp = (btn,txt) => { navigator.clipboard.writeText(txt).catch(()=>{}); btn.textContent='✓ Copied!'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000); };
+document.getElementById('payModal').addEventListener('click', e => { if(e.target===document.getElementById('payModal')) window.closeModal(); });
+
+window.cp = (btn, txt) => {
+  navigator.clipboard.writeText(txt).catch(()=>{});
+  btn.textContent = '✓ Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+};
 </script>
 </body>
 </html>
