@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Blog — East & West Travel Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero { background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 70%); }
+    .page-hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; position: relative; }
+    .page-hero h1 { font-size: clamp(34px, 5vw, 56px); color: var(--white); position: relative; }
+    .page-hero > .container > p { color: var(--text-dim); margin-top: 12px; font-size: 15px; position: relative; }
+    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-dim); margin-top: 16px; position: relative; }
+    .breadcrumb a { color: var(--teal); }
+
+    /* BLOG GRID */
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+
+    .blog-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+    .blog-card:hover { transform: translateY(-6px); border-color: var(--border-gold); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+    .blog-thumb { width: 100%; height: 210px; object-fit: cover; background: var(--navy-mid); display: block; }
+    .blog-thumb-placeholder { width: 100%; height: 210px; background: linear-gradient(135deg, var(--navy-mid), #0D1E3A); display: flex; align-items: center; justify-content: center; font-size: 48px; opacity: 0.4; }
+    .blog-body { padding: 22px 24px 28px; }
+    .blog-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); background: var(--gold-dim); border: 1px solid var(--border-gold); padding: 4px 12px; border-radius: 50px; margin-bottom: 12px; }
+    .blog-title { font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.4; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
+    .blog-excerpt { font-size: 13.5px; color: var(--text-dim); line-height: 1.7; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .blog-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
+    .blog-date { font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .blog-read { font-size: 12px; color: var(--teal); font-weight: 600; display: flex; align-items: center; gap: 5px; text-decoration: none; }
+    .blog-read:hover { color: var(--gold); }
+
+    /* LOADING */
+    .blog-skeleton { background: var(--navy-light); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
+    .skel { background: linear-gradient(90deg, var(--navy-mid) 25%, rgba(255,255,255,0.04) 50%, var(--navy-mid) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 80px 20px; grid-column: 1/-1; }
+    .empty-state i { font-size: 56px; color: var(--text-dim); opacity: 0.4; margin-bottom: 20px; display: block; }
+    .empty-state h3 { font-size: 22px; color: var(--white); margin-bottom: 8px; }
+    .empty-state p { color: var(--text-dim); font-size: 14px; }
+
+    /* SINGLE POST MODAL */
+    .post-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(5, 12, 26, 0.95); backdrop-filter: blur(10px); overflow-y: auto; padding: 40px 20px; }
+    .post-modal.active { display: flex; align-items: flex-start; justify-content: center; }
+    .post-inner { background: var(--navy-light); border: 1px solid var(--border); border-radius: 24px; max-width: 780px; width: 100%; overflow: hidden; position: relative; margin: auto; }
+    .post-close { position: absolute; top: 20px; right: 20px; width: 38px; height: 38px; background: var(--navy-mid); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-dim); font-size: 14px; transition: all 0.3s; z-index: 10; }
+    .post-close:hover { color: var(--white); border-color: var(--teal); }
+    .post-hero-img { width: 100%; height: 320px; object-fit: cover; display: block; }
+    .post-content { padding: 36px 40px 48px; }
+    .post-content .blog-tag { margin-bottom: 16px; }
+    .post-content h1 { font-size: clamp(24px, 4vw, 34px); color: var(--white); line-height: 1.3; margin-bottom: 14px; }
+    .post-content .post-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text-dim); margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .post-body { font-size: 15px; color: #94A3B8; line-height: 1.85; }
+    .post-body h2 { font-size: 22px; color: var(--white); margin: 28px 0 12px; }
+    .post-body p { margin-bottom: 16px; }
+    .post-body strong, .post-body b { color: var(--white); }
+    .post-body a { color: var(--teal); }
+
+    @media(max-width: 960px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 600px) { .blog-grid { grid-template-columns: 1fr; } .post-content { padding: 24px 20px 36px; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.jpg" alt="East & West Travel Services">
+    <span class="nav-logo-text">East & <span>West</span> Travels</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html">Home</a>
+    <a href="packages.html">Packages</a>
+    <a href="about.html">About</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a href="contact.html">Contact</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="booking.html" class="nav-cta">Book Now</a>
+  </div>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow"><i class="fa fa-feather-alt"></i> Travel Stories & Tips</div>
+    <h1>Our Travel <em>Blog</em></h1>
+    <p>Destinations, tips, Umrah guides, and travel inspiration — all in one place.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a> <i class="fa fa-chevron-right" style="font-size:9px"></i> <span>Blog</span></div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="blog-grid" id="blogGrid">
+      <!-- skeletons while loading -->
+      <div class="blog-skeleton">
+        <div class="skel" style="height:210px"></div>
+        <div style="padding:22px 24px">
+          <div class="skel" style="height:14px;width:80px;margin-bottom:14px"></div>
+          <div class="skel" style="height:20px;margin-bottom:10px"></div>
+          <div class="skel" style="height:14px;margin-bottom:6px"></div>
+          <div class="skel" style="height:14px;width:70%"></div>
+        </div>
+      </div>
+      <div class="blog-skeleton">
+        <div class="skel" style="height:210px"></div>
+        <div style="padding:22px 24px">
+          <div class="skel" style="height:14px;width:80px;margin-bottom:14px"></div>
+          <div class="skel" style="height:20px;margin-bottom:10px"></div>
+          <div class="skel" style="height:14px;margin-bottom:6px"></div>
+          <div class="skel" style="height:14px;width:70%"></div>
+        </div>
+      </div>
+      <div class="blog-skeleton">
+        <div class="skel" style="height:210px"></div>
+        <div style="padding:22px 24px">
+          <div class="skel" style="height:14px;width:80px;margin-bottom:14px"></div>
+          <div class="skel" style="height:20px;margin-bottom:10px"></div>
+          <div class="skel" style="height:14px;margin-bottom:6px"></div>
+          <div class="skel" style="height:14px;width:70%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SINGLE POST MODAL -->
+<div class="post-modal" id="postModal">
+  <div class="post-inner" id="postInner">
+    <div class="post-close" onclick="closePost()"><i class="fa fa-times"></i></div>
+    <div id="postContent"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px;text-decoration:none">
+          <img src="logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
+          <span class="nav-logo-text">East & <span>West</span></span>
+        </a>
+        <p style="color:var(--text-dim);font-size:13.5px;margin-top:10px;line-height:1.7;font-style:italic">Our Services in Your Hands,<br>Where Ever You Are.</p>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.25);display:flex;align-items:center;justify-content:center;"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
+          <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.25);display:flex;align-items:center;justify-content:center;"><i class="fab fa-facebook" style="color:#1877F2;font-size:15px"></i></a>
+          <a href="https://wa.me/923336515349" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.25);display:flex;align-items:center;justify-content:center;"><i class="fab fa-whatsapp" style="color:#25D366;font-size:15px"></i></a>
+        </div>
+      </div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="packages.html">Packages</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="auth/login.html">Customer Login</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Our Services</h4><ul>
+        <li><a href="packages.html"><i class="fa fa-star-and-crescent" style="color:var(--gold);margin-right:6px;font-size:11px"></i>Umrah Packages</a></li>
+        <li><a href="packages.html"><i class="fa fa-plane" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Flight Tickets</a></li>
+        <li><a href="packages.html"><i class="fa fa-passport" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Visa Assistance</a></li>
+        <li><a href="packages.html"><i class="fa fa-globe" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Holiday Tours</a></li>
+        <li><a href="packages.html"><i class="fa fa-hotel" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Hotel Booking</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text-dim)">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:var(--text-dim)">eastwestpk@hotmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function loadBlogs() {
+  const grid = document.getElementById('blogGrid');
+
+  const { data: posts, error } = await supabase
+    .from('blogs')
+    .select('*')
+    .eq('status', 'published')
+    .order('created_at', { ascending: false });
+
+  if (error || !posts || posts.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fa fa-feather-alt"></i>
+        <h3>No Blog Posts Yet</h3>
+        <p>Check back soon — travel stories and tips coming your way!</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = posts.map(post => {
+    const date = new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric' });
+    const excerpt = post.content ? post.content.replace(/<[^>]+>/g, '').substring(0, 160) + '...' : '';
+    const thumb = post.image_url
+      ? `<img src="${post.image_url}" alt="${post.title}" class="blog-thumb" onerror="this.outerHTML='<div class=blog-thumb-placeholder>✈️</div>'">`
+      : `<div class="blog-thumb-placeholder">✈️</div>`;
+
+    return `
+      <div class="blog-card" onclick="openPost(${post.id})">
+        ${thumb}
+        <div class="blog-body">
+          <div class="blog-tag"><i class="fa fa-tag"></i> ${post.category || 'Travel'}</div>
+          <div class="blog-title">${post.title}</div>
+          <div class="blog-excerpt">${excerpt}</div>
+          <div class="blog-meta">
+            <span class="blog-date"><i class="fa fa-calendar-alt"></i> ${date}</span>
+            <span class="blog-read"><i class="fa fa-book-open"></i> Read More</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // store posts for modal
+  window._blogPosts = posts;
+}
+
+window.openPost = function(id) {
+  const post = window._blogPosts.find(p => p.id === id);
+  if (!post) return;
+
+  const date = new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric' });
+  const heroImg = post.image_url ? `<img src="${post.image_url}" class="post-hero-img" onerror="this.style.display='none'">` : '';
+
+  document.getElementById('postContent').innerHTML = `
+    ${heroImg}
+    <div class="post-content">
+      <div class="blog-tag"><i class="fa fa-tag"></i> ${post.category || 'Travel'}</div>
+      <h1>${post.title}</h1>
+      <div class="post-meta">
+        <span><i class="fa fa-calendar-alt"></i> ${date}</span>
+        <span><i class="fa fa-user"></i> East & West Travel Services</span>
+      </div>
+      <div class="post-body">${post.content || ''}</div>
+    </div>`;
+
+  document.getElementById('postModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closePost = function() {
+  document.getElementById('postModal').classList.remove('active');
+  document.body.style.overflow = '';
+};
+
+// close modal on backdrop click
+document.getElementById('postModal').addEventListener('click', function(e) {
+  if (e.target === this) window.closePost();
+});
+
+loadBlogs();
+</script>
+<script src="script.js"></script>
+</body>
+</html>
