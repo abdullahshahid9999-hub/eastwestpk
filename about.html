@@ -278,6 +278,7 @@
 </head>
 <body>
 
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="logo.jpg" alt="East & West Travel Services">
@@ -286,11 +287,12 @@
   <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
     <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
     <a href="packages.html">Packages</a>
     <a href="about.html" class="active">About</a>
     <a href="contact.html">Contact</a>
     <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
-    <a href="packages.html" class="nav-cta">Book Now</a>
+    <a href="services.html" class="nav-cta">Book Now</a>
   </div>
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
@@ -628,7 +630,7 @@
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
         <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text-dim)">+92 333 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:var(--text-dim)">eastwestpk@hotmail.com</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#6c090d1f181b091f181c072c040318010d0500420f0301" style="color:var(--text-dim)"><span class="__cf_email__" data-cfemail="86e3e7f5f2f1e3f5f2f6edc6eee9f2ebe7efeaa8e5e9eb">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
@@ -637,7 +639,7 @@
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script src="script.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
 <script>
 // ACCORDION
 function toggleAcc(hdr) {
@@ -676,12 +678,4 @@ const fObs = new IntersectionObserver((e) => {
     if (el.isIntersecting) { el.target.style.opacity='1'; el.target.style.transform='translateY(0)'; }
   });
 }, { threshold: 0.08 });
-document.querySelectorAll('.what-card,.svc-card,.team-card,.cert-card,.award-card').forEach((el,i) => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = `opacity 0.55s ease ${(i%6)*0.07}s, transform 0.55s ease ${(i%6)*0.07}s`;
-  fObs.observe(el);
-});
-</script>
-</body>
-</html>
+document.querySelectorAll('.what-card,.svc-card,.team-card,.cert-card,.a
