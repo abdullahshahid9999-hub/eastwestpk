@@ -115,6 +115,9 @@
     .fm-group textarea{resize:vertical;min-height:200px}
     .fm-group select option{background:#0F2040}
     .fm-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .fm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .fm-full{grid-column:1/-1}
+    .m-footer{display:flex;gap:10px;margin-top:16px}
 
     /* TRAVELER DETAIL TABLE */
     .traveler-mini{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
@@ -158,7 +161,11 @@
     <button class="sb-item active" onclick="showPage('dashboard')"><i class="fa fa-chart-line"></i> Dashboard</button>
     <button class="sb-item" onclick="showPage('bookings')"><i class="fa fa-calendar-check"></i> Bookings <span class="sb-badge" id="newBadge" style="display:none">0</span></button>
     <button class="sb-item" onclick="showPage('customers')"><i class="fa fa-users"></i> Customers</button>
+    <button class="sb-item" onclick="showPage('travellers')"><i class="fa fa-user-friends"></i> Travellers</button>
+    <button class="sb-item" onclick="showPage('users')"><i class="fa fa-user-shield"></i> User Accounts</button>
+    <button class="sb-item" onclick="showPage('admin-booking')"><i class="fa fa-pen-square"></i> Book for Client</button>
     <div class="sb-section-lbl">Content</div>
+    <button class="sb-item" onclick="showPage('packages')"><i class="fa fa-box-open"></i> Packages</button>
     <button class="sb-item" onclick="showPage('blogs')"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-section-lbl">System</div>
     <button class="sb-item" onclick="showPage('settings')"><i class="fa fa-cog"></i> Settings</button>
@@ -233,6 +240,213 @@
     </div>
   </div>
 
+  <!-- PACKAGES PAGE -->
+  <div class="page" id="pg-packages">
+    <div class="page-hdr">
+      <div><h2>Travel <em>Packages</em></h2><p>Add and manage tour packages shown on website</p></div>
+      <button class="btn-teal" onclick="openPkgModal()"><i class="fa fa-plus"></i> Add Package</button>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Package Name</th><th>Type</th><th>Price</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="pkg-tbody"><tr class="empty-row"><td colspan="6"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TRAVELLERS PAGE -->
+  <div class="page" id="pg-travellers">
+    <div class="page-hdr">
+      <div><h2>Traveller <em>Records</em></h2><p>Add and manage traveller details for your records</p></div>
+      <button class="btn-teal" onclick="openTravModal()"><i class="fa fa-plus"></i> Add Traveller</button>
+    </div>
+    <div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <input type="text" id="travSearch" placeholder="Search by name, passport, phone..." oninput="searchTravellers(this.value)" style="background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;flex:1;min-width:200px">
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Phone</th><th>Passport No</th><th>Nationality</th><th>Tour</th><th>Added</th><th>Actions</th></tr></thead>
+        <tbody id="trav-tbody"><tr class="empty-row"><td colspan="7"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TRAVELLERS PAGE — enhanced -->
+  <div class="page" id="pg-travellers">
+    <div class="page-hdr">
+      <div><h2>Traveller <em>Records</em></h2><p>Add, search and manage all traveller details</p></div>
+      <button class="btn-teal" onclick="openTravModal()"><i class="fa fa-plus"></i> Add Traveller</button>
+    </div>
+    <div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <input type="text" id="travSearch" placeholder="Search by name, passport, CNIC, phone..." oninput="searchTravellers(this.value)" style="background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;flex:1;min-width:220px">
+    </div>
+    <div class="section-card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>CNIC</th><th>Passport No</th><th>DOB</th><th>Passport Expiry</th><th>Phone</th><th>Tour</th><th>Actions</th></tr></thead>
+          <tbody id="trav-tbody"><tr class="empty-row"><td colspan="8"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER ACCOUNTS PAGE -->
+  <div class="page" id="pg-users">
+    <div class="page-hdr">
+      <div><h2>User <em>Accounts</em></h2><p>View and create customer login accounts</p></div>
+      <button class="btn-teal" onclick="openCreateUserModal()"><i class="fa fa-user-plus"></i> Create User</button>
+    </div>
+    <div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <input type="text" id="userSearch" placeholder="Search by name or email..." oninput="searchUsers(this.value)" style="background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;flex:1;min-width:220px">
+    </div>
+    <div class="section-card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Email</th><th>Name</th><th>Phone</th><th>Joined</th><th>Bookings</th><th>Actions</th></tr></thead>
+          <tbody id="users-tbody"><tr class="empty-row"><td colspan="6"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN BOOKING PAGE -->
+  <div class="page" id="pg-admin-booking">
+    <div class="page-hdr">
+      <div><h2>Book <em>for Client</em></h2><p>Create a booking on behalf of a customer or traveller</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start">
+      <div class="section-card">
+        <div class="sc-hdr"><h3>Booking <em>Details</em></h3></div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:16px">
+
+          <!-- Client selection -->
+          <div style="background:var(--navy-mid);border:1px solid var(--border-gold);border-radius:12px;padding:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:12px">Client Information</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="fm-group" style="margin:0">
+                <label>Customer Name *</label>
+                <input type="text" id="ab-name" placeholder="Full name">
+              </div>
+              <div class="fm-group" style="margin:0">
+                <label>Phone / WhatsApp *</label>
+                <input type="tel" id="ab-phone" placeholder="+92 3XX XXXXXXX">
+              </div>
+              <div class="fm-group fm-row" style="margin:0;grid-column:1/-1">
+                <div class="fm-group" style="margin:0">
+                  <label>Email</label>
+                  <input type="email" id="ab-email" placeholder="email@example.com">
+                </div>
+                <div class="fm-group" style="margin:0">
+                  <label>Or select existing traveller</label>
+                  <select id="ab-trav-select" onchange="fillFromTraveller(this.value)">
+                    <option value="">— Select Traveller —</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Package selection -->
+          <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px">Package Details</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="fm-group" style="margin:0">
+                <label>Tour / Package Name *</label>
+                <select id="ab-tour" onchange="fillPackageFromSelect()">
+                  <option value="">— Select Package —</option>
+                  <option>7 Night Economy Umrah</option>
+                  <option>14 Night Umrah Package</option>
+                  <option>Dubai Premium Tour</option>
+                  <option>Thailand Adventure</option>
+                  <option>Bali Honeymoon Package</option>
+                  <option>Family Holiday Package</option>
+                  <option value="custom">Custom / Other</option>
+                </select>
+              </div>
+              <div class="fm-group" style="margin:0">
+                <label>Custom Tour Name</label>
+                <input type="text" id="ab-tour-custom" placeholder="Enter if custom selected" style="display:none">
+              </div>
+              <div class="fm-group" style="margin:0">
+                <label>Price</label>
+                <input type="text" id="ab-price" placeholder="Rs. 85,000">
+              </div>
+              <div class="fm-group" style="margin:0">
+                <label>Duration</label>
+                <input type="text" id="ab-duration" placeholder="7 Nights / 8 Days">
+              </div>
+              <div class="fm-group" style="margin:0">
+                <label>Departure Date</label>
+                <input type="text" id="ab-dep" placeholder="Apr 15, 2026">
+              </div>
+              <div class="fm-group" style="margin:0">
+                <label>Return Date</label>
+                <input type="text" id="ab-ret" placeholder="Apr 23, 2026">
+              </div>
+            </div>
+          </div>
+
+          <!-- PAX -->
+          <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px">Travelers</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+              <div class="fm-group" style="margin:0"><label>Adults</label><input type="number" id="ab-adults" value="1" min="1"></div>
+              <div class="fm-group" style="margin:0"><label>Children</label><input type="number" id="ab-children" value="0" min="0"></div>
+              <div class="fm-group" style="margin:0"><label>Infants</label><input type="number" id="ab-infants" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <!-- Extra -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="fm-group" style="margin:0">
+              <label>Room Type</label>
+              <select id="ab-room">
+                <option>4 Sharing</option>
+                <option>3 Sharing</option>
+                <option>Double Room</option>
+                <option>Single Room</option>
+              </select>
+            </div>
+            <div class="fm-group" style="margin:0">
+              <label>Payment Status</label>
+              <select id="ab-payment">
+                <option value="unpaid">Unpaid</option>
+                <option value="advance">Advance Paid</option>
+                <option value="full">Fully Paid</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fm-group" style="margin:0">
+            <label>Admin Notes (internal only)</label>
+            <textarea id="ab-notes" placeholder="Internal notes, special instructions..." style="min-height:80px"></textarea>
+          </div>
+
+          <button class="btn-teal" style="width:100%;justify-content:center;padding:14px;font-size:15px" onclick="submitAdminBooking()" id="ab-btn">
+            <i class="fa fa-check-circle"></i> Confirm Booking — Booked by Admin
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="section-card" style="position:sticky;top:20px">
+        <div class="sc-hdr"><h3>Booking <em>Preview</em></h3></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gold)">
+            <i class="fa fa-shield-alt"></i> This booking will be tagged as <strong>"Booked by Admin"</strong>
+          </div>
+          <div style="font-size:13px;color:var(--text-dim)">Client: <strong style="color:var(--white)" id="prev-name">—</strong></div>
+          <div style="font-size:13px;color:var(--text-dim)">Tour: <strong style="color:var(--white)" id="prev-tour">—</strong></div>
+          <div style="font-size:13px;color:var(--text-dim)">Price: <strong style="color:var(--gold)" id="prev-price">—</strong></div>
+          <div style="font-size:13px;color:var(--text-dim)">Dep: <strong style="color:var(--white)" id="prev-dep">—</strong></div>
+          <hr style="border-color:var(--border);margin:6px 0">
+          <div style="font-size:13px;color:var(--text-dim)">Adults: <strong style="color:var(--white)" id="prev-adults">1</strong></div>
+          <div style="font-size:13px;color:var(--text-dim)">Room: <strong style="color:var(--white)" id="prev-room">4 Sharing</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- BLOGS PAGE -->
   <div class="page" id="pg-blogs">
     <div class="page-hdr">
@@ -270,6 +484,96 @@
   <div class="modal">
     <div class="m-hdr"><h3>Booking <em>Details</em></h3><button class="m-close" onclick="closeModal('bkModal')"><i class="fa fa-times"></i></button></div>
     <div class="m-body" id="bkModalBody"></div>
+  </div>
+</div>
+
+<!-- PACKAGE MODAL -->
+<div class="modal-bg" id="pkgModal">
+  <div class="modal" style="max-width:640px">
+    <div class="m-hdr"><h3 id="pkgModalTitle">Add <em>Package</em></h3><button class="m-close" onclick="closeModal('pkgModal')"><i class="fa fa-times"></i></button></div>
+    <div class="m-body">
+      <input type="hidden" id="pkgId">
+      <div class="fm-grid">
+        <div class="fm-group fm-full"><label>Package Name *</label><input type="text" id="pkgName" placeholder="e.g. 7 Night Economy Umrah"></div>
+        <div class="fm-group"><label>Type *</label>
+          <select id="pkgType">
+            <option>Umrah</option><option>Holiday</option><option>Family</option><option>Honeymoon</option><option>Visa</option><option>Flight</option><option>Hotel</option>
+          </select>
+        </div>
+        <div class="fm-group"><label>Duration</label><input type="text" id="pkgDuration" placeholder="e.g. 7 Nights / 8 Days"></div>
+        <div class="fm-group"><label>Price *</label><input type="text" id="pkgPrice" placeholder="e.g. Rs. 85,000"></div>
+        <div class="fm-group"><label>Price Note</label><input type="text" id="pkgPriceNote" placeholder="e.g. per person (4 sharing)"></div>
+        <div class="fm-group"><label>Departure Date</label><input type="text" id="pkgDep" placeholder="e.g. Apr 15, 2026"></div>
+        <div class="fm-group"><label>Return Date</label><input type="text" id="pkgRet" placeholder="e.g. Apr 23, 2026"></div>
+        <div class="fm-group"><label>Airline</label><input type="text" id="pkgAirline" placeholder="e.g. Pakistan Int'l Airlines"></div>
+        <div class="fm-group"><label>Flight Route</label><input type="text" id="pkgRoute" placeholder="e.g. LHE → JED (Direct)"></div>
+        <div class="fm-group fm-full"><label>Hotels Included</label><input type="text" id="pkgHotels" placeholder="e.g. Makarem Ajyad (Makkah), Pullman ZamZam (Madinah)"></div>
+        <div class="fm-group fm-full"><label>What's Included (comma separated)</label><input type="text" id="pkgIncludes" placeholder="e.g. Breakfast, Transfers, Ziyarat"></div>
+        <div class="fm-group fm-full"><label>Excludes</label><input type="text" id="pkgExcludes" placeholder="e.g. Flights, Umrah Visa, ZamZam"></div>
+        <div class="fm-group fm-full"><label>Cover Image URL</label><input type="text" id="pkgImg" placeholder="https://... or leave blank"></div>
+        <div class="fm-group"><label>Status</label>
+          <select id="pkgStatus"><option value="active">Active (shown on website)</option><option value="hidden">Hidden</option></select>
+        </div>
+      </div>
+      <div class="m-footer">
+        <button class="btn-teal" onclick="savePkg()"><i class="fa fa-save"></i> Save Package</button>
+        <button class="btn-ghost" onclick="closeModal('pkgModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRAVELLER MODAL -->
+<div class="modal-bg" id="travModal">
+  <div class="modal" style="max-width:680px">
+    <div class="m-hdr"><h3 id="travModalTitle">Add <em>Traveller</em></h3><button class="m-close" onclick="closeModal('travModal')"><i class="fa fa-times"></i></button></div>
+    <div class="m-body">
+      <input type="hidden" id="travId">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="fm-group"><label>First Name *</label><input type="text" id="travFName" placeholder="Muhammad"></div>
+        <div class="fm-group"><label>Last Name *</label><input type="text" id="travLName" placeholder="Ali"></div>
+        <div class="fm-group"><label>Phone / WhatsApp *</label><input type="tel" id="travPhone" placeholder="+92 3XX XXXXXXX"></div>
+        <div class="fm-group"><label>Email</label><input type="email" id="travEmail" placeholder="email@example.com"></div>
+        <div class="fm-group"><label>CNIC No</label><input type="text" id="travCnic" placeholder="35201-XXXXXXX-X"></div>
+        <div class="fm-group"><label>Nationality</label><input type="text" id="travNationality" placeholder="Pakistani"></div>
+        <div class="fm-group"><label>Date of Birth *</label><input type="date" id="travDob"></div>
+        <div class="fm-group"><label>Gender</label><select id="travGender"><option>Male</option><option>Female</option></select></div>
+        <div class="fm-group"><label>Passport Number *</label><input type="text" id="travPassport" placeholder="AB1234567" oninput="this.value=this.value.toUpperCase()"></div>
+        <div class="fm-group"><label>Passport Issue Date</label><input type="date" id="travPassportIssue"></div>
+        <div class="fm-group"><label>Passport Expiry Date *</label><input type="date" id="travPassportExp"></div>
+        <div class="fm-group"><label>City</label><input type="text" id="travCity" placeholder="Faisalabad"></div>
+        <div class="fm-group" style="grid-column:1/-1"><label>Tour / Package</label><input type="text" id="travTour" placeholder="7 Night Economy Umrah — Apr 2026"></div>
+        <div class="fm-group" style="grid-column:1/-1"><label>Notes / Medical Info</label><textarea id="travNotes" placeholder="Medical conditions, special requirements..." style="height:70px;resize:vertical"></textarea></div>
+      </div>
+      <div class="m-footer" style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn-teal" onclick="saveTraveller()"><i class="fa fa-save"></i> Save Traveller</button>
+        <button class="btn-ghost" onclick="closeModal('travModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE USER MODAL -->
+<div class="modal-bg" id="createUserModal">
+  <div class="modal" style="max-width:480px">
+    <div class="m-hdr"><h3>Create <em>User Account</em></h3><button class="m-close" onclick="closeModal('createUserModal')"><i class="fa fa-times"></i></button></div>
+    <div class="m-body">
+      <div style="background:rgba(14,165,233,0.06);border:1px solid rgba(14,165,233,0.2);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--text-dim);margin-bottom:18px">
+        <i class="fa fa-info-circle" style="color:var(--teal)"></i> A new customer account will be created. They'll receive a welcome email.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="fm-group" style="margin:0"><label>Full Name *</label><input type="text" id="cu-name" placeholder="Muhammad Ali"></div>
+        <div class="fm-group" style="margin:0"><label>Email Address *</label><input type="email" id="cu-email" placeholder="email@example.com"></div>
+        <div class="fm-group" style="margin:0"><label>Phone / WhatsApp</label><input type="tel" id="cu-phone" placeholder="+92 3XX XXXXXXX"></div>
+        <div class="fm-group" style="margin:0"><label>Temporary Password *</label><input type="password" id="cu-password" placeholder="Min 8 characters"></div>
+        <div class="fm-group" style="margin:0"><label>Confirm Password *</label><input type="password" id="cu-confirm" placeholder="Repeat password"></div>
+      </div>
+      <div id="cu-error" style="display:none;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#EF4444;margin-top:14px"></div>
+      <div style="margin-top:18px;display:flex;gap:10px">
+        <button class="btn-teal" onclick="createUserAccount()" id="cu-btn"><i class="fa fa-user-plus"></i> Create Account</button>
+        <button class="btn-ghost" onclick="closeModal('createUserModal')">Cancel</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -312,7 +616,8 @@
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
+const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // Auth guard
@@ -328,19 +633,37 @@ let allBookings = [], allCustomers = [], allBlogs = [];
 
 // ── LOAD ALL ──
 async function loadAll() {
-  const [bkRes, custRes, blogRes] = await Promise.all([
+  const [bkRes, custRes, blogRes, travRes] = await Promise.all([
     sb.from('bookings').select('*').order('created_at',{ascending:false}),
     sb.from('customers').select('*').order('created_at',{ascending:false}),
     sb.from('blogs').select('*').order('created_at',{ascending:false}),
+    sb.from('travellers').select('*').order('created_at',{ascending:false}),
   ]);
-  allBookings  = bkRes.data   || [];
-  allCustomers = custRes.data || [];
-  allBlogs     = blogRes.data || [];
+  allBookings   = bkRes.data  || [];
+  allCustomers  = custRes.data|| [];
+  allBlogs      = blogRes.data|| [];
+  allTravellers = travRes.data|| [];
+  allUsers      = allCustomers;
+
   renderDashboard();
   renderBookings(allBookings);
   renderCustomers(allCustomers);
   renderBlogs(allBlogs);
+  renderTravellers(allTravellers);
+  if(typeof renderPackages==="function") renderPackages(allPkgs||[]);
+  renderUsers(allUsers);
+
+  const sel = document.getElementById("ab-trav-select");
+  if (sel) {
+    allTravellers.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t.id;
+      opt.textContent = t.name + " — " + (t.phone||t.email||"");
+      sel.appendChild(opt);
+    });
+  }
 }
+async function loadData() { await loadAll(); }
 loadAll();
 
 // ── DASHBOARD ──
@@ -363,7 +686,7 @@ function renderBookingsTable(data, tbodyId, mini) {
   if (!data.length) { tb.innerHTML=`<tr class="empty-row"><td colspan="8">No bookings found</td></tr>`; return; }
   tb.innerHTML = data.map(b => `
     <tr>
-      <td><code style="font-size:12px;color:var(--teal)">${b.booking_ref||b.id?.slice(0,8)}</code></td>
+      <td><code style="font-size:12px;color:var(--teal)">${b.booking_ref||b.id?.slice(0,8)}</code>${b.booked_by_admin?'<span class="pill" style="background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid var(--border-gold);font-size:9px;margin-left:6px">Admin</span>':''}</td>
       <td><strong>${b.customer_name||'—'}</strong><br><span style="font-size:11px">${b.customer_email||''}</span></td>
       <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><strong>${b.tour_name||'—'}</strong></td>
       <td>${b.travel_date? new Date(b.travel_date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td>
@@ -557,6 +880,490 @@ window.deleteBlog = async (id) => {
   else toast('Error: '+error.message, true);
 };
 
+// ── PACKAGES ──
+let allPkgs = [];
+
+async function loadPackages() {
+  const { data } = await sb.from('packages').select('*').order('created_at', { ascending: false });
+  allPkgs = data || [];
+  renderPackages(allPkgs);
+}
+
+function renderPackages(data) {
+  const tb = document.getElementById('pkg-tbody');
+  if (!tb) return;
+  if (!data.length) { tb.innerHTML = `<tr class="empty-row"><td colspan="6">No packages yet. <button class="act-btn" onclick="openPkgModal()">Add first package</button></td></tr>`; return; }
+  tb.innerHTML = data.map(p => `
+    <tr>
+      <td><strong style="color:var(--white)">${p.name||'—'}</strong></td>
+      <td><span class="pill pill-new">${p.type||'—'}</span></td>
+      <td style="color:var(--gold);font-weight:700">${p.price||'—'}</td>
+      <td style="color:var(--text-dim)">${p.duration||'—'}</td>
+      <td><span class="pill ${p.status==='active'?'pill-confirmed':'pill-cancelled'}">${p.status||'active'}</span></td>
+      <td>
+        <button class="act-btn" onclick="editPkg('${p.id}')"><i class="fa fa-edit"></i></button>
+        <button class="act-btn" style="color:#EF4444" onclick="deletePkg('${p.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+window.openPkgModal = () => {
+  document.getElementById('pkgModalTitle').innerHTML = 'Add <em>Package</em>';
+  document.getElementById('pkgId').value = '';
+  ['pkgName','pkgDuration','pkgPrice','pkgPriceNote','pkgDep','pkgRet','pkgAirline','pkgRoute','pkgHotels','pkgIncludes','pkgExcludes','pkgImg'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pkgType').value = 'Umrah';
+  document.getElementById('pkgStatus').value = 'active';
+  openModal('pkgModal');
+};
+
+window.editPkg = (id) => {
+  const p = allPkgs.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('pkgModalTitle').innerHTML = 'Edit <em>Package</em>';
+  document.getElementById('pkgId').value         = p.id;
+  document.getElementById('pkgName').value        = p.name||'';
+  document.getElementById('pkgType').value        = p.type||'Umrah';
+  document.getElementById('pkgDuration').value    = p.duration||'';
+  document.getElementById('pkgPrice').value       = p.price||'';
+  document.getElementById('pkgPriceNote').value   = p.price_note||'';
+  document.getElementById('pkgDep').value         = p.dep_date||'';
+  document.getElementById('pkgRet').value         = p.ret_date||'';
+  document.getElementById('pkgAirline').value     = p.airline||'';
+  document.getElementById('pkgRoute').value       = p.route||'';
+  document.getElementById('pkgHotels').value      = p.hotels||'';
+  document.getElementById('pkgIncludes').value    = p.includes||'';
+  document.getElementById('pkgExcludes').value    = p.excludes||'';
+  document.getElementById('pkgImg').value         = p.image_url||'';
+  document.getElementById('pkgStatus').value      = p.status||'active';
+  openModal('pkgModal');
+};
+
+window.savePkg = async () => {
+  const id = document.getElementById('pkgId').value;
+  const name = document.getElementById('pkgName').value.trim();
+  if (!name) { toast('Package name required!', true); return; }
+  const payload = {
+    name, type: document.getElementById('pkgType').value,
+    duration: document.getElementById('pkgDuration').value.trim(),
+    price: document.getElementById('pkgPrice').value.trim(),
+    price_note: document.getElementById('pkgPriceNote').value.trim(),
+    dep_date: document.getElementById('pkgDep').value.trim(),
+    ret_date: document.getElementById('pkgRet').value.trim(),
+    airline: document.getElementById('pkgAirline').value.trim(),
+    route: document.getElementById('pkgRoute').value.trim(),
+    hotels: document.getElementById('pkgHotels').value.trim(),
+    includes: document.getElementById('pkgIncludes').value.trim(),
+    excludes: document.getElementById('pkgExcludes').value.trim(),
+    image_url: document.getElementById('pkgImg').value.trim(),
+    status: document.getElementById('pkgStatus').value,
+    updated_at: new Date().toISOString()
+  };
+  let error;
+  if (id) {
+    const res = await sb.from('packages').update(payload).eq('id', id);
+    error = res.error;
+    if (!error) allPkgs = allPkgs.map(p => p.id===id ? {...p,...payload} : p);
+  } else {
+    const res = await sb.from('packages').insert([payload]).select();
+    error = res.error;
+    if (!error && res.data) allPkgs = [res.data[0], ...allPkgs];
+  }
+  if (!error) { closeModal('pkgModal'); renderPackages(allPkgs); toast(id ? 'Package updated!' : 'Package added!'); }
+  else toast('Error: ' + error.message, true);
+};
+
+window.deletePkg = async (id) => {
+  if (!confirm('Delete this package?')) return;
+  const { error } = await sb.from('packages').delete().eq('id', id);
+  if (!error) { allPkgs = allPkgs.filter(p => p.id !== id); renderPackages(allPkgs); toast('Package deleted.'); }
+  else toast('Error: ' + error.message, true);
+};
+
+// ── TRAVELLERS ──
+let allTravellers = [];
+
+async function loadTravellers() {
+  const { data } = await sb.from('travellers').select('*').order('created_at', { ascending: false });
+  allTravellers = data || [];
+  renderTravellers(allTravellers);
+}
+
+function renderTravellers(data) {
+  const tb = document.getElementById('trav-tbody');
+  if (!tb) return;
+  if (!data.length) { tb.innerHTML = `<tr class="empty-row"><td colspan="7">No travellers yet. <button class="act-btn" onclick="openTravModal()">Add first traveller</button></td></tr>`; return; }
+  tb.innerHTML = data.map(t => `
+    <tr>
+      <td><strong style="color:var(--white)">${t.name||'—'}</strong><div style="font-size:11px;color:var(--text-dim)">${t.email||''}</div></td>
+      <td style="color:var(--text-dim)">${t.phone||'—'}</td>
+      <td style="font-family:'Courier New',monospace;font-size:12px;color:var(--teal)">${t.passport_no||'—'}</td>
+      <td style="color:var(--text-dim)">${t.nationality||'—'}</td>
+      <td style="color:var(--text-dim);font-size:12px">${t.tour||'—'}</td>
+      <td style="color:var(--text-dim);font-size:12px">${t.created_at ? new Date(t.created_at).toLocaleDateString('en-GB') : '—'}</td>
+      <td>
+        <button class="act-btn" onclick="editTraveller('${t.id}')"><i class="fa fa-edit"></i></button>
+        <button class="act-btn" style="color:#EF4444" onclick="deleteTraveller('${t.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+window.searchTravellers = (q) => {
+  const filtered = q ? allTravellers.filter(t =>
+    (t.name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (t.passport_no||'').toLowerCase().includes(q.toLowerCase()) ||
+    (t.phone||'').includes(q) ||
+    (t.tour||'').toLowerCase().includes(q.toLowerCase())
+  ) : allTravellers;
+  renderTravellers(filtered);
+};
+
+window.openTravModal = () => {
+  document.getElementById('travModalTitle').innerHTML = 'Add <em>Traveller</em>';
+  document.getElementById('travId').value = '';
+  ['travName','travPhone','travEmail','travCnic','travPassport','travPassportExp','travDob','travCity','travTour','travNotes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('travNationality').value = 'Pakistani';
+  document.getElementById('travGender').value = 'Male';
+  openModal('travModal');
+};
+
+window.editTraveller = (id) => {
+  const t = allTravellers.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('travModalTitle').innerHTML = 'Edit <em>Traveller</em>';
+  document.getElementById('travId').value            = t.id;
+  document.getElementById('travName').value          = t.name||'';
+  document.getElementById('travPhone').value         = t.phone||'';
+  document.getElementById('travEmail').value         = t.email||'';
+  document.getElementById('travCnic').value          = t.cnic||'';
+  document.getElementById('travPassport').value      = t.passport_no||'';
+  document.getElementById('travPassportExp').value   = t.passport_expiry||'';
+  document.getElementById('travDob').value           = t.dob||'';
+  document.getElementById('travNationality').value   = t.nationality||'Pakistani';
+  document.getElementById('travCity').value          = t.city||'';
+  document.getElementById('travGender').value        = t.gender||'Male';
+  document.getElementById('travTour').value          = t.tour||'';
+  document.getElementById('travNotes').value         = t.notes||'';
+  openModal('travModal');
+};
+
+window.saveTraveller = async () => {
+  const id   = document.getElementById('travId').value;
+  const fn   = document.getElementById('travFName').value.trim();
+  const ln   = document.getElementById('travLName').value.trim();
+  if (!fn || !ln) { toast('First & last name required!', true); return; }
+  const fullName = fn + ' ' + ln;
+  const payload = {
+    name: fullName, first_name: fn, last_name: ln,
+    phone: document.getElementById('travPhone').value.trim(),
+    email: document.getElementById('travEmail').value.trim(),
+    cnic: document.getElementById('travCnic').value.trim(),
+    passport_no: document.getElementById('travPassport').value.trim(),
+    passport_issue: document.getElementById('travPassportIssue').value || null,
+    passport_expiry: document.getElementById('travPassportExp').value || null,
+    dob: document.getElementById('travDob').value || null,
+    nationality: document.getElementById('travNationality').value || 'Pakistani',
+    city: document.getElementById('travCity').value.trim(),
+    gender: document.getElementById('travGender').value,
+    tour: document.getElementById('travTour').value.trim(),
+    notes: document.getElementById('travNotes').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+  let error;
+  if (id) {
+    const res = await sb.from('travellers').update(payload).eq('id', id);
+    error = res.error;
+    if (!error) allTravellers = allTravellers.map(t => t.id===id ? {...t,...payload} : t);
+  } else {
+    const res = await sb.from('travellers').insert([payload]).select();
+    error = res.error;
+    if (!error && res.data) allTravellers = [res.data[0], ...allTravellers];
+  }
+  if (!error) { closeModal('travModal'); renderTravellers(allTravellers); toast(id ? 'Traveller updated!' : 'Traveller added!'); }
+  else toast('Error: ' + error.message, true);
+};
+
+window.deleteTraveller = async (id) => {
+  if (!confirm('Delete this traveller record?')) return;
+  const { error } = await sb.from('travellers').delete().eq('id', id);
+  if (!error) { allTravellers = allTravellers.filter(t => t.id !== id); renderTravellers(allTravellers); toast('Traveller deleted.'); }
+  else toast('Error: ' + error.message, true);
+};
+
+window.openTravModal = () => {
+  document.getElementById('travModalTitle').innerHTML = 'Add <em>Traveller</em>';
+  document.getElementById('travId').value = '';
+  ['travFName','travLName','travPhone','travEmail','travCnic','travPassport','travPassportIssue','travPassportExp','travDob','travCity','travTour','travNotes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('travNationality').value = 'Pakistani';
+  document.getElementById('travGender').value = 'Male';
+  openModal('travModal');
+};
+
+window.editTraveller = (id) => {
+  const t = allTravellers.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('travModalTitle').innerHTML = 'Edit <em>Traveller</em>';
+  document.getElementById('travId').value             = t.id;
+  document.getElementById('travFName').value          = t.first_name || t.name?.split(' ')[0] || '';
+  document.getElementById('travLName').value          = t.last_name  || t.name?.split(' ').slice(1).join(' ') || '';
+  document.getElementById('travPhone').value          = t.phone||'';
+  document.getElementById('travEmail').value          = t.email||'';
+  document.getElementById('travCnic').value           = t.cnic||'';
+  document.getElementById('travPassport').value       = t.passport_no||'';
+  document.getElementById('travPassportIssue').value  = t.passport_issue||'';
+  document.getElementById('travPassportExp').value    = t.passport_expiry||'';
+  document.getElementById('travDob').value            = t.dob||'';
+  document.getElementById('travNationality').value    = t.nationality||'Pakistani';
+  document.getElementById('travCity').value           = t.city||'';
+  document.getElementById('travGender').value         = t.gender||'Male';
+  document.getElementById('travTour').value           = t.tour||'';
+  document.getElementById('travNotes').value          = t.notes||'';
+  openModal('travModal');
+};
+
+// ── RENDER TRAVELLERS (enhanced) ──
+function renderTravellers(data) {
+  const tb = document.getElementById('trav-tbody');
+  if (!tb) return;
+  if (!data.length) { tb.innerHTML=`<tr class="empty-row"><td colspan="8">No travellers yet. <button class="act-btn" onclick="openTravModal()">Add first traveller</button></td></tr>`; return; }
+  tb.innerHTML = data.map(t => `
+    <tr>
+      <td><strong style="color:var(--white)">${t.name||'—'}</strong><div style="font-size:11px;color:var(--text-dim)">${t.email||''}</div></td>
+      <td style="font-family:'Courier New',monospace;font-size:12px;color:var(--text-dim)">${t.cnic||'—'}</td>
+      <td style="font-family:'Courier New',monospace;font-size:12px;color:var(--teal)">${t.passport_no||'—'}</td>
+      <td style="color:var(--text-dim);font-size:12px">${t.dob?new Date(t.dob).toLocaleDateString('en-GB'):'—'}</td>
+      <td style="color:var(--text-dim);font-size:12px">${t.passport_expiry?new Date(t.passport_expiry).toLocaleDateString('en-GB'):'—'}</td>
+      <td style="color:var(--text-dim)">${t.phone||'—'}</td>
+      <td style="color:var(--text-dim);font-size:12px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.tour||'—'}</td>
+      <td>
+        <button class="act-btn" onclick="editTraveller('${t.id}')"><i class="fa fa-edit"></i></button>
+        <button class="act-btn del" onclick="deleteTraveller('${t.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+window.searchTravellers = (q) => {
+  const f = q ? allTravellers.filter(t =>
+    (t.name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (t.cnic||'').includes(q) ||
+    (t.passport_no||'').toLowerCase().includes(q.toLowerCase()) ||
+    (t.phone||'').includes(q) ||
+    (t.email||'').toLowerCase().includes(q.toLowerCase())
+  ) : allTravellers;
+  renderTravellers(f);
+};
+
+// ── USERS ──
+let allUsers = [];
+
+async function loadUsers() {
+  const { data } = await sb.from('customers').select('*').order('created_at', { ascending: false });
+  allUsers = data || [];
+  renderUsers(allUsers);
+  // Also populate traveller select in admin booking
+  const sel = document.getElementById('ab-trav-select');
+  if (sel && allTravellers.length) {
+    allTravellers.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.id;
+      opt.textContent = `${t.name} — ${t.phone||t.email||''}`;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+function renderUsers(data) {
+  const tb = document.getElementById('users-tbody');
+  if (!tb) return;
+  if (!data.length) { tb.innerHTML=`<tr class="empty-row"><td colspan="6">No users yet.</td></tr>`; return; }
+  tb.innerHTML = data.map(u => `
+    <tr>
+      <td style="color:var(--teal)">${u.email||'—'}</td>
+      <td><strong style="color:var(--white)">${u.full_name||'—'}</strong></td>
+      <td style="color:var(--text-dim)">${u.phone||'—'}</td>
+      <td style="color:var(--text-dim);font-size:12px">${u.created_at?new Date(u.created_at).toLocaleDateString('en-GB'):'—'}</td>
+      <td><span class="pill pill-new">${u.booking_count||0}</span></td>
+      <td>
+        <button class="act-btn" onclick="bookForUser('${u.email}','${u.full_name||''}','${u.phone||''}')"><i class="fa fa-calendar-plus"></i> Book</button>
+        <button class="act-btn del" onclick="deleteUser('${u.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+window.searchUsers = (q) => {
+  const f = q ? allUsers.filter(u =>
+    (u.email||'').toLowerCase().includes(q.toLowerCase()) ||
+    (u.full_name||'').toLowerCase().includes(q.toLowerCase())
+  ) : allUsers;
+  renderUsers(f);
+};
+
+window.deleteUser = async (id) => {
+  if (!confirm('Remove this user from customers list?')) return;
+  const { error } = await sb.from('customers').delete().eq('id', id);
+  if (!error) { allUsers = allUsers.filter(u => u.id !== id); renderUsers(allUsers); toast('User removed.'); }
+  else toast('Error: ' + error.message, true);
+};
+
+window.bookForUser = (email, name, phone) => {
+  showPage('admin-booking');
+  document.getElementById('ab-email').value = email;
+  document.getElementById('ab-name').value  = name;
+  document.getElementById('ab-phone').value = phone;
+  updateBookingPreview();
+};
+
+// ── CREATE USER ACCOUNT ──
+window.openCreateUserModal = () => {
+  ['cu-name','cu-email','cu-phone','cu-password','cu-confirm'].forEach(id => { const el=document.getElementById(id); if(el)el.value=''; });
+  document.getElementById('cu-error').style.display='none';
+  openModal('createUserModal');
+};
+
+window.createUserAccount = async () => {
+  const name = document.getElementById('cu-name').value.trim();
+  const email= document.getElementById('cu-email').value.trim();
+  const phone= document.getElementById('cu-phone').value.trim();
+  const pwd  = document.getElementById('cu-password').value;
+  const conf = document.getElementById('cu-confirm').value;
+  const errEl= document.getElementById('cu-error');
+
+  if (!name || !email || !pwd) { errEl.textContent='Name, email and password required.'; errEl.style.display='block'; return; }
+  if (pwd.length < 8) { errEl.textContent='Password must be at least 8 characters.'; errEl.style.display='block'; return; }
+  if (pwd !== conf) { errEl.textContent='Passwords do not match.'; errEl.style.display='block'; return; }
+
+  const btn = document.getElementById('cu-btn');
+  btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Creating...';
+
+  const { data, error } = await sb.auth.admin.createUser({
+    email, password: pwd,
+    email_confirm: true,
+    user_metadata: { full_name: name }
+  });
+
+  if (error) {
+    // Fallback: save to customers table at least
+    await sb.from('customers').upsert([{ email, full_name: name, phone }], { onConflict: 'email' });
+    errEl.textContent = 'Auth account needs admin API key. Customer saved to records instead.';
+    errEl.style.display='block';
+    btn.disabled=false; btn.innerHTML='<i class="fa fa-user-plus"></i> Create Account';
+    return;
+  }
+
+  await sb.from('customers').upsert([{ email, full_name: name, phone }], { onConflict: 'email' });
+  closeModal('createUserModal');
+  await loadUsers();
+  toast('User account created successfully!');
+  btn.disabled=false; btn.innerHTML='<i class="fa fa-user-plus"></i> Create Account';
+};
+
+// ── ADMIN BOOKING ──
+const ADMIN_PACKAGES = {
+  '7 Night Economy Umrah':  { price:'Rs. 85,000',  duration:'7 Nights / 8 Days',  dep:'Apr 15, 2026', ret:'Apr 23, 2026' },
+  '14 Night Umrah Package': { price:'Rs. 1,50,000', duration:'14 Nights / 15 Days', dep:'May 10, 2026', ret:'May 25, 2026' },
+  'Dubai Premium Tour':     { price:'Rs. 1,20,000', duration:'5 Nights / 6 Days',   dep:'Apr 20, 2026', ret:'Apr 26, 2026' },
+  'Thailand Adventure':     { price:'Rs. 95,000',   duration:'7 Nights / 8 Days',   dep:'May 5, 2026',  ret:'May 13, 2026' },
+  'Bali Honeymoon Package': { price:'Rs. 1,80,000', duration:'6 Nights / 7 Days',   dep:'Jun 1, 2026',  ret:'Jun 8, 2026'  },
+  'Family Holiday Package': { price:'Rs. 3,20,000', duration:'7 Nights / 8 Days',   dep:'Jun 15, 2026', ret:'Jun 23, 2026' },
+};
+
+window.fillPackageFromSelect = () => {
+  const val = document.getElementById('ab-tour').value;
+  const customField = document.getElementById('ab-tour-custom');
+  if (val === 'custom') {
+    customField.style.display = 'block';
+  } else {
+    customField.style.display = 'none';
+    if (ADMIN_PACKAGES[val]) {
+      const p = ADMIN_PACKAGES[val];
+      document.getElementById('ab-price').value    = p.price;
+      document.getElementById('ab-duration').value = p.duration;
+      document.getElementById('ab-dep').value      = p.dep;
+      document.getElementById('ab-ret').value      = p.ret;
+    }
+  }
+  updateBookingPreview();
+};
+
+window.fillFromTraveller = (travId) => {
+  if (!travId) return;
+  const t = allTravellers.find(x => x.id === travId);
+  if (!t) return;
+  document.getElementById('ab-name').value  = t.name || '';
+  document.getElementById('ab-phone').value = t.phone || '';
+  document.getElementById('ab-email').value = t.email || '';
+  updateBookingPreview();
+};
+
+function updateBookingPreview() {
+  const tourVal = document.getElementById('ab-tour').value;
+  const tour = tourVal === 'custom' ? document.getElementById('ab-tour-custom').value : tourVal;
+  document.getElementById('prev-name').textContent  = document.getElementById('ab-name').value  || '—';
+  document.getElementById('prev-tour').textContent  = tour || '—';
+  document.getElementById('prev-price').textContent = document.getElementById('ab-price').value || '—';
+  document.getElementById('prev-dep').textContent   = document.getElementById('ab-dep').value   || '—';
+  document.getElementById('prev-adults').textContent= document.getElementById('ab-adults').value|| '1';
+  document.getElementById('prev-room').textContent  = document.getElementById('ab-room').value  || '4 Sharing';
+}
+
+// Live preview update
+['ab-name','ab-price','ab-dep','ab-adults','ab-room'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateBookingPreview);
+});
+
+window.submitAdminBooking = async () => {
+  const tourVal = document.getElementById('ab-tour').value;
+  const tour    = tourVal === 'custom' ? document.getElementById('ab-tour-custom').value.trim() : tourVal;
+  const name    = document.getElementById('ab-name').value.trim();
+  const phone   = document.getElementById('ab-phone').value.trim();
+  const email   = document.getElementById('ab-email').value.trim();
+
+  if (!name)  { toast('Client name required!', true); return; }
+  if (!tour)  { toast('Select a package!', true); return; }
+  if (!phone && !email) { toast('Phone or email required!', true); return; }
+
+  const btn = document.getElementById('ab-btn');
+  btn.disabled=true; btn.innerHTML='<i class="fa fa-spinner fa-spin"></i> Saving...';
+
+  const ref = 'EW-ADM-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const booking = {
+    booking_ref:      ref,
+    customer_name:    name,
+    customer_email:   email || null,
+    customer_phone:   phone,
+    is_guest:         false,
+    booked_by_admin:  true,
+    tour_name:        tour,
+    duration:         document.getElementById('ab-duration').value.trim(),
+    price:            document.getElementById('ab-price').value.trim(),
+    dep_date:         document.getElementById('ab-dep').value.trim(),
+    ret_date:         document.getElementById('ab-ret').value.trim(),
+    pax_adults:       parseInt(document.getElementById('ab-adults').value)||1,
+    pax_children:     parseInt(document.getElementById('ab-children').value)||0,
+    pax_infants:      parseInt(document.getElementById('ab-infants').value)||0,
+    room_type:        document.getElementById('ab-room').value,
+    payment_status:   document.getElementById('ab-payment').value,
+    special_requests: document.getElementById('ab-notes').value.trim(),
+    status:           'new',
+  };
+
+  const { error } = await sb.from('bookings').insert([booking]);
+  if (!error) {
+    if (email) await sb.from('customers').upsert([{email, full_name:name, phone}], {onConflict:'email'});
+    toast(`Booking ${ref} created!`);
+    // Reset form
+    ['ab-name','ab-email','ab-phone','ab-price','ab-duration','ab-dep','ab-ret','ab-notes'].forEach(id => { const el=document.getElementById(id); if(el)el.value=''; });
+    document.getElementById('ab-tour').value='';
+    document.getElementById('ab-adults').value='1';
+    document.getElementById('ab-children').value='0';
+    document.getElementById('ab-infants').value='0';
+    await loadData();
+  } else {
+    toast('Error: '+error.message, true);
+  }
+  btn.disabled=false; btn.innerHTML='<i class="fa fa-check-circle"></i> Confirm Booking — Booked by Admin';
+};
+
 // ── SETTINGS ──
 window.changePassword = async () => {
   const cur = document.getElementById('curPwd').value;
@@ -585,7 +1392,8 @@ function showPwdMsg(txt,type) {
 window.showPage = (name) => {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('pg-'+name).classList.add('active');
+  const pg = document.getElementById('pg-'+name);
+  if (pg) pg.classList.add('active');
   event?.target?.classList.add('active');
 };
 window.openModal  = (id) => document.getElementById(id).classList.add('open');
