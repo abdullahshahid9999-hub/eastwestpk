@@ -169,7 +169,7 @@
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
         <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text-dim)">+92 333 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:var(--text-dim)">eastwestpk@hotmail.com</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#a0c5c1d3d4d7c5d3d4d0cbe0c8cfd4cdc1c9cc8ec3cfcd" style="color:var(--text-dim)"><span class="__cf_email__" data-cfemail="a6c3c7d5d2d1c3d5d2d6cde6cec9d2cbc7cfca88c5c9cb">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
@@ -178,7 +178,7 @@
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
@@ -191,7 +191,7 @@ async function loadBlogs() {
   const { data: posts, error } = await supabase
     .from('blogs')
     .select('*')
-    .eq('status', 'published')
+    .eq('published', true)
     .order('created_at', { ascending: false });
 
   if (error || !posts || posts.length === 0) {
@@ -255,16 +255,4 @@ window.openPost = function(id) {
 
 window.closePost = function() {
   document.getElementById('postModal').classList.remove('active');
-  document.body.style.overflow = '';
-};
-
-// close modal on backdrop click
-document.getElementById('postModal').addEventListener('click', function(e) {
-  if (e.target === this) window.closePost();
-});
-
-loadBlogs();
-</script>
-<script src="script.js"></script>
-</body>
-</html>
+  document.body.style.ove
