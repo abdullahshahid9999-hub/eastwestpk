@@ -6,7 +6,7 @@
 (function () {
   const overlay = document.createElement('div');
   overlay.id = 'page-fade';
-  overlay.style.cssText = `position:fixed;inset:0;background:linear-gradient(135deg,#0A1628,#0F2040);z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.38s ease`;
+  overlay.style.cssText = `position:fixed;inset:0;background:#FAFAF8;z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.35s ease`;
   document.documentElement.appendChild(overlay);
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -36,19 +36,20 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// MOBILE MENU
+// MOBILE DRAWER MENU
 function openMenu() {
   document.getElementById('navLinks')?.classList.add('open');
+  document.getElementById('navOverlay')?.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeMenu() {
   document.getElementById('navLinks')?.classList.remove('open');
+  document.getElementById('navOverlay')?.classList.remove('open');
   document.body.style.overflow = '';
 }
 document.addEventListener('click', e => {
-  const nav = document.getElementById('navLinks');
-  const btn = document.getElementById('menuBtn');
-  if (nav?.classList.contains('open') && !nav.contains(e.target) && e.target !== btn) closeMenu();
+  const overlay = document.getElementById('navOverlay');
+  if (overlay && e.target === overlay) closeMenu();
 });
 
 // FAQ
@@ -75,7 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
-  document.querySelectorAll('.pkg-card, .why-card, .testi-card, .stat-item, .faq-item').forEach((el, i) => {
+  document.querySelectorAll('.pkg-card, .why-card, .testi-card, .stat-item, .faq-item, .svc-card, .what-card, .team-card').forEach((el, i) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(28px)';
     el.style.transition = `opacity 0.55s ease ${i * 0.06}s, transform 0.55s ease ${i * 0.06}s`;
