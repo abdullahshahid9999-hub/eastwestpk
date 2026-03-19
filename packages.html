@@ -184,6 +184,7 @@
 </head>
 <body>
 
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="logo.jpg" alt="East & West Travel Services">
@@ -192,10 +193,11 @@
   <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
     <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
     <a href="packages.html" class="active">Packages</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
-    <a href="auth/login.html" class="nav-login" id="navLoginBtn"><i class="fa fa-user"></i> My Account</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
     <a href="packages.html" class="nav-cta">Book Now</a>
   </div>
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
@@ -623,7 +625,7 @@
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
         <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text-dim)">+92 333 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:var(--text-dim)">eastwestpk@hotmail.com</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#6b0e0a181f1c0e181f1b002b03041f060a020745080406" style="color:var(--text-dim)"><span class="__cf_email__" data-cfemail="89ece8fafdfeecfafdf9e2c9e1e6fde4e8e0e5a7eae6e4">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
@@ -632,7 +634,7 @@
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
@@ -821,6 +823,11 @@ window.closeDetail = closeDetail;
 
 // ── BOOKING FLOW ──
 function proceedToBook() {
+  // Check if logged in
+  if (window._loggedIn) {
+    bookNowLoggedIn();
+    return;
+  }
   // Not logged in — show login/guest choice
   document.getElementById('detailOverlay').classList.remove('active');
   document.getElementById('bookModal').classList.add('active');
@@ -881,8 +888,4 @@ document.getElementById('bookModal').addEventListener('click', e => { if(e.targe
 // lightbox
 window.openLightbox = (src) => { document.getElementById('lbImg').src=src; document.getElementById('lightbox').classList.add('show'); document.body.style.overflow='hidden'; };
 window.closeLightbox = (e) => { if(e.target.id==='lightbox'){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow='';} };
-document.addEventListener('keydown', e => { if(e.key==='Escape'){closeDetail();closeBookModal();document.getElementById('lightbox').classList.remove('show');document.body.style.overflow='';} });
-</script>
-<script src="script.js"></script>
-</body>
-</html>
+docume
