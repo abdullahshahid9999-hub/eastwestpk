@@ -25,26 +25,62 @@
 <body class="bg-[#FAFAF8]">
 
 <!-- OVERLAY -->
-<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
-
-<!-- NAVBAR -->
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1998;opacity:0;transition:opacity 0.3s"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East & West" onerror="this.style.display='none'">
-    <span class="nav-logo-text">East & <span>West</span> Travels</span>
+    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
+
+  <!-- DESKTOP NAV -->
   <div class="nav-links" id="navLinks">
+    <!-- Close btn (mobile only) -->
     <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
-    <a href="index.html">Home</a>
-    <a href="services.html">Services</a>
-    <a href="packages.html">Packages</a>
-    <a href="visa.html" class="active">Visa</a>
-    <a href="group-tickets.html">Group Tickets</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+
+    <!-- HOME — mobile only visible (desktop hidden via CSS) -->
+    <a href="index.html" class="mob-only ">Home</a>
+
+    <!-- SERVICES with dropdown -->
+    <div class="nav-has-drop">
+      <a href="services.html" class="">
+        Services <i class="fa fa-chevron-down nav-arrow-icon"></i>
+      </a>
+      <!-- Desktop dropdown -->
+      <div class="nav-drop">
+        <a href="services.html#umrah"><i class="fa fa-star-and-crescent"></i> Umrah & Hajj</a>
+        <a href="services.html#tours"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <a href="about.html" class="">About</a>
+
+    <!-- Mobile-only links -->
+    <a href="contact.html" class="mob-only ">Contact</a>
+
+    <!-- Mobile Services sub-menu trigger -->
+    <div class="mob-services mob-only">
+      <div class="mob-parent" onclick="toggleMobServices(this)">
+        <a href="services.html" style="flex:1;pointer-events:none">Services</a>
+        <i class="fa fa-chevron-down mob-parent-arrow"></i>
+      </div>
+      <div class="mob-sub">
+        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah & Hajj</a>
+        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      </div>
+    </div>
+
+    <!-- My Account -->
     <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta">Book Now</a>
+
+    <!-- Book Now -->
+    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
+
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
@@ -175,7 +211,7 @@
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
         <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#573236242320322423273c173f38233a363e3b7934383a"><span class="__cf_email__" data-cfemail="5d383c2e292a382e292d361d353229303c3431733e3230">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
@@ -184,8 +220,8 @@
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script src="assets/js/script.js"></script>
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
+<script>
 // ── SUPABASE ──
 const SUPABASE_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
@@ -305,17 +341,15 @@ function renderVisas(data) {
 // ── FILTER ──
 window.filterVisas = function(type, btn) {
   document.querySelectorAll('.vf-btn').forEach(b => {
-    b.classList.remove('active','bg-[#C9A84C]','text-white','border-[#C9A84C]');
-    b.classList.add('bg-white','text-[#6B6B8A]','border-[#E8E4DA]');
+    b.style.background = '#fff';
+    b.style.color = '#6B6B8A';
+    b.style.borderColor = '#E8E4DA';
   });
-  btn.classList.add('active','bg-[#C9A84C]','text-white','border-[#C9A84C]');
-  btn.classList.remove('bg-white','text-[#6B6B8A]','border-[#E8E4DA]');
-
+  btn.style.background = '#C9A84C';
+  btn.style.color = '#fff';
+  btn.style.borderColor = '#C9A84C';
   const filtered = type === 'all' ? allVisas : allVisas.filter(v => v.type === type);
   renderVisas(filtered);
 };
 
-loadVisas();
-</script>
-</body>
-</html>
+'
