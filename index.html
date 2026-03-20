@@ -10,30 +10,30 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    /* ── HERO ── */
+    /* ── HERO — BRIGHT THEME ── */
     .hero {
       min-height: 100vh;
       display: flex; align-items: center;
       position: relative; overflow: hidden;
-      background: var(--navy);
+      background: linear-gradient(135deg, #0A1628 0%, #0F2A50 50%, #0A1628 100%);
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
     }
-    /* Animated orbs */
+    /* Bright animated orbs */
     .orb {
       position: absolute; border-radius: 50%;
       filter: blur(80px); animation: float 8s ease-in-out infinite;
     }
-    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%); top: -200px; right: -100px; animation-delay: 0s; }
-    .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%); bottom: -100px; left: 100px; animation-delay: 3s; }
-    .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%); top: 30%; left: 30%; animation-delay: 5s; }
+    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%); top: -200px; right: -100px; animation-delay: 0s; }
+    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%); bottom: -100px; left: 100px; animation-delay: 3s; }
+    .orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%); top: 30%; left: 30%; animation-delay: 5s; }
     @keyframes float { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)} }
 
     /* Grid lines */
     .hero-grid {
       position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
       background-size: 60px 60px;
     }
 
@@ -42,34 +42,48 @@
       max-width: 1200px; margin: 0 auto; padding: 0 28px;
       width: 100%;
       display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-      padding-top: 80px;
+      padding-top: 80px; padding-bottom: 60px;
     }
-    .hero-left { }
     .hero-tag {
       display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
+      background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
       padding: 7px 16px; border-radius: 50px;
       font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 28px;
+      color: #C9A84C; margin-bottom: 28px;
     }
-    .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.6)} }
-
     .hero-left h1 {
-      font-size: clamp(42px, 5.5vw, 68px);
-      color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 24px;
+      font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+      font-size: clamp(42px, 5.5vw, 72px);
+      color: #FFFFFF; line-height: 1.05; margin-bottom: 24px; font-weight: 700;
     }
-    .hero-left h1 .line2 { color: var(--teal); display: block; }
-    .hero-left h1 em { color: var(--gold); }
-    .hero-left p { font-size: 16px; color: var(--text-dim); line-height: 1.8; margin-bottom: 40px; max-width: 480px; }
+    .hero-left h1 .line2 { color: #C9A84C; display: block; }
+    .hero-left h1 em { color: #C9A84C; }
+    .hero-left p { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 40px; max-width: 480px; }
     .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; }
 
-    .hero-stats-row { display: flex; gap: 36px; border-top: 1px solid var(--border); padding-top: 28px; flex-wrap: wrap; }
-    .h-stat { }
-    .h-stat strong { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--white); display: block; line-height: 1; }
-    .h-stat span { font-size: 12px; color: var(--text-dim); margin-top: 4px; display: block; }
+    /* ── BRIGHT BUTTONS ── */
+    .btn-primary-bright {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: #C9A84C; color: #fff;
+      padding: 14px 28px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+      border: none; cursor: pointer; transition: all 0.3s;
+      text-decoration: none; font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+    }
+    .btn-primary-bright:hover { background: #E8C97A; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
+    .btn-outline-bright {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(255,255,255,0.08); color: #fff;
+      padding: 13px 26px; border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer; transition: all 0.3s;
+      text-decoration: none; font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
+    }
+    .btn-outline-bright:hover { border-color: #25D366; color: #25D366; background: rgba(37,211,102,0.08); }
+
+    .hero-stats-row { display: flex; gap: 36px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px; flex-wrap: wrap; }
+    .h-stat strong { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 26px; color: #fff; display: block; line-height: 1; }
+    .h-stat span { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; display: block; }
 
     /* Hero right — image mosaic */
     .hero-right { position: relative; }
@@ -78,17 +92,17 @@
     .mosaic-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
     .mosaic-img:hover img { transform: scale(1.06); }
     .mosaic-img-1 { grid-row: 1/3; }
-    .mosaic-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,22,40,0.7) 100%); }
-    .mosaic-label { position: absolute; bottom: 14px; left: 14px; font-size: 12px; font-weight: 600; color: white; background: rgba(14,165,233,0.85); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 6px; }
+    .mosaic-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,22,40,0.65) 100%); }
+    .mosaic-label { position: absolute; bottom: 14px; left: 14px; font-size: 11px; font-weight: 700; color: #fff; background: #C9A84C; backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 6px; letter-spacing: 0.5px; }
 
     .hero-badge {
       position: absolute; bottom: -20px; left: -20px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      color: var(--navy); padding: 18px 22px; border-radius: 16px;
-      font-weight: 700; box-shadow: var(--shadow-gold); z-index: 3;
+      background: linear-gradient(135deg, #C9A84C, #E8C97A);
+      color: #0A1628; padding: 18px 22px; border-radius: 16px;
+      font-weight: 700; box-shadow: 0 8px 32px rgba(201,168,76,0.4); z-index: 3;
     }
-    .hero-badge .num { font-family: 'Playfair Display', serif; font-size: 28px; display: block; line-height: 1; }
-    .hero-badge .lbl { font-size: 11px; font-weight: 600; opacity: 0.8; }
+    .hero-badge .num { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 28px; display: block; line-height: 1; }
+    .hero-badge .lbl { font-size: 11px; font-weight: 700; opacity: 0.8; }
 
     /* ── DESTINATIONS STRIP ── */
     .dest-strip { background: var(--navy-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; overflow: hidden; }
@@ -128,7 +142,7 @@
 
 <!-- NAVBAR -->
 <!-- NAVBAR -->
-<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1998;opacity:0;transition:opacity 0.3s"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East & West Travel Services">
@@ -147,42 +161,59 @@
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
-<!-- HERO — umrah.webdevc.shop style: full-screen photo, dark veil, bold serif -->
-<section class="hero-section">
-  <!-- Background photo -->
-  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=2400')"></div>
-  <!-- Dark veil -->
-  <div class="hero-veil"></div>
-
-  <!-- Content pinned to bottom -->
-  <div class="hero-content container">
-    <div class="hero-kicker">Est. 2004 — Faisalabad, Pakistan</div>
-    <h1 class="hero-h1">
-      Your Journey<br>
-      <em>Starts Here.</em>
-    </h1>
-    <p class="hero-sub">"Our Services in Your Hands, Where Ever You Are"</p>
-
-    <!-- Action buttons -->
-    <div class="hero-actions" style="margin-bottom:44px">
-      <a href="services.html" class="hero-btn-primary"><i class="fa fa-compass"></i> Explore Packages</a>
-      <a href="https://wa.me/923336515349" target="_blank" class="hero-btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
-    </div>
-
-    <!-- Stats -->
-    <div class="hero-stats">
-      <div class="h-stat"><div class="h-stat-n">5,000+</div><div class="h-stat-l">Travelers Served</div></div>
-      <div class="h-sep"></div>
-      <div class="h-stat"><div class="h-stat-n">20+</div><div class="h-stat-l">Years in Business</div></div>
-      <div class="h-sep"></div>
-      <div class="h-stat"><div class="h-stat-n">15+</div><div class="h-stat-l">Destinations</div></div>
-      <div class="h-sep"></div>
-      <div class="h-stat"><div class="h-stat-n">500+</div><div class="h-stat-l">Umrah Pilgrims</div></div>
-    </div>
+<!-- HERO — Original mosaic layout, bright theme -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="hero-grid"></div>
   </div>
 
-  <!-- Scroll hint -->
-  <div class="hero-scroll-hint"><i class="fa fa-chevron-down"></i> Scroll</div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-tag"><i class="fa fa-map-marker-alt"></i> Faisalabad's Trusted Travel Partner</div>
+      <h1>
+        Your Journey<br>
+        <span class="line2">Starts Here</span>
+      </h1>
+      <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and 20+ years of experience. No shortcuts. No hidden charges.</p>
+      <div class="hero-btns">
+        <a href="services.html" class="btn-primary-bright"><i class="fa fa-compass"></i> Explore Services</a>
+        <a href="https://wa.me/923336515349" target="_blank" class="btn-outline-bright"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      </div>
+      <div class="hero-stats-row">
+        <div class="h-stat"><strong>5,000+</strong><span>Travelers Served</span></div>
+        <div class="h-stat"><strong>20+</strong><span>Years in Business</span></div>
+        <div class="h-stat"><strong>15+</strong><span>Destinations</span></div>
+        <div class="h-stat"><strong>500+</strong><span>Umrah Pilgrims</span></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-mosaic">
+        <div class="mosaic-img mosaic-img-1">
+          <img src="assets/images/makarem_1.jpeg" alt="Makarem Ajyad Makkah">
+          <div class="mosaic-overlay"></div>
+          <span class="mosaic-label">Makkah</span>
+        </div>
+        <div class="mosaic-img">
+          <img src="assets/images/pullman_1.jpeg" alt="Pullman ZamZam Madinah">
+          <div class="mosaic-overlay"></div>
+          <span class="mosaic-label">Madinah</span>
+        </div>
+        <div class="mosaic-img">
+          <img src="assets/images/makarem_4.jpeg" alt="Hotel Room">
+          <div class="mosaic-overlay"></div>
+          <span class="mosaic-label">Premium Rooms</span>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <span class="num">4.9★</span>
+        <span class="lbl">Customer Rating</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- DESTINATIONS SCROLL -->
