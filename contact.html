@@ -109,22 +109,62 @@
 </head>
 <body>
 
-<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1998;opacity:0;transition:opacity 0.3s"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="assets/images/logo.jpg" alt="East & West Travel Services">
-    <span class="nav-logo-text">East & <span>West</span> Travels</span>
+    <img src="assets/images/logo.jpg" alt="East & West" onerror="this.style.display='none'">
+    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
+
+  <!-- DESKTOP NAV -->
   <div class="nav-links" id="navLinks">
+    <!-- Close btn (mobile only) -->
     <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
-    <a href="index.html">Home</a>
-    <a href="services.html">Services</a>
-    <a href="packages.html">Packages</a>
-    <a href="about.html">About</a>
-    <a href="contact.html" class="active">Contact</a>
+
+    <!-- HOME — mobile only visible (desktop hidden via CSS) -->
+    <a href="index.html" class="mob-only ">Home</a>
+
+    <!-- SERVICES with dropdown -->
+    <div class="nav-has-drop">
+      <a href="services.html" class="">
+        Services <i class="fa fa-chevron-down nav-arrow-icon"></i>
+      </a>
+      <!-- Desktop dropdown -->
+      <div class="nav-drop">
+        <a href="services.html#umrah"><i class="fa fa-star-and-crescent"></i> Umrah & Hajj</a>
+        <a href="services.html#tours"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <a href="about.html" class="">About</a>
+
+    <!-- Mobile-only links -->
+    <a href="contact.html" class="mob-only active">Contact</a>
+
+    <!-- Mobile Services sub-menu trigger -->
+    <div class="mob-services mob-only">
+      <div class="mob-parent" onclick="toggleMobServices(this)">
+        <a href="services.html" style="flex:1;pointer-events:none">Services</a>
+        <i class="fa fa-chevron-down mob-parent-arrow"></i>
+      </div>
+      <div class="mob-sub">
+        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah & Hajj</a>
+        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      </div>
+    </div>
+
+    <!-- My Account -->
     <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta">Book Now</a>
+
+    <!-- Book Now -->
+    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
+
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
