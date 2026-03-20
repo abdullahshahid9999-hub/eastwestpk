@@ -6,7 +6,7 @@
   <title>Services — East & West Travel Services</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <style>
 
     /* ── PAGE HERO ── */
@@ -309,7 +309,7 @@
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="logo.jpg" alt="East & West Travel Services">
+    <img src="assets/images/logo.jpg" alt="East & West Travel Services">
     <span class="nav-logo-text">East & <span>West</span> Travels</span>
   </a>
   <div class="nav-links" id="navLinks">
@@ -353,7 +353,7 @@
       <!-- UMRAH -->
       <div class="svc-card" data-cat="umrah" onclick="openDetail('umrah7')">
         <div class="svc-img">
-          <img src="makarem_7.jpg" alt="Umrah" onerror="this.src='https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80'">
+          <img src="assets/images/makarem_7.jpg" alt="Umrah" onerror="this.src='https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80'">
           <div class="svc-img-overlay"></div>
           <span class="svc-cat-badge" style="background:rgba(201,168,76,0.9);color:#0A1628"><i class="fa fa-star-and-crescent"></i> Umrah</span>
           <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
@@ -376,7 +376,7 @@
       <!-- PREMIUM UMRAH -->
       <div class="svc-card" data-cat="umrah" onclick="openDetail('umrah14')">
         <div class="svc-img">
-          <img src="pullman_1.jpeg" alt="Premium Umrah" onerror="this.src='https://images.unsplash.com/photo-1564769625688-5f9f8b3a1e7c?w=600&q=80'">
+          <img src="assets/images/pullman_1.jpeg" alt="Premium Umrah" onerror="this.src='https://images.unsplash.com/photo-1564769625688-5f9f8b3a1e7c?w=600&q=80'">
           <div class="svc-img-overlay"></div>
           <span class="svc-cat-badge" style="background:rgba(201,168,76,0.9);color:#0A1628"><i class="fa fa-star-and-crescent"></i> Premium Umrah</span>
           <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
@@ -669,7 +669,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="nav-logo" style="margin-bottom:14px;text-decoration:none">
-          <img src="logo.jpg" alt="Logo" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
+          <img src="assets/images/logo.jpg" alt="Logo" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
           <span class="nav-logo-text">East & <span>West</span></span>
         </a>
         <p style="color:rgba(255,255,255,0.4);font-size:15px;margin-top:10px;font-style:italic;font-family:'Cormorant Garamond',serif">Our Services in Your Hands,<br>Where Ever You Are.</p>
@@ -699,7 +699,7 @@
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
         <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
         <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349">+92 313 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#264347555251435552564d664e49524b474f4a0845494b"><span class="__cf_email__" data-cfemail="5b3e3a282f2c3e282f2b301b33342f363a323775383436">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
@@ -708,7 +708,7 @@
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script src="script.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
 <script>
 // ── SERVICES DATA ──
 const SVCS = {
@@ -920,8 +920,4 @@ window.closeBm = () => {
 
 // Close on backdrop
 document.getElementById('detOverlay').addEventListener('click', e => { if (e.target === document.getElementById('detOverlay')) closeDetail(); });
-document.getElementById('bmOverlay').addEventListener('click', e => { if (e.target === document.getElementById('bmOverlay')) closeBm(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDetail(); closeBm(); } });
-</script>
-</body>
-</html>
+document.getElement
