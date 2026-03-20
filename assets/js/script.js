@@ -1,9 +1,9 @@
 /* ============================================================
-   EASTWESTPK — Global JavaScript
-   Fixed: Mobile drawer, scroll, FAQ, counters
+   EASTWESTPK — Global JavaScript v4
+   Mobile nav 100% fixed
    ============================================================ */
 
-// ── PAGE FADE TRANSITION ──
+// ── PAGE FADE ──
 (function () {
   const overlay = document.createElement('div');
   overlay.id = 'page-fade';
@@ -20,13 +20,13 @@
   });
 
   document.addEventListener('click', e => {
-    const a = e.target.closest('a');
+    const a = e.target.closest('a[href]');
     if (!a) return;
     const href = a.getAttribute('href');
-    if (!href || a.target === '_blank' || href.startsWith('http') || href.startsWith('//') || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel') || href.startsWith('whatsapp') || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (!href || a.target === '_blank' || href.startsWith('http') || href.startsWith('//') || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel') || e.ctrlKey || e.metaKey || e.shiftKey) return;
     e.preventDefault();
     overlay.style.opacity = '1';
-    setTimeout(() => { window.location.href = href; }, 340);
+    setTimeout(() => { window.location.href = href; }, 320);
   });
 })();
 
@@ -36,76 +36,92 @@ window.addEventListener('scroll', () => {
   if (nav) nav.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
 
-// ── MOBILE DRAWER MENU ──
-// openMenu / closeMenu are called from onclick attributes in HTML
-window.openMenu = function () {
+// ── MOBILE MENU — COMPLETELY FIXED ──
+window.openMenu = function() {
   const nav     = document.getElementById('navLinks');
   const overlay = document.getElementById('navOverlay');
-  if (nav)     nav.classList.add('open');
-  if (overlay) overlay.classList.add('open');
+  if (!nav) return;
+
+  // Show drawer
+  nav.classList.add('open');
+
+  // Show overlay manually (works even if CSS not loaded)
+  if (overlay) {
+    overlay.style.display       = 'block';
+    overlay.style.position      = 'fixed';
+    overlay.style.inset         = '0';
+    overlay.style.background    = 'rgba(0,0,0,0.55)';
+    overlay.style.zIndex        = '1998';
+    overlay.style.pointerEvents = 'all';
+    overlay.style.transition    = 'opacity 0.3s';
+    requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+  }
+
   document.body.style.overflow = 'hidden';
 };
 
-window.closeMenu = function () {
+window.closeMenu = function() {
   const nav     = document.getElementById('navLinks');
   const overlay = document.getElementById('navOverlay');
-  if (nav)     nav.classList.remove('open');
-  if (overlay) overlay.classList.remove('open');
+  if (!nav) return;
+
+  nav.classList.remove('open');
+
+  if (overlay) {
+    overlay.style.opacity       = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+  }
+
   document.body.style.overflow = '';
 };
 
-// Click outside drawer to close
-document.addEventListener('click', function (e) {
+// Click overlay to close
+window.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('navOverlay');
-  if (overlay && e.target === overlay) window.closeMenu();
+  if (overlay) overlay.addEventListener('click', () => window.closeMenu());
 });
 
-// ESC key closes drawer
-document.addEventListener('keydown', function (e) {
+// ESC closes menu
+document.addEventListener('keydown', e => {
   if (e.key === 'Escape') window.closeMenu();
 });
 
 // ── FAQ ──
-window.toggleFaq = function (el) {
-  const item  = el.closest('.faq-item');
-  const ans   = item.querySelector('.faq-a');
+window.toggleFaq = function(el) {
+  const item   = el.closest('.faq-item');
+  const ans    = item.querySelector('.faq-a');
   const isOpen = item.classList.contains('open');
-  // Close all
   document.querySelectorAll('.faq-item.open').forEach(f => {
     f.classList.remove('open');
     f.querySelector('.faq-a')?.classList.remove('open');
   });
-  // Open clicked if it was closed
-  if (!isOpen) {
-    item.classList.add('open');
-    ans?.classList.add('open');
-  }
+  if (!isOpen) { item.classList.add('open'); ans?.classList.add('open'); }
 };
 
 // ── SCROLL REVEAL + COUNTERS ──
 window.addEventListener('DOMContentLoaded', () => {
 
-  /* Scroll Reveal */
-  const observer = new IntersectionObserver(entries => {
+  const revealObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-        observer.unobserve(e.target);
+        e.target.style.opacity    = '1';
+        e.target.style.transform  = 'translateY(0)';
+        revealObs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
   document.querySelectorAll(
-    '.pkg-card, .why-card, .testi-card, .stat-item, .faq-item, .svc-card, .what-card, .team-card, .flight-card, .visa-card'
+    '.pkg-card,.why-card,.testi-card,.stat-item,.faq-item,.svc-card,.what-card,.team-card,.cert-card,.award-card'
   ).forEach((el, i) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = `opacity 0.5s ease ${(i % 8) * 0.06}s, transform 0.5s ease ${(i % 8) * 0.06}s`;
-    observer.observe(el);
+    el.style.opacity    = '0';
+    el.style.transform  = 'translateY(22px)';
+    el.style.transition = `opacity 0.5s ease ${(i % 9) * 0.06}s, transform 0.5s ease ${(i % 9) * 0.06}s`;
+    revealObs.observe(el);
   });
 
-  /* Counter Animation for .stat-item span */
+  // Counter
   const countObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
@@ -124,12 +140,5 @@ window.addEventListener('DOMContentLoaded', () => {
       countObs.unobserve(span);
     });
   }, { threshold: 0.5 });
-
   document.querySelectorAll('.stat-item span').forEach(s => countObs.observe(s));
-
-  /* Hero BG parallax-like zoom */
-  const heroBg = document.querySelector('.hero-bg');
-  if (heroBg) {
-    setTimeout(() => heroBg.classList.add('loaded'), 100);
-  }
 });
