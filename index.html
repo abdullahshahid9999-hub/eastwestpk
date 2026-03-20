@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <style>
     /* ── HERO ── */
     .hero {
@@ -131,7 +131,7 @@
 <div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="logo.jpg" alt="East & West Travel Services">
+    <img src="assets/images/logo.jpg" alt="East & West Travel Services">
     <span class="nav-logo-text">East & <span>West</span> Travels</span>
   </a>
   <div class="nav-links" id="navLinks">
@@ -147,60 +147,42 @@
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="hero-grid"></div>
-  </div>
+<!-- HERO — umrah.webdevc.shop style: full-screen photo, dark veil, bold serif -->
+<section class="hero-section">
+  <!-- Background photo -->
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80&w=2400')"></div>
+  <!-- Dark veil -->
+  <div class="hero-veil"></div>
 
-  <div class="hero-content">
-    <div class="hero-left">
-      <div class="hero-tag">Faisalabad's Trusted Travel Partner</div>
-      <h1>
-        Your Journey<br>
-        <span class="line2">Starts Here</span>
-        <em> —</em>
-      </h1>
-      <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and 8 years of experience. No shortcuts. No hidden charges.</p>
-      <div class="hero-btns">
-        <a href="packages.html" class="btn-gold"><i class="fa fa-compass"></i> Explore Packages</a>
-        <a href="contact.html" class="btn-ghost"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
-      </div>
-      <div class="hero-stats-row">
-        <div class="h-stat"><strong>5,000+</strong><span>Travelers Served</span></div>
-        <div class="h-stat"><strong>8+</strong><span>Years in Business</span></div>
-        <div class="h-stat"><strong>15+</strong><span>Destinations</span></div>
-        <div class="h-stat"><strong>500+</strong><span>Umrah Pilgrims</span></div>
-      </div>
+  <!-- Content pinned to bottom -->
+  <div class="hero-content container">
+    <div class="hero-kicker">Est. 2004 — Faisalabad, Pakistan</div>
+    <h1 class="hero-h1">
+      Your Journey<br>
+      <em>Starts Here.</em>
+    </h1>
+    <p class="hero-sub">"Our Services in Your Hands, Where Ever You Are"</p>
+
+    <!-- Action buttons -->
+    <div class="hero-actions" style="margin-bottom:44px">
+      <a href="services.html" class="hero-btn-primary"><i class="fa fa-compass"></i> Explore Packages</a>
+      <a href="https://wa.me/923336515349" target="_blank" class="hero-btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
     </div>
 
-    <div class="hero-right">
-      <div class="hero-mosaic">
-        <div class="mosaic-img mosaic-img-1">
-          <img src="makarem_1.jpeg" alt="Makarem Ajyad Makkah">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Makkah</span>
-        </div>
-        <div class="mosaic-img">
-          <img src="pullman_1.jpeg" alt="Pullman ZamZam Madinah">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Madinah</span>
-        </div>
-        <div class="mosaic-img">
-          <img src="makarem_4.jpeg" alt="Hotel Room">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Premium Rooms</span>
-        </div>
-      </div>
-      <div class="hero-badge">
-        <span class="num">4.9★</span>
-        <span class="lbl">Customer Rating</span>
-      </div>
+    <!-- Stats -->
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-n">5,000+</div><div class="h-stat-l">Travelers Served</div></div>
+      <div class="h-sep"></div>
+      <div class="h-stat"><div class="h-stat-n">20+</div><div class="h-stat-l">Years in Business</div></div>
+      <div class="h-sep"></div>
+      <div class="h-stat"><div class="h-stat-n">15+</div><div class="h-stat-l">Destinations</div></div>
+      <div class="h-sep"></div>
+      <div class="h-stat"><div class="h-stat-n">500+</div><div class="h-stat-l">Umrah Pilgrims</div></div>
     </div>
   </div>
+
+  <!-- Scroll hint -->
+  <div class="hero-scroll-hint"><i class="fa fa-chevron-down"></i> Scroll</div>
 </section>
 
 <!-- DESTINATIONS SCROLL -->
@@ -243,7 +225,7 @@
       <!-- Umrah -->
       <div class="pkg-card">
         <div class="pkg-img">
-          <img src="makarem_7.jpg" alt="Umrah Package">
+          <img src="assets/images/makarem_7.jpg" alt="Umrah Package">
           <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
         </div>
         <div class="pkg-body">
@@ -263,7 +245,7 @@
       <!-- Dubai -->
       <div class="pkg-card">
         <div class="pkg-img">
-          <img src="pullman_2.jpg" alt="Dubai Tour">
+          <img src="assets/images/pullman_2.jpg" alt="Dubai Tour">
           <span class="pkg-badge hot"><i class="fa fa-fire"></i> Hot Deal</span>
         </div>
         <div class="pkg-body">
@@ -283,7 +265,7 @@
       <!-- 14 Night Umrah -->
       <div class="pkg-card">
         <div class="pkg-img">
-          <img src="makarem_3.jpeg" alt="14 Night Umrah">
+          <img src="assets/images/makarem_3.jpeg" alt="14 Night Umrah">
           <span class="pkg-badge gold-badge"><i class="fa fa-crown"></i> Premium</span>
         </div>
         <div class="pkg-body">
@@ -439,7 +421,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="nav-logo" style="margin-bottom:18px">
-          <img src="logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
+          <img src="assets/images/logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
           <span class="nav-logo-text">East & <span style="color:var(--teal)">West</span></span>
         </div>
         <p>East & West Travel Services — Faisalabad's trusted partner for Umrah, Hajj, and international travel since 2016.</p>
