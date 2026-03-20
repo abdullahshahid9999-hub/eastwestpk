@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Tickets — East & West Travel Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { gold: '#C9A84C', navy: '#0A1628' },
+          fontFamily: { serif:['Cormorant Garamond','serif'], sans:['Plus Jakarta Sans','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Flight card specific */
+    .flight-card { transition: all 0.3s; }
+    .flight-card:hover { transform: translateY(-3px); }
+    .seat-bar { height: 6px; border-radius: 999px; background: #E8E4DA; overflow: hidden; }
+    .seat-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+    /* Passenger modal */
+    .pax-overlay { display:none; position:fixed; inset:0; z-index:9999; background:rgba(10,22,40,0.88); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
+    .pax-overlay.open { display:flex; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .pax-modal { animation: slideUp 0.3s ease; }
+  </style>
+</head>
+<body class="bg-[#FAFAF8]">
+
+<!-- OVERLAY -->
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="East & West" onerror="this.style.display='none'">
+    <span class="nav-logo-text">East & <span>West</span> Travels</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="packages.html">Packages</a>
+    <a href="visa.html">Visa</a>
+    <a href="group-tickets.html" class="active">Group Tickets</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="services.html" class="nav-cta">Book Now</a>
+  </div>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:12px"><i class="fa fa-plane mr-2"></i> Group Ticketing</div>
+    <h1>Fixed Departures & <em>Group Tickets</em></h1>
+    <p>Special group fares — 10+ passengers, all airlines, all destinations</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><i class="fa fa-chevron-right"></i><span>Group Tickets</span></div>
+  </div>
+</section>
+
+<!-- CATEGORY GRID -->
+<section class="py-20 bg-[#FAFAF8]">
+  <div class="container">
+    <div class="text-center mb-12">
+      <div class="eyebrow justify-center mb-3">Select Destination</div>
+      <h2 class="font-serif text-4xl text-[#1C1C2E]">Choose Your <em>Category</em></h2>
+      <p class="text-[#6B6B8A] mt-3 text-sm">Click a category to see available group flights</p>
+    </div>
+
+    <!-- Categories -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-16" id="catGrid">
+      <!-- JS will render these -->
+    </div>
+
+    <!-- FLIGHT LISTING — hidden until category selected -->
+    <div id="flightSection" class="hidden">
+      <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+        <div>
+          <div id="flightCatLabel" class="text-xs font-bold uppercase tracking-widest text-[#C9A84C] mb-1"></div>
+          <h3 class="font-serif text-3xl text-[#1C1C2E]">Available <em>Departures</em></h3>
+        </div>
+        <button onclick="clearCategory()" class="text-sm text-[#6B6B8A] border border-[#E8E4DA] px-4 py-2 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all font-sans">
+          <i class="fa fa-arrow-left mr-2"></i> All Categories
+        </button>
+      </div>
+
+      <!-- Flight loading -->
+      <div id="flightLoading" class="text-center py-16">
+        <i class="fa fa-spinner fa-spin text-2xl text-[#C9A84C]"></i>
+        <p class="mt-3 text-sm text-[#9090AA]">Loading flights...</p>
+      </div>
+
+      <!-- Flight grid -->
+      <div id="flightGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-5 hidden"></div>
+
+      <div id="flightEmpty" class="hidden text-center py-16">
+        <div class="text-5xl mb-4">✈️</div>
+        <p class="text-[#6B6B8A]">No flights available for this category right now.</p>
+        <p class="text-sm text-[#9090AA] mt-2">Contact us on WhatsApp for custom group bookings.</p>
+        <a href="https://wa.me/923336515349?text=Assalam%20o%20Alaikum!%20I%20need%20group%20tickets.%20Please%20help." target="_blank"
+           class="inline-flex items-center gap-2 mt-6 bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-sm">
+          <i class="fab fa-whatsapp"></i> WhatsApp for Custom Booking
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY GROUP TICKETS -->
+<section class="py-16 bg-[#F3F0EA]">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-6 text-center border border-[#E8E4DA]">
+        <div class="w-12 h-12 rounded-full bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] flex items-center justify-center mx-auto mb-4 text-[#C9A84C] text-xl"><i class="fa fa-users"></i></div>
+        <h4 class="font-serif text-xl text-[#1C1C2E] mb-2">Minimum 10 Seats</h4>
+        <p class="text-sm text-[#6B6B8A]">Special negotiated group fares start from 10 passengers on all major airlines.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center border border-[#E8E4DA]">
+        <div class="w-12 h-12 rounded-full bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] flex items-center justify-center mx-auto mb-4 text-[#C9A84C] text-xl"><i class="fa fa-tags"></i></div>
+        <h4 class="font-serif text-xl text-[#1C1C2E] mb-2">Best Group Rates</h4>
+        <p class="text-sm text-[#6B6B8A]">Up to 30% cheaper than individual tickets. Economy and Business class available.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center border border-[#E8E4DA]">
+        <div class="w-12 h-12 rounded-full bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] flex items-center justify-center mx-auto mb-4 text-[#C9A84C] text-xl"><i class="fa fa-headset"></i></div>
+        <h4 class="font-serif text-xl text-[#1C1C2E] mb-2">Group Check-In Help</h4>
+        <p class="text-sm text-[#6B6B8A]">We handle group seat blocking, coordinated check-in, and special meal requests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px">
+          <img src="assets/images/logo.jpg" alt="Logo" style="width:42px;height:42px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
+          <span class="nav-logo-text">East & <span>West</span></span>
+        </a>
+        <p>Our Services in Your Hands, Where Ever You Are.</p>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
+          <a href="https://wa.me/923336515349" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-whatsapp" style="color:#25D366;font-size:15px"></i></a>
+        </div>
+      </div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Categories</h4><ul>
+        <li><a href="#"><i class="fa fa-chevron-right"></i> Umrah / Saudi Arabia</a></li>
+        <li><a href="#"><i class="fa fa-chevron-right"></i> UK / Europe</a></li>
+        <li><a href="#"><i class="fa fa-chevron-right"></i> Qatar / Gulf</a></li>
+        <li><a href="#"><i class="fa fa-chevron-right"></i> USA / Canada</a></li>
+        <li><a href="#"><i class="fa fa-chevron-right"></i> Domestic Pakistan</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<!-- PASSENGER MODAL -->
+<div class="pax-overlay" id="paxOverlay">
+  <div class="pax-modal bg-white rounded-2xl w-full max-w-lg shadow-2xl relative overflow-hidden">
+    <div class="bg-[#0A1628] px-6 py-5">
+      <button onclick="closePaxModal()" class="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full text-white/70 hover:bg-white/20 flex items-center justify-center text-sm"><i class="fa fa-times"></i></button>
+      <div class="text-[10px] font-bold uppercase tracking-widest text-[#C9A84C] mb-1">Passenger Form</div>
+      <h3 class="font-serif text-xl text-white" id="paxFlightTitle">Book Your Seat</h3>
+      <div class="flex gap-4 mt-3 text-xs text-white/50" id="paxFlightInfo"></div>
+    </div>
+    <div class="p-6">
+      <form id="paxForm" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">First Name *</label>
+            <input id="paxFName" type="text" placeholder="Muhammad" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Last Name *</label>
+            <input id="paxLName" type="text" placeholder="Ali" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Phone / WhatsApp *</label>
+          <input id="paxPhone" type="tel" placeholder="+92 3XX XXXXXXX" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Email</label>
+          <input id="paxEmail" type="email" placeholder="email@example.com" class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Passport No. *</label>
+            <input id="paxPassport" type="text" placeholder="AB1234567" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">No. of Seats *</label>
+            <input id="paxSeats" type="number" min="1" max="50" value="1" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Class</label>
+          <select id="paxClass" class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] outline-none transition-all appearance-none">
+            <option>Economy</option>
+            <option>Business</option>
+            <option>First Class</option>
+          </select>
+        </div>
+        <div id="paxError" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3"></div>
+        <button type="button" onclick="submitPaxForm()" id="paxSubmitBtn"
+                class="w-full bg-[#C9A84C] hover:bg-[#E8C97A] text-white font-bold text-sm uppercase tracking-wide py-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+          <i class="fab fa-whatsapp text-lg"></i>
+          Confirm Booking via WhatsApp
+        </button>
+        <p class="text-center text-xs text-[#9090AA]">Your details will be sent to our team via WhatsApp</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/script.js"></script>
+<script>
+/* ============================================================
+   GROUP TICKETS — Categories + Flights + Seat Logic
+   ============================================================ */
+
+const SUPABASE_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const WA_NUMBER = '923336515349';
+
+// Category config
+const CATEGORIES = [
+  { id:'umrah',    label:'Umrah / Saudi', flag:'🇸🇦', img:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400&q=70', color:'from-amber-900 to-amber-700' },
+  { id:'uk',       label:'UK / Europe',   flag:'🇬🇧', img:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&q=70', color:'from-blue-900 to-blue-700' },
+  { id:'qatar',    label:'Qatar / Gulf',  flag:'🇶🇦', img:'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=400&q=70', color:'from-purple-900 to-purple-700' },
+  { id:'usa',      label:'USA / Canada',  flag:'🇺🇸', img:'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=400&q=70', color:'from-red-900 to-red-700' },
+  { id:'domestic', label:'Domestic PK',  flag:'🇵🇰', img:'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400&q=70', color:'from-green-900 to-green-700' },
+  { id:'other',    label:'Other Routes',  flag:'🌍', img:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=70', color:'from-gray-900 to-gray-700' },
+];
+
+// Demo flights data (fallback if Supabase table empty)
+const DEMO_FLIGHTS = {
+  umrah: [
+    { id:'f1', flight_no:'PK-741', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'LHE → JED', dep_time:'02:30', arr_time:'05:45', dep_date:'Apr 15, 2026', class:'Economy', baggage:'30 KG', meal:'Halal Included', price_per_seat:'Rs. 85,000', total_seats:40, booked_seats:28 },
+    { id:'f2', flight_no:'PK-743', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'ISB → JED', dep_time:'08:00', arr_time:'11:15', dep_date:'Apr 22, 2026', class:'Economy', baggage:'30 KG', meal:'Halal Included', price_per_seat:'Rs. 88,000', total_seats:35, booked_seats:35 },
+    { id:'f3', flight_no:'EK-601', airline:'Emirates', airline_code:'EK', route:'LHE → DXB → JED', dep_time:'23:45', arr_time:'07:30+1', dep_date:'May 10, 2026', class:'Economy', baggage:'35 KG', meal:'Halal Included', price_per_seat:'Rs. 1,10,000', total_seats:30, booked_seats:12 },
+  ],
+  uk: [
+    { id:'f4', flight_no:'PK-785', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'ISB → LHR', dep_time:'01:30', arr_time:'06:45', dep_date:'May 5, 2026', class:'Economy', baggage:'30 KG', meal:'Included', price_per_seat:'Rs. 2,20,000', total_seats:25, booked_seats:18 },
+    { id:'f5', flight_no:'QR-301', airline:'Qatar Airways', airline_code:'QR', route:'KHI → DOH → LHR', dep_time:'03:00', arr_time:'12:30', dep_date:'May 12, 2026', class:'Business', baggage:'40 KG', meal:'Premium Included', price_per_seat:'Rs. 5,50,000', total_seats:12, booked_seats:4 },
+  ],
+  qatar: [
+    { id:'f6', flight_no:'QR-601', airline:'Qatar Airways', airline_code:'QR', route:'KHI → DOH', dep_time:'04:15', arr_time:'06:20', dep_date:'Apr 20, 2026', class:'Economy', baggage:'30 KG', meal:'Included', price_per_seat:'Rs. 55,000', total_seats:45, booked_seats:20 },
+    { id:'f7', flight_no:'EK-100', airline:'Emirates', airline_code:'EK', route:'LHE → DXB', dep_time:'08:30', arr_time:'10:45', dep_date:'Apr 25, 2026', class:'Economy', baggage:'35 KG', meal:'Included', price_per_seat:'Rs. 48,000', total_seats:50, booked_seats:50 },
+  ],
+  usa: [
+    { id:'f8', flight_no:'PK-711', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'ISB → JFK', dep_time:'02:00', arr_time:'12:30', dep_date:'Jun 1, 2026', class:'Economy', baggage:'46 KG', meal:'Included', price_per_seat:'Rs. 3,80,000', total_seats:20, booked_seats:8 },
+  ],
+  domestic: [
+    { id:'f9', flight_no:'PK-300', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'LHE → KHI', dep_time:'07:00', arr_time:'08:10', dep_date:'Daily', class:'Economy', baggage:'20 KG', meal:'Snack', price_per_seat:'Rs. 12,000', total_seats:60, booked_seats:35 },
+    { id:'f10', flight_no:'PA-200', airline:'AirSial', airline_code:'PA', route:'LYP → KHI', dep_time:'09:30', arr_time:'10:45', dep_date:'Daily', class:'Economy', baggage:'20 KG', meal:'None', price_per_seat:'Rs. 9,500', total_seats:40, booked_seats:22 },
+  ],
+  other: [
+    { id:'f11', flight_no:'EK-612', airline:'Emirates', airline_code:'EK', route:'LHE → DXB → BKK', dep_time:'23:30', arr_time:'18:40+1', dep_date:'May 5, 2026', class:'Economy', baggage:'35 KG', meal:'Halal Included', price_per_seat:'Rs. 1,25,000', total_seats:25, booked_seats:10 },
+  ]
+};
+
+let currentFlight = null;
+let allFlightsData = {};
+
+// ── RENDER CATEGORIES ──
+function renderCategories() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATEGORIES.map(cat => `
+    <button onclick="selectCategory('${cat.id}')"
+            class="group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer border-2 border-transparent hover:border-[#C9A84C] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <img src="${cat.img}" alt="${cat.label}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+      <div class="absolute inset-0 flex flex-col items-center justify-end pb-4">
+        <span class="text-3xl mb-1.5">${cat.flag}</span>
+        <span class="text-white font-bold text-sm text-center px-2 font-sans">${cat.label}</span>
+      </div>
+    </button>
+  `).join('');
+}
+
+// ── SELECT CATEGORY ──
+window.selectCategory = async function(catId) {
+  document.getElementById('flightSection').classList.remove('hidden');
+  document.getElementById('flightLoading').classList.remove('hidden');
+  document.getElementById('flightGrid').classList.add('hidden');
+  document.getElementById('flightEmpty').classList.add('hidden');
+
+  const cat = CATEGORIES.find(c => c.id === catId);
+  document.getElementById('flightCatLabel').textContent = cat?.label || catId;
+
+  // Scroll to flights
+  document.getElementById('flightSection').scrollIntoView({ behavior:'smooth', block:'start' });
+
+  // Try Supabase, fallback to demo
+  let flights = [];
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/group_flights?select=*&category=eq.${catId}&status=eq.active&order=dep_date.asc`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    flights = Array.isArray(data) && data.length ? data : (DEMO_FLIGHTS[catId] || []);
+  } catch(e) {
+    flights = DEMO_FLIGHTS[catId] || [];
+  }
+
+  allFlightsData[catId] = flights;
+  renderFlights(flights);
+};
+
+// ── RENDER FLIGHTS ──
+function renderFlights(flights) {
+  document.getElementById('flightLoading').classList.add('hidden');
+
+  if (!flights.length) {
+    document.getElementById('flightEmpty').classList.remove('hidden');
+    return;
+  }
+
+  const grid = document.getElementById('flightGrid');
+  grid.classList.remove('hidden');
+
+  grid.innerHTML = flights.map(f => {
+    const total     = parseInt(f.total_seats) || 0;
+    const booked    = parseInt(f.booked_seats) || 0;
+    const available = Math.max(0, total - booked);
+    const pct       = total > 0 ? Math.round((booked / total) * 100) : 0;
+    const soldOut   = available <= 0;
+
+    // Seat bar color
+    const barColor  = pct >= 90 ? '#EF4444' : pct >= 60 ? '#F59E0B' : '#10B981';
+
+    // Airline logo placeholder
+    const airlineCode = (f.airline_code || 'XX').toUpperCase();
+
+    return `
+    <div class="flight-card bg-white border border-[#E8E4DA] rounded-2xl overflow-hidden ${soldOut ? 'opacity-70' : ''}">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-[#E8E4DA]">
+        <div class="flex items-center gap-3">
+          <!-- Airline logo placeholder -->
+          <div class="w-12 h-12 rounded-xl bg-[#0A1628] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-xs font-sans">${airlineCode}</span>
+          </div>
+          <div>
+            <div class="font-bold text-[#1C1C2E] text-sm font-sans">${f.airline}</div>
+            <div class="text-xs text-[#9090AA] font-sans mt-0.5">Flight ${f.flight_no}</div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="font-serif text-xl text-[#C9A84C] font-bold">${f.price_per_seat}</div>
+          <div class="text-[10px] text-[#9090AA] font-sans">per seat</div>
+        </div>
+      </div>
+
+      <!-- Route -->
+      <div class="px-5 py-4">
+        <div class="flex items-center justify-between mb-4">
+          <!-- Departure -->
+          <div>
+            <div class="font-serif text-2xl font-bold text-[#1C1C2E]">${f.dep_time}</div>
+            <div class="text-xs text-[#6B6B8A] font-sans mt-0.5">${f.route?.split('→')[0]?.trim() || '—'}</div>
+          </div>
+          <!-- Arrow with duration -->
+          <div class="flex-1 px-4 flex flex-col items-center">
+            <div class="text-[10px] text-[#9090AA] font-sans mb-1">${f.dep_date}</div>
+            <div class="w-full flex items-center gap-1">
+              <div class="flex-1 h-px bg-[#E8E4DA]"></div>
+              <i class="fa fa-plane text-[#C9A84C] text-sm"></i>
+              <div class="flex-1 h-px bg-[#E8E4DA]"></div>
+            </div>
+            <div class="text-[10px] text-[#C9A84C] font-sans mt-1 font-bold">${f.class}</div>
+          </div>
+          <!-- Arrival -->
+          <div class="text-right">
+            <div class="font-serif text-2xl font-bold text-[#1C1C2E]">${f.arr_time}</div>
+            <div class="text-xs text-[#6B6B8A] font-sans mt-0.5">${f.route?.split('→').pop()?.trim() || '—'}</div>
+          </div>
+        </div>
+
+        <!-- Meta chips -->
+        <div class="flex gap-2 flex-wrap mb-4">
+          <span class="text-[11px] text-[#6B6B8A] bg-[#F3F0EA] px-2.5 py-1 rounded-full font-sans flex items-center gap-1">
+            <i class="fa fa-suitcase text-[#C9A84C] text-[10px]"></i> ${f.baggage}
+          </span>
+          <span class="text-[11px] text-[#6B6B8A] bg-[#F3F0EA] px-2.5 py-1 rounded-full font-sans flex items-center gap-1">
+            <i class="fa fa-utensils text-[#C9A84C] text-[10px]"></i> ${f.meal}
+          </span>
+          <span class="text-[11px] ${soldOut ? 'text-red-600 bg-red-50' : 'text-green-700 bg-green-50'} px-2.5 py-1 rounded-full font-sans font-bold flex items-center gap-1">
+            <i class="fa fa-chair text-[10px]"></i>
+            ${soldOut ? 'Sold Out' : available + ' seats left'}
+          </span>
+        </div>
+
+        <!-- Seat bar -->
+        <div class="mb-1.5">
+          <div class="flex justify-between text-[10px] text-[#9090AA] font-sans mb-1.5">
+            <span>${booked} booked</span>
+            <span>${available} available / ${total} total</span>
+          </div>
+          <div class="seat-bar">
+            <div class="seat-fill" style="width:${pct}%;background:${barColor}"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="px-5 pb-5">
+        ${soldOut
+          ? `<div class="w-full bg-[#F3F0EA] text-[#9090AA] font-bold text-sm uppercase tracking-wide py-3.5 rounded-xl text-center font-sans cursor-not-allowed select-none">
+               <i class="fa fa-ban mr-2"></i> SOLD OUT
+             </div>`
+          : `<button onclick="openPaxModal(${JSON.stringify(f).replace(/"/g,'&quot;')})"
+                     class="w-full bg-[#C9A84C] hover:bg-[#E8C97A] text-white font-bold text-sm uppercase tracking-wide py-3.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 font-sans flex items-center justify-center gap-2">
+               <i class="fa fa-calendar-check"></i> Book This Flight
+             </button>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── CLEAR CATEGORY ──
+window.clearCategory = function() {
+  document.getElementById('flightSection').classList.add('hidden');
+};
+
+// ── PAX MODAL ──
+window.openPaxModal = function(flight) {
+  currentFlight = flight;
+  document.getElementById('paxFlightTitle').textContent = flight.airline + ' — ' + flight.flight_no;
+  document.getElementById('paxFlightInfo').innerHTML = `
+    <span><i class="fa fa-plane mr-1"></i>${flight.route}</span>
+    <span><i class="fa fa-calendar mr-1"></i>${flight.dep_date}</span>
+    <span><i class="fa fa-tag mr-1"></i>${flight.price_per_seat}</span>`;
+  document.getElementById('paxError').classList.add('hidden');
+  document.getElementById('paxOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closePaxModal = function() {
+  document.getElementById('paxOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentFlight = null;
+};
+
+// Close on backdrop
+document.getElementById('paxOverlay').addEventListener('click', function(e) {
+  if (e.target === this) window.closePaxModal();
+});
+
+// ── SUBMIT BOOKING ──
+window.submitPaxForm = async function() {
+  const f    = currentFlight;
+  const fn   = document.getElementById('paxFName').value.trim();
+  const ln   = document.getElementById('paxLName').value.trim();
+  const ph   = document.getElementById('paxPhone').value.trim();
+  const em   = document.getElementById('paxEmail').value.trim();
+  const pp   = document.getElementById('paxPassport').value.trim();
+  const seats= parseInt(document.getElementById('paxSeats').value) || 1;
+  const cls  = document.getElementById('paxClass').value;
+  const err  = document.getElementById('paxError');
+
+  if (!fn || !ln || !ph || !pp) {
+    err.textContent = 'Please fill all required fields.';
+    err.classList.remove('hidden');
+    return;
+  }
+
+  const btn = document.getElementById('paxSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+  // ── SAVE TO SUPABASE ──
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/group_bookings`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        passenger_name: fn + ' ' + ln,
+        phone: ph, email: em || null,
+        passport_no: pp,
+        seats_booked: seats,
+        travel_class: cls,
+        flight_id: f.id,
+        flight_no: f.flight_no,
+        airline: f.airline,
+        route: f.route,
+        dep_date: f.dep_date,
+        price_per_seat: f.price_per_seat,
+        status: 'pending'
+      })
+    });
+  } catch(e) { /* continue even if save fails */ }
+
+  // ── WHATSAPP MESSAGE ──
+  const waMsg = encodeURIComponent(
+    `Assalam o Alaikum! I want to book a group ticket.\n\n` +
+    `✈️ Flight: ${f.airline} ${f.flight_no}\n` +
+    `🗺️ Route: ${f.route}\n` +
+    `📅 Date: ${f.dep_date}\n` +
+    `💺 Seats: ${seats} x ${cls}\n` +
+    `💰 Price: ${f.price_per_seat} per seat\n\n` +
+    `👤 Passenger: ${fn} ${ln}\n` +
+    `📱 Phone: ${ph}\n` +
+    `🛂 Passport: ${pp}\n\n` +
+    `Please confirm my booking. Jazak Allah Khair!`
+  );
+
+  window.open(`https://wa.me/${WA_NUMBER}?text=${waMsg}`, '_blank');
+  window.closePaxModal();
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fab fa-whatsapp text-lg"></i> Confirm Booking via WhatsApp';
+};
+
+// ── INIT ──
+renderCategories();
+</script>
+</body>
+</html>

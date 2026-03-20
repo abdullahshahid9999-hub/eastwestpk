@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visa Services — East & West Travel Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { gold: '#C9A84C', navy: '#0A1628' },
+          fontFamily: {
+            serif: ['Cormorant Garamond','serif'],
+            sans:  ['Plus Jakarta Sans','sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#FAFAF8]">
+
+<!-- OVERLAY -->
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="East & West" onerror="this.style.display='none'">
+    <span class="nav-logo-text">East & <span>West</span> Travels</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="packages.html">Packages</a>
+    <a href="visa.html" class="active">Visa</a>
+    <a href="group-tickets.html">Group Tickets</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="services.html" class="nav-cta">Book Now</a>
+  </div>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:12px"><i class="fa fa-passport mr-2"></i> Visa Services</div>
+    <h1>Visa Assistance <em>Made Easy</em></h1>
+    <p>95% approval rate — we handle everything for you</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><i class="fa fa-chevron-right"></i><span>Visa Services</span></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="bg-white border-b border-[#E8E4DA]">
+  <div class="container">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-[#E8E4DA]">
+      <div class="py-8 px-6 text-center">
+        <div class="font-serif text-4xl text-[#C9A84C] font-bold">95%</div>
+        <div class="text-xs text-[#9090AA] uppercase tracking-widest mt-2">Approval Rate</div>
+      </div>
+      <div class="py-8 px-6 text-center">
+        <div class="font-serif text-4xl text-[#C9A84C] font-bold">20+</div>
+        <div class="text-xs text-[#9090AA] uppercase tracking-widest mt-2">Countries Covered</div>
+      </div>
+      <div class="py-8 px-6 text-center">
+        <div class="font-serif text-4xl text-[#C9A84C] font-bold">500+</div>
+        <div class="text-xs text-[#9090AA] uppercase tracking-widest mt-2">Visas This Year</div>
+      </div>
+      <div class="py-8 px-6 text-center">
+        <div class="font-serif text-4xl text-[#C9A84C] font-bold">7–15</div>
+        <div class="text-xs text-[#9090AA] uppercase tracking-widest mt-2">Working Days</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VISA CARDS -->
+<section class="py-20 bg-[#FAFAF8]">
+  <div class="container">
+
+    <!-- Filter -->
+    <div class="flex gap-3 flex-wrap justify-center mb-12" id="visaFilters">
+      <button onclick="filterVisas('all',this)" class="vf-btn active px-5 py-2.5 rounded-full border-2 border-[#C9A84C] bg-[#C9A84C] text-white text-sm font-semibold font-sans transition-all">All Visas</button>
+      <button onclick="filterVisas('tourist',this)" class="vf-btn px-5 py-2.5 rounded-full border-2 border-[#E8E4DA] bg-white text-[#6B6B8A] text-sm font-semibold font-sans transition-all hover:border-[#C9A84C] hover:text-[#C9A84C]">Tourist</button>
+      <button onclick="filterVisas('umrah',this)" class="vf-btn px-5 py-2.5 rounded-full border-2 border-[#E8E4DA] bg-white text-[#6B6B8A] text-sm font-semibold font-sans transition-all hover:border-[#C9A84C] hover:text-[#C9A84C]">Umrah / Religious</button>
+      <button onclick="filterVisas('business',this)" class="vf-btn px-5 py-2.5 rounded-full border-2 border-[#E8E4DA] bg-white text-[#6B6B8A] text-sm font-semibold font-sans transition-all hover:border-[#C9A84C] hover:text-[#C9A84C]">Business</button>
+    </div>
+
+    <!-- Loading -->
+    <div id="visaLoading" class="text-center py-20 text-[#9090AA]">
+      <i class="fa fa-spinner fa-spin text-2xl text-[#C9A84C]"></i>
+      <p class="mt-3 text-sm">Loading visa services...</p>
+    </div>
+
+    <!-- Grid -->
+    <div id="visaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+
+    <!-- Empty state -->
+    <div id="visaEmpty" class="hidden text-center py-20">
+      <div class="text-5xl mb-4">🛂</div>
+      <p class="text-[#6B6B8A]">No visa services found.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-20 bg-[#F3F0EA]">
+  <div class="container">
+    <div class="text-center mb-12">
+      <div class="eyebrow justify-center mb-3">Process</div>
+      <h2 class="font-serif text-4xl text-[#1C1C2E]">How It <em>Works</em></h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="text-center p-6">
+        <div class="w-14 h-14 rounded-full bg-[#C9A84C] text-white font-serif text-2xl font-bold flex items-center justify-center mx-auto mb-4">1</div>
+        <h4 class="font-serif text-lg text-[#1C1C2E] mb-2">WhatsApp Us</h4>
+        <p class="text-sm text-[#6B6B8A]">Click Apply on any visa card — we reply within 1 hour</p>
+      </div>
+      <div class="text-center p-6">
+        <div class="w-14 h-14 rounded-full bg-[#C9A84C] text-white font-serif text-2xl font-bold flex items-center justify-center mx-auto mb-4">2</div>
+        <h4 class="font-serif text-lg text-[#1C1C2E] mb-2">Submit Documents</h4>
+        <p class="text-sm text-[#6B6B8A]">We guide you through the exact paperwork needed</p>
+      </div>
+      <div class="text-center p-6">
+        <div class="w-14 h-14 rounded-full bg-[#C9A84C] text-white font-serif text-2xl font-bold flex items-center justify-center mx-auto mb-4">3</div>
+        <h4 class="font-serif text-lg text-[#1C1C2E] mb-2">We Process</h4>
+        <p class="text-sm text-[#6B6B8A]">We submit and track your application at the embassy</p>
+      </div>
+      <div class="text-center p-6">
+        <div class="w-14 h-14 rounded-full bg-[#C9A84C] text-white font-serif text-2xl font-bold flex items-center justify-center mx-auto mb-4">4</div>
+        <h4 class="font-serif text-lg text-[#1C1C2E] mb-2">Visa Ready!</h4>
+        <p class="text-sm text-[#6B6B8A]">Collect your visa or receive it digitally</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px">
+          <img src="assets/images/logo.jpg" alt="Logo" style="width:42px;height:42px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
+          <span class="nav-logo-text">East & <span>West</span></span>
+        </a>
+        <p>Our Services in Your Hands,<br>Where Ever You Are.</p>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
+          <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-facebook" style="color:#1877F2;font-size:15px"></i></a>
+          <a href="https://wa.me/923336515349" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-whatsapp" style="color:#25D366;font-size:15px"></i></a>
+        </div>
+      </div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Visa Types</h4><ul>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> UAE Visa</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Saudi Visa</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Thailand Visa</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Bali / Indonesia</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script src="assets/js/script.js"></script>
+<script type="module">
+// ── SUPABASE ──
+const SUPABASE_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const WA_NUMBER = '923336515349';
+
+// ── COUNTRY FLAGS ──
+const FLAG = { UAE:'🇦🇪', Saudi:'🇸🇦', Thailand:'🇹🇭', Indonesia:'🇮🇩', Turkey:'🇹🇷', UK:'🇬🇧', Malaysia:'🇲🇾', Qatar:'🇶🇦', Egypt:'🇪🇬', Jordan:'🇯🇴' };
+
+let allVisas = [];
+
+async function loadVisas() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/visa_services?select=*&status=eq.active&order=sort_order.asc`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    });
+    allVisas = await res.json();
+  } catch(e) {
+    // Fallback demo data if table doesn't exist yet
+    allVisas = [
+      { id:'1', title:'UAE Tourist Visa', country:'UAE', type:'tourist', price:'Rs. 15,000', days:'30 Days', validity:'90 Days', max_stay:'30 Days', processing_time:'5–7 working days', requirements:'Passport (6mo valid), Photo, Bank Statement, Ticket, Hotel Booking', status:'active', sort_order:1 },
+      { id:'2', title:'Saudi Arabia Umrah Visa', country:'Saudi', type:'umrah', price:'Rs. 18,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days', processing_time:'7–10 working days', requirements:'Passport, Mehram Certificate (for ladies), Vaccination card, Umrah Package Booking', status:'active', sort_order:2 },
+      { id:'3', title:'Thailand Tourist Visa', country:'Thailand', type:'tourist', price:'Rs. 12,000', days:'30 Days', validity:'6 Months', max_stay:'30 Days', processing_time:'5–7 working days', requirements:'Passport, Photo, Bank Statement, Hotel Booking', status:'active', sort_order:3 },
+      { id:'4', title:'Indonesia Visa on Arrival', country:'Indonesia', type:'tourist', price:'Rs. 8,000', days:'30 Days', validity:'Single Entry', max_stay:'30 Days', processing_time:'3–5 working days', requirements:'Passport, Photo, Return Ticket', status:'active', sort_order:4 },
+      { id:'5', title:'Turkey e-Visa', country:'Turkey', type:'tourist', price:'Rs. 14,000', days:'90 Days', validity:'6 Months', max_stay:'90 Days', processing_time:'3–5 working days', requirements:'Passport, Credit Card for online fee, Photo', status:'active', sort_order:5 },
+      { id:'6', title:'Malaysia Tourist Visa', country:'Malaysia', type:'tourist', price:'Rs. 10,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days', processing_time:'5–7 working days', requirements:'Passport, Photo, Bank Statement, Hotel Booking', status:'active', sort_order:6 },
+    ];
+  }
+  renderVisas(allVisas);
+}
+
+function renderVisas(data) {
+  const grid    = document.getElementById('visaGrid');
+  const loading = document.getElementById('visaLoading');
+  const empty   = document.getElementById('visaEmpty');
+
+  loading.classList.add('hidden');
+
+  if (!data.length) {
+    empty.classList.remove('hidden');
+    grid.classList.add('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  grid.classList.remove('hidden');
+
+  grid.innerHTML = data.map(v => {
+    const flag = FLAG[v.country] || '🌍';
+    // Dynamic WhatsApp link
+    const waMsg = encodeURIComponent(`Assalam o Alaikum! I am interested in your ${v.title} service. Please share the details and requirements.`);
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
+
+    return `
+    <div class="visa-card bg-white border border-[#E8E4DA] rounded-2xl overflow-hidden hover:border-[#C9A84C] hover:shadow-xl transition-all duration-300 group" data-type="${v.type}">
+
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-[#0A1628] to-[#162847] p-5 relative">
+        <div class="flex items-start justify-between">
+          <div>
+            <span class="text-3xl">${flag}</span>
+            <h3 class="font-serif text-xl text-white mt-2 leading-tight">${v.title}</h3>
+            <span class="inline-block mt-2 text-[10px] font-bold uppercase tracking-widest text-[#C9A84C] bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] px-3 py-1 rounded-full">${v.type}</span>
+          </div>
+          <div class="text-right">
+            <div class="font-serif text-2xl text-[#C9A84C] font-bold leading-tight">${v.price}</div>
+            <div class="text-[11px] text-[rgba(255,255,255,0.4)] mt-1">service fee</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info pills -->
+      <div class="px-5 py-4 border-b border-[#E8E4DA]">
+        <div class="flex gap-2 flex-wrap">
+          <span class="flex items-center gap-1.5 text-xs text-[#6B6B8A] bg-[#F3F0EA] px-3 py-1.5 rounded-full">
+            <i class="fa fa-clock text-[#C9A84C] text-[10px]"></i> ${v.days}
+          </span>
+          <span class="flex items-center gap-1.5 text-xs text-[#6B6B8A] bg-[#F3F0EA] px-3 py-1.5 rounded-full">
+            <i class="fa fa-calendar-alt text-[#C9A84C] text-[10px]"></i> Validity: ${v.validity || '—'}
+          </span>
+          <span class="flex items-center gap-1.5 text-xs text-[#6B6B8A] bg-[#F3F0EA] px-3 py-1.5 rounded-full">
+            <i class="fa fa-door-open text-[#C9A84C] text-[10px]"></i> Stay: ${v.max_stay || '—'}
+          </span>
+          <span class="flex items-center gap-1.5 text-xs text-[#6B6B8A] bg-[#F3F0EA] px-3 py-1.5 rounded-full">
+            <i class="fa fa-hourglass-half text-[#C9A84C] text-[10px]"></i> ${v.processing_time || '7–15 days'}
+          </span>
+        </div>
+      </div>
+
+      <!-- Requirements -->
+      <div class="px-5 py-4 flex-1">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] mb-2">Requirements</div>
+        <p class="text-sm text-[#4A4A6A] leading-relaxed">${v.requirements || 'Contact us for document list'}</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="px-5 pb-5">
+        <!-- Dynamic WhatsApp apply button -->
+        <a href="${waLink}" target="_blank"
+           class="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-sm uppercase tracking-wide py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5">
+          <i class="fab fa-whatsapp text-lg"></i>
+          Apply on WhatsApp
+        </a>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Re-run scroll reveal on new cards
+  if (window.__scrollRevealObs) {
+    document.querySelectorAll('.visa-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      window.__scrollRevealObs.observe(el);
+    });
+  }
+}
+
+// ── FILTER ──
+window.filterVisas = function(type, btn) {
+  document.querySelectorAll('.vf-btn').forEach(b => {
+    b.classList.remove('active','bg-[#C9A84C]','text-white','border-[#C9A84C]');
+    b.classList.add('bg-white','text-[#6B6B8A]','border-[#E8E4DA]');
+  });
+  btn.classList.add('active','bg-[#C9A84C]','text-white','border-[#C9A84C]');
+  btn.classList.remove('bg-white','text-[#6B6B8A]','border-[#E8E4DA]');
+
+  const filtered = type === 'all' ? allVisas : allVisas.filter(v => v.type === type);
+  renderVisas(filtered);
+};
+
+loadVisas();
+</script>
+</body>
+</html>
