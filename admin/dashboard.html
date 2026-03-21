@@ -3,785 +3,862 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel — East & West</title>
+<title>Admin — East & West Travel Services</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --navy:#0A1628;--navy-mid:#0F2040;--navy-light:#162847;
-  --teal:#0EA5E9;--teal-dark:#0284C7;--teal-glow:rgba(14,165,233,0.15);
-  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--border-gold:rgba(201,168,76,0.3);
-  --white:#fff;--text:#E8EDF2;--text-dim:#8899AA;
-  --border:rgba(255,255,255,0.08);--green:#10B981;--red:#EF4444;--radius:12px;
-}
+:root{--navy:#0A1628;--nm:#0F2040;--nl:#162847;--teal:#0EA5E9;--td:#0284C7;--tg:rgba(14,165,233,0.15);--gold:#C9A84C;--gd:rgba(201,168,76,0.15);--gb:rgba(201,168,76,0.3);--white:#fff;--text:#E8EDF2;--dim:#8899AA;--bdr:rgba(255,255,255,0.08);--green:#10B981;--red:#EF4444;--r:12px}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex}
 h1,h2,h3,h4{font-family:'Playfair Display',serif}
 em{color:var(--gold);font-style:italic}
 a{text-decoration:none;color:inherit}
 input,select,textarea,button{font-family:'Plus Jakarta Sans',sans-serif}
-
-/* SIDEBAR */
-.sb{width:240px;background:#060E1A;border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
-.sb-brand{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.sb-brand img{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
-.sb-brand-txt{font-family:'Playfair Display',serif;font-size:17px;color:var(--white)}
+.sb{width:240px;background:#060E1A;border-right:1px solid var(--bdr);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
+.sb-brand{padding:18px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.sb-brand img{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
+.sb-brand-txt{font-family:'Playfair Display',serif;font-size:16px;color:var(--white)}
 .sb-brand-txt span{color:var(--teal)}
-.sb-admin{padding:10px 20px;font-size:12px;color:var(--text-dim);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.sb-admin{padding:8px 20px;font-size:12px;color:var(--dim);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:7px}
 .sb-admin i{color:var(--teal)}
-.sb-lbl{padding:18px 20px 6px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+.sb-lbl{padding:16px 20px 6px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
 .sb-nav{padding:0 10px;flex:1}
-.sb-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:13px;font-weight:500;color:var(--text-dim);transition:all 0.2s;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left}
-.sb-btn:hover{background:rgba(255,255,255,0.05);color:var(--white)}
-.sb-btn.active{background:var(--teal-glow);color:var(--teal);border:1px solid rgba(14,165,233,0.2)}
-.sb-btn i{width:16px;text-align:center;font-size:13px}
-.sb-badge{margin-left:auto;background:var(--red);color:white;padding:2px 7px;border-radius:50px;font-size:10px;font-weight:700}
-.sb-footer{padding:14px;border-top:1px solid var(--border)}
-.sb-logout{width:100%;background:none;border:1px solid rgba(239,68,68,0.25);color:rgba(239,68,68,0.7);padding:9px;border-radius:9px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.2s}
-.sb-logout:hover{border-color:var(--red);color:var(--red)}
-
-/* MAIN */
-.main{margin-left:240px;flex:1;padding:32px;min-height:100vh;overflow-x:hidden}
+.sbn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;font-size:13px;font-weight:500;color:var(--dim);transition:all 0.2s;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left}
+.sbn:hover{background:rgba(255,255,255,0.05);color:var(--white)}
+.sbn.active{background:var(--tg);color:var(--teal);border:1px solid rgba(14,165,233,0.2)}
+.sbn i{width:16px;text-align:center;font-size:13px}
+.sbn-badge{margin-left:auto;background:var(--red);color:white;padding:2px 7px;border-radius:50px;font-size:10px;font-weight:700}
+.sb-footer{padding:14px;border-top:1px solid var(--bdr)}
+.sb-out{width:100%;background:none;border:1px solid rgba(239,68,68,0.25);color:rgba(239,68,68,0.7);padding:9px;border-radius:9px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.2s}
+.sb-out:hover{border-color:var(--red);color:var(--red)}
+.main{margin-left:240px;flex:1;padding:28px;min-height:100vh;overflow-x:hidden}
 .page{display:none}.page.active{display:block}
-.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.page-hdr h2{font-size:28px;color:var(--white)}
-.page-hdr p{font-size:13px;color:var(--text-dim);margin-top:2px}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
-.stat-c{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color 0.3s}
-.stat-c:hover{border-color:var(--border-gold)}
-.stat-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
-.stat-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--white);line-height:1}
-.stat-lbl{font-size:12px;color:var(--text-dim);margin-top:4px}
-
-/* CARD */
-.card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
-.card-hdr{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.card-hdr h3{font-size:17px;color:var(--white)}
-
-/* TABLE */
-.tbl-wrap{overflow-x:auto}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.ph h2{font-size:26px;color:var(--white)}
+.ph p{font-size:12px;color:var(--dim);margin-top:2px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.sc{background:var(--nl);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;transition:border-color 0.3s}
+.sc:hover{border-color:var(--gb)}
+.sc-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px}
+.sc-n{font-family:'Playfair Display',serif;font-size:26px;color:var(--white);line-height:1}
+.sc-l{font-size:12px;color:var(--dim);margin-top:4px}
+.card{background:var(--nl);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+.ch{padding:16px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ch h3{font-size:16px;color:var(--white)}
+.tw{overflow-x: auto}
 table{width:100%;border-collapse:collapse}
-thead th{padding:11px 15px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);text-align:left;background:var(--navy-mid);white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.2s}
+thead th{padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--dim);text-align:left;background:var(--nm);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bdr);transition:background 0.2s}
 tbody tr:hover{background:rgba(255,255,255,0.02)}
-tbody td{padding:12px 15px;font-size:13px;color:var(--text-dim);vertical-align:middle}
+tbody td{padding:12px 14px;font-size:13px;color:var(--dim);vertical-align:middle}
 tbody td strong{color:var(--white)}
-.empty-td{text-align:center;padding:48px;color:var(--text-dim)}
-
-/* PILLS */
+.etd{text-align:center;padding:40px;color:var(--dim);font-size:13px}
 .pill{padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
-.pill-new{background:rgba(14,165,233,0.12);color:var(--teal);border:1px solid rgba(14,165,233,0.25)}
-.pill-pending{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border-gold)}
-.pill-confirmed{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
-.pill-cancelled{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
-.pill-published{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
-.pill-draft{background:rgba(255,255,255,0.06);color:var(--text-dim);border:1px solid var(--border)}
-
-/* BUTTONS */
-.btn-teal{background:var(--teal);color:white;border:none;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all 0.25s}
-.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
-.btn-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all 0.2s}
-.btn-ghost:hover{border-color:var(--white);color:var(--white)}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#E8C97A);color:var(--navy);border:none;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all 0.25s}
-.btn-gold:hover{transform:translateY(-1px)}
-.btn-red{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);color:#EF4444;padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s}
-.btn-red:hover{background:rgba(239,68,68,0.2)}
-.btn-sm{background:none;border:1px solid var(--border);color:var(--text-dim);padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s}
-.btn-sm:hover{border-color:var(--teal);color:var(--teal)}
-
-/* STATUS SELECT */
-.status-sel{background:var(--navy-mid);border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-size:12px;color:var(--white);cursor:pointer;outline:none}
-.status-sel:focus{border-color:var(--teal)}
-
-/* SEARCH */
-.search-inp{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--white);outline:none;width:220px;transition:border-color 0.3s}
-.search-inp:focus{border-color:var(--teal)}
-.search-inp::placeholder{color:var(--text-dim)}
-
-/* MODAL */
+.p-new{background:rgba(14,165,233,0.12);color:var(--teal);border:1px solid rgba(14,165,233,0.25)}
+.p-pend{background:var(--gd);color:var(--gold);border:1px solid var(--gb)}
+.p-conf{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
+.p-canc{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
+.p-pub{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
+.p-drft{background:rgba(255,255,255,0.06);color:var(--dim);border:1px solid var(--bdr)}
+.p-act{background:rgba(16,185,129,0.12);color:#10B981;border:1px solid rgba(16,185,129,0.25)}
+.p-inact{background:rgba(255,255,255,0.06);color:var(--dim);border:1px solid var(--bdr)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.25s;font-family:'Plus Jakarta Sans',sans-serif}
+.btn-t{background:var(--teal);color:#fff}.btn-t:hover{background:var(--td);transform:translateY(-1px)}
+.btn-g{background:linear-gradient(135deg,var(--gold),#E8C97A);color:var(--navy)}.btn-g:hover{transform:translateY(-1px)}
+.btn-gh{background:none;border:1px solid var(--bdr);color:var(--dim)}.btn-gh:hover{border-color:var(--white);color:var(--white)}
+.btn-r{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);color:#EF4444;padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s}
+.btn-r:hover{background:rgba(239,68,68,0.2)}
+.btn-s{background:none;border:1px solid var(--bdr);color:var(--dim);padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s}
+.btn-s:hover{border-color:var(--teal);color:var(--teal)}
+.ss{background:var(--nm);border:1px solid var(--bdr);border-radius:7px;padding:5px 8px;font-size:12px;color:var(--white);cursor:pointer;outline:none}
+.ss:focus{border-color:var(--teal)}
+.si{background:var(--nm);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--white);outline:none;transition:border-color 0.3s}
+.si:focus{border-color:var(--teal)}
+.si::placeholder{color:var(--dim)}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 .modal-bg.open{display:flex}
-.modal{background:var(--navy-light);border:1px solid var(--border);border-radius:20px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
-.m-hdr{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--navy-light);z-index:2}
-.m-hdr h3{font-size:19px;color:var(--white)}
-.m-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:all 0.2s}
-.m-close:hover{background:rgba(255,255,255,0.07);color:var(--white)}
-.m-body{padding:22px 24px}
-.m-foot{display:flex;gap:10px;margin-top:18px}
-
-/* FORM */
-.fg{margin-bottom:15px}
-.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:6px}
-.fg input,.fg select,.fg textarea{width:100%;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;font-size:14px;color:var(--white);outline:none;transition:all 0.3s}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--text-dim);opacity:0.6}
+.modal{background:var(--nl);border:1px solid var(--bdr);border-radius:20px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
+.mh{padding:16px 22px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--nl);z-index:2}
+.mh h3{font-size:18px;color:var(--white)}
+.mc{background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:all 0.2s}
+.mc:hover{background:rgba(255,255,255,0.07);color:var(--white)}
+.mb{padding:20px 22px}
+.mf{display:flex;gap:10px;margin-top:16px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--dim);margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--nm);border:1.5px solid var(--bdr);border-radius:9px;padding:10px 12px;font-size:14px;color:var(--white);outline:none;transition:all 0.3s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--tg)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--dim);opacity:0.6}
 .fg textarea{resize:vertical;min-height:80px}
 .fg select option{background:#0F2040}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:13px 18px;font-size:13px;color:var(--white);box-shadow:0 8px 28px rgba(0,0,0,0.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.35s;display:flex;align-items:center;gap:10px;max-width:300px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--nl);border:1px solid var(--bdr);border-radius:12px;padding:13px 18px;font-size:13px;color:var(--white);box-shadow:0 8px 28px rgba(0,0,0,0.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.35s;display:flex;align-items:center;gap:10px;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
-.toast.ok{border-color:rgba(16,185,129,0.3)}
-.toast.ok i{color:#10B981}
-.toast.err{border-color:rgba(239,68,68,0.3)}
-.toast.err i{color:var(--red)}
-
-/* RECENT TABLE for dashboard */
-.recent-bk td:first-child{font-family:monospace;font-size:12px;color:var(--teal)}
-
-/* BLOG TEXTAREA */
-#blogContent{min-height:180px}
-
-/* Responsive */
-@media(max-width:900px){.main{margin-left:0;padding:20px}.sb{display:none}.stats-grid{grid-template-columns:1fr 1fr}}
+.toast.ok{border-color:rgba(16,185,129,0.3)}.toast.ok i{color:#10B981}
+.toast.err{border-color:rgba(239,68,68,0.3)}.toast.err i{color:var(--red)}
+@media(max-width:900px){.main{margin-left:0;padding:16px}.sb{display:none}.sg{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sb" id="sidebar">
+<aside class="sb">
   <div class="sb-brand">
-    <img src="../assets/images/logo.jpg" alt="Logo" onerror="this.style.display='none'">
-    <div class="sb-brand-txt">East &amp; <span>West</span></div>
+    <img src="../assets/images/logo.jpg" alt="" onerror="this.style.display='none'">
+    <div class="sb-brand-txt">East &amp; <span>West Travel Services</span></div>
   </div>
   <div class="sb-admin"><i class="fa fa-shield-alt"></i><span id="adminEmail">Admin</span></div>
   <div class="sb-nav">
-    <div class="sb-lbl">Main</div>
-    <button class="sb-btn active" onclick="showPage('dashboard',this)"><i class="fa fa-chart-line"></i> Dashboard</button>
-    <button class="sb-btn" onclick="showPage('bookings',this)"><i class="fa fa-calendar-check"></i> Bookings <span class="sb-badge" id="newBadge" style="display:none">0</span></button>
-    <button class="sb-btn" onclick="showPage('customers',this)"><i class="fa fa-users"></i> Customers</button>
-    <button class="sb-btn" onclick="showPage('travellers',this)"><i class="fa fa-user-friends"></i> Travellers</button>
+    <div class="sb-lbl">Overview</div>
+    <button class="sbn active" onclick="showPage('dashboard',this)"><i class="fa fa-chart-line"></i> Dashboard</button>
+    <button class="sbn" onclick="showPage('bookings',this)"><i class="fa fa-calendar-check"></i> Bookings <span class="sbn-badge" id="newBadge" style="display:none">0</span></button>
+    <button class="sbn" onclick="showPage('customers',this)"><i class="fa fa-users"></i> Customers</button>
+    <button class="sbn" onclick="showPage('travellers',this)"><i class="fa fa-id-card"></i> Travellers</button>
+    <div class="sb-lbl">Services</div>
+    <button class="sbn" onclick="showPage('umrah',this)"><i class="fa fa-star-and-crescent"></i> Umrah Packages</button>
+    <button class="sbn" onclick="showPage('tours',this)"><i class="fa fa-globe"></i> World Tours</button>
+    <button class="sbn" onclick="showPage('visa',this)"><i class="fa fa-passport"></i> Visa Services</button>
+    <button class="sbn" onclick="showPage('group',this)"><i class="fa fa-plane"></i> Group Tickets</button>
     <div class="sb-lbl">Content</div>
-    <button class="sb-btn" onclick="showPage('packages',this)"><i class="fa fa-box-open"></i> Packages</button>
-    <button class="sb-btn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
+    <button class="sbn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-lbl">System</div>
-    <button class="sb-btn" onclick="showPage('settings',this)"><i class="fa fa-cog"></i> Settings</button>
-    <a class="sb-btn" href="../index.html" target="_blank"><i class="fa fa-external-link-alt"></i> View Website</a>
+    <button class="sbn" onclick="showPage('settings',this)"><i class="fa fa-cog"></i> Settings</button>
+    <a class="sbn" href="../index.html" target="_blank"><i class="fa fa-external-link-alt"></i> View Website</a>
   </div>
   <div class="sb-footer">
-    <button class="sb-logout" onclick="doLogout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+    <button class="sb-out" onclick="doLogout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
 
-<!-- ══ DASHBOARD ══ -->
+<!-- DASHBOARD -->
 <div class="page active" id="pg-dashboard">
-  <div class="page-hdr"><div><h2>Dashboard <em>Overview</em></h2><p id="dashDate"></p></div></div>
-  <div class="stats-grid">
-    <div class="stat-c"><div class="stat-ico" style="background:var(--teal-glow)"><i class="fa fa-calendar-check" style="color:var(--teal)"></i></div><div class="stat-num" id="ds-total">—</div><div class="stat-lbl">Total Bookings</div></div>
-    <div class="stat-c"><div class="stat-ico" style="background:rgba(14,165,233,0.1)"><i class="fa fa-star" style="color:var(--teal)"></i></div><div class="stat-num" id="ds-new">—</div><div class="stat-lbl">New Bookings</div></div>
-    <div class="stat-c"><div class="stat-ico" style="background:var(--gold-dim)"><i class="fa fa-users" style="color:var(--gold)"></i></div><div class="stat-num" id="ds-customers">—</div><div class="stat-lbl">Customers</div></div>
-    <div class="stat-c"><div class="stat-ico" style="background:rgba(16,185,129,0.1)"><i class="fa fa-blog" style="color:#10B981"></i></div><div class="stat-num" id="ds-blogs">—</div><div class="stat-lbl">Blog Posts</div></div>
+  <div class="ph"><div><h2>Dashboard <em>Overview</em></h2><p id="dashDate"></p></div></div>
+  <div class="sg">
+    <div class="sc"><div class="sc-ico" style="background:var(--tg)"><i class="fa fa-calendar-check" style="color:var(--teal)"></i></div><div class="sc-n" id="ds-bk">—</div><div class="sc-l">Total Bookings</div></div>
+    <div class="sc"><div class="sc-ico" style="background:rgba(14,165,233,0.1)"><i class="fa fa-star" style="color:var(--teal)"></i></div><div class="sc-n" id="ds-new">—</div><div class="sc-l">New Today</div></div>
+    <div class="sc"><div class="sc-ico" style="background:var(--gd)"><i class="fa fa-users" style="color:var(--gold)"></i></div><div class="sc-n" id="ds-cu">—</div><div class="sc-l">Customers</div></div>
+    <div class="sc"><div class="sc-ico" style="background:rgba(16,185,129,0.1)"><i class="fa fa-star-and-crescent" style="color:#10B981"></i></div><div class="sc-n" id="ds-um">—</div><div class="sc-l">Umrah Packages</div></div>
   </div>
   <div class="card">
-    <div class="card-hdr"><h3>Recent <em>Bookings</em></h3><button class="btn-teal" onclick="showPage('bookings')"><i class="fa fa-arrow-right"></i> All</button></div>
-    <div class="tbl-wrap"><table><thead><tr><th>Ref</th><th>Customer</th><th>Tour</th><th>Date</th><th>Status</th></tr></thead><tbody id="dash-tbody"><tr><td colspan="5" class="empty-td"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+    <div class="ch"><h3>Recent Bookings</h3><button class="btn btn-t" onclick="showPage('bookings')"><i class="fa fa-arrow-right"></i> All</button></div>
+    <div class="tw"><table><thead><tr><th>Ref</th><th>Customer</th><th>Tour</th><th>Date</th><th>Status</th></tr></thead><tbody id="dash-tb"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- ══ BOOKINGS ══ -->
+<!-- BOOKINGS -->
 <div class="page" id="pg-bookings">
-  <div class="page-hdr"><div><h2>All <em>Bookings</em></h2><p>Manage booking statuses</p></div></div>
+  <div class="ph"><div><h2>All <em>Bookings</em></h2></div></div>
   <div class="card">
-    <div class="card-hdr">
-      <h3>Bookings</h3>
+    <div class="ch"><h3>Bookings</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input type="text" class="search-inp" placeholder="Search name, ref, tour..." oninput="searchBookings(this.value)">
-        <select class="status-sel" onchange="filterBookingStatus(this.value)">
-          <option value="">All Status</option>
-          <option>new</option><option>pending</option><option>confirmed</option><option>cancelled</option>
+        <input class="si" style="width:200px" placeholder="Search..." oninput="searchBk(this.value)">
+        <select class="ss" onchange="filterBk(this.value)">
+          <option value="">All Status</option><option>new</option><option>pending</option><option>confirmed</option><option>cancelled</option>
         </select>
       </div>
     </div>
-    <div class="tbl-wrap"><table><thead><tr><th>Ref</th><th>Customer</th><th>Tour</th><th>PAX</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="bk-tbody"><tr><td colspan="7" class="empty-td"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+    <div class="tw"><table><thead><tr><th>Ref</th><th>Customer</th><th>Tour</th><th>PAX</th><th>Departure</th><th>Status</th><th>Actions</th></tr></thead><tbody id="bk-tb"><tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- ══ CUSTOMERS ══ -->
+<!-- CUSTOMERS -->
 <div class="page" id="pg-customers">
-  <div class="page-hdr"><div><h2>All <em>Customers</em></h2></div></div>
+  <div class="ph"><div><h2>All <em>Customers</em></h2></div></div>
   <div class="card">
-    <div class="card-hdr"><h3>Customers</h3><input type="text" class="search-inp" placeholder="Search..." oninput="searchCustomers(this.value)"></div>
-    <div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Action</th></tr></thead><tbody id="cust-tbody"><tr><td colspan="5" class="empty-td"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+    <div class="ch"><h3>Customers</h3><input class="si" style="width:200px" placeholder="Search..." oninput="searchCu(this.value)"></div>
+    <div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="cu-tb"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- ══ TRAVELLERS ══ -->
+<!-- TRAVELLERS -->
 <div class="page" id="pg-travellers">
-  <div class="page-hdr"><div><h2>Traveller <em>Records</em></h2></div><button class="btn-teal" onclick="openTravModal()"><i class="fa fa-plus"></i> Add Traveller</button></div>
-  <div style="margin-bottom:14px"><input type="text" class="search-inp" style="width:100%;max-width:400px" placeholder="Search name, passport, CNIC..." oninput="searchTravellers(this.value)"></div>
+  <div class="ph"><div><h2>Traveller <em>Records</em></h2></div><button class="btn btn-t" onclick="openModal('travModal')"><i class="fa fa-plus"></i> Add</button></div>
+  <input class="si" style="width:100%;max-width:380px;margin-bottom:14px" placeholder="Search name, passport, CNIC..." oninput="searchTr(this.value)">
   <div class="card">
-    <div class="tbl-wrap"><table><thead><tr><th>Name</th><th>CNIC</th><th>Passport No</th><th>DOB</th><th>Expiry</th><th>Phone</th><th>Tour</th><th>Actions</th></tr></thead><tbody id="trav-tbody"><tr><td colspan="8" class="empty-td"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+    <div class="tw"><table><thead><tr><th>Name</th><th>CNIC</th><th>Passport</th><th>DOB</th><th>Expiry</th><th>Phone</th><th>Tour</th><th>Actions</th></tr></thead><tbody id="tr-tb"><tr><td colspan="8" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- ══ PACKAGES ══ -->
-<div class="page" id="pg-packages">
-  <div class="page-hdr"><div><h2>Manage <em>Packages</em></h2></div><button class="btn-gold" onclick="openPkgModal()"><i class="fa fa-plus"></i> Add Package</button></div>
+<!-- UMRAH PACKAGES -->
+<div class="page" id="pg-umrah">
+  <div class="ph"><div><h2>Umrah <em>Packages</em></h2><p>Manage Umrah & Hajj packages shown on website</p></div><button class="btn btn-g" onclick="openPkgModal('umrah')"><i class="fa fa-plus"></i> Add Umrah Package</button></div>
   <div class="card">
-    <div class="tbl-wrap"><table><thead><tr><th>Package</th><th>Type</th><th>Duration</th><th>Price</th><th>Departure</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pkg-tbody"><tr><td colspan="7" class="empty-td"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+    <div class="tw"><table><thead><tr><th>Package Name</th><th>Duration</th><th>Price</th><th>Departure</th><th>Airline</th><th>Status</th><th>Actions</th></tr></thead><tbody id="umrah-tb"><tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- ══ BLOGS ══ -->
+<!-- WORLD TOURS -->
+<div class="page" id="pg-tours">
+  <div class="ph"><div><h2>World <em>Tours</em></h2><p>Dubai, Thailand, Bali, Malaysia etc.</p></div><button class="btn btn-g" onclick="openPkgModal('tour')"><i class="fa fa-plus"></i> Add Tour</button></div>
+  <div class="card">
+    <div class="tw"><table><thead><tr><th>Tour Name</th><th>Destination</th><th>Duration</th><th>Price</th><th>Departure</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tours-tb"><tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- VISA SERVICES -->
+<div class="page" id="pg-visa">
+  <div class="ph"><div><h2>Visa <em>Services</em></h2><p>Manage visa types shown on visa page</p></div><button class="btn btn-g" onclick="openVisaModal()"><i class="fa fa-plus"></i> Add Visa</button></div>
+  <div class="card">
+    <div class="tw"><table><thead><tr><th>Visa</th><th>Country</th><th>Type</th><th>Price</th><th>Days</th><th>Validity</th><th>Status</th><th>Actions</th></tr></thead><tbody id="visa-tb"><tr><td colspan="8" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- GROUP TICKETS -->
+<div class="page" id="pg-group">
+  <div class="ph"><div><h2>Group <em>Tickets</em></h2><p>Fixed departure flights for groups</p></div><button class="btn btn-g" onclick="openFlightModal()"><i class="fa fa-plus"></i> Add Flight</button></div>
+  <div style="margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap">
+    <select class="ss" onchange="filterFlights(this.value)" style="padding:8px 12px">
+      <option value="">All Categories</option>
+      <option>umrah</option><option>uk</option><option>qatar</option><option>usa</option><option>domestic</option><option>other</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="tw"><table><thead><tr><th>Flight No</th><th>Airline</th><th>Route</th><th>Date</th><th>Category</th><th>Price/Seat</th><th>Seats</th><th>Booked</th><th>Status</th><th>Actions</th></tr></thead><tbody id="grp-tb"><tr><td colspan="10" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- BLOGS -->
 <div class="page" id="pg-blogs">
-  <div class="page-hdr"><div><h2>Blog <em>Posts</em></h2></div><button class="btn-gold" onclick="openBlogModal()"><i class="fa fa-plus"></i> New Post</button></div>
+  <div class="ph"><div><h2>Blog <em>Posts</em></h2></div><button class="btn btn-g" onclick="openBlogModal()"><i class="fa fa-plus"></i> New Post</button></div>
   <div class="card">
-    <div class="tbl-wrap"><table><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="blog-tbody"><tr><td colspan="5" class="empty-td"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+    <div class="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="bl-tb"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
   </div>
 </div>
 
-<!-- ══ SETTINGS ══ -->
+<!-- SETTINGS -->
 <div class="page" id="pg-settings">
-  <div class="page-hdr"><div><h2>Admin <em>Settings</em></h2></div></div>
-  <div class="card" style="max-width:480px">
-    <div class="card-hdr"><h3>Change Password</h3></div>
-    <div class="m-body">
-      <div class="fg"><label>Current Password</label><input type="password" id="curPwd" placeholder="Current password"></div>
-      <div class="fg"><label>New Password</label><input type="password" id="newPwd" placeholder="Min 8 characters"></div>
-      <div class="fg"><label>Confirm New Password</label><input type="password" id="conPwd" placeholder="Repeat new password"></div>
-      <p id="pwdMsg" style="display:none;font-size:13px;margin-bottom:12px"></p>
-      <button class="btn-teal" onclick="changePwd()"><i class="fa fa-save"></i> Update Password</button>
+  <div class="ph"><div><h2>Admin <em>Settings</em></h2></div></div>
+  <div class="card" style="max-width:460px">
+    <div class="ch"><h3>Change Password</h3></div>
+    <div class="mb">
+      <div class="fg"><label>Current Password</label><input type="password" id="cp1" placeholder="Current"></div>
+      <div class="fg"><label>New Password</label><input type="password" id="cp2" placeholder="New (min 8)"></div>
+      <div class="fg"><label>Confirm</label><input type="password" id="cp3" placeholder="Repeat"></div>
+      <p id="cpMsg" style="display:none;font-size:13px;margin-bottom:12px"></p>
+      <button class="btn btn-t" onclick="changePwd()"><i class="fa fa-save"></i> Update</button>
     </div>
   </div>
 </div>
 
-</main><!-- /main -->
+</main>
 
-<!-- ══ TOAST ══ -->
-<div class="toast" id="toast"><i id="toastIco"></i><span id="toastTxt"></span></div>
+<!-- TOAST -->
+<div class="toast" id="toast"><i id="tIco"></i><span id="tTxt"></span></div>
 
-<!-- ══ TRAVELLER MODAL ══ -->
+<!-- ═══ TRAVELLER MODAL ═══ -->
 <div class="modal-bg" id="travModal">
   <div class="modal" style="max-width:680px">
-    <div class="m-hdr"><h3 id="travTitle">Add <em>Traveller</em></h3><button class="m-close" onclick="closeModal('travModal')"><i class="fa fa-times"></i></button></div>
-    <div class="m-body">
+    <div class="mh"><h3 id="travTitle">Add <em>Traveller</em></h3><button class="mc" onclick="closeModal('travModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
       <input type="hidden" id="travId">
-      <div class="fg-row">
-        <div class="fg"><label>First Name *</label><input type="text" id="travFName" placeholder="Muhammad"></div>
-        <div class="fg"><label>Last Name *</label><input type="text" id="travLName" placeholder="Ali"></div>
-        <div class="fg"><label>Phone *</label><input type="tel" id="travPhone" placeholder="+92 3XX XXXXXXX"></div>
-        <div class="fg"><label>Email</label><input type="email" id="travEmail" placeholder="email@example.com"></div>
-        <div class="fg"><label>CNIC</label><input type="text" id="travCnic" placeholder="35201-XXXXXXX-X"></div>
-        <div class="fg"><label>Nationality</label><input type="text" id="travNationality" value="Pakistani"></div>
-        <div class="fg"><label>Date of Birth *</label><input type="date" id="travDob"></div>
-        <div class="fg"><label>Gender</label><select id="travGender"><option>Male</option><option>Female</option></select></div>
-        <div class="fg"><label>Passport Number *</label><input type="text" id="travPassport" placeholder="AB1234567"></div>
-        <div class="fg"><label>Passport Issue Date</label><input type="date" id="travIssue"></div>
-        <div class="fg"><label>Passport Expiry *</label><input type="date" id="travExpiry"></div>
-        <div class="fg"><label>City</label><input type="text" id="travCity" placeholder="Faisalabad"></div>
+      <div class="fr">
+        <div class="fg"><label>First Name *</label><input type="text" id="tFn" placeholder="Muhammad"></div>
+        <div class="fg"><label>Last Name *</label><input type="text" id="tLn" placeholder="Ali"></div>
+        <div class="fg"><label>Phone *</label><input type="tel" id="tPh" placeholder="+92 3XX XXXXXXX"></div>
+        <div class="fg"><label>Email</label><input type="email" id="tEm" placeholder="email@example.com"></div>
+        <div class="fg"><label>CNIC</label><input type="text" id="tCn" placeholder="35201-XXXXXXX-X"></div>
+        <div class="fg"><label>Nationality</label><input type="text" id="tNat" value="Pakistani"></div>
+        <div class="fg"><label>Date of Birth</label><input type="date" id="tDob"></div>
+        <div class="fg"><label>Gender</label><select id="tGn"><option>Male</option><option>Female</option></select></div>
+        <div class="fg"><label>Passport No *</label><input type="text" id="tPpn" placeholder="AB1234567"></div>
+        <div class="fg"><label>Passport Issue</label><input type="date" id="tPpi"></div>
+        <div class="fg"><label>Passport Expiry</label><input type="date" id="tPpe"></div>
+        <div class="fg"><label>City</label><input type="text" id="tCt" placeholder="Faisalabad"></div>
       </div>
-      <div class="fg"><label>Tour / Package</label><input type="text" id="travTour" placeholder="7 Night Economy Umrah — Apr 2026"></div>
-      <div class="fg"><label>Notes</label><textarea id="travNotes" placeholder="Medical conditions, special requirements..."></textarea></div>
-      <div class="m-foot">
-        <button class="btn-teal" onclick="saveTraveller()"><i class="fa fa-save"></i> Save</button>
-        <button class="btn-ghost" onclick="closeModal('travModal')">Cancel</button>
+      <div class="fg"><label>Tour / Package</label><input type="text" id="tTour" placeholder="7 Night Economy Umrah"></div>
+      <div class="fg"><label>Notes</label><textarea id="tNotes" placeholder="Medical, preferences..."></textarea></div>
+      <div class="mf">
+        <button class="btn btn-t" onclick="saveTrav()"><i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-gh" onclick="closeModal('travModal')">Cancel</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ PACKAGE MODAL ══ -->
+<!-- ═══ PACKAGE MODAL (Umrah + Tours) ═══ -->
 <div class="modal-bg" id="pkgModal">
-  <div class="modal" style="max-width:660px">
-    <div class="m-hdr"><h3 id="pkgTitle">Add <em>Package</em></h3><button class="m-close" onclick="closeModal('pkgModal')"><i class="fa fa-times"></i></button></div>
-    <div class="m-body">
+  <div class="modal">
+    <div class="mh"><h3 id="pkgTitle">Add <em>Package</em></h3><button class="mc" onclick="closeModal('pkgModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
       <input type="hidden" id="pkgId">
+      <input type="hidden" id="pkgCat">
       <div class="fg"><label>Package Name *</label><input type="text" id="pkgName" placeholder="7 Night Economy Umrah"></div>
-      <div class="fg-row">
-        <div class="fg"><label>Type</label><select id="pkgType"><option>Umrah</option><option>Hajj</option><option>World Tour</option><option>Domestic</option><option>Group</option><option>Other</option></select></div>
-        <div class="fg"><label>Duration</label><input type="text" id="pkgDuration" placeholder="7N / 8D"></div>
+      <div class="fr">
+        <div class="fg"><label>Duration</label><input type="text" id="pkgDur" placeholder="7N / 8D"></div>
         <div class="fg"><label>Price</label><input type="text" id="pkgPrice" placeholder="Rs. 85,000"></div>
-        <div class="fg"><label>Price Note</label><input type="text" id="pkgPriceNote" placeholder="per person (4 sharing)"></div>
+        <div class="fg"><label>Price Note</label><input type="text" id="pkgPn" placeholder="per person (4 sharing)"></div>
+        <div class="fg"><label>Destination</label><input type="text" id="pkgDest" placeholder="Makkah / Dubai / Bangkok"></div>
         <div class="fg"><label>Departure Date</label><input type="text" id="pkgDep" placeholder="Apr 15, 2026"></div>
         <div class="fg"><label>Return Date</label><input type="text" id="pkgRet" placeholder="Apr 23, 2026"></div>
-        <div class="fg"><label>Airline</label><input type="text" id="pkgAirline" placeholder="Pakistan Int'l Airlines"></div>
-        <div class="fg"><label>Route</label><input type="text" id="pkgRoute" placeholder="LHE → JED"></div>
+        <div class="fg"><label>Airline</label><input type="text" id="pkgAl" placeholder="PIA / Emirates"></div>
+        <div class="fg"><label>Route</label><input type="text" id="pkgRt" placeholder="LHE → JED"></div>
       </div>
-      <div class="fg"><label>Hotels</label><input type="text" id="pkgHotels" placeholder="Makarem Ajyad (Makkah), Pullman ZamZam (Madinah)"></div>
-      <div class="fg"><label>Includes (comma separated)</label><input type="text" id="pkgIncludes" placeholder="Breakfast, Transfers, Ziyarat"></div>
-      <div class="fg"><label>Excludes</label><input type="text" id="pkgExcludes" placeholder="Flights, Visa, ZamZam"></div>
-      <div class="fg"><label>Status</label><select id="pkgStatus"><option value="active">Active (visible)</option><option value="inactive">Inactive (hidden)</option></select></div>
-      <div class="m-foot">
-        <button class="btn-gold" onclick="savePkg()"><i class="fa fa-save"></i> Save Package</button>
-        <button class="btn-ghost" onclick="closeModal('pkgModal')">Cancel</button>
+      <div class="fg"><label>Hotels</label><input type="text" id="pkgHt" placeholder="Makarem Ajyad (Makkah), Pullman ZamZam (Madinah)"></div>
+      <div class="fg"><label>Includes (comma separated)</label><input type="text" id="pkgInc" placeholder="Breakfast, Transfers, Ziyarat"></div>
+      <div class="fg"><label>Excludes</label><input type="text" id="pkgExc" placeholder="Flights, Visa"></div>
+      <div class="fg"><label>Image URL</label><input type="url" id="pkgImg" placeholder="https://..."></div>
+      <div class="fg"><label>Status</label><select id="pkgSt"><option value="active">Active (visible)</option><option value="inactive">Inactive (hidden)</option></select></div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="savePkg()"><i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-gh" onclick="closeModal('pkgModal')">Cancel</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ BLOG MODAL ══ -->
+<!-- ═══ VISA MODAL ═══ -->
+<div class="modal-bg" id="visaModal">
+  <div class="modal">
+    <div class="mh"><h3 id="visaTitle">Add <em>Visa Service</em></h3><button class="mc" onclick="closeModal('visaModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="visaId">
+      <div class="fr">
+        <div class="fg"><label>Visa Title *</label><input type="text" id="vTitle" placeholder="UAE Tourist Visa"></div>
+        <div class="fg"><label>Country</label><input type="text" id="vCountry" placeholder="UAE"></div>
+        <div class="fg"><label>Type</label><select id="vType"><option value="tourist">Tourist</option><option value="umrah">Umrah/Religious</option><option value="business">Business</option><option value="work">Work</option></select></div>
+        <div class="fg"><label>Price</label><input type="text" id="vPrice" placeholder="Rs. 15,000"></div>
+        <div class="fg"><label>Stay Duration (Days)</label><input type="text" id="vDays" placeholder="30 Days"></div>
+        <div class="fg"><label>Validity</label><input type="text" id="vValidity" placeholder="90 Days"></div>
+        <div class="fg"><label>Max Stay</label><input type="text" id="vMaxStay" placeholder="30 Days"></div>
+        <div class="fg"><label>Processing Time</label><input type="text" id="vProc" placeholder="5-7 working days"></div>
+      </div>
+      <div class="fg"><label>Requirements</label><textarea id="vReq" placeholder="Passport (6mo valid), Photo, Bank Statement..."></textarea></div>
+      <div class="fg"><label>Status</label><select id="vSt"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="saveVisa()"><i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-gh" onclick="closeModal('visaModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FLIGHT MODAL ═══ -->
+<div class="modal-bg" id="flightModal">
+  <div class="modal">
+    <div class="mh"><h3 id="flightTitle">Add <em>Group Flight</em></h3><button class="mc" onclick="closeModal('flightModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="flightId">
+      <div class="fr">
+        <div class="fg"><label>Category *</label>
+          <select id="flCat">
+            <option value="umrah">Umrah / Saudi Arabia</option>
+            <option value="uk">UK / Europe</option>
+            <option value="qatar">Qatar / Gulf</option>
+            <option value="usa">USA / Canada</option>
+            <option value="domestic">Domestic Pakistan</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Flight No *</label><input type="text" id="flNo" placeholder="PK-741"></div>
+        <div class="fg"><label>Airline *</label><input type="text" id="flAl" placeholder="Pakistan Int'l Airlines"></div>
+        <div class="fg"><label>Airline Code</label><input type="text" id="flAlC" placeholder="PIA"></div>
+        <div class="fg"><label>Route *</label><input type="text" id="flRt" placeholder="LHE → JED"></div>
+        <div class="fg"><label>Departure Time</label><input type="text" id="flDt" placeholder="02:30"></div>
+        <div class="fg"><label>Arrival Time</label><input type="text" id="flAt" placeholder="05:45"></div>
+        <div class="fg"><label>Departure Date *</label><input type="text" id="flDd" placeholder="Apr 15, 2026"></div>
+        <div class="fg"><label>Class</label><select id="flCl"><option>Economy</option><option>Business</option><option>First Class</option></select></div>
+        <div class="fg"><label>Baggage</label><input type="text" id="flBg" placeholder="30 KG"></div>
+        <div class="fg"><label>Meal</label><input type="text" id="flMl" placeholder="Halal Included"></div>
+        <div class="fg"><label>Price per Seat</label><input type="text" id="flPr" placeholder="Rs. 85,000"></div>
+        <div class="fg"><label>Total Seats</label><input type="number" id="flTs" placeholder="40" min="1"></div>
+        <div class="fg"><label>Booked Seats</label><input type="number" id="flBs" value="0" min="0"></div>
+        <div class="fg"><label>Status</label><select id="flSt"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+      </div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="saveFlight()"><i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-gh" onclick="closeModal('flightModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BLOG MODAL ═══ -->
 <div class="modal-bg" id="blogModal">
   <div class="modal" style="max-width:700px">
-    <div class="m-hdr"><h3 id="blogTitle">New <em>Blog Post</em></h3><button class="m-close" onclick="closeModal('blogModal')"><i class="fa fa-times"></i></button></div>
-    <div class="m-body">
+    <div class="mh"><h3 id="blogTitle">New <em>Blog Post</em></h3><button class="mc" onclick="closeModal('blogModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
       <input type="hidden" id="blogId">
-      <div class="fg"><label>Title *</label><input type="text" id="blogTitleInp" placeholder="Post title"></div>
-      <div class="fg-row">
-        <div class="fg"><label>Category</label><input type="text" id="blogCat" placeholder="Umrah, Travel Tips..."></div>
-        <div class="fg"><label>Status</label><select id="blogStatus"><option value="false">Draft (hidden)</option><option value="true">Published (live)</option></select></div>
+      <div class="fg"><label>Title *</label><input type="text" id="blT" placeholder="Post title"></div>
+      <div class="fr">
+        <div class="fg"><label>Category</label><input type="text" id="blCat" placeholder="Umrah Tips, Travel..."></div>
+        <div class="fg"><label>Status</label><select id="blSt"><option value="false">Draft (hidden)</option><option value="true">Published (live)</option></select></div>
       </div>
-      <div class="fg"><label>Cover Image URL</label><input type="url" id="blogImg" placeholder="https://..."></div>
-      <div class="fg"><label>Excerpt</label><input type="text" id="blogExcerpt" placeholder="Short description..."></div>
-      <div class="fg"><label>Content *</label><textarea id="blogContent" placeholder="Write your blog post here..."></textarea></div>
-      <div class="m-foot">
-        <button class="btn-gold" onclick="saveBlog()"><i class="fa fa-save"></i> Save Post</button>
-        <button class="btn-ghost" onclick="closeModal('blogModal')">Cancel</button>
+      <div class="fg"><label>Cover Image URL</label><input type="url" id="blImg" placeholder="https://..."></div>
+      <div class="fg"><label>Excerpt</label><input type="text" id="blEx" placeholder="Short description..."></div>
+      <div class="fg"><label>Content *</label><textarea id="blCon" style="min-height:160px" placeholder="Write blog post..."></textarea></div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="saveBlog()"><i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-gh" onclick="closeModal('blogModal')">Cancel</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- ══ BOOKING DETAIL MODAL ══ -->
-<div class="modal-bg" id="bkModal">
-  <div class="modal" style="max-width:600px">
-    <div class="m-hdr"><h3>Booking <em>Details</em></h3><button class="m-close" onclick="closeModal('bkModal')"><i class="fa fa-times"></i></button></div>
-    <div class="m-body" id="bkDetail"></div>
   </div>
 </div>
 
 <script>
-// ══ INIT — load Supabase via CDN (no module needed) ══
-const SUPA_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+/* ═══════════════════════════════════════════
+   EASTWESTPK ADMIN v7 — All Plain Script
+   No module, no import — direct REST fetch
+   ═══════════════════════════════════════════ */
+const URL0 = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 
-// Auth check
-const admin = JSON.parse(sessionStorage.getItem('ew_admin') || 'null');
-if (!admin) { window.location.href = 'index.html'; }
-else { document.getElementById('adminEmail').textContent = admin.email || 'Admin'; }
-document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-PK',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+/* Auth */
+const admin = JSON.parse(sessionStorage.getItem('ew_admin')||'null');
+if(!admin){window.location.href='index.html';}
+else{document.getElementById('adminEmail').textContent=admin.email||'Admin';}
+document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-PK',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-// ══ SUPABASE REST HELPER ══
-async function sbGet(table, params='') {
-  const r = await fetch(`${SUPA_URL}/rest/v1/${table}?${params}`, {
-    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' }
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
-}
-async function sbPost(table, body) {
-  const r = await fetch(`${SUPA_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
-}
-async function sbPatch(table, id, body) {
-  const r = await fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'PATCH',
-    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) throw new Error(await r.text());
-  return r.json();
-}
-async function sbDelete(table, id) {
-  const r = await fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'DELETE',
-    headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
-  });
-  if (!r.ok) throw new Error(await r.text());
-}
+/* REST helpers */
+const H = {apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'};
+async function GET(t,q=''){const r=await fetch(URL0+'/rest/v1/'+t+'?'+q,{headers:H});const d=await r.json();if(!Array.isArray(d))throw new Error(JSON.stringify(d));return d;}
+async function POST(t,b){const r=await fetch(URL0+'/rest/v1/'+t,{method:'POST',headers:{...H,Prefer:'return=representation'},body:JSON.stringify(b)});const d=await r.json();if(r.ok)return Array.isArray(d)?d[0]:d;throw new Error(JSON.stringify(d));}
+async function PATCH(t,id,b){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{method:'PATCH',headers:{...H,Prefer:'return=representation'},body:JSON.stringify(b)});const d=await r.json();if(r.ok)return Array.isArray(d)?d[0]:d;throw new Error(JSON.stringify(d));}
+async function DEL(t,id){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{method:'DELETE',headers:H});if(!r.ok){const d=await r.json();throw new Error(JSON.stringify(d));}}
 
-// ══ STATE ══
-let allBookings=[], allCustomers=[], allTravellers=[], allPkgs=[], allBlogs=[];
+/* State */
+let bks=[],cus=[],trs=[],umrahPkgs=[],tourPkgs=[],visas=[],flights=[],blogs=[];
 
-// ══ LOAD DATA ══
-async function loadAll() {
-  try {
-    const [bk, cu, tr, pk, bl] = await Promise.all([
-      sbGet('bookings', 'order=created_at.desc'),
-      sbGet('customers', 'order=created_at.desc'),
-      sbGet('travellers', 'order=created_at.desc'),
-      sbGet('packages', 'order=created_at.desc').catch(() => []),
-      sbGet('blogs', 'order=created_at.desc'),
+/* Load all */
+async function loadAll(){
+  try{
+    const [b,c,t,p,v,f,bl]=await Promise.all([
+      GET('bookings','order=created_at.desc'),
+      GET('customers','order=created_at.desc'),
+      GET('travellers','order=created_at.desc'),
+      GET('packages','order=created_at.desc').catch(()=>[]),
+      GET('visa_services','order=sort_order.asc').catch(()=>[]),
+      GET('group_flights','order=dep_date.asc').catch(()=>[]),
+      GET('blogs','order=created_at.desc'),
     ]);
-    allBookings   = bk || [];
-    allCustomers  = cu || [];
-    allTravellers = tr || [];
-    allPkgs       = pk || [];
-    allBlogs      = bl || [];
-    renderDash();
-    renderBookings(allBookings);
-    renderCustomers(allCustomers);
-    renderTravellers(allTravellers);
-    renderPkgs(allPkgs);
-    renderBlogs(allBlogs);
-  } catch(e) { toast('Load error: '+e.message, true); }
+    bks=b;cus=c;trs=t;
+    umrahPkgs=p.filter(x=>x.type==='Umrah'||x.type==='Hajj'||x.category==='umrah');
+    tourPkgs=p.filter(x=>x.type!=='Umrah'&&x.type!=='Hajj'&&x.category!=='umrah');
+    visas=v;flights=f;blogs=bl;
+    renderDash();renderBk(bks);renderCu(cus);renderTr(trs);
+    renderUmrah();renderTours();renderVisa();renderFlights(flights);renderBlog();
+  }catch(e){toast('Load error: '+e.message,true);}
 }
 
-// ══ DASHBOARD ══
-function renderDash() {
-  const newCount = allBookings.filter(b=>b.status==='new').length;
-  document.getElementById('ds-total').textContent     = allBookings.length;
-  document.getElementById('ds-new').textContent       = newCount;
-  document.getElementById('ds-customers').textContent = allCustomers.length;
-  document.getElementById('ds-blogs').textContent     = allBlogs.length;
-  if (newCount > 0) { document.getElementById('newBadge').style.display='inline'; document.getElementById('newBadge').textContent=newCount; }
-  const tb = document.getElementById('dash-tbody');
-  const recent = allBookings.slice(0,8);
-  if (!recent.length) { tb.innerHTML='<tr><td colspan="5" class="empty-td">No bookings yet</td></tr>'; return; }
-  tb.innerHTML = recent.map(b=>`<tr class="recent-bk">
-    <td>${b.booking_ref||b.id?.slice(0,8)||'—'}</td>
-    <td><strong>${b.customer_name||'—'}</strong></td>
-    <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.tour_name||'—'}</td>
-    <td>${b.dep_date||'—'}</td>
-    <td><span class="pill pill-${b.status||'new'}">${b.status||'new'}</span></td>
-  </tr>`).join('');
-}
-
-// ══ BOOKINGS ══
-function renderBookings(data) {
-  const tb = document.getElementById('bk-tbody');
-  if (!data.length) { tb.innerHTML='<tr><td colspan="7" class="empty-td">No bookings found</td></tr>'; return; }
-  tb.innerHTML = data.map(b=>`<tr>
+/* ─── DASHBOARD ─── */
+function renderDash(){
+  const n=bks.filter(b=>b.status==='new').length;
+  document.getElementById('ds-bk').textContent=bks.length;
+  document.getElementById('ds-new').textContent=n;
+  document.getElementById('ds-cu').textContent=cus.length;
+  document.getElementById('ds-um').textContent=umrahPkgs.length;
+  if(n>0){document.getElementById('newBadge').style.display='inline';document.getElementById('newBadge').textContent=n;}
+  const tb=document.getElementById('dash-tb');
+  const rec=bks.slice(0,8);
+  if(!rec.length){tb.innerHTML='<tr><td colspan="5" class="etd">No bookings yet</td></tr>';return;}
+  tb.innerHTML=rec.map(b=>`<tr>
     <td style="font-family:monospace;font-size:12px;color:var(--teal)">${b.booking_ref||b.id?.slice(0,8)||'—'}</td>
-    <td><strong>${b.customer_name||'—'}</strong><br><span style="font-size:11px">${b.customer_email||b.customer_phone||''}</span></td>
-    <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><strong>${b.tour_name||'—'}</strong></td>
-    <td>${(b.pax_adults||1)}A${b.pax_children?' '+b.pax_children+'C':''}</td>
+    <td><strong>${b.customer_name||'—'}</strong></td>
+    <td>${b.tour_name||'—'}</td>
     <td>${b.dep_date||'—'}</td>
-    <td>
-      <select class="status-sel" onchange="updateBkStatus('${b.id}',this.value)">
-        <option ${b.status==='new'?'selected':''}>new</option>
-        <option ${b.status==='pending'?'selected':''}>pending</option>
-        <option ${b.status==='confirmed'?'selected':''}>confirmed</option>
-        <option ${b.status==='cancelled'?'selected':''}>cancelled</option>
-      </select>
-    </td>
-    <td style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="btn-sm" onclick="viewBk('${b.id}')"><i class="fa fa-eye"></i></button>
-      <button class="btn-red" onclick="deleteBk('${b.id}')"><i class="fa fa-trash"></i></button>
-      <a href="https://wa.me/${(b.customer_phone||'').replace(/\D/g,'')}?text=Assalam+o+Alaikum+${encodeURIComponent(b.customer_name||'')}!+Your+booking+${b.booking_ref}+update." target="_blank" class="btn-sm" style="text-decoration:none"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
-    </td>
+    <td><span class="pill p-${b.status||'new'}">${b.status||'new'}</span></td>
   </tr>`).join('');
 }
 
-function searchBookings(q) {
-  const f = q ? allBookings.filter(b=>(b.customer_name||'').toLowerCase().includes(q.toLowerCase())||(b.booking_ref||'').toLowerCase().includes(q.toLowerCase())||(b.tour_name||'').toLowerCase().includes(q.toLowerCase())) : allBookings;
-  renderBookings(f);
+/* ─── BOOKINGS ─── */
+function renderBk(data){
+  const tb=document.getElementById('bk-tb');
+  if(!data.length){tb.innerHTML='<tr><td colspan="7" class="etd">No bookings</td></tr>';return;}
+  tb.innerHTML=data.map(b=>`<tr>
+    <td style="font-family:monospace;font-size:12px;color:var(--teal)">${b.booking_ref||b.id?.slice(0,8)||'—'}</td>
+    <td><strong>${b.customer_name||'—'}</strong><br><span style="font-size:11px">${b.customer_phone||b.customer_email||''}</span></td>
+    <td>${b.tour_name||'—'}</td>
+    <td>${b.pax_adults||1}A</td>
+    <td>${b.dep_date||'—'}</td>
+    <td><select class="ss" onchange="updateBkSt('${b.id}',this.value)">
+      <option ${b.status==='new'?'selected':''}>new</option>
+      <option ${b.status==='pending'?'selected':''}>pending</option>
+      <option ${b.status==='confirmed'?'selected':''}>confirmed</option>
+      <option ${b.status==='cancelled'?'selected':''}>cancelled</option>
+    </select></td>
+    <td style="display:flex;gap:5px">
+      <button class="btn-r" onclick="delBk('${b.id}')"><i class="fa fa-trash"></i></button>
+      <a href="https://wa.me/${(b.customer_phone||'').replace(/\D/g,'')}?text=Assalam+o+Alaikum!+Booking+${b.booking_ref||''}+update." target="_blank" class="btn-s" style="text-decoration:none"><i class="fab fa-whatsapp" style="color:#25D366"></i></a>
+    </td>
+  </tr>`).join('');
 }
-function filterBookingStatus(s) { renderBookings(s ? allBookings.filter(b=>b.status===s) : allBookings); }
+function searchBk(q){renderBk(q?bks.filter(b=>(b.customer_name||'').toLowerCase().includes(q.toLowerCase())||(b.booking_ref||'').toLowerCase().includes(q.toLowerCase())||(b.tour_name||'').toLowerCase().includes(q.toLowerCase())):bks);}
+function filterBk(s){renderBk(s?bks.filter(b=>b.status===s):bks);}
+async function updateBkSt(id,status){try{await PATCH('bookings',id,{status});bks=bks.map(b=>b.id===id?{...b,status}:b);toast('Updated!');}catch(e){toast('Error: '+e.message,true);}}
+async function delBk(id){if(!confirm('Delete booking?'))return;try{await DEL('bookings',id);bks=bks.filter(b=>b.id!==id);renderBk(bks);renderDash();toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
 
-async function updateBkStatus(id, status) {
-  try { await sbPatch('bookings', id, {status}); allBookings=allBookings.map(b=>b.id===id?{...b,status}:b); toast('Status updated!'); }
-  catch(e) { toast('Error: '+e.message, true); }
-}
-async function deleteBk(id) {
-  if (!confirm('Delete this booking?')) return;
-  try { await sbDelete('bookings',id); allBookings=allBookings.filter(b=>b.id!==id); renderBookings(allBookings); renderDash(); toast('Booking deleted.'); }
-  catch(e) { toast('Error: '+e.message, true); }
-}
-function viewBk(id) {
-  const b = allBookings.find(x=>x.id===id);
-  if (!b) return;
-  document.getElementById('bkDetail').innerHTML = `
-    <table style="width:100%;border-collapse:collapse">
-      ${[['Booking Ref',b.booking_ref||'—'],['Customer',b.customer_name||'—'],['Email',b.customer_email||'—'],['Phone',b.customer_phone||'—'],['Tour',b.tour_name||'—'],['Duration',b.duration||'—'],['Departure',b.dep_date||'—'],['Return',b.ret_date||'—'],['Adults',b.pax_adults||1],['Children',b.pax_children||0],['Room Type',b.room_type||'—'],['Price',b.price||'—'],['Payment',b.payment_status||'—'],['Status',b.status||'—'],['Special Requests',b.special_requests||'—'],['Booked by Admin',b.booked_by_admin?'Yes':'No']]
-      .map(([k,v])=>`<tr><td style="padding:9px 0;font-size:12px;color:var(--text-dim);width:140px;border-bottom:1px solid var(--border)">${k}</td><td style="padding:9px 0;font-size:13px;color:var(--white);border-bottom:1px solid var(--border)">${v}</td></tr>`).join('')}
-    </table>`;
-  openModal('bkModal');
-}
-
-// ══ CUSTOMERS ══
-function renderCustomers(data) {
-  const tb = document.getElementById('cust-tbody');
-  if (!data.length) { tb.innerHTML='<tr><td colspan="5" class="empty-td">No customers yet</td></tr>'; return; }
-  tb.innerHTML = data.map(c=>`<tr>
+/* ─── CUSTOMERS ─── */
+function renderCu(data){
+  const tb=document.getElementById('cu-tb');
+  if(!data.length){tb.innerHTML='<tr><td colspan="5" class="etd">No customers</td></tr>';return;}
+  tb.innerHTML=data.map(c=>`<tr>
     <td><strong>${c.full_name||'—'}</strong></td>
     <td style="color:var(--teal)">${c.email||'—'}</td>
     <td>${c.phone||'—'}</td>
     <td style="font-size:12px">${c.created_at?new Date(c.created_at).toLocaleDateString('en-GB'):'—'}</td>
-    <td><button class="btn-red" onclick="deleteCust('${c.id}')"><i class="fa fa-trash"></i></button></td>
+    <td><button class="btn-r" onclick="delCu('${c.id}')"><i class="fa fa-trash"></i></button></td>
   </tr>`).join('');
 }
-function searchCustomers(q) { renderCustomers(q ? allCustomers.filter(c=>(c.full_name||'').toLowerCase().includes(q.toLowerCase())||(c.email||'').toLowerCase().includes(q.toLowerCase())) : allCustomers); }
-async function deleteCust(id) {
-  if (!confirm('Remove customer?')) return;
-  try { await sbDelete('customers',id); allCustomers=allCustomers.filter(c=>c.id!==id); renderCustomers(allCustomers); toast('Customer removed.'); }
-  catch(e) { toast('Error: '+e.message, true); }
-}
+function searchCu(q){renderCu(q?cus.filter(c=>(c.full_name||'').toLowerCase().includes(q.toLowerCase())||(c.email||'').toLowerCase().includes(q.toLowerCase())):cus);}
+async function delCu(id){if(!confirm('Remove?'))return;try{await DEL('customers',id);cus=cus.filter(c=>c.id!==id);renderCu(cus);toast('Removed.');}catch(e){toast('Error: '+e.message,true);}}
 
-// ══ TRAVELLERS ══
-function renderTravellers(data) {
-  const tb = document.getElementById('trav-tbody');
-  if (!data.length) { tb.innerHTML='<tr><td colspan="8" class="empty-td">No travellers yet. <button class="btn-sm" onclick="openTravModal()">Add first</button></td></tr>'; return; }
-  tb.innerHTML = data.map(t=>`<tr>
-    <td><strong>${t.name||[t.first_name,t.last_name].filter(Boolean).join(' ')||'—'}</strong><div style="font-size:11px;color:var(--text-dim)">${t.email||''}</div></td>
+/* ─── TRAVELLERS ─── */
+function renderTr(data){
+  const tb=document.getElementById('tr-tb');
+  if(!data.length){tb.innerHTML='<tr><td colspan="8" class="etd">No travellers. <button class="btn-s" onclick="openModal(\'travModal\')">Add first</button></td></tr>';return;}
+  tb.innerHTML=data.map(t=>`<tr>
+    <td><strong>${t.name||[t.first_name,t.last_name].filter(Boolean).join(' ')||'—'}</strong><div style="font-size:11px">${t.email||''}</div></td>
     <td style="font-family:monospace;font-size:12px">${t.cnic||'—'}</td>
     <td style="font-family:monospace;font-size:12px;color:var(--teal)">${t.passport_no||'—'}</td>
     <td style="font-size:12px">${t.dob?new Date(t.dob).toLocaleDateString('en-GB'):'—'}</td>
     <td style="font-size:12px">${t.passport_expiry?new Date(t.passport_expiry).toLocaleDateString('en-GB'):'—'}</td>
     <td>${t.phone||'—'}</td>
-    <td style="font-size:12px;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.tour||'—'}</td>
-    <td style="display:flex;gap:5px">
-      <button class="btn-sm" onclick="editTraveller('${t.id}')"><i class="fa fa-edit"></i></button>
-      <button class="btn-red" onclick="deleteTraveller('${t.id}')"><i class="fa fa-trash"></i></button>
+    <td style="font-size:11px;max-width:120px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${t.tour||'—'}</td>
+    <td style="display:flex;gap:4px">
+      <button class="btn-s" onclick="editTr('${t.id}')"><i class="fa fa-edit"></i></button>
+      <button class="btn-r" onclick="delTr('${t.id}')"><i class="fa fa-trash"></i></button>
     </td>
   </tr>`).join('');
 }
-function searchTravellers(q) {
-  renderTravellers(q ? allTravellers.filter(t=>(t.name||t.first_name||'').toLowerCase().includes(q.toLowerCase())||(t.cnic||'').includes(q)||(t.passport_no||'').toLowerCase().includes(q.toLowerCase())||(t.phone||'').includes(q)) : allTravellers);
-}
-function openTravModal() {
-  document.getElementById('travTitle').innerHTML = 'Add <em>Traveller</em>';
-  document.getElementById('travId').value = '';
-  ['travFName','travLName','travPhone','travEmail','travCnic','travDob','travPassport','travIssue','travExpiry','travCity','travTour','travNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('travNationality').value='Pakistani';
-  document.getElementById('travGender').value='Male';
+function searchTr(q){renderTr(q?trs.filter(t=>(t.name||t.first_name||'').toLowerCase().includes(q.toLowerCase())||(t.cnic||'').includes(q)||(t.passport_no||'').toLowerCase().includes(q.toLowerCase())||(t.phone||'').includes(q)):trs);}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+function editTr(id){
+  const t=trs.find(x=>x.id===id);if(!t)return;
+  document.getElementById('travTitle').innerHTML='Edit <em>Traveller</em>';
+  document.getElementById('travId').value=t.id;
+  document.getElementById('tFn').value=t.first_name||t.name?.split(' ')[0]||'';
+  document.getElementById('tLn').value=t.last_name||t.name?.split(' ').slice(1).join(' ')||'';
+  document.getElementById('tPh').value=t.phone||'';
+  document.getElementById('tEm').value=t.email||'';
+  document.getElementById('tCn').value=t.cnic||'';
+  document.getElementById('tNat').value=t.nationality||'Pakistani';
+  document.getElementById('tDob').value=t.dob||'';
+  document.getElementById('tGn').value=t.gender||'Male';
+  document.getElementById('tPpn').value=t.passport_no||'';
+  document.getElementById('tPpi').value=t.passport_issue||'';
+  document.getElementById('tPpe').value=t.passport_expiry||'';
+  document.getElementById('tCt').value=t.city||'';
+  document.getElementById('tTour').value=t.tour||'';
+  document.getElementById('tNotes').value=t.notes||'';
   openModal('travModal');
 }
-function editTraveller(id) {
-  const t = allTravellers.find(x=>x.id===id); if(!t) return;
-  document.getElementById('travTitle').innerHTML = 'Edit <em>Traveller</em>';
-  document.getElementById('travId').value         = t.id;
-  document.getElementById('travFName').value      = t.first_name||t.name?.split(' ')[0]||'';
-  document.getElementById('travLName').value      = t.last_name||t.name?.split(' ').slice(1).join(' ')||'';
-  document.getElementById('travPhone').value      = t.phone||'';
-  document.getElementById('travEmail').value      = t.email||'';
-  document.getElementById('travCnic').value       = t.cnic||'';
-  document.getElementById('travNationality').value= t.nationality||'Pakistani';
-  document.getElementById('travDob').value        = t.dob||'';
-  document.getElementById('travGender').value     = t.gender||'Male';
-  document.getElementById('travPassport').value   = t.passport_no||'';
-  document.getElementById('travIssue').value      = t.passport_issue||'';
-  document.getElementById('travExpiry').value     = t.passport_expiry||'';
-  document.getElementById('travCity').value       = t.city||'';
-  document.getElementById('travTour').value       = t.tour||'';
-  document.getElementById('travNotes').value      = t.notes||'';
-  openModal('travModal');
+async function saveTrav(){
+  const fn=document.getElementById('tFn').value.trim();
+  const ln=document.getElementById('tLn').value.trim();
+  if(!fn||!ln){toast('Name required!',true);return;}
+  const id=document.getElementById('travId').value;
+  const d={name:fn+' '+ln,first_name:fn,last_name:ln,phone:document.getElementById('tPh').value.trim(),email:document.getElementById('tEm').value.trim(),cnic:document.getElementById('tCn').value.trim(),nationality:document.getElementById('tNat').value||'Pakistani',dob:document.getElementById('tDob').value||null,gender:document.getElementById('tGn').value,passport_no:document.getElementById('tPpn').value.trim(),passport_issue:document.getElementById('tPpi').value||null,passport_expiry:document.getElementById('tPpe').value||null,city:document.getElementById('tCt').value.trim(),tour:document.getElementById('tTour').value.trim(),notes:document.getElementById('tNotes').value.trim(),updated_at:new Date().toISOString()};
+  try{
+    if(id){await PATCH('travellers',id,d);trs=trs.map(t=>t.id===id?{...t,...d,id}:t);}
+    else{const r=await POST('travellers',d);trs=[r,...trs];}
+    closeModal('travModal');renderTr(trs);toast(id?'Updated!':'Traveller added!');
+  }catch(e){toast('Error: '+e.message,true);}
 }
-async function saveTraveller() {
-  const fn = document.getElementById('travFName').value.trim();
-  const ln = document.getElementById('travLName').value.trim();
-  if (!fn||!ln) { toast('First & last name required!',true); return; }
-  const id = document.getElementById('travId').value;
-  const data = {
-    name:fn+' '+ln, first_name:fn, last_name:ln,
-    phone:document.getElementById('travPhone').value.trim(),
-    email:document.getElementById('travEmail').value.trim(),
-    cnic:document.getElementById('travCnic').value.trim(),
-    nationality:document.getElementById('travNationality').value||'Pakistani',
-    dob:document.getElementById('travDob').value||null,
-    gender:document.getElementById('travGender').value,
-    passport_no:document.getElementById('travPassport').value.trim(),
-    passport_issue:document.getElementById('travIssue').value||null,
-    passport_expiry:document.getElementById('travExpiry').value||null,
-    city:document.getElementById('travCity').value.trim(),
-    tour:document.getElementById('travTour').value.trim(),
-    notes:document.getElementById('travNotes').value.trim(),
-    updated_at:new Date().toISOString()
-  };
-  try {
-    if (id) { await sbPatch('travellers',id,data); allTravellers=allTravellers.map(t=>t.id===id?{...t,...data}:t); }
-    else { const res=await sbPost('travellers',data); allTravellers=[res[0],...allTravellers]; }
-    closeModal('travModal'); renderTravellers(allTravellers); toast(id?'Updated!':'Traveller added!');
-  } catch(e) { toast('Error: '+e.message,true); }
-}
-async function deleteTraveller(id) {
-  if (!confirm('Delete traveller?')) return;
-  try { await sbDelete('travellers',id); allTravellers=allTravellers.filter(t=>t.id!==id); renderTravellers(allTravellers); toast('Deleted.'); }
-  catch(e) { toast('Error: '+e.message,true); }
-}
+async function delTr(id){if(!confirm('Delete traveller?'))return;try{await DEL('travellers',id);trs=trs.filter(t=>t.id!==id);renderTr(trs);toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
 
-// ══ PACKAGES ══
-function renderPkgs(data) {
-  const tb = document.getElementById('pkg-tbody');
-  if (!data.length) { tb.innerHTML='<tr><td colspan="7" class="empty-td">No packages. <button class="btn-sm" onclick="openPkgModal()">Add first</button></td></tr>'; return; }
-  tb.innerHTML = data.map(p=>`<tr>
-    <td><strong>${p.name||'—'}</strong></td>
-    <td><span class="pill pill-new">${p.type||'—'}</span></td>
+/* ─── UMRAH PACKAGES ─── */
+function renderUmrah(){
+  const tb=document.getElementById('umrah-tb');
+  if(!umrahPkgs.length){tb.innerHTML='<tr><td colspan="7" class="etd">No Umrah packages. <button class="btn-s" onclick="openPkgModal(\'umrah\')">Add first</button></td></tr>';return;}
+  tb.innerHTML=umrahPkgs.map(p=>`<tr>
+    <td><strong>${p.name||'—'}</strong><div style="font-size:11px;color:var(--teal)">${p.type||''}</div></td>
     <td>${p.duration||'—'}</td>
     <td style="color:var(--gold);font-weight:700">${p.price||'—'}</td>
     <td>${p.dep_date||'—'}</td>
-    <td><span class="pill ${p.status==='active'?'pill-confirmed':'pill-draft'}">${p.status||'active'}</span></td>
-    <td style="display:flex;gap:5px">
-      <button class="btn-sm" onclick="editPkg('${p.id}')"><i class="fa fa-edit"></i></button>
-      <button class="btn-red" onclick="deletePkg('${p.id}')"><i class="fa fa-trash"></i></button>
+    <td>${p.airline||'—'}</td>
+    <td><span class="pill ${p.status==='active'?'p-act':'p-inact'}">${p.status||'active'}</span></td>
+    <td style="display:flex;gap:4px">
+      <button class="btn-s" onclick="editPkg('${p.id}','umrah')"><i class="fa fa-edit"></i></button>
+      <button class="btn-r" onclick="delPkg('${p.id}','umrah')"><i class="fa fa-trash"></i></button>
     </td>
   </tr>`).join('');
 }
-function openPkgModal() {
-  document.getElementById('pkgTitle').innerHTML='Add <em>Package</em>';
-  document.getElementById('pkgId').value='';
-  ['pkgName','pkgDuration','pkgPrice','pkgPriceNote','pkgDep','pkgRet','pkgAirline','pkgRoute','pkgHotels','pkgIncludes','pkgExcludes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('pkgType').value='Umrah';
-  document.getElementById('pkgStatus').value='active';
-  openModal('pkgModal');
-}
-function editPkg(id) {
-  const p=allPkgs.find(x=>x.id===id); if(!p) return;
-  document.getElementById('pkgTitle').innerHTML='Edit <em>Package</em>';
-  document.getElementById('pkgId').value       = p.id;
-  document.getElementById('pkgName').value     = p.name||'';
-  document.getElementById('pkgType').value     = p.type||'Umrah';
-  document.getElementById('pkgDuration').value = p.duration||'';
-  document.getElementById('pkgPrice').value    = p.price||'';
-  document.getElementById('pkgPriceNote').value= p.price_note||'';
-  document.getElementById('pkgDep').value      = p.dep_date||'';
-  document.getElementById('pkgRet').value      = p.ret_date||'';
-  document.getElementById('pkgAirline').value  = p.airline||'';
-  document.getElementById('pkgRoute').value    = p.route||'';
-  document.getElementById('pkgHotels').value   = p.hotels||'';
-  document.getElementById('pkgIncludes').value = p.includes||'';
-  document.getElementById('pkgExcludes').value = p.excludes||'';
-  document.getElementById('pkgStatus').value   = p.status||'active';
-  openModal('pkgModal');
-}
-async function savePkg() {
-  const nm = document.getElementById('pkgName').value.trim();
-  if (!nm) { toast('Package name required!',true); return; }
-  const id = document.getElementById('pkgId').value;
-  const data = {
-    name:nm, type:document.getElementById('pkgType').value,
-    duration:document.getElementById('pkgDuration').value.trim(),
-    price:document.getElementById('pkgPrice').value.trim(),
-    price_note:document.getElementById('pkgPriceNote').value.trim(),
-    dep_date:document.getElementById('pkgDep').value.trim(),
-    ret_date:document.getElementById('pkgRet').value.trim(),
-    airline:document.getElementById('pkgAirline').value.trim(),
-    route:document.getElementById('pkgRoute').value.trim(),
-    hotels:document.getElementById('pkgHotels').value.trim(),
-    includes:document.getElementById('pkgIncludes').value.trim(),
-    excludes:document.getElementById('pkgExcludes').value.trim(),
-    status:document.getElementById('pkgStatus').value,
-    updated_at:new Date().toISOString()
-  };
-  try {
-    if (id) { await sbPatch('packages',id,data); allPkgs=allPkgs.map(p=>p.id===id?{...p,...data}:p); }
-    else { const res=await sbPost('packages',data); allPkgs=[res[0],...allPkgs]; }
-    closeModal('pkgModal'); renderPkgs(allPkgs); toast(id?'Package updated!':'Package added!');
-  } catch(e) { toast('Error: '+e.message,true); }
-}
-async function deletePkg(id) {
-  if (!confirm('Delete package?')) return;
-  try { await sbDelete('packages',id); allPkgs=allPkgs.filter(p=>p.id!==id); renderPkgs(allPkgs); toast('Package deleted.'); }
-  catch(e) { toast('Error: '+e.message,true); }
+
+/* ─── TOURS ─── */
+function renderTours(){
+  const tb=document.getElementById('tours-tb');
+  if(!tourPkgs.length){tb.innerHTML='<tr><td colspan="7" class="etd">No tours. <button class="btn-s" onclick="openPkgModal(\'tour\')">Add first</button></td></tr>';return;}
+  tb.innerHTML=tourPkgs.map(p=>`<tr>
+    <td><strong>${p.name||'—'}</strong></td>
+    <td>${p.destination||p.route||'—'}</td>
+    <td>${p.duration||'—'}</td>
+    <td style="color:var(--gold);font-weight:700">${p.price||'—'}</td>
+    <td>${p.dep_date||'—'}</td>
+    <td><span class="pill ${p.status==='active'?'p-act':'p-inact'}">${p.status||'active'}</span></td>
+    <td style="display:flex;gap:4px">
+      <button class="btn-s" onclick="editPkg('${p.id}','tour')"><i class="fa fa-edit"></i></button>
+      <button class="btn-r" onclick="delPkg('${p.id}','tour')"><i class="fa fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
 }
 
-// ══ BLOGS ══
-function renderBlogs(data) {
-  const tb = document.getElementById('blog-tbody');
-  if (!data.length) { tb.innerHTML='<tr><td colspan="5" class="empty-td">No posts yet. <button class="btn-sm" onclick="openBlogModal()">Write first</button></td></tr>'; return; }
-  tb.innerHTML = data.map(b=>`<tr>
+function openPkgModal(cat){
+  document.getElementById('pkgTitle').innerHTML='Add <em>'+(cat==='umrah'?'Umrah Package':'Tour')+'</em>';
+  document.getElementById('pkgId').value='';
+  document.getElementById('pkgCat').value=cat;
+  ['pkgName','pkgDur','pkgPrice','pkgPn','pkgDest','pkgDep','pkgRet','pkgAl','pkgRt','pkgHt','pkgInc','pkgExc','pkgImg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('pkgSt').value='active';
+  openModal('pkgModal');
+}
+function editPkg(id,cat){
+  const arr=cat==='umrah'?umrahPkgs:tourPkgs;
+  const p=arr.find(x=>x.id===id);if(!p)return;
+  document.getElementById('pkgTitle').innerHTML='Edit <em>'+(cat==='umrah'?'Umrah Package':'Tour')+'</em>';
+  document.getElementById('pkgId').value=p.id;
+  document.getElementById('pkgCat').value=cat;
+  document.getElementById('pkgName').value=p.name||'';
+  document.getElementById('pkgDur').value=p.duration||'';
+  document.getElementById('pkgPrice').value=p.price||'';
+  document.getElementById('pkgPn').value=p.price_note||'';
+  document.getElementById('pkgDest').value=p.destination||p.route||'';
+  document.getElementById('pkgDep').value=p.dep_date||'';
+  document.getElementById('pkgRet').value=p.ret_date||'';
+  document.getElementById('pkgAl').value=p.airline||'';
+  document.getElementById('pkgRt').value=p.route||'';
+  document.getElementById('pkgHt').value=p.hotels||'';
+  document.getElementById('pkgInc').value=p.includes||'';
+  document.getElementById('pkgExc').value=p.excludes||'';
+  document.getElementById('pkgImg').value=p.image_url||'';
+  document.getElementById('pkgSt').value=p.status||'active';
+  openModal('pkgModal');
+}
+async function savePkg(){
+  const nm=document.getElementById('pkgName').value.trim();
+  if(!nm){toast('Package name required!',true);return;}
+  const cat=document.getElementById('pkgCat').value;
+  const id=document.getElementById('pkgId').value;
+  const typeVal=cat==='umrah'?'Umrah':'World Tour';
+  const d={name:nm,type:typeVal,category:cat,duration:document.getElementById('pkgDur').value.trim(),price:document.getElementById('pkgPrice').value.trim(),price_note:document.getElementById('pkgPn').value.trim(),destination:document.getElementById('pkgDest').value.trim(),dep_date:document.getElementById('pkgDep').value.trim(),ret_date:document.getElementById('pkgRet').value.trim(),airline:document.getElementById('pkgAl').value.trim(),route:document.getElementById('pkgRt').value.trim(),hotels:document.getElementById('pkgHt').value.trim(),includes:document.getElementById('pkgInc').value.trim(),excludes:document.getElementById('pkgExc').value.trim(),image_url:document.getElementById('pkgImg').value.trim(),status:document.getElementById('pkgSt').value,updated_at:new Date().toISOString()};
+  try{
+    if(id){
+      await PATCH('packages',id,d);
+      if(cat==='umrah')umrahPkgs=umrahPkgs.map(p=>p.id===id?{...p,...d,id}:p);
+      else tourPkgs=tourPkgs.map(p=>p.id===id?{...p,...d,id}:p);
+    }else{
+      const r=await POST('packages',d);
+      if(cat==='umrah')umrahPkgs=[r,...umrahPkgs];
+      else tourPkgs=[r,...tourPkgs];
+    }
+    closeModal('pkgModal');
+    if(cat==='umrah')renderUmrah();else renderTours();
+    renderDash();
+    toast(id?'Updated!':'Package added!');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+async function delPkg(id,cat){
+  if(!confirm('Delete package?'))return;
+  try{
+    await DEL('packages',id);
+    if(cat==='umrah')umrahPkgs=umrahPkgs.filter(p=>p.id!==id);
+    else tourPkgs=tourPkgs.filter(p=>p.id!==id);
+    if(cat==='umrah')renderUmrah();else renderTours();
+    toast('Deleted.');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+/* ─── VISA ─── */
+function renderVisa(){
+  const tb=document.getElementById('visa-tb');
+  if(!visas.length){tb.innerHTML='<tr><td colspan="8" class="etd">No visa services. <button class="btn-s" onclick="openVisaModal()">Add first</button></td></tr>';return;}
+  tb.innerHTML=visas.map(v=>`<tr>
+    <td><strong>${v.title||'—'}</strong></td>
+    <td>${v.country||'—'}</td>
+    <td><span class="pill p-new">${v.type||'tourist'}</span></td>
+    <td style="color:var(--gold)">${v.price||'—'}</td>
+    <td>${v.days||'—'}</td>
+    <td>${v.validity||'—'}</td>
+    <td><span class="pill ${v.status==='active'?'p-act':'p-inact'}">${v.status||'active'}</span></td>
+    <td style="display:flex;gap:4px">
+      <button class="btn-s" onclick="editVisa('${v.id}')"><i class="fa fa-edit"></i></button>
+      <button class="btn-r" onclick="delVisa('${v.id}')"><i class="fa fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
+}
+function openVisaModal(){
+  document.getElementById('visaTitle').innerHTML='Add <em>Visa Service</em>';
+  document.getElementById('visaId').value='';
+  ['vTitle','vCountry','vPrice','vDays','vValidity','vMaxStay','vProc','vReq'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('vType').value='tourist';
+  document.getElementById('vSt').value='active';
+  openModal('visaModal');
+}
+function editVisa(id){
+  const v=visas.find(x=>x.id===id);if(!v)return;
+  document.getElementById('visaTitle').innerHTML='Edit <em>Visa Service</em>';
+  document.getElementById('visaId').value=v.id;
+  document.getElementById('vTitle').value=v.title||'';
+  document.getElementById('vCountry').value=v.country||'';
+  document.getElementById('vType').value=v.type||'tourist';
+  document.getElementById('vPrice').value=v.price||'';
+  document.getElementById('vDays').value=v.days||'';
+  document.getElementById('vValidity').value=v.validity||'';
+  document.getElementById('vMaxStay').value=v.max_stay||'';
+  document.getElementById('vProc').value=v.processing_time||'';
+  document.getElementById('vReq').value=v.requirements||'';
+  document.getElementById('vSt').value=v.status||'active';
+  openModal('visaModal');
+}
+async function saveVisa(){
+  const t=document.getElementById('vTitle').value.trim();
+  if(!t){toast('Title required!',true);return;}
+  const id=document.getElementById('visaId').value;
+  const d={title:t,country:document.getElementById('vCountry').value.trim(),type:document.getElementById('vType').value,price:document.getElementById('vPrice').value.trim(),days:document.getElementById('vDays').value.trim(),validity:document.getElementById('vValidity').value.trim(),max_stay:document.getElementById('vMaxStay').value.trim(),processing_time:document.getElementById('vProc').value.trim(),requirements:document.getElementById('vReq').value.trim(),status:document.getElementById('vSt').value,updated_at:new Date().toISOString()};
+  try{
+    if(id){await PATCH('visa_services',id,d);visas=visas.map(v=>v.id===id?{...v,...d,id}:v);}
+    else{const r=await POST('visa_services',d);visas=[r,...visas];}
+    closeModal('visaModal');renderVisa();toast(id?'Updated!':'Visa added!');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+async function delVisa(id){if(!confirm('Delete?'))return;try{await DEL('visa_services',id);visas=visas.filter(v=>v.id!==id);renderVisa();toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
+
+/* ─── GROUP FLIGHTS ─── */
+function renderFlights(data){
+  const tb=document.getElementById('grp-tb');
+  if(!data.length){tb.innerHTML='<tr><td colspan="10" class="etd">No flights. <button class="btn-s" onclick="openFlightModal()">Add first</button></td></tr>';return;}
+  tb.innerHTML=data.map(f=>{
+    const avail=Math.max(0,(f.total_seats||0)-(f.booked_seats||0));
+    const sold=avail<=0;
+    return`<tr>
+      <td style="font-family:monospace;font-weight:700;color:var(--teal)">${f.flight_no||'—'}</td>
+      <td>${f.airline||'—'}</td>
+      <td>${f.route||'—'}</td>
+      <td>${f.dep_date||'—'}</td>
+      <td><span class="pill p-new">${f.category||'—'}</span></td>
+      <td style="color:var(--gold)">${f.price_per_seat||'—'}</td>
+      <td>${f.total_seats||0}</td>
+      <td>${f.booked_seats||0}</td>
+      <td><span class="pill ${sold?'p-canc':'p-act'}">${sold?'SOLD OUT':'Available ('+avail+')'}</span></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn-s" onclick="editFlight('${f.id}')"><i class="fa fa-edit"></i></button>
+        <button class="btn-r" onclick="delFlight('${f.id}')"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function filterFlights(cat){renderFlights(cat?flights.filter(f=>f.category===cat):flights);}
+function openFlightModal(){
+  document.getElementById('flightTitle').innerHTML='Add <em>Group Flight</em>';
+  document.getElementById('flightId').value='';
+  ['flNo','flAl','flAlC','flRt','flDt','flAt','flDd','flBg','flMl','flPr'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('flCat').value='umrah';
+  document.getElementById('flCl').value='Economy';
+  document.getElementById('flTs').value='';
+  document.getElementById('flBs').value='0';
+  document.getElementById('flSt').value='active';
+  openModal('flightModal');
+}
+function editFlight(id){
+  const f=flights.find(x=>x.id===id);if(!f)return;
+  document.getElementById('flightTitle').innerHTML='Edit <em>Group Flight</em>';
+  document.getElementById('flightId').value=f.id;
+  document.getElementById('flCat').value=f.category||'umrah';
+  document.getElementById('flNo').value=f.flight_no||'';
+  document.getElementById('flAl').value=f.airline||'';
+  document.getElementById('flAlC').value=f.airline_code||'';
+  document.getElementById('flRt').value=f.route||'';
+  document.getElementById('flDt').value=f.dep_time||'';
+  document.getElementById('flAt').value=f.arr_time||'';
+  document.getElementById('flDd').value=f.dep_date||'';
+  document.getElementById('flCl').value=f.class||'Economy';
+  document.getElementById('flBg').value=f.baggage||'';
+  document.getElementById('flMl').value=f.meal||'';
+  document.getElementById('flPr').value=f.price_per_seat||'';
+  document.getElementById('flTs').value=f.total_seats||0;
+  document.getElementById('flBs').value=f.booked_seats||0;
+  document.getElementById('flSt').value=f.status||'active';
+  openModal('flightModal');
+}
+async function saveFlight(){
+  const no=document.getElementById('flNo').value.trim();
+  const al=document.getElementById('flAl').value.trim();
+  if(!no||!al){toast('Flight no & airline required!',true);return;}
+  const id=document.getElementById('flightId').value;
+  const d={category:document.getElementById('flCat').value,flight_no:no,airline:al,airline_code:document.getElementById('flAlC').value.trim(),route:document.getElementById('flRt').value.trim(),dep_time:document.getElementById('flDt').value.trim(),arr_time:document.getElementById('flAt').value.trim(),dep_date:document.getElementById('flDd').value.trim(),class:document.getElementById('flCl').value,baggage:document.getElementById('flBg').value.trim(),meal:document.getElementById('flMl').value.trim(),price_per_seat:document.getElementById('flPr').value.trim(),total_seats:parseInt(document.getElementById('flTs').value)||0,booked_seats:parseInt(document.getElementById('flBs').value)||0,status:document.getElementById('flSt').value,updated_at:new Date().toISOString()};
+  try{
+    if(id){await PATCH('group_flights',id,d);flights=flights.map(f=>f.id===id?{...f,...d,id}:f);}
+    else{const r=await POST('group_flights',d);flights=[r,...flights];}
+    closeModal('flightModal');renderFlights(flights);toast(id?'Updated!':'Flight added!');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+async function delFlight(id){if(!confirm('Delete flight?'))return;try{await DEL('group_flights',id);flights=flights.filter(f=>f.id!==id);renderFlights(flights);toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
+
+/* ─── BLOGS ─── */
+function renderBlog(){
+  const tb=document.getElementById('bl-tb');
+  if(!blogs.length){tb.innerHTML='<tr><td colspan="5" class="etd">No posts. <button class="btn-s" onclick="openBlogModal()">Write first</button></td></tr>';return;}
+  tb.innerHTML=blogs.map(b=>`<tr>
     <td><strong>${b.title||'—'}</strong></td>
     <td>${b.category||'—'}</td>
-    <td><span class="pill ${b.published?'pill-published':'pill-draft'}">${b.published?'Published':'Draft'}</span></td>
+    <td><span class="pill ${b.published?'p-pub':'p-drft'}">${b.published?'Published':'Draft'}</span></td>
     <td style="font-size:12px">${b.created_at?new Date(b.created_at).toLocaleDateString('en-GB'):'—'}</td>
-    <td style="display:flex;gap:5px">
-      <button class="btn-sm" onclick="editBlog('${b.id}')"><i class="fa fa-edit"></i></button>
-      <button class="btn-red" onclick="deleteBlog('${b.id}')"><i class="fa fa-trash"></i></button>
+    <td style="display:flex;gap:4px">
+      <button class="btn-s" onclick="editBlog('${b.id}')"><i class="fa fa-edit"></i></button>
+      <button class="btn-r" onclick="delBlog('${b.id}')"><i class="fa fa-trash"></i></button>
     </td>
   </tr>`).join('');
 }
-function openBlogModal() {
+function openBlogModal(){
   document.getElementById('blogTitle').innerHTML='New <em>Blog Post</em>';
   document.getElementById('blogId').value='';
-  ['blogTitleInp','blogCat','blogImg','blogExcerpt','blogContent'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('blogStatus').value='false';
+  ['blT','blCat','blImg','blEx','blCon'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('blSt').value='false';
   openModal('blogModal');
 }
-function editBlog(id) {
-  const b=allBlogs.find(x=>x.id===id); if(!b) return;
+function editBlog(id){
+  const b=blogs.find(x=>x.id===id);if(!b)return;
   document.getElementById('blogTitle').innerHTML='Edit <em>Blog Post</em>';
-  document.getElementById('blogId').value         = b.id;
-  document.getElementById('blogTitleInp').value   = b.title||'';
-  document.getElementById('blogCat').value        = b.category||'';
-  document.getElementById('blogImg').value        = b.cover_image||'';
-  document.getElementById('blogExcerpt').value    = b.excerpt||'';
-  document.getElementById('blogContent').value    = b.content||'';
-  document.getElementById('blogStatus').value     = String(b.published||false);
+  document.getElementById('blogId').value=b.id;
+  document.getElementById('blT').value=b.title||'';
+  document.getElementById('blCat').value=b.category||'';
+  document.getElementById('blImg').value=b.cover_image||b.image_url||'';
+  document.getElementById('blEx').value=b.excerpt||'';
+  document.getElementById('blCon').value=b.content||'';
+  document.getElementById('blSt').value=String(b.published||false);
   openModal('blogModal');
 }
-async function saveBlog() {
-  const title = document.getElementById('blogTitleInp').value.trim();
-  if (!title) { toast('Title required!',true); return; }
-  const id = document.getElementById('blogId').value;
-  const data = {
-    title,
-    slug: title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
-    category: document.getElementById('blogCat').value.trim(),
-    cover_image: document.getElementById('blogImg').value.trim(),
-    excerpt: document.getElementById('blogExcerpt').value.trim(),
-    content: document.getElementById('blogContent').value.trim(),
-    published: document.getElementById('blogStatus').value === 'true',
-    updated_at: new Date().toISOString()
-  };
-  try {
-    if (id) { await sbPatch('blogs',id,data); allBlogs=allBlogs.map(b=>b.id===id?{...b,...data}:b); }
-    else { const res=await sbPost('blogs',data); allBlogs=[res[0],...allBlogs]; }
-    closeModal('blogModal'); renderBlogs(allBlogs); toast(id?'Post updated!':'Post published!');
-  } catch(e) { toast('Error: '+e.message,true); }
+async function saveBlog(){
+  const t=document.getElementById('blT').value.trim();
+  if(!t){toast('Title required!',true);return;}
+  const id=document.getElementById('blogId').value;
+  const d={title:t,slug:t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),category:document.getElementById('blCat').value.trim(),cover_image:document.getElementById('blImg').value.trim(),excerpt:document.getElementById('blEx').value.trim(),content:document.getElementById('blCon').value.trim(),published:document.getElementById('blSt').value==='true',updated_at:new Date().toISOString()};
+  try{
+    if(id){await PATCH('blogs',id,d);blogs=blogs.map(b=>b.id===id?{...b,...d,id}:b);}
+    else{const r=await POST('blogs',d);blogs=[r,...blogs];}
+    closeModal('blogModal');renderBlog();toast(id?'Post updated!':'Published!');
+  }catch(e){toast('Error: '+e.message,true);}
 }
-async function deleteBlog(id) {
-  if (!confirm('Delete post?')) return;
-  try { await sbDelete('blogs',id); allBlogs=allBlogs.filter(b=>b.id!==id); renderBlogs(allBlogs); toast('Post deleted.'); }
-  catch(e) { toast('Error: '+e.message,true); }
+async function delBlog(id){if(!confirm('Delete?'))return;try{await DEL('blogs',id);blogs=blogs.filter(b=>b.id!==id);renderBlog();toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
+
+/* ─── SETTINGS ─── */
+async function changePwd(){
+  const c=document.getElementById('cp1').value,n=document.getElementById('cp2').value,cf=document.getElementById('cp3').value;
+  const m=document.getElementById('cpMsg');
+  if(!c||!n||!cf){m.style.color='#EF4444';m.textContent='All fields required.';m.style.display='block';return;}
+  if(n!==cf){m.style.color='#EF4444';m.textContent='Passwords do not match.';m.style.display='block';return;}
+  if(n.length<8){m.style.color='#EF4444';m.textContent='Min 8 characters.';m.style.display='block';return;}
+  m.style.color='#10B981';m.textContent='Password update requires Supabase dashboard. Use supabase.com → Auth → Users.';m.style.display='block';
 }
 
-// ══ SETTINGS ══
-async function changePwd() {
-  const cur=document.getElementById('curPwd').value;
-  const nw=document.getElementById('newPwd').value;
-  const cn=document.getElementById('conPwd').value;
-  const msg=document.getElementById('pwdMsg');
-  if (!cur||!nw||!cn) { msg.style.color='#EF4444'; msg.textContent='All fields required.'; msg.style.display='block'; return; }
-  if (nw!==cn) { msg.style.color='#EF4444'; msg.textContent='Passwords do not match.'; msg.style.display='block'; return; }
-  if (nw.length<8) { msg.style.color='#EF4444'; msg.textContent='Min 8 characters.'; msg.style.display='block'; return; }
-  // Call Supabase auth via fetch
-  try {
-    const r = await fetch(`${SUPA_URL}/auth/v1/user`, {
-      method:'PUT',
-      headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${admin.access_token||SUPA_KEY}`, 'Content-Type':'application/json' },
-      body:JSON.stringify({password:nw})
-    });
-    if (!r.ok) throw new Error('Failed');
-    msg.style.color='#10B981'; msg.textContent='Password updated!'; msg.style.display='block';
-    document.getElementById('curPwd').value=''; document.getElementById('newPwd').value=''; document.getElementById('conPwd').value='';
-  } catch(e) { msg.style.color='#EF4444'; msg.textContent='Error. Please login again.'; msg.style.display='block'; }
-}
-
-// ══ HELPERS ══
-function showPage(name, btn) {
+/* ─── HELPERS ─── */
+function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
-  const pg = document.getElementById('pg-'+name);
-  if (pg) pg.classList.add('active');
-  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.sbn').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('pg-'+name);
+  if(pg)pg.classList.add('active');
+  if(btn)btn.classList.add('active');
 }
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-// Close modal on bg click
-document.querySelectorAll('.modal-bg').forEach(m=>{
-  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); });
-});
-
-// Logout
-function doLogout() {
-  sessionStorage.removeItem('ew_admin');
-  window.location.href='index.html';
-}
-
-// Toast
-let toastTimer;
-function toast(msg, isErr=false) {
-  const t=document.getElementById('toast');
-  const i=document.getElementById('toastIco');
-  document.getElementById('toastTxt').textContent=msg;
+function doLogout(){sessionStorage.removeItem('ew_admin');window.location.href='index.html';}
+let tTimer;
+function toast(msg,isErr=false){
+  const t=document.getElementById('toast'),i=document.getElementById('tIco');
+  document.getElementById('tTxt').textContent=msg;
   t.className='toast show '+(isErr?'err':'ok');
   i.className='fa '+(isErr?'fa-exclamation-circle':'fa-check-circle');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+  clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// ══ START ══
 loadAll();
 </script>
 </body>
