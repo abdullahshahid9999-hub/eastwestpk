@@ -1,946 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Services — East & West Travel Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Services — East & West Travel Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* SERVICE CARDS */
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 16px;
+}
+.svc-card {
+  background: #fff;
+  border: 1px solid #E8E4DA;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.35s;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+.svc-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,76,0.5);
+  box-shadow: 0 16px 48px rgba(201,168,76,0.15);
+}
+.svc-img {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: #0A1628;
+}
+.svc-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s;
+  opacity: 0.85;
+}
+.svc-card:hover .svc-img img { transform: scale(1.07); opacity: 1; }
+.svc-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(10,22,40,0.75) 100%);
+}
+.svc-badge {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  padding: 5px 13px; border-radius: 50px;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.badge-gold { background: rgba(201,168,76,0.92); color: #0A1628; }
+.badge-teal { background: rgba(14,165,233,0.92); color: #fff; }
+.badge-green { background: rgba(16,185,129,0.92); color: #fff; }
+.badge-red { background: rgba(239,68,68,0.9); color: #fff; }
+.badge-purple { background: rgba(139,92,246,0.9); color: #fff; }
+.svc-tag {
+  position: absolute; bottom: 14px; left: 14px; z-index: 2;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; color: rgba(255,255,255,0.7);
+}
+.svc-tag i { color: #C9A84C; }
+.svc-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.svc-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: #1C1C2E; margin-bottom: 8px;
+}
+.svc-body p {
+  font-size: 13px; color: #6B6B8A; line-height: 1.7;
+  flex: 1; margin-bottom: 16px;
+}
+.svc-features {
+  display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px;
+}
+.svc-feat {
+  font-size: 11px; color: #4A4A6A;
+  background: #F3F0EA; border: 1px solid #E8E4DA;
+  padding: 4px 10px; border-radius: 50px;
+  display: flex; align-items: center; gap: 5px;
+}
+.svc-feat i { color: #C9A84C; font-size: 10px; }
+.svc-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid #E8E4DA;
+}
+.svc-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #C9A84C; font-weight: 700; }
+.svc-price small { display: block; font-size: 11px; color: #9090AA; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; }
+.svc-btn-page {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #C9A84C; color: #fff;
+  padding: 9px 18px; border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  border: none; cursor: pointer; transition: all 0.25s;
+  text-decoration: none;
+}
+.svc-btn-page:hover { background: #E8C97A; transform: translateY(-1px); }
+.svc-btn-wa {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #25D366; color: #fff;
+  padding: 9px 16px; border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border: none; cursor: pointer; transition: all 0.25s;
+  text-decoration: none;
+}
+.svc-btn-wa:hover { background: #1DA851; transform: translateY(-1px); }
 
-    /* ── PAGE HERO ── */
-    .svc-hero {
-      background: var(--navy);
-      padding: 140px 0 70px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .svc-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.07) 0%, transparent 65%);
-    }
-    .svc-hero .eyebrow { color: var(--gold); position: relative; }
-    .svc-hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(38px,6vw,72px);
-      color: #fff; line-height: 1; position: relative;
-      margin-bottom: 16px;
-    }
-    .svc-hero h1 em { color: var(--gold); font-style: italic; }
-    .svc-hero p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(16px, 1.8vw, 20px);
-      color: rgba(255,255,255,0.45); font-style: italic;
-      position: relative; max-width: 560px; margin: 0 auto;
-    }
+/* Filter tabs */
+.svc-filters {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 44px;
+}
+.svc-filter {
+  padding: 9px 22px; border-radius: 50px;
+  border: 2px solid #E8E4DA; background: #fff;
+  color: #6B6B8A; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.25s; display: flex; align-items: center; gap: 7px;
+}
+.svc-filter.active,
+.svc-filter:hover { background: #C9A84C; color: #fff; border-color: #C9A84C; }
 
-    /* ── FILTER TABS ── */
-    .filter-bar {
-      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-      margin-bottom: 48px;
-    }
-    .f-btn {
-      padding: 10px 24px; border-radius: 50px;
-      font-size: 13px; font-weight: 600;
-      border: 1.5px solid var(--border);
-      background: var(--bg-white);
-      color: var(--text-dim);
-      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: all 0.25s;
-      display: flex; align-items: center; gap: 7px;
-    }
-    .f-btn:hover { border-color: var(--gold); color: var(--gold); }
-    .f-btn.active {
-      background: var(--gold); color: #fff;
-      border-color: var(--gold);
-      box-shadow: 0 4px 16px rgba(201,168,76,0.3);
-    }
-
-    /* ── SERVICES GRID ── */
-    .svc-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-
-    /* ── SERVICE CARD ── */
-    .svc-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.35s;
-      display: flex; flex-direction: column;
-    }
-    .svc-card:hover { transform: translateY(-6px); border-color: var(--border-gold); box-shadow: 0 16px 48px rgba(201,168,76,0.15); }
-
-    /* Card image */
-    .svc-img {
-      position: relative; height: 220px; overflow: hidden; flex-shrink: 0;
-    }
-    .svc-img img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.55s;
-    }
-    .svc-card:hover .svc-img img { transform: scale(1.06); }
-    .svc-img-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(10,22,40,0.7) 100%);
-    }
-    .svc-cat-badge {
-      position: absolute; top: 14px; left: 14px;
-      padding: 5px 12px; border-radius: 50px;
-      font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; backdrop-filter: blur(8px);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .svc-wa-badge {
-      position: absolute; top: 14px; right: 14px;
-      background: rgba(37,211,102,0.9); color: white;
-      padding: 4px 10px; border-radius: 50px;
-      font-size: 10px; font-weight: 700;
-      display: flex; align-items: center; gap: 4px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .svc-hint {
-      position: absolute; bottom: 12px; right: 14px;
-      font-size: 11px; color: rgba(255,255,255,0.65);
-      display: flex; align-items: center; gap: 5px;
-    }
-
-    /* Card body */
-    .svc-body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
-    .svc-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--text); font-weight: 700; }
-    .svc-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.7; }
-    .svc-meta { display: flex; flex-wrap: wrap; gap: 8px; }
-    .svc-chip {
-      font-size: 11.5px; color: var(--text-dim);
-      background: var(--bg-alt); border: 1px solid var(--border);
-      border-radius: 50px; padding: 3px 11px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .svc-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; margin-top: auto; padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-    .svc-price { }
-    .svc-price span {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px; color: var(--gold); font-weight: 700;
-    }
-    .svc-price small { display: block; font-size: 11px; color: var(--text-hint); margin-top: 1px; }
-    .btn-svc {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: var(--gold); color: #fff;
-      padding: 10px 20px; border-radius: 50px;
-      font-size: 12px; font-weight: 700; border: none;
-      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: all 0.3s; white-space: nowrap; letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .btn-svc:hover { background: var(--gold-light); transform: translateY(-2px); }
-    .btn-svc-wa {
-      background: #25D366; color: #fff;
-    }
-    .btn-svc-wa:hover { background: #1DA851; }
-
-    /* ── DETAIL MODAL ── */
-    .det-overlay {
-      display: none; position: fixed; inset: 0; z-index: 8000;
-      background: rgba(10,22,40,0.88); backdrop-filter: blur(10px);
-      overflow-y: auto; padding: 24px 16px;
-    }
-    .det-overlay.active { display: block; }
-    .det-modal {
-      background: var(--bg-white); border-radius: 24px;
-      max-width: 840px; margin: 0 auto;
-      overflow: hidden; animation: detIn 0.3s ease;
-      position: relative;
-    }
-    @keyframes detIn { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-    .det-close {
-      position: absolute; top: 16px; right: 16px;
-      width: 36px; height: 36px;
-      background: rgba(10,22,40,0.6); border: none; border-radius: 50%;
-      color: white; font-size: 14px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; z-index: 10;
-    }
-    .det-close:hover { background: rgba(239,68,68,0.8); }
-    .det-hero { position: relative; height: 280px; overflow: hidden; }
-    .det-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .det-hero::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 30%, rgba(10,22,40,0.92) 100%);
-    }
-    .det-hero-info {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 24px 32px; z-index: 2;
-    }
-    .det-hero-info h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(24px,4vw,36px); color: white; margin-bottom: 8px;
-    }
-    .det-hero-meta { display: flex; gap: 14px; flex-wrap: wrap; }
-    .det-hero-meta span { font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 5px; }
-
-    .det-body { padding: 28px 32px 32px; display: grid; grid-template-columns: 1fr 300px; gap: 28px; }
-    @media(max-width:700px) { .det-body { grid-template-columns: 1fr; } .det-hero { height: 200px; } .det-hero-info { padding: 16px 20px; } }
-
-    .det-sec-title {
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
-      color: var(--gold); margin-bottom: 12px; padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 7px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .det-desc { font-size: 14.5px; color: var(--text-mid); line-height: 1.85; margin-bottom: 20px; }
-    .det-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .det-chip {
-      font-size: 13px; color: var(--text);
-      background: var(--bg-alt); border: 1px solid var(--border);
-      border-radius: 8px; padding: 7px 14px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .det-excl {
-      background: #FEF2F2; border: 1px solid #FECACA;
-      border-radius: 10px; padding: 12px 16px;
-      font-size: 13px; color: #991B1B; line-height: 1.7; margin-top: 14px;
-    }
-    .det-excl strong { color: #DC2626; }
-
-    /* Summary box */
-    .det-sum {
-      background: var(--bg-alt); border: 1px solid var(--border-gold);
-      border-radius: 16px; padding: 22px; position: sticky; top: 20px;
-    }
-    .det-sum-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 34px; color: var(--gold); font-weight: 700; line-height: 1;
-    }
-    .det-sum-per { font-size: 12px; color: var(--text-hint); margin-bottom: 18px; }
-    .det-sum-rows { display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .det-sum-row { display: flex; justify-content: space-between; font-size: 13px; gap: 8px; }
-    .det-sum-row span:first-child { color: var(--text-dim); }
-    .det-sum-row span:last-child { font-weight: 600; color: var(--text); }
-    .det-book-btn {
-      width: 100%; background: var(--gold); color: white;
-      border: none; padding: 14px; border-radius: 10px;
-      font-size: 13px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      gap: 9px; transition: all 0.3s; margin-bottom: 10px;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .det-book-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
-    .det-wa-btn {
-      width: 100%; background: rgba(37,211,102,0.1);
-      color: #25D366; border: 1.5px solid rgba(37,211,102,0.3);
-      padding: 11px; border-radius: 10px;
-      font-size: 13px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      gap: 8px; transition: all 0.3s; text-decoration: none;
-    }
-    .det-wa-btn:hover { background: rgba(37,211,102,0.18); }
-    .det-trust { margin-top: 16px; display: flex; flex-direction: column; gap: 7px; }
-    .det-trust-item { font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 7px; }
-    .det-trust-item i { color: var(--gold); font-size: 11px; }
-
-    /* ── BOOKING CHOICE MODAL ── */
-    .bm-overlay {
-      display: none; position: fixed; inset: 0; z-index: 9999;
-      background: rgba(10,22,40,0.9); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 20px;
-    }
-    .bm-overlay.active { display: flex; }
-    .bm-box {
-      background: var(--bg-white); border: 1px solid var(--border-gold);
-      border-radius: 24px; width: 100%; max-width: 460px;
-      overflow: hidden; animation: detIn 0.3s ease; position: relative;
-    }
-    .bm-close {
-      position: absolute; top: 14px; right: 14px;
-      width: 32px; height: 32px; background: var(--bg-alt);
-      border: 1px solid var(--border); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--text-dim); font-size: 13px; transition: all 0.2s;
-    }
-    .bm-close:hover { color: var(--text); border-color: var(--gold); }
-    .bm-pkg { display: flex; align-items: center; gap: 14px; padding: 20px 22px; background: var(--bg-alt); border-bottom: 1px solid var(--border); }
-    .bm-pkg img { width: 68px; height: 56px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
-    .bm-pkg h4 { font-size: 16px; color: var(--text); margin-bottom: 3px; font-family: 'Cormorant Garamond', serif; }
-    .bm-pkg .bm-price { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold); font-weight: 700; }
-    .bm-body { padding: 24px 22px; }
-    .bm-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--text); margin-bottom: 6px; }
-    .bm-body > p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 20px; }
-    .bm-opts { display: flex; flex-direction: column; gap: 10px; }
-    .bm-opt {
-      display: flex; align-items: center; gap: 14px;
-      padding: 16px 18px; background: var(--bg-alt);
-      border: 2px solid var(--border); border-radius: 12px;
-      cursor: pointer; transition: all 0.25s;
-      width: 100%; font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .bm-opt:hover { border-color: var(--gold); background: var(--gold-dim); }
-    .bm-opt-ico {
-      width: 42px; height: 42px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
-    .bm-opt.login .bm-opt-ico { background: rgba(14,165,233,0.1); color: var(--teal); }
-    .bm-opt.guest .bm-opt-ico { background: var(--gold-dim); color: var(--gold); }
-    .bm-opt-txt strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-    .bm-opt-txt span { font-size: 12px; color: var(--text-dim); }
-    .bm-div { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text-hint); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .bm-div::before, .bm-div::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-    @media(max-width:900px) { .svc-grid { grid-template-columns: repeat(2,1fr); } }
-    @media(max-width:560px) { .svc-grid { grid-template-columns: 1fr; } }
-  </style>
+@media (max-width: 1024px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px)  { .svc-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
 
-<!-- OVERLAY for mobile nav -->
-<div class="nav-overlay" id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s" onclick="closeMenu()"></div>
+<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
-
   <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
-
-    <!-- ── DESKTOP: Home hidden, Services dropdown, About ── -->
-    <!-- Mobile: Home shown -->
-    <a href="index.html" class="" id="nav-home" style="display:none">Home</a>
-
-    <!-- Services — desktop dropdown -->
-    <div class="nav-has-drop" id="nav-svc-desktop">
-      <a href="services.html" class="active">
-        Services <i class="fa fa-chevron-down nav-drop-chevron"></i>
-      </a>
+    <a href="index.html" id="mlink-home">Home</a>
+    <div class="nav-has-drop" id="mlink-svc-desk">
+      <a href="services.html" class="active">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
-        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
         <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
         <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
       </div>
     </div>
-
-    <a href="about.html" class="">About</a>
-    <!-- Contact — mobile only -->
-    <a href="contact.html" class="" id="nav-contact" style="display:none">Contact</a>
-
-    <!-- Services — mobile expandable -->
-    <div class="mob-services" id="nav-svc-mobile" style="display:none">
-      <div class="mob-parent" onclick="toggleMobSvc(this)">
-        <span class="mob-parent-label">Services</span>
-        <i class="fa fa-chevron-down mob-parent-arrow"></i>
+    <div id="mlink-svc-mob" style="display:none">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
+        <span style="flex:1;font-size:14px;font-weight:600;color:#C9A84C;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <i class="fa fa-chevron-down" style="font-size:11px;color:#C9A84C;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
-      <div class="mob-sub">
-        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
-        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
-        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      <div id="mobSvcSub" style="display:none;background:#F9F7F2">
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
+        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
-
+    <a href="about.html">About</a>
+    <a href="contact.html" id="mlink-contact">Contact</a>
     <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
     <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
-
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
-<!-- HERO -->
-<section class="svc-hero">
+<!-- PAGE HERO -->
+<section class="page-hero">
   <div class="container">
-    <div class="eyebrow" style="justify-content:center;margin-bottom:14px"><i class="fa fa-compass"></i> What We Offer</div>
+    <div class="eyebrow" style="justify-content:center;margin-bottom:12px">
+      <i class="fa fa-compass" style="margin-right:8px"></i> What We Offer
+    </div>
     <h1>Our Travel <em>Services</em></h1>
-    <p>From sacred Umrah journeys to exotic world tours — we have everything you need</p>
+    <p style="position:relative">From sacred Umrah journeys to exotic world tours — we have everything you need</p>
   </div>
 </section>
 
-<section style="padding:60px 0;background:var(--bg)">
+<!-- SERVICES SECTION -->
+<section class="section">
   <div class="container">
 
     <!-- FILTER TABS -->
-    <div class="filter-bar">
-      <button class="f-btn active" onclick="filterSvc('all',this)"><i class="fa fa-th-large"></i> All Services</button>
-      <button class="f-btn" onclick="filterSvc('umrah',this)"><i class="fa fa-star-and-crescent"></i> Umrah & Hajj</button>
-      <button class="f-btn" onclick="filterSvc('world',this)"><i class="fa fa-globe"></i> World Tours</button>
-      <button class="f-btn" onclick="filterSvc('domestic',this)"><i class="fa fa-map-marker-alt"></i> Domestic Tours</button>
-      <button class="f-btn" onclick="filterSvc('group',this)"><i class="fa fa-users"></i> Group Tickets</button>
-      <button class="f-btn" onclick="filterSvc('visa',this)"><i class="fa fa-passport"></i> Visa & Hotels</button>
+    <div class="svc-filters">
+      <button class="svc-filter active" onclick="filterSvc('all', this)"><i class="fa fa-th-large"></i> All Services</button>
+      <button class="svc-filter" onclick="filterSvc('umrah', this)"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</button>
+      <button class="svc-filter" onclick="filterSvc('tours', this)"><i class="fa fa-globe"></i> World Tours</button>
+      <button class="svc-filter" onclick="filterSvc('tickets', this)"><i class="fa fa-plane"></i> Air Tickets</button>
+      <button class="svc-filter" onclick="filterSvc('visa', this)"><i class="fa fa-passport"></i> Visa</button>
+      <button class="svc-filter" onclick="filterSvc('hotel', this)"><i class="fa fa-hotel"></i> Hotels</button>
     </div>
 
-    <!-- SERVICES GRID -->
+    <!-- SERVICE CARDS GRID -->
     <div class="svc-grid" id="svcGrid">
 
-      <!-- UMRAH -->
-      <div class="svc-card" data-cat="umrah" onclick="openDetail('umrah7')">
+      <!-- 1. UMRAH PACKAGES -->
+      <a href="umrah.html" class="svc-card" data-cat="umrah">
         <div class="svc-img">
-          <img src="assets/images/makarem_7.jpg" alt="Umrah" onerror="this.src='https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80'">
+          <img src="assets/images/makarem_1.jpeg" alt="Umrah" onerror="this.style.background='#1a2840'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(201,168,76,0.9);color:#0A1628"><i class="fa fa-star-and-crescent"></i> Umrah</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-gold"><i class="fa fa-star-and-crescent"></i> Umrah</span>
+          <div class="svc-tag"><i class="fa fa-users"></i> 4 Sharing Available</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">7 Night Economy Umrah</div>
-          <div class="svc-desc">Makkah 4N at Makarem Ajyad + Madinah 3N at Pullman ZamZam. Breakfast, transfers & Ziyarat included.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-clock"></i> 7N / 8D</span>
-            <span class="svc-chip"><i class="fa fa-users"></i> 4 Sharing</span>
-            <span class="svc-chip">⭐ 4.9</span>
+          <h3>Umrah Packages</h3>
+          <p>Complete Umrah packages with flights, 4★/5★ hotels, Ziyarat tours and 24/7 support. Economy to premium options available.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Flights Included</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> 4★/5★ Hotels</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Ziyarat Tour</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> 24/7 Support</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 85,000</span><small>per person</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Rs. 85,000<small>per person</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Packages</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- PREMIUM UMRAH -->
-      <div class="svc-card" data-cat="umrah" onclick="openDetail('umrah14')">
+      <!-- 2. HAJJ PACKAGES -->
+      <a href="umrah.html" class="svc-card" data-cat="umrah">
         <div class="svc-img">
-          <img src="assets/images/pullman_1.jpeg" alt="Premium Umrah" onerror="this.src='https://images.unsplash.com/photo-1564769625688-5f9f8b3a1e7c?w=600&q=80'">
+          <img src="assets/images/makarem_3.jpeg" alt="Hajj" onerror="this.style.background='#1a2840'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(201,168,76,0.9);color:#0A1628"><i class="fa fa-star-and-crescent"></i> Premium Umrah</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-gold"><i class="fa fa-star-and-crescent"></i> Hajj</span>
+          <div class="svc-tag"><i class="fa fa-calendar"></i> 2026 Season</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">14 Night Umrah Package</div>
-          <div class="svc-desc">14 nights split between Makkah & Madinah. Full Ziyarat, daily breakfast, VIP transfers.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-clock"></i> 14N / 15D</span>
-            <span class="svc-chip"><i class="fa fa-users"></i> 4 Sharing</span>
-            <span class="svc-chip">⭐ 5.0</span>
+          <h3>Hajj Packages</h3>
+          <p>Perform Hajj with complete peace of mind. Government approved Hajj packages with all inclusions and expert guidance throughout.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Govt Approved</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Full Guidance</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Group Travel</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 1,50,000</span><small>per person</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Enquire<small>for 2026 pricing</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Packages</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- HAJJ — WhatsApp -->
-      <div class="svc-card" data-cat="umrah" onclick="openWA('Hajj Package Inquiry')">
+      <!-- 3. WORLD TOURS -->
+      <a href="tours.html" class="svc-card" data-cat="tours">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1565019011521-b5a5b74dd6f5?w=600&q=80" alt="Hajj">
+          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="World Tours" onerror="this.src='assets/images/pullman_1.jpeg'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(201,168,76,0.9);color:#0A1628"><i class="fa fa-star-and-crescent"></i> Hajj</span>
-          <span class="svc-wa-badge"><i class="fab fa-whatsapp"></i> Enquire</span>
-          <div class="svc-hint"><i class="fab fa-whatsapp"></i> WhatsApp Us</div>
+          <span class="svc-badge badge-teal"><i class="fa fa-globe"></i> International</span>
+          <div class="svc-tag"><i class="fa fa-map-marker-alt"></i> Dubai, Thailand, Bali & More</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Hajj Package 2026</div>
-          <div class="svc-desc">Complete Hajj arrangements with accommodation in Makkah & Madinah, Mina & Arafat camps, and full support.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-clock"></i> 40 Days</span>
-            <span class="svc-chip">Visa Included</span>
-            <span class="svc-chip">Guided</span>
+          <h3>World Tours</h3>
+          <p>Explore the world with our expertly crafted holiday packages. Dubai, Thailand, Bali, Malaysia, Turkey and more destinations.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Visa Included</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Hotel + Flights</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Sightseeing</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Halal Meals</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Ask for Price</span><small>limited seats</small></div>
-            <button class="btn-svc btn-svc-wa"><i class="fab fa-whatsapp"></i> Enquire</button>
+            <div class="svc-price">Rs. 95,000<small>per person</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Tours</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- DUBAI -->
-      <div class="svc-card" data-cat="world" onclick="openDetail('dubai')">
+      <!-- 4. GROUP AIR TICKETS -->
+      <a href="group-tickets.html" class="svc-card" data-cat="tickets">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Dubai">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80" alt="Group Tickets" onerror="this.src='assets/images/pullman_2.jpg'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(239,68,68,0.88);color:white"><i class="fa fa-fire"></i> Hot Deal</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-red"><i class="fa fa-plane"></i> Group Fares</span>
+          <div class="svc-tag"><i class="fa fa-users"></i> 10+ Passengers</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Dubai Premium Tour</div>
-          <div class="svc-desc">5 nights in Dubai — Burj Khalifa, Desert Safari, City Tour. Flights + UAE Visa included.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-clock"></i> 5N / 6D</span>
-            <span class="svc-chip">Visa Incl.</span>
-            <span class="svc-chip">⭐ 4.8</span>
+          <h3>Group Air Tickets</h3>
+          <p>Special group fares for 10+ passengers. Saudi, UK, Qatar, USA, Europe and domestic routes. Best negotiated rates guaranteed.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Best Rates</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> All Airlines</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Group Check-In</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 1,20,000</span><small>per person</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Best Rate<small>for 10+ pax</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Flights</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- THAILAND -->
-      <div class="svc-card" data-cat="world" onclick="openDetail('thailand')">
+      <!-- 5. AIR TICKET RESERVATION -->
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+to+book+an+air+ticket.+Please+share+the+best+available+rates." target="_blank" class="svc-card" data-cat="tickets">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80" alt="Thailand">
+          <img src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=600&q=80" alt="Air Tickets" onerror="this.src='assets/images/pullman_3.jpeg'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(8,145,178,0.88);color:white">Thailand</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-teal"><i class="fa fa-ticket-alt"></i> Tickets</span>
+          <div class="svc-tag"><i class="fa fa-bolt"></i> Instant Confirmation</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Thailand Adventure</div>
-          <div class="svc-desc">Bangkok + Phuket 7 nights. Halal meals, island tours, Thailand Visa & return flights.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-clock"></i> 7N / 8D</span>
-            <span class="svc-chip">Visa Incl.</span>
-            <span class="svc-chip">⭐ 4.7</span>
+          <h3>Air Ticket Reservation</h3>
+          <p>Individual and family air tickets for all domestic and international routes. All airlines, best available fares with instant confirmation.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> All Airlines</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Domestic + International</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Economy &amp; Business</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 95,000</span><small>per person</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Best Fare<small>guaranteed</small></div>
+            <span class="svc-btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp Us</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- BALI -->
-      <div class="svc-card" data-cat="world" onclick="openDetail('bali')">
+      <!-- 6. VISA SERVICES -->
+      <a href="visa.html" class="svc-card" data-cat="visa">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali">
+          <img src="https://images.unsplash.com/photo-1637858868799-7f26a0640eb6?w=600&q=80" alt="Visa" onerror="this.src='assets/images/makarem_2.jpeg'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(8,145,178,0.88);color:white">Bali</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-purple"><i class="fa fa-passport"></i> Visa</span>
+          <div class="svc-tag"><i class="fa fa-percentage"></i> 95% Approval Rate</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Bali Honeymoon Package</div>
-          <div class="svc-desc">6 nights in Seminyak luxury villa — spa, sunset dinner, island tours, return flights & visa.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-heart"></i> Couple</span>
-            <span class="svc-chip"><i class="fa fa-clock"></i> 6N / 7D</span>
-            <span class="svc-chip">⭐ 4.9</span>
+          <h3>Visa Services</h3>
+          <p>UAE, Saudi, Thailand, Turkey, UK, Malaysia and more. We handle all documentation, embassy submission and tracking for you.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> 20+ Countries</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Doc Assistance</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Embassy Track</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Fast Processing</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 1,80,000</span><small>per couple</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Rs. 8,000<small>starting from</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Visas</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- DOMESTIC TOUR -->
-      <div class="svc-card" data-cat="domestic" onclick="openDetail('domestic')">
+      <!-- 7. HOTEL BOOKING -->
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+hotel+booking+assistance.+Please+help+me+find+the+best+hotels." target="_blank" class="svc-card" data-cat="hotel">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=80" alt="Pakistan">
+          <img src="assets/images/pullman_1.jpeg" alt="Hotels" onerror="this.style.background='#1a2840'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(5,150,105,0.88);color:white"><i class="fa fa-map-marker-alt"></i> Domestic</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-green"><i class="fa fa-hotel"></i> Hotels</span>
+          <div class="svc-tag"><i class="fa fa-star"></i> 3★ to 5★ Available</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Northern Pakistan Tour</div>
-          <div class="svc-desc">Explore Hunza, Naran, Swat & Skardu. Road trip + accommodation + guided tour across Pakistan's most beautiful valleys.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-clock"></i> 7N / 8D</span>
-            <span class="svc-chip">Transport Incl.</span>
-            <span class="svc-chip">⭐ 4.8</span>
+          <h3>Hotel Booking</h3>
+          <p>Hotel bookings across Pakistan and worldwide. Special rates for Makkah, Madinah, Dubai, Bangkok and all major destinations.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Makkah &amp; Madinah</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Best Rates</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> 3★ to 5★</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 55,000</span><small>per person</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Rs. 5,000<small>per night starting</small></div>
+            <span class="svc-btn-wa"><i class="fab fa-whatsapp"></i> Enquire Now</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- GROUP TICKETS -->
-      <div class="svc-card" data-cat="group" onclick="openDetail('group')">
+      <!-- 8. DOMESTIC TOURS -->
+      <a href="tours.html" class="svc-card" data-cat="tours">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80" alt="Group Tickets">
+          <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=80" alt="Pakistan" onerror="this.src='assets/images/makarem_4.jpeg'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(109,40,217,0.88);color:white"><i class="fa fa-plane"></i> Group Tickets</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-green"><i class="fa fa-mountain"></i> Pakistan</span>
+          <div class="svc-tag"><i class="fa fa-map-marker-alt"></i> Hunza, Swat, Naran &amp; More</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Group Air Tickets</div>
-          <div class="svc-desc">Special group rates for 10+ passengers. Domestic & international — all airlines. Instant confirmation.</div>
-          <div class="svc-meta">
-            <span class="svc-chip">10+ Pax</span>
-            <span class="svc-chip">All Airlines</span>
-            <span class="svc-chip">Best Rate</span>
+          <h3>Domestic Tours</h3>
+          <p>Discover the beauty of Pakistan — Hunza, Swat, Naran, Kaghan, Murree, Azad Kashmir and all northern areas. Custom family tours available.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Custom Itinerary</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Hotel Included</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Family Friendly</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Best Rate</span><small>for 10+ pax</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> Get Quote</button>
+            <div class="svc-price">Rs. 25,000<small>per person</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Tours</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- FAMILY TOUR -->
-      <div class="svc-card" data-cat="world" onclick="openDetail('family')">
+      <!-- 9. HONEYMOON / COUPLE -->
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+a+honeymoon+or+couple+tour+package.+Please+share+details." target="_blank" class="svc-card" data-cat="tours">
         <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Family">
+          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Honeymoon" onerror="this.src='assets/images/pullman_4.jpeg'">
           <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(5,150,105,0.88);color:white"><i class="fa fa-users"></i> Family</span>
-          <div class="svc-hint"><i class="fa fa-eye"></i> View Details</div>
+          <span class="svc-badge badge-red"><i class="fa fa-heart"></i> Honeymoon</span>
+          <div class="svc-tag"><i class="fa fa-map-marker-alt"></i> Bali, Maldives, Thailand</div>
         </div>
         <div class="svc-body">
-          <div class="svc-title">Family Holiday Package</div>
-          <div class="svc-desc">7 nights for family of 4 — flights, family suite, all visas, all meals & kids activities included.</div>
-          <div class="svc-meta">
-            <span class="svc-chip"><i class="fa fa-users"></i> 4–6 Pax</span>
-            <span class="svc-chip"><i class="fa fa-clock"></i> 7N / 8D</span>
-            <span class="svc-chip">⭐ 4.9</span>
+          <h3>Honeymoon &amp; Couple Tours</h3>
+          <p>Romantic getaways crafted for couples. Bali, Maldives, Thailand, Turkey and more — with private villas, spa and candlelight dining.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Private Villa</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Couples Spa</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> All Inclusive</span>
           </div>
           <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 3,20,000</span><small>family of 4</small></div>
-            <button class="btn-svc"><i class="fa fa-calendar-check"></i> View & Book</button>
+            <div class="svc-price">Rs. 1,50,000<small>per couple</small></div>
+            <span class="svc-btn-wa"><i class="fab fa-whatsapp"></i> Enquire Now</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- VISA — WhatsApp -->
-      <div class="svc-card" data-cat="visa" onclick="openWA('Visa Assistance Inquiry')">
-        <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=600&q=80" alt="Visa">
-          <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(217,119,6,0.88);color:white"><i class="fa fa-passport"></i> Visa</span>
-          <span class="svc-wa-badge"><i class="fab fa-whatsapp"></i> Enquire</span>
-          <div class="svc-hint"><i class="fab fa-whatsapp"></i> WhatsApp Us</div>
-        </div>
-        <div class="svc-body">
-          <div class="svc-title">Visa Assistance</div>
-          <div class="svc-desc">UAE, Saudi Arabia, Thailand, Bali, Turkey & more. 95% success rate with expert documentation support.</div>
-          <div class="svc-meta">
-            <span class="svc-chip">7–15 Working Days</span>
-            <span class="svc-chip">95% Success</span>
-          </div>
-          <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 12,000+</span><small>starting from</small></div>
-            <button class="btn-svc btn-svc-wa"><i class="fab fa-whatsapp"></i> Enquire</button>
-          </div>
-        </div>
-      </div>
+    </div><!-- /svc-grid -->
+  </div>
+</section>
 
-      <!-- HOTEL — WhatsApp -->
-      <div class="svc-card" data-cat="visa" onclick="openWA('Hotel Booking Inquiry')">
-        <div class="svc-img">
-          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" alt="Hotel">
-          <div class="svc-img-overlay"></div>
-          <span class="svc-cat-badge" style="background:rgba(109,40,217,0.88);color:white"><i class="fa fa-hotel"></i> Hotel</span>
-          <span class="svc-wa-badge"><i class="fab fa-whatsapp"></i> Enquire</span>
-          <div class="svc-hint"><i class="fab fa-whatsapp"></i> WhatsApp Us</div>
-        </div>
-        <div class="svc-body">
-          <div class="svc-title">Hotel Booking</div>
-          <div class="svc-desc">3★ to 5★ hotels worldwide — Haram-view hotels in Makkah & Madinah, luxury resorts, family suites at best rates.</div>
-          <div class="svc-meta">
-            <span class="svc-chip">3★ to 5★</span>
-            <span class="svc-chip">Worldwide</span>
-            <span class="svc-chip">Best Rates</span>
-          </div>
-          <div class="svc-footer">
-            <div class="svc-price"><span>Rs. 5,000+</span><small>per night</small></div>
-            <button class="btn-svc btn-svc-wa"><i class="fab fa-whatsapp"></i> Enquire</button>
-          </div>
-        </div>
-      </div>
-
+<!-- CTA SECTION -->
+<section class="section-alt" style="padding:60px 0">
+  <div class="container" style="text-align:center">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:14px">Get In Touch</div>
+    <h2 style="font-size:clamp(28px,4vw,46px);color:#1C1C2E;margin-bottom:14px">Can't Find What You <em>Need?</em></h2>
+    <p style="font-size:15px;color:#6B6B8A;max-width:480px;margin:0 auto 28px">We offer custom travel packages for any destination. Just tell us where you want to go!</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+help+planning+a+custom+trip." target="_blank" class="btn-gold" style="display:inline-flex;align-items:center;gap:9px"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      <a href="contact.html" class="btn-ghost" style="display:inline-flex;align-items:center;gap:9px"><i class="fa fa-envelope"></i> Contact Form</a>
     </div>
   </div>
 </section>
 
-<!-- DETAIL MODAL -->
-<div class="det-overlay" id="detOverlay">
-  <div class="det-modal" id="detModal">
-    <button class="det-close" onclick="closeDetail()"><i class="fa fa-times"></i></button>
-    <div class="det-hero">
-      <img id="dImg" src="" alt="">
-      <div class="det-hero-info">
-        <h2 id="dTitle"></h2>
-        <div class="det-hero-meta" id="dMeta"></div>
-      </div>
-    </div>
-    <div class="det-body">
-      <div id="dLeft"></div>
-      <div id="dRight"></div>
-    </div>
-  </div>
-</div>
-
-<!-- BOOKING CHOICE MODAL -->
-<div class="bm-overlay" id="bmOverlay">
-  <div class="bm-box">
-    <div class="bm-close" onclick="closeBm()"><i class="fa fa-times"></i></div>
-    <div class="bm-pkg">
-      <img id="bmImg" src="" alt="">
-      <div>
-        <h4 id="bmTitle">Package</h4>
-        <div class="bm-price" id="bmPrice"></div>
-      </div>
-    </div>
-    <div class="bm-body">
-      <h3>How to Proceed?</h3>
-      <p>Sign in for saved history, or continue as guest.</p>
-      <div class="bm-opts">
-        <button class="bm-opt login" onclick="bookLogin()">
-          <div class="bm-opt-ico"><i class="fa fa-user-circle"></i></div>
-          <div class="bm-opt-txt">
-            <strong>Sign In / Create Account</strong>
-            <span>Save booking history & get updates</span>
-          </div>
-          <i class="fa fa-chevron-right" style="margin-left:auto;color:var(--text-hint)"></i>
-        </button>
-        <div class="bm-div">or</div>
-        <button class="bm-opt guest" onclick="bookGuest()">
-          <div class="bm-opt-ico"><i class="fa fa-user"></i></div>
-          <div class="bm-opt-txt">
-            <strong>Continue as Guest</strong>
-            <span>Quick booking without account</span>
-          </div>
-          <i class="fa fa-chevron-right" style="margin-left:auto;color:var(--text-hint)"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="nav-logo" style="margin-bottom:14px;text-decoration:none">
-          <img src="assets/images/logo.jpg" alt="Logo" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
-          <span class="nav-logo-text">East & <span>West</span></span>
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px">
+          <img src="assets/images/logo.jpg" style="width:40px;height:40px;border-radius:50%;border:2px solid #C9A84C;padding:2px;object-fit:contain;background:white">
+          <span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span></span>
         </a>
-        <p style="color:rgba(255,255,255,0.4);font-size:15px;margin-top:10px;font-style:italic;font-family:'Cormorant Garamond',serif">Our Services in Your Hands,<br>Where Ever You Are.</p>
-        <div style="display:flex;gap:10px;margin-top:18px">
-          <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(225,48,108,0.5)'" onmouseout="this.style.borderColor='rgba(225,48,108,0.2)'"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
-          <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(24,119,242,0.5)'" onmouseout="this.style.borderColor='rgba(24,119,242,0.2)'"><i class="fab fa-facebook" style="color:#1877F2;font-size:15px"></i></a>
-          <a href="https://wa.me/923336515349" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(37,211,102,0.5)'" onmouseout="this.style.borderColor='rgba(37,211,102,0.2)'"><i class="fab fa-whatsapp" style="color:#25D366;font-size:15px"></i></a>
-        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:10px">Our Services in Your Hands, Where Ever You Are.</p>
       </div>
-      <div class="footer-links"><h4>Navigation</h4><ul>
+      <div class="footer-links"><h4>Services</h4><ul>
+        <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah &amp; Hajj</a></li>
+        <li><a href="tours.html"><i class="fa fa-chevron-right"></i> World Tours</a></li>
+        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
         <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
-        <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Packages</a></li>
         <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
         <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
         <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
       </ul></div>
-      <div class="footer-links"><h4>Services</h4><ul>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Umrah Packages</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Hajj Packages</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> World Tours</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Domestic Tours</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Visa & Hotels</a></li>
-      </ul></div>
       <div class="footer-contact"><h4>Contact Us</h4>
-        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349">+92 313 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#264347555251435552564d664e49524b474f4a0845494b"><span class="__cf_email__" data-cfemail="5b3e3a282f2c3e282f2b301b33342f363a323775383436">[email&#160;protected]</span></a></p>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:rgba(255,255,255,0.4)">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:rgba(255,255,255,0.4)">eastwestpk@hotmail.com</a></p>
       </div>
     </div>
-    <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
+    <div class="footer-bottom"><p>© 2026 East &amp; West Travel Services. All rights reserved.</p></div>
   </div>
 </footer>
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
+<script src="assets/js/script.js"></script>
 <script>
-// ── SERVICES DATA ──
-const SVCS = {
-  umrah7: {
-    title: '7 Night Economy Umrah', type: 'Umrah', price: 'Rs. 85,000', per: 'per person (4 sharing)',
-    img: 'makarem_7.jpg', dep: 'Apr 15, 2026', ret: 'Apr 23, 2026', flight: 'Pakistan Int\'l Airlines',
-    duration: '7 Nights / 8 Days',
-    desc: 'Embark on a spiritually fulfilling Umrah journey with our economy package. Makkah 4 nights at Makarem Ajyad (near Haram) and Madinah 3 nights at Pullman ZamZam. Daily breakfast, airport transfers, and full Ziyarat tour included.',
-    includes: ['🕌 Makkah 4N — Makarem Ajyad ★★★★', '🕌 Madinah 3N — Pullman ZamZam ★★★★★', '🍳 Daily Breakfast', '🚌 Airport Transfers', '🧭 Ziyarat Tours', '🕐 24/7 Support'],
-    excl: 'Return flights · Umrah Visa · ZamZam Water · Umrah Kit · Travel Insurance',
-    wa: false
-  },
-  umrah14: {
-    title: '14 Night Umrah Package', type: 'Premium Umrah', price: 'Rs. 1,50,000', per: 'per person',
-    img: 'pullman_1.jpeg', dep: 'May 10, 2026', ret: 'May 25, 2026', flight: 'Pakistan Int\'l Airlines',
-    duration: '14 Nights / 15 Days',
-    desc: 'Our premium Umrah package gives you 14 nights to perform your worship in peace. 7 nights in Makkah and 7 nights in Madinah with top-tier hotels, full Ziyarat, daily breakfast, and VIP transfers.',
-    includes: ['🕌 Makkah 7N — Makarem Ajyad ★★★★', '🕌 Madinah 7N — Pullman ZamZam ★★★★★', '🍳 Daily Breakfast', '🚌 VIP Transfers', '🧭 Full Ziyarat', '🕐 24/7 Support'],
-    excl: 'Return flights · Umrah Visa · ZamZam Water · Umrah Kit · Travel Insurance',
-    wa: false
-  },
-  dubai: {
-    title: 'Dubai Premium Tour', type: 'World Tour', price: 'Rs. 1,20,000', per: 'per person',
-    img: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80',
-    dep: 'Apr 20, 2026', ret: 'Apr 26, 2026', flight: 'Emirates', duration: '5 Nights / 6 Days',
-    desc: 'Experience the best of Dubai — Burj Khalifa, Dubai Mall, Desert Safari, Dubai Creek & more. All-inclusive with return Emirates flights, 4★ hotel, UAE Visa and professional guide.',
-    includes: ['✈️ Return Flights (Emirates)', '🏨 4★ Dubai City Hotel', '🛂 UAE Visa', '🚌 All Transfers', '🏙️ City Tour', '🎡 Burj Khalifa Ticket', '🏜️ Desert Safari'],
-    excl: 'Meals (unless specified) · Personal expenses · Tips',
-    wa: false
-  },
-  thailand: {
-    title: 'Thailand Adventure', type: 'World Tour', price: 'Rs. 95,000', per: 'per person',
-    img: 'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=800&q=80',
-    dep: 'May 5, 2026', ret: 'May 13, 2026', flight: 'AirAsia (via KUL)', duration: '7 Nights / 8 Days',
-    desc: 'Bangkok + Phuket combo — explore vibrant markets, stunning temples and beautiful islands. Halal meals arranged, Thailand Visa included, return flights and resort accommodation.',
-    includes: ['✈️ Return Flights', '🏨 Bangkok + Phuket Resort ★★★★', '🛂 Thailand Visa', '🍜 Halal Meals', '🏝️ Island Tours', '🚌 All Transfers'],
-    excl: 'Personal expenses · Optional excursions · Tips',
-    wa: false
-  },
-  bali: {
-    title: 'Bali Honeymoon Package', type: 'Honeymoon', price: 'Rs. 1,80,000', per: 'per couple',
-    img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80',
-    dep: 'Jun 1, 2026', ret: 'Jun 8, 2026', flight: 'AirAsia (via KUL)', duration: '6 Nights / 7 Days',
-    desc: 'Celebrate your love in paradise. 6 nights at a luxury villa in Seminyak — couples spa, sunset dinner, Tegallalang rice terraces, and island tours. Return flights and visa included.',
-    includes: ['✈️ Return Flights', '🏡 Luxury Villa — Seminyak ★★★★★', '🛂 Visa', '🌺 Couples Spa', '🌅 Sunset Dinner', '🏝️ Island Tours', '🚌 All Transfers'],
-    excl: 'Personal expenses · Optional activities · Tips',
-    wa: false
-  },
-  domestic: {
-    title: 'Northern Pakistan Tour', type: 'Domestic', price: 'Rs. 55,000', per: 'per person',
-    img: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80',
-    dep: 'Available Year Round', ret: 'Flexible', flight: 'Road Trip (AC Transport)', duration: '7 Nights / 8 Days',
-    desc: 'Discover Pakistan\'s breathtaking north — Hunza Valley, Naran, Swat, and Skardu. Comfortable AC transport, hotel accommodation, guide and photography stops at stunning viewpoints.',
-    includes: ['🚐 AC Transport (Full Journey)', '🏨 Hotel Stay (All Nights)', '🗺️ Professional Guide', '📸 Photography Stops', '🌿 Hunza Valley', '🏔️ Naran & Skardu'],
-    excl: 'Personal expenses · Tips · Optional helicopter rides',
-    wa: false
-  },
-  group: {
-    title: 'Group Air Tickets', type: 'Group Tickets', price: 'Best Rate', per: 'for 10+ passengers',
-    img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80',
-    dep: 'Any Date', ret: 'Flexible', flight: 'All Major Airlines', duration: 'Flexible',
-    desc: 'Special negotiated group fares for 10 or more passengers. All airlines, all routes — domestic and international. We handle seat blocking, group check-in arrangements, and special meal requests.',
-    includes: ['✈️ All Airlines Available', '💺 Economy & Business Class', '🌍 Domestic & International', '📱 E-Ticket Delivery', '🔄 Flexible Dates', '📋 Group Check-in Help'],
-    excl: 'Individual ticketing rates apply for fewer than 10 pax',
-    wa: false
-  },
-  family: {
-    title: 'Family Holiday Package', type: 'Family', price: 'Rs. 3,20,000', per: 'family of 4',
-    img: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
-    dep: 'Jun 15, 2026', ret: 'Jun 23, 2026', flight: 'Emirates', duration: '7 Nights / 8 Days',
-    desc: 'The perfect family getaway — return flights, family suite, all visas, all meals and kids activities. Everything handled so you just focus on making memories.',
-    includes: ['✈️ Return Flights (Emirates)', '🏨 Family Suite ★★★★', '🛂 All Visas', '🍽️ All Meals', '🎡 Kids Activities', '🚌 All Transfers'],
-    excl: 'Personal expenses · Tips · Optional excursions',
-    wa: false
-  },
-};
-
-let _curSvc = null;
-// Check login via sessionStorage (set by auth/login.html)
-let _loggedIn = !!sessionStorage.getItem('ew_user') || !!sessionStorage.getItem('ew_admin');
-
-// ── FILTER ──
-window.filterSvc = (cat, btn) => {
-  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+// Filter
+window.filterSvc = function(cat, btn) {
+  document.querySelectorAll('.svc-filter').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.svc-card').forEach(c => {
-    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'flex' : 'none';
+  document.querySelectorAll('.svc-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
   });
 };
-
-// ── WHATSAPP REDIRECT ──
-window.openWA = (service) => {
-  const msg = encodeURIComponent(`Assalam o Alaikum! I am interested in your ${service}. Please share details and pricing.`);
-  window.open(`https://wa.me/923336515349?text=${msg}`, '_blank');
-};
-
-// ── OPEN DETAIL ──
-window.openDetail = (id) => {
-  const s = SVCS[id];
-  if (!s) return;
-  _curSvc = s;
-
-  document.getElementById('dImg').src = s.img;
-  document.getElementById('dTitle').textContent = s.title;
-  document.getElementById('dMeta').innerHTML = `
-    <span><i class="fa fa-clock"></i> ${s.duration}</span>
-    <span><i class="fa fa-tag"></i> ${s.type}</span>
-    <span><i class="fa fa-plane"></i> ${s.flight}</span>`;
-
-  document.getElementById('dLeft').innerHTML = `
-    <div style="margin-bottom:22px">
-      <div class="det-sec-title"><i class="fa fa-info-circle"></i> About This Package</div>
-      <p class="det-desc">${s.desc}</p>
-    </div>
-    <div style="margin-bottom:22px">
-      <div class="det-sec-title"><i class="fa fa-check-circle"></i> What's Included</div>
-      <div class="det-chips">${s.includes.map(i=>`<div class="det-chip">${i}</div>`).join('')}</div>
-    </div>
-    <div>
-      <div class="det-sec-title" style="color:#DC2626"><i class="fa fa-times-circle"></i> Not Included</div>
-      <div class="det-excl"><strong>Excludes:</strong> ${s.excl}</div>
-    </div>`;
-
-  const bookBtn = _loggedIn
-    ? `<button class="det-book-btn" onclick="proceedBook()"><i class="fa fa-calendar-check"></i> Confirm Booking</button>`
-    : `<button class="det-book-btn" onclick="proceedBook()"><i class="fa fa-calendar-check"></i> Book This Package</button>`;
-
-  document.getElementById('dRight').innerHTML = `
-    <div class="det-sum">
-      <div class="det-sum-price">${s.price}</div>
-      <div class="det-sum-per">${s.per}</div>
-      <div class="det-sum-rows">
-        <div class="det-sum-row"><span>Package</span><span>${s.title}</span></div>
-        <div class="det-sum-row"><span>Duration</span><span>${s.duration}</span></div>
-        <div class="det-sum-row"><span>Departure</span><span>${s.dep}</span></div>
-        <div class="det-sum-row"><span>Return</span><span>${s.ret}</span></div>
-        <div class="det-sum-row"><span>Flight</span><span>${s.flight}</span></div>
-      </div>
-      ${bookBtn}
-      <a href="https://wa.me/923336515349?text=${encodeURIComponent('Assalam o Alaikum! I am interested in ' + s.title + ' (' + s.price + '). Please share details.')}" class="det-wa-btn" target="_blank"><i class="fab fa-whatsapp"></i> Enquire on WhatsApp</a>
-      <div class="det-trust">
-        <div class="det-trust-item"><i class="fa fa-shield-alt"></i> 100% Secure Booking</div>
-        <div class="det-trust-item"><i class="fa fa-headset"></i> 24/7 Customer Support</div>
-        <div class="det-trust-item"><i class="fa fa-university"></i> Easy Bank Transfer</div>
-      </div>
-    </div>`;
-
-  document.getElementById('detOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeDetail = () => {
-  document.getElementById('detOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-};
-
-// ── BOOKING FLOW ──
-window.proceedBook = () => {
-  if (_loggedIn) {
-    goToBooking();
-    return;
-  }
-  document.getElementById('detOverlay').classList.remove('active');
-  document.getElementById('bmOverlay').classList.add('active');
-  document.getElementById('bmImg').src   = _curSvc.img;
-  document.getElementById('bmTitle').textContent = _curSvc.title;
-  document.getElementById('bmPrice').textContent = _curSvc.price;
-};
-
-function goToBooking() {
-  const s = _curSvc;
-  window.location.href = 'booking.html?tour=' + encodeURIComponent(s.title)
-    + '&duration=' + encodeURIComponent(s.duration)
-    + '&price='    + encodeURIComponent(s.price)
-    + '&type='     + encodeURIComponent(s.type)
-    + '&dep='      + encodeURIComponent(s.dep)
-    + '&ret='      + encodeURIComponent(s.ret)
-    + '&flight='   + encodeURIComponent(s.flight)
-    + '&img='      + encodeURIComponent(s.img)
-    + (_loggedIn ? '&logged=1' : '&guest=1');
-}
-
-window.bookLogin = () => {
-  const s = _curSvc;
-  const redirect = encodeURIComponent('booking.html?logged=1&tour=' + encodeURIComponent(s.title)
-    + '&duration=' + encodeURIComponent(s.duration)
-    + '&price='    + encodeURIComponent(s.price)
-    + '&type='     + encodeURIComponent(s.type)
-    + '&dep='      + encodeURIComponent(s.dep)
-    + '&ret='      + encodeURIComponent(s.ret)
-    + '&img='      + encodeURIComponent(s.img));
-  window.location.href = 'auth/login.html?redirect=' + redirect;
-};
-
-window.bookGuest = () => { closeBm(); goToBooking(); };
-window.closeBm = () => {
-  document.getElementById('bmOverlay').classList.remove('active');
-  document.getElementById('detOverlay').classList.add('active');
-};
-
-// Close on backdrop
-document.getElementById('detOverlay').addEventListener('click', e => { if (e.target === document.getElementById('detOverlay')) closeDetail(); });
-document.getElement
+</script>
+</body>
+</html>
