@@ -1,64 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Group Tickets — East & West Travel Services</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { gold: '#C9A84C', navy: '#0A1628' },
-          fontFamily: { serif:['Cormorant Garamond','serif'], sans:['Plus Jakarta Sans','sans-serif'] }
-        }
-      }
-    }
-  </script>
-  <style>
-    /* Flight card specific */
-    .flight-card { transition: all 0.3s; }
-    .flight-card:hover { transform: translateY(-3px); }
-    .seat-bar { height: 6px; border-radius: 999px; background: #E8E4DA; overflow: hidden; }
-    .seat-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
-    /* Passenger modal */
-    .pax-overlay { display:none; position:fixed; inset:0; z-index:9999; background:rgba(10,22,40,0.88); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
-    .pax-overlay.open { display:flex; }
-    @keyframes slideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-    .pax-modal { animation: slideUp 0.3s ease; }
-  </style>
-</head>
-<body class="bg-[#FAFAF8]">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Tickets — East & West Travel Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:50px}
+.cat-btn{position:relative;height:150px;border-radius:16px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all 0.3s;background:#0A1628;padding:0;display:block;width:100%}
+.cat-btn:hover{border-color:#C9A84C;transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,0.25)}
+.cat-btn.active{border-color:#C9A84C;box-shadow:0 8px 28px rgba(201,168,76,0.3)}
+.cat-btn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.75}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.18) 100%)}
+.cat-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:14px}
+.cat-flag{font-size:28px;margin-bottom:5px;display:block}
+.cat-name{color:#fff;font-weight:700;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;text-align:center}
 
-<!-- OVERLAY -->
+/* FLIGHTS */
+.flights-section{display:none}
+.flights-section.open{display:block}
+.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.flight-card{background:#fff;border:1px solid #E8E4DA;border-radius:18px;overflow:hidden;transition:all 0.3s}
+.flight-card:hover{transform:translateY(-3px);border-color:#C9A84C;box-shadow:0 12px 36px rgba(201,168,76,0.15)}
+.fc-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid #E8E4DA;gap:12px}
+.fc-airline-logo{width:46px;height:46px;border-radius:10px;background:#0A1628;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fc-airline-logo span{color:#fff;font-size:11px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
+.fc-airline-name{font-size:13px;font-weight:600;color:#1C1C2E;font-family:'Plus Jakarta Sans',sans-serif}
+.fc-flight-no{font-size:11px;color:#9090AA;margin-top:2px;font-family:'Plus Jakarta Sans',sans-serif}
+.fc-price{font-family:'Cormorant Garamond',serif;font-size:20px;color:#C9A84C;font-weight:700;text-align:right;white-space:nowrap}
+.fc-price small{display:block;font-size:10px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;font-weight:400}
+.fc-route{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fc-time{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#1C1C2E;line-height:1}
+.fc-city{font-size:11px;color:#9090AA;margin-top:3px;font-family:'Plus Jakarta Sans',sans-serif}
+.fc-arrow{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.fc-arrow-line{width:100%;height:1px;background:#E8E4DA;position:relative}
+.fc-arrow-line::after{content:'';position:absolute;right:-1px;top:-4px;border-left:7px solid #C9A84C;border-top:4px solid transparent;border-bottom:4px solid transparent}
+.fc-class-pill{font-size:10px;color:#C9A84C;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-family:'Plus Jakarta Sans',sans-serif}
+.fc-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 14px}
+.fc-chip{font-size:11px;color:#4A4A6A;background:#F3F0EA;border:1px solid #E8E4DA;padding:4px 10px;border-radius:50px;display:flex;align-items:center;gap:5px}
+.fc-chip i{color:#C9A84C;font-size:10px}
+.fc-seats{padding:0 18px 14px}
+.fc-seat-row{display:flex;justify-content:space-between;font-size:11px;color:#9090AA;margin-bottom:5px;font-family:'Plus Jakarta Sans',sans-serif}
+.fc-bar{height:5px;border-radius:99px;background:#E8E4DA;overflow:hidden}
+.fc-bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease}
+.fc-foot{padding:14px 18px;border-top:1px solid #E8E4DA}
+.fc-book-btn{width:100%;background:#C9A84C;color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s}
+.fc-book-btn:hover{background:#E8C97A;transform:translateY(-1px)}
+.fc-sold-btn{width:100%;background:#F3F0EA;color:#9090AA;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* PASSENGER MODAL */
+.pax-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(10,22,40,0.88);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.pax-overlay.show{display:flex}
+.pax-modal{background:#fff;border-radius:22px;width:100%;max-width:520px;overflow:hidden;animation:slideUp 0.3s ease;position:relative;max-height:92vh;overflow-y:auto}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.pax-head{background:linear-gradient(135deg,#0A1628,#162847);padding:20px 22px}
+.pax-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff}
+.pax-close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:rgba(255,255,255,0.1);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pax-close:hover{background:rgba(255,255,255,0.2)}
+.pax-body{padding:22px}
+.pax-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pax-fg{margin-bottom:14px}
+.pax-fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9090AA;margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.pax-fg input,.pax-fg select{width:100%;background:#FAFAF8;border:1.5px solid #E8E4DA;border-radius:9px;padding:11px 13px;font-size:14px;color:#1C1C2E;outline:none;transition:all 0.3s;font-family:'Plus Jakarta Sans',sans-serif}
+.pax-fg input:focus,.pax-fg select:focus{border-color:#C9A84C;box-shadow:0 0 0 3px rgba(201,168,76,0.12)}
+.pax-err{display:none;font-size:12px;color:#EF4444;background:#FEF2F2;border:1px solid #FECACA;padding:10px 14px;border-radius:8px;margin-bottom:12px}
+.pax-submit{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s;margin-top:4px}
+.pax-submit:hover{background:#1DA851}
+.pax-note{text-align:center;font-size:11px;color:#9090AA;margin-top:10px;font-family:'Plus Jakarta Sans',sans-serif}
+
+@media(max-width:900px){.flight-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.cat-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
 <div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
+    <img src="assets/images/logo.jpg" alt="Logo" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
-
   <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
-
-    <!-- Desktop+Mobile: shown via JS in mobile -->
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
     <a href="index.html" id="mlink-home">Home</a>
-
-    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="services.html">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
-        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
+        <a href="group-tickets.html" style="color:#C9A84C!important"><i class="fa fa-plane"></i> Group Tickets</a>
         <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
       </div>
     </div>
-
-    <!-- Mobile: services expand -->
     <div id="mlink-svc-mob" style="display:none">
       <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
         <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
@@ -67,406 +103,280 @@
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
         <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
         <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
-        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
+        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#C9A84C;font-weight:700;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
         <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
-
     <a href="about.html">About</a>
     <a href="contact.html" id="mlink-contact">Contact</a>
-
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
     <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
-
-  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
 <!-- HERO -->
 <section class="page-hero">
   <div class="container">
-    <div class="eyebrow" style="justify-content:center;margin-bottom:12px"><i class="fa fa-plane mr-2"></i> Group Ticketing</div>
-    <h1>Fixed Departures & <em>Group Tickets</em></h1>
-    <p>Special group fares — 10+ passengers, all airlines, all destinations</p>
-    <div class="breadcrumb"><a href="index.html">Home</a><i class="fa fa-chevron-right"></i><span>Group Tickets</span></div>
+    <div class="eyebrow" style="justify-content:center;margin-bottom:12px"><i class="fa fa-plane" style="margin-right:8px"></i> Group Ticketing</div>
+    <h1>Group Air <em>Tickets</em></h1>
+    <p>Fixed departures — special group fares for 10+ passengers</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><i class="fa fa-chevron-right"></i><a href="services.html">Services</a><i class="fa fa-chevron-right"></i><span>Group Tickets</span></div>
   </div>
 </section>
 
-<!-- CATEGORY GRID -->
-<section class="py-20 bg-[#FAFAF8]">
+<!-- MAIN SECTION -->
+<section class="section">
   <div class="container">
-    <div class="text-center mb-12">
-      <div class="eyebrow justify-center mb-3">Select Destination</div>
-      <h2 class="font-serif text-4xl text-[#1C1C2E]">Choose Your <em>Category</em></h2>
-      <p class="text-[#6B6B8A] mt-3 text-sm">Click a category to see available group flights</p>
+    <div class="section-header">
+      <div class="eyebrow">Select Destination</div>
+      <h2>Choose Your <em>Category</em></h2>
+      <p>Click a category to see available group flights</p>
     </div>
 
-    <!-- Categories -->
-    <div id="catGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:60px">
-      <!-- JS renders these -->
-    </div>
+    <!-- CATEGORIES -->
+    <div class="cat-grid" id="catGrid"></div>
 
-    <!-- FLIGHT LISTING — hidden until category selected -->
-    <div id="flightSection" class="hidden">
-      <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+    <!-- FLIGHT LISTING -->
+    <div class="flights-section" id="flightSection">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
         <div>
-          <div id="flightCatLabel" class="text-xs font-bold uppercase tracking-widest text-[#C9A84C] mb-1"></div>
-          <h3 class="font-serif text-3xl text-[#1C1C2E]">Available <em>Departures</em></h3>
+          <div id="flightCatLbl" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C9A84C;margin-bottom:4px"></div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#1C1C2E">Available <em>Departures</em></h3>
         </div>
-        <button onclick="clearCategory()" class="text-sm text-[#6B6B8A] border border-[#E8E4DA] px-4 py-2 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all font-sans">
-          <i class="fa fa-arrow-left mr-2"></i> All Categories
+        <button onclick="clearCat()" style="font-size:13px;color:#6B6B8A;border:1px solid #E8E4DA;padding:9px 18px;border-radius:50px;background:#fff;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s" onmouseover="this.style.borderColor='#C9A84C';this.style.color='#C9A84C'" onmouseout="this.style.borderColor='#E8E4DA';this.style.color='#6B6B8A'">
+          <i class="fa fa-arrow-left" style="margin-right:7px"></i> All Categories
         </button>
       </div>
-
-      <!-- Flight loading -->
-      <div id="flightLoading" class="text-center py-16">
-        <i class="fa fa-spinner fa-spin text-2xl text-[#C9A84C]"></i>
-        <p class="mt-3 text-sm text-[#9090AA]">Loading flights...</p>
-      </div>
-
-      <!-- Flight grid -->
-      <div id="flightGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-5 hidden"></div>
-
-      <div id="flightEmpty" class="hidden text-center py-16">
-        <div class="text-5xl mb-4">✈️</div>
-        <p class="text-[#6B6B8A]">No flights available for this category right now.</p>
-        <p class="text-sm text-[#9090AA] mt-2">Contact us on WhatsApp for custom group bookings.</p>
-        <a href="https://wa.me/923336515349?text=Assalam%20o%20Alaikum!%20I%20need%20group%20tickets.%20Please%20help." target="_blank"
-           class="inline-flex items-center gap-2 mt-6 bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold text-sm">
-          <i class="fab fa-whatsapp"></i> WhatsApp for Custom Booking
-        </a>
-      </div>
+      <div class="flight-grid" id="flightGrid"></div>
     </div>
 
-  </div>
-</section>
-
-<!-- WHY GROUP TICKETS -->
-<section class="py-16 bg-[#F3F0EA]">
-  <div class="container">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white rounded-2xl p-6 text-center border border-[#E8E4DA]">
-        <div class="w-12 h-12 rounded-full bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] flex items-center justify-center mx-auto mb-4 text-[#C9A84C] text-xl"><i class="fa fa-users"></i></div>
-        <h4 class="font-serif text-xl text-[#1C1C2E] mb-2">Minimum 10 Seats</h4>
-        <p class="text-sm text-[#6B6B8A]">Special negotiated group fares start from 10 passengers on all major airlines.</p>
+    <!-- WHY GROUP -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:60px" id="whySection">
+      <div style="background:#fff;border:1px solid #E8E4DA;border-radius:18px;padding:24px;text-align:center">
+        <div style="width:48px;height:48px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#C9A84C;font-size:18px"><i class="fa fa-users"></i></div>
+        <h4 style="font-family:'Cormorant Garamond',serif;font-size:19px;color:#1C1C2E;margin-bottom:7px">Min 10 Seats</h4>
+        <p style="font-size:13px;color:#6B6B8A">Special negotiated group fares starting from 10 passengers</p>
       </div>
-      <div class="bg-white rounded-2xl p-6 text-center border border-[#E8E4DA]">
-        <div class="w-12 h-12 rounded-full bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] flex items-center justify-center mx-auto mb-4 text-[#C9A84C] text-xl"><i class="fa fa-tags"></i></div>
-        <h4 class="font-serif text-xl text-[#1C1C2E] mb-2">Best Group Rates</h4>
-        <p class="text-sm text-[#6B6B8A]">Up to 30% cheaper than individual tickets. Economy and Business class available.</p>
+      <div style="background:#fff;border:1px solid #E8E4DA;border-radius:18px;padding:24px;text-align:center">
+        <div style="width:48px;height:48px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#C9A84C;font-size:18px"><i class="fa fa-tags"></i></div>
+        <h4 style="font-family:'Cormorant Garamond',serif;font-size:19px;color:#1C1C2E;margin-bottom:7px">Best Group Rates</h4>
+        <p style="font-size:13px;color:#6B6B8A">Up to 30% cheaper than individual tickets</p>
       </div>
-      <div class="bg-white rounded-2xl p-6 text-center border border-[#E8E4DA]">
-        <div class="w-12 h-12 rounded-full bg-[rgba(201,168,76,0.12)] border border-[rgba(201,168,76,0.3)] flex items-center justify-center mx-auto mb-4 text-[#C9A84C] text-xl"><i class="fa fa-headset"></i></div>
-        <h4 class="font-serif text-xl text-[#1C1C2E] mb-2">Group Check-In Help</h4>
-        <p class="text-sm text-[#6B6B8A]">We handle group seat blocking, coordinated check-in, and special meal requests.</p>
+      <div style="background:#fff;border:1px solid #E8E4DA;border-radius:18px;padding:24px;text-align:center">
+        <div style="width:48px;height:48px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#C9A84C;font-size:18px"><i class="fa fa-headset"></i></div>
+        <h4 style="font-family:'Cormorant Garamond',serif;font-size:19px;color:#1C1C2E;margin-bottom:7px">Group Check-In</h4>
+        <p style="font-size:13px;color:#6B6B8A">Coordinated check-in and seat blocking for your group</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="nav-logo" style="margin-bottom:14px">
-          <img src="assets/images/logo.jpg" alt="Logo" style="width:42px;height:42px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
-          <span class="nav-logo-text">East & <span>West</span></span>
-        </a>
-        <p>Our Services in Your Hands, Where Ever You Are.</p>
-        <div style="display:flex;gap:10px;margin-top:18px">
-          <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
-          <a href="https://wa.me/923336515349" target="_blank" style="width:36px;height:36px;border-radius:8px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-whatsapp" style="color:#25D366;font-size:15px"></i></a>
-        </div>
-      </div>
-      <div class="footer-links"><h4>Quick Links</h4><ul>
-        <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-        <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
-        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
-        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
-      </ul></div>
-      <div class="footer-links"><h4>Categories</h4><ul>
-        <li><a href="#"><i class="fa fa-chevron-right"></i> Umrah / Saudi Arabia</a></li>
-        <li><a href="#"><i class="fa fa-chevron-right"></i> UK / Europe</a></li>
-        <li><a href="#"><i class="fa fa-chevron-right"></i> Qatar / Gulf</a></li>
-        <li><a href="#"><i class="fa fa-chevron-right"></i> USA / Canada</a></li>
-        <li><a href="#"><i class="fa fa-chevron-right"></i> Domestic Pakistan</a></li>
-      </ul></div>
-      <div class="footer-contact"><h4>Contact Us</h4>
-        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#adc8ccded9dac8ded9ddc6edc5c2d9c0ccc4c183cec2c0"><span class="__cf_email__" data-cfemail="b9dcd8cacdcedccacdc9d2f9d1d6cdd4d8d0d597dad6d4">[email&#160;protected]</span></a></p>
-      </div>
-    </div>
-    <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>
+<footer class="footer"><div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:14px"><img src="assets/images/logo.jpg" style="width:40px;height:40px;border-radius:50%;border:2px solid #C9A84C;padding:2px;object-fit:contain;background:white"><span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span></span></a><p style="color:rgba(255,255,255,0.4);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:10px">Our Services in Your Hands, Where Ever You Are.</p></div>
+    <div class="footer-links"><h4>Services</h4><ul><li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah & Hajj</a></li><li><a href="tours.html"><i class="fa fa-chevron-right"></i> World Tours</a></li><li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li><li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li></ul></div>
+    <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li><li><a href="about.html"><i class="fa fa-chevron-right"></i> About</a></li><li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li><li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li></ul></div>
+    <div class="footer-contact"><h4>Contact Us</h4><p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p><p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:rgba(255,255,255,0.4)">+92 333 651 5349</a></p><p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:rgba(255,255,255,0.4)">eastwestpk@hotmail.com</a></p></div>
   </div>
-</footer>
+  <div class="footer-bottom"><p>© 2026 East &amp; West Travel Services. All rights reserved.</p></div>
+</div></footer>
 
 <a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <!-- PASSENGER MODAL -->
 <div class="pax-overlay" id="paxOverlay">
-  <div class="pax-modal bg-white rounded-2xl w-full max-w-lg shadow-2xl relative overflow-hidden">
-    <div class="bg-[#0A1628] px-6 py-5">
-      <button onclick="closePaxModal()" class="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full text-white/70 hover:bg-white/20 flex items-center justify-center text-sm"><i class="fa fa-times"></i></button>
-      <div class="text-[10px] font-bold uppercase tracking-widest text-[#C9A84C] mb-1">Passenger Form</div>
-      <h3 class="font-serif text-xl text-white" id="paxFlightTitle">Book Your Seat</h3>
-      <div class="flex gap-4 mt-3 text-xs text-white/50" id="paxFlightInfo"></div>
+  <div class="pax-modal">
+    <button class="pax-close" onclick="closePax()"><i class="fa fa-times"></i></button>
+    <div class="pax-head">
+      <div id="paxFlightInfo" style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:5px"></div>
+      <div class="pax-title" id="paxTitle">Book Your Seat</div>
     </div>
-    <div class="p-6">
-      <form id="paxForm" class="space-y-4">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">First Name *</label>
-            <input id="paxFName" type="text" placeholder="Muhammad" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
-          </div>
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Last Name *</label>
-            <input id="paxLName" type="text" placeholder="Ali" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
-          </div>
-        </div>
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Phone / WhatsApp *</label>
-          <input id="paxPhone" type="tel" placeholder="+92 3XX XXXXXXX" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
-        </div>
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Email</label>
-          <input id="paxEmail" type="email" placeholder="email@example.com" class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Passport No. *</label>
-            <input id="paxPassport" type="text" placeholder="AB1234567" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
-          </div>
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">No. of Seats *</label>
-            <input id="paxSeats" type="number" min="1" max="50" value="1" required class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] focus:ring-2 focus:ring-[rgba(201,168,76,0.12)] outline-none transition-all">
-          </div>
-        </div>
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-widest text-[#9090AA] block mb-1.5">Class</label>
-          <select id="paxClass" class="w-full border border-[#E8E4DA] rounded-lg px-4 py-3 text-sm font-sans text-[#1C1C2E] focus:border-[#C9A84C] outline-none transition-all appearance-none">
-            <option>Economy</option>
-            <option>Business</option>
-            <option>First Class</option>
-          </select>
-        </div>
-        <div id="paxError" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3"></div>
-        <button type="button" onclick="submitPaxForm()" id="paxSubmitBtn"
-                class="w-full bg-[#C9A84C] hover:bg-[#E8C97A] text-white font-bold text-sm uppercase tracking-wide py-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2">
-          <i class="fab fa-whatsapp text-lg"></i>
-          Confirm Booking via WhatsApp
-        </button>
-        <p class="text-center text-xs text-[#9090AA]">Your details will be sent to our team via WhatsApp</p>
-      </form>
+    <div class="pax-body">
+      <div class="pax-row">
+        <div class="pax-fg"><label>First Name *</label><input type="text" id="pFn" placeholder="Muhammad"></div>
+        <div class="pax-fg"><label>Last Name *</label><input type="text" id="pLn" placeholder="Ali"></div>
+      </div>
+      <div class="pax-fg"><label>WhatsApp Number *</label><input type="tel" id="pPh" placeholder="+92 3XX XXXXXXX"></div>
+      <div class="pax-fg"><label>Email</label><input type="email" id="pEm" placeholder="email@example.com"></div>
+      <div class="pax-row">
+        <div class="pax-fg"><label>Passport No *</label><input type="text" id="pPp" placeholder="AB1234567"></div>
+        <div class="pax-fg"><label>No. of Seats *</label><input type="number" id="pSt" value="1" min="1" max="50"></div>
+      </div>
+      <div class="pax-fg"><label>Class</label>
+        <select id="pCl"><option>Economy</option><option>Business</option><option>First Class</option></select>
+      </div>
+      <div class="pax-err" id="paxErr"></div>
+      <button class="pax-submit" onclick="submitPax()">
+        <i class="fab fa-whatsapp" style="font-size:17px"></i> Confirm via WhatsApp
+      </button>
+      <div class="pax-note">Your booking details will be sent to our WhatsApp team for confirmation</div>
     </div>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
+<script src="assets/js/script.js"></script>
 <script>
-/* ============================================================
-   GROUP TICKETS — Categories + Flights + Seat Logic
-   ============================================================ */
+const SUPA_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const WA = '923336515349';
 
-const SUPABASE_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
-const WA_NUMBER = '923336515349';
-
-// Category config
-const CATEGORIES = [
-  { id:'umrah',    label:'Umrah / Saudi', flag:'🇸🇦', img:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400&q=70', color:'from-amber-900 to-amber-700' },
-  { id:'uk',       label:'UK / Europe',   flag:'🇬🇧', img:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&q=70', color:'from-blue-900 to-blue-700' },
-  { id:'qatar',    label:'Qatar / Gulf',  flag:'🇶🇦', img:'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=400&q=70', color:'from-purple-900 to-purple-700' },
-  { id:'usa',      label:'USA / Canada',  flag:'🇺🇸', img:'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=400&q=70', color:'from-red-900 to-red-700' },
-  { id:'domestic', label:'Domestic PK',  flag:'🇵🇰', img:'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400&q=70', color:'from-green-900 to-green-700' },
-  { id:'other',    label:'Other Routes',  flag:'🌍', img:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=70', color:'from-gray-900 to-gray-700' },
+const CATS = [
+  {id:'umrah',    label:'Umrah / Saudi',  flag:'🇸🇦', img:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=500&q=70'},
+  {id:'uk',       label:'UK / Europe',    flag:'🇬🇧', img:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&q=70'},
+  {id:'qatar',    label:'Qatar / Gulf',   flag:'🇶🇦', img:'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=500&q=70'},
+  {id:'usa',      label:'USA / Canada',   flag:'🇺🇸', img:'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=500&q=70'},
+  {id:'domestic', label:'Domestic PK',    flag:'🇵🇰', img:'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=500&q=70'},
+  {id:'other',    label:'Other Routes',   flag:'🌍', img:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=500&q=70'},
 ];
 
-// Demo flights data (fallback if Supabase table empty)
-const DEMO_FLIGHTS = {
-  umrah: [
-    { id:'f1', flight_no:'PK-741', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'LHE → JED', dep_time:'02:30', arr_time:'05:45', dep_date:'Apr 15, 2026', class:'Economy', baggage:'30 KG', meal:'Halal Included', price_per_seat:'Rs. 85,000', total_seats:40, booked_seats:28 },
-    { id:'f2', flight_no:'PK-743', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'ISB → JED', dep_time:'08:00', arr_time:'11:15', dep_date:'Apr 22, 2026', class:'Economy', baggage:'30 KG', meal:'Halal Included', price_per_seat:'Rs. 88,000', total_seats:35, booked_seats:35 },
-    { id:'f3', flight_no:'EK-601', airline:'Emirates', airline_code:'EK', route:'LHE → DXB → JED', dep_time:'23:45', arr_time:'07:30+1', dep_date:'May 10, 2026', class:'Economy', baggage:'35 KG', meal:'Halal Included', price_per_seat:'Rs. 1,10,000', total_seats:30, booked_seats:12 },
+// ── HARDCODED FLIGHTS — Always show ──
+const FLIGHTS = {
+  umrah:[
+    {id:'f1',flight_no:'PK-741',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'LHE → JED',dep_time:'02:30',arr_time:'05:45',dep_date:'Apr 15, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 85,000',total_seats:40,booked_seats:28},
+    {id:'f2',flight_no:'PK-743',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → JED',dep_time:'08:00',arr_time:'11:15',dep_date:'Apr 22, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 88,000',total_seats:35,booked_seats:35},
+    {id:'f3',flight_no:'EK-601',airline:'Emirates',airline_code:'EK',route:'LHE → DXB → JED',dep_time:'23:45',arr_time:'07:30+1',dep_date:'May 10, 2026',class:'Economy',baggage:'35 KG',meal:'Halal Included',price_per_seat:'Rs. 1,10,000',total_seats:30,booked_seats:12},
+    {id:'f11',flight_no:'PK-745',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'KHI → JED',dep_time:'01:00',arr_time:'04:30',dep_date:'May 20, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 82,000',total_seats:45,booked_seats:10},
   ],
-  uk: [
-    { id:'f4', flight_no:'PK-785', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'ISB → LHR', dep_time:'01:30', arr_time:'06:45', dep_date:'May 5, 2026', class:'Economy', baggage:'30 KG', meal:'Included', price_per_seat:'Rs. 2,20,000', total_seats:25, booked_seats:18 },
-    { id:'f5', flight_no:'QR-301', airline:'Qatar Airways', airline_code:'QR', route:'KHI → DOH → LHR', dep_time:'03:00', arr_time:'12:30', dep_date:'May 12, 2026', class:'Business', baggage:'40 KG', meal:'Premium Included', price_per_seat:'Rs. 5,50,000', total_seats:12, booked_seats:4 },
+  uk:[
+    {id:'f4',flight_no:'PK-785',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → LHR',dep_time:'01:30',arr_time:'06:45',dep_date:'May 5, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 2,20,000',total_seats:25,booked_seats:18},
+    {id:'f5',flight_no:'QR-301',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH → LHR',dep_time:'03:00',arr_time:'12:30',dep_date:'May 12, 2026',class:'Business',baggage:'40 KG',meal:'Premium Included',price_per_seat:'Rs. 5,50,000',total_seats:12,booked_seats:4},
+    {id:'f12',flight_no:'EK-202',airline:'Emirates',airline_code:'EK',route:'LHE → DXB → LHR',dep_time:'22:00',arr_time:'09:15+1',dep_date:'May 18, 2026',class:'Economy',baggage:'35 KG',meal:'Included',price_per_seat:'Rs. 2,40,000',total_seats:20,booked_seats:8},
   ],
-  qatar: [
-    { id:'f6', flight_no:'QR-601', airline:'Qatar Airways', airline_code:'QR', route:'KHI → DOH', dep_time:'04:15', arr_time:'06:20', dep_date:'Apr 20, 2026', class:'Economy', baggage:'30 KG', meal:'Included', price_per_seat:'Rs. 55,000', total_seats:45, booked_seats:20 },
-    { id:'f7', flight_no:'EK-100', airline:'Emirates', airline_code:'EK', route:'LHE → DXB', dep_time:'08:30', arr_time:'10:45', dep_date:'Apr 25, 2026', class:'Economy', baggage:'35 KG', meal:'Included', price_per_seat:'Rs. 48,000', total_seats:50, booked_seats:50 },
+  qatar:[
+    {id:'f6',flight_no:'QR-601',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH',dep_time:'04:15',arr_time:'06:20',dep_date:'Apr 20, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 55,000',total_seats:45,booked_seats:20},
+    {id:'f7',flight_no:'EK-100',airline:'Emirates',airline_code:'EK',route:'LHE → DXB',dep_time:'08:30',arr_time:'10:45',dep_date:'Apr 25, 2026',class:'Economy',baggage:'35 KG',meal:'Included',price_per_seat:'Rs. 48,000',total_seats:50,booked_seats:50},
+    {id:'f13',flight_no:'GF-101',airline:'Gulf Air',airline_code:'GF',route:'ISB → BAH',dep_time:'05:00',arr_time:'07:30',dep_date:'May 8, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 52,000',total_seats:35,booked_seats:15},
   ],
-  usa: [
-    { id:'f8', flight_no:'PK-711', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'ISB → JFK', dep_time:'02:00', arr_time:'12:30', dep_date:'Jun 1, 2026', class:'Economy', baggage:'46 KG', meal:'Included', price_per_seat:'Rs. 3,80,000', total_seats:20, booked_seats:8 },
+  usa:[
+    {id:'f8',flight_no:'PK-711',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → JFK',dep_time:'02:00',arr_time:'12:30',dep_date:'Jun 1, 2026',class:'Economy',baggage:'46 KG',meal:'Included',price_per_seat:'Rs. 3,80,000',total_seats:20,booked_seats:8},
+    {id:'f14',flight_no:'QR-711',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH → YYZ',dep_time:'03:30',arr_time:'16:45',dep_date:'Jun 8, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 3,60,000',total_seats:18,booked_seats:5},
   ],
-  domestic: [
-    { id:'f9', flight_no:'PK-300', airline:'Pakistan Int\'l Airlines', airline_code:'PIA', route:'LHE → KHI', dep_time:'07:00', arr_time:'08:10', dep_date:'Daily', class:'Economy', baggage:'20 KG', meal:'Snack', price_per_seat:'Rs. 12,000', total_seats:60, booked_seats:35 },
-    { id:'f10', flight_no:'PA-200', airline:'AirSial', airline_code:'PA', route:'LYP → KHI', dep_time:'09:30', arr_time:'10:45', dep_date:'Daily', class:'Economy', baggage:'20 KG', meal:'None', price_per_seat:'Rs. 9,500', total_seats:40, booked_seats:22 },
+  domestic:[
+    {id:'f9',flight_no:'PK-300',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'LHE → KHI',dep_time:'07:00',arr_time:'08:10',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'Snack',price_per_seat:'Rs. 12,000',total_seats:60,booked_seats:35},
+    {id:'f10',flight_no:'PA-200',airline:'AirSial',airline_code:'PA',route:'LYP → KHI',dep_time:'09:30',arr_time:'10:45',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'None',price_per_seat:'Rs. 9,500',total_seats:40,booked_seats:22},
+    {id:'f15',flight_no:'PK-301',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → KHI',dep_time:'10:00',arr_time:'11:30',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'Snack',price_per_seat:'Rs. 11,000',total_seats:55,booked_seats:20},
+    {id:'f16',flight_no:'FJ-101',airline:'FlyJinnah',airline_code:'FJ',route:'LHE → ISB',dep_time:'06:00',arr_time:'07:00',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'None',price_per_seat:'Rs. 6,500',total_seats:45,booked_seats:30},
   ],
-  other: [
-    { id:'f11', flight_no:'EK-612', airline:'Emirates', airline_code:'EK', route:'LHE → DXB → BKK', dep_time:'23:30', arr_time:'18:40+1', dep_date:'May 5, 2026', class:'Economy', baggage:'35 KG', meal:'Halal Included', price_per_seat:'Rs. 1,25,000', total_seats:25, booked_seats:10 },
-  ]
+  other:[
+    {id:'f17',flight_no:'EK-612',airline:'Emirates',airline_code:'EK',route:'LHE → DXB → BKK',dep_time:'23:30',arr_time:'18:40+1',dep_date:'May 5, 2026',class:'Economy',baggage:'35 KG',meal:'Halal Included',price_per_seat:'Rs. 1,25,000',total_seats:25,booked_seats:10},
+    {id:'f18',flight_no:'QR-412',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH → KUL',dep_time:'02:00',arr_time:'15:30',dep_date:'May 12, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 1,10,000',total_seats:20,booked_seats:6},
+  ],
 };
 
-let currentFlight = null;
-let allFlightsData = {};
+let curFlight = null;
 
-// ── RENDER CATEGORIES ──
-function renderCategories() {
-  const grid = document.getElementById('catGrid');
-  grid.innerHTML = CATEGORIES.map(cat => `
-    <button onclick="selectCategory('${cat.id}')"
-      style="position:relative;border-radius:16px;overflow:hidden;height:160px;cursor:pointer;border:2px solid transparent;transition:all 0.3s;background:#0A1628"
-      onmouseover="this.style.borderColor='#C9A84C';this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(0,0,0,0.25)'"
-      onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow=''">
-      <img src="${cat.img}" alt="${cat.label}"
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.8"
-        onerror="this.style.display='none'">
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.2) 100%)"></div>
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:14px">
-        <span style="font-size:28px;margin-bottom:6px">${cat.flag}</span>
-        <span style="color:#fff;font-weight:700;font-size:13px;text-align:center;font-family:'Plus Jakarta Sans',sans-serif">${cat.label}</span>
-      </div>
+// Render categories
+function renderCats() {
+  document.getElementById('catGrid').innerHTML = CATS.map(c => `
+    <button class="cat-btn" id="cat-${c.id}" onclick="selectCat('${c.id}')">
+      <img src="${c.img}" alt="${c.label}" onerror="this.style.display='none'">
+      <div class="cat-overlay"></div>
+      <div class="cat-label"><span class="cat-flag">${c.flag}</span><span class="cat-name">${c.label}</span></div>
     </button>
   `).join('');
 }
 
-// ── SELECT CATEGORY ──
-window.selectCategory = async function(catId) {
-  document.getElementById('flightSection').classList.remove('hidden');
-  document.getElementById('flightLoading').classList.remove('hidden');
-  document.getElementById('flightGrid').classList.add('hidden');
-  document.getElementById('flightEmpty').classList.add('hidden');
+window.selectCat = async function(catId) {
+  // Highlight active
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cat-'+catId)?.classList.add('active');
 
-  const cat = CATEGORIES.find(c => c.id === catId);
-  document.getElementById('flightCatLabel').textContent = cat?.label || catId;
+  const cat = CATS.find(c => c.id === catId);
+  document.getElementById('flightCatLbl').textContent = cat?.label || catId;
+  document.getElementById('flightSection').classList.add('open');
+  document.getElementById('whySection').style.display = 'none';
 
   // Scroll to flights
-  document.getElementById('flightSection').scrollIntoView({ behavior:'smooth', block:'start' });
+  setTimeout(() => document.getElementById('flightSection').scrollIntoView({behavior:'smooth',block:'start'}), 100);
 
-  // Try Supabase, fallback to demo
-  let flights = [];
+  // Load from DB, fallback to hardcoded
+  let flights = FLIGHTS[catId] || [];
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/group_flights?select=*&category=eq.${catId}&status=eq.active&order=dep_date.asc`, {
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    const r = await fetch(`${SUPA_URL}/rest/v1/group_flights?select=*&category=eq.${catId}&status=eq.active&order=dep_date.asc`, {
+      headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}
     });
-    const data = await res.json();
-    flights = Array.isArray(data) && data.length ? data : (DEMO_FLIGHTS[catId] || []);
-  } catch(e) {
-    flights = DEMO_FLIGHTS[catId] || [];
-  }
+    const d = await r.json();
+    if (Array.isArray(d) && d.length > 0) flights = d;
+  } catch(e) {}
 
-  allFlightsData[catId] = flights;
   renderFlights(flights);
 };
 
-// ── RENDER FLIGHTS ──
 function renderFlights(flights) {
-  document.getElementById('flightLoading').classList.add('hidden');
-
+  const grid = document.getElementById('flightGrid');
   if (!flights.length) {
-    document.getElementById('flightEmpty').classList.remove('hidden');
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#9090AA">
+        <i class="fa fa-plane" style="font-size:40px;color:#C9A84C;display:block;margin-bottom:14px"></i>
+        <p style="margin-bottom:18px">No flights available right now.</p>
+        <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+group+tickets.+Please+help." target="_blank"
+           style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif">
+          <i class="fab fa-whatsapp"></i> WhatsApp for Custom Booking
+        </a>
+      </div>`;
     return;
   }
 
-  const grid = document.getElementById('flightGrid');
-  grid.classList.remove('hidden');
-
   grid.innerHTML = flights.map(f => {
-    const total     = parseInt(f.total_seats) || 0;
-    const booked    = parseInt(f.booked_seats) || 0;
-    const available = Math.max(0, total - booked);
-    const pct       = total > 0 ? Math.round((booked / total) * 100) : 0;
-    const soldOut   = available <= 0;
-
-    // Seat bar color
-    const barColor  = pct >= 90 ? '#EF4444' : pct >= 60 ? '#F59E0B' : '#10B981';
-
-    // Airline logo placeholder
-    const airlineCode = (f.airline_code || 'XX').toUpperCase();
+    const total    = parseInt(f.total_seats) || 0;
+    const booked   = parseInt(f.booked_seats) || 0;
+    const avail    = Math.max(0, total - booked);
+    const pct      = total > 0 ? Math.round((booked/total)*100) : 0;
+    const soldOut  = avail <= 0;
+    const barColor = pct >= 90 ? '#EF4444' : pct >= 60 ? '#F59E0B' : '#10B981';
+    const [depCity] = (f.route || '').split('→');
+    const arrCity   = (f.route || '').split('→').pop();
 
     return `
-    <div class="flight-card bg-white border border-[#E8E4DA] rounded-2xl overflow-hidden ${soldOut ? 'opacity-70' : ''}">
-
-      <!-- Header -->
-      <div class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-[#E8E4DA]">
-        <div class="flex items-center gap-3">
-          <!-- Airline logo placeholder -->
-          <div class="w-12 h-12 rounded-xl bg-[#0A1628] flex items-center justify-center flex-shrink-0">
-            <span class="text-white font-bold text-xs font-sans">${airlineCode}</span>
-          </div>
+    <div class="flight-card">
+      <div class="fc-head">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="fc-airline-logo"><span>${f.airline_code || f.airline?.substring(0,3).toUpperCase() || 'AIR'}</span></div>
           <div>
-            <div class="font-bold text-[#1C1C2E] text-sm font-sans">${f.airline}</div>
-            <div class="text-xs text-[#9090AA] font-sans mt-0.5">Flight ${f.flight_no}</div>
+            <div class="fc-airline-name">${f.airline}</div>
+            <div class="fc-flight-no">Flight ${f.flight_no}</div>
           </div>
         </div>
-        <div class="text-right">
-          <div class="font-serif text-xl text-[#C9A84C] font-bold">${f.price_per_seat}</div>
-          <div class="text-[10px] text-[#9090AA] font-sans">per seat</div>
+        <div>
+          <div class="fc-price">${f.price_per_seat}<small>per seat</small></div>
         </div>
       </div>
 
-      <!-- Route -->
-      <div class="px-5 py-4">
-        <div class="flex items-center justify-between mb-4">
-          <!-- Departure -->
-          <div>
-            <div class="font-serif text-2xl font-bold text-[#1C1C2E]">${f.dep_time}</div>
-            <div class="text-xs text-[#6B6B8A] font-sans mt-0.5">${f.route?.split('→')[0]?.trim() || '—'}</div>
-          </div>
-          <!-- Arrow with duration -->
-          <div class="flex-1 px-4 flex flex-col items-center">
-            <div class="text-[10px] text-[#9090AA] font-sans mb-1">${f.dep_date}</div>
-            <div class="w-full flex items-center gap-1">
-              <div class="flex-1 h-px bg-[#E8E4DA]"></div>
-              <i class="fa fa-plane text-[#C9A84C] text-sm"></i>
-              <div class="flex-1 h-px bg-[#E8E4DA]"></div>
-            </div>
-            <div class="text-[10px] text-[#C9A84C] font-sans mt-1 font-bold">${f.class}</div>
-          </div>
-          <!-- Arrival -->
-          <div class="text-right">
-            <div class="font-serif text-2xl font-bold text-[#1C1C2E]">${f.arr_time}</div>
-            <div class="text-xs text-[#6B6B8A] font-sans mt-0.5">${f.route?.split('→').pop()?.trim() || '—'}</div>
-          </div>
+      <div class="fc-route">
+        <div>
+          <div class="fc-time">${f.dep_time || '—'}</div>
+          <div class="fc-city">${depCity?.trim() || '—'}</div>
         </div>
-
-        <!-- Meta chips -->
-        <div class="flex gap-2 flex-wrap mb-4">
-          <span class="text-[11px] text-[#6B6B8A] bg-[#F3F0EA] px-2.5 py-1 rounded-full font-sans flex items-center gap-1">
-            <i class="fa fa-suitcase text-[#C9A84C] text-[10px]"></i> ${f.baggage}
-          </span>
-          <span class="text-[11px] text-[#6B6B8A] bg-[#F3F0EA] px-2.5 py-1 rounded-full font-sans flex items-center gap-1">
-            <i class="fa fa-utensils text-[#C9A84C] text-[10px]"></i> ${f.meal}
-          </span>
-          <span class="text-[11px] ${soldOut ? 'text-red-600 bg-red-50' : 'text-green-700 bg-green-50'} px-2.5 py-1 rounded-full font-sans font-bold flex items-center gap-1">
-            <i class="fa fa-chair text-[10px]"></i>
-            ${soldOut ? 'Sold Out' : available + ' seats left'}
-          </span>
+        <div class="fc-arrow">
+          <div class="fc-class-pill">${f.class || 'Economy'}</div>
+          <div class="fc-arrow-line"></div>
+          <div style="font-size:10px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif">${f.dep_date || '—'}</div>
         </div>
-
-        <!-- Seat bar -->
-        <div class="mb-1.5">
-          <div class="flex justify-between text-[10px] text-[#9090AA] font-sans mb-1.5">
-            <span>${booked} booked</span>
-            <span>${available} available / ${total} total</span>
-          </div>
-          <div class="seat-bar">
-            <div class="seat-fill" style="width:${pct}%;background:${barColor}"></div>
-          </div>
+        <div style="text-align:right">
+          <div class="fc-time">${f.arr_time || '—'}</div>
+          <div class="fc-city">${arrCity?.trim() || '—'}</div>
         </div>
       </div>
 
-      <!-- CTA -->
-      <div class="px-5 pb-5">
+      <div class="fc-chips">
+        ${f.baggage ? `<span class="fc-chip"><i class="fa fa-suitcase"></i> ${f.baggage}</span>` : ''}
+        ${f.meal    ? `<span class="fc-chip"><i class="fa fa-utensils"></i> ${f.meal}</span>` : ''}
+        <span class="fc-chip" style="${soldOut ? 'color:#EF4444' : 'color:#10B981'}">
+          <i class="fa fa-chair"></i> ${soldOut ? 'Sold Out' : avail+' seats left'}
+        </span>
+      </div>
+
+      <div class="fc-seats">
+        <div class="fc-seat-row"><span>${booked} booked</span><span>${avail} available of ${total}</span></div>
+        <div class="fc-bar"><div class="fc-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      </div>
+
+      <div class="fc-foot">
         ${soldOut
-          ? `<div class="w-full bg-[#F3F0EA] text-[#9090AA] font-bold text-sm uppercase tracking-wide py-3.5 rounded-xl text-center font-sans cursor-not-allowed select-none">
-               <i class="fa fa-ban mr-2"></i> SOLD OUT
-             </div>`
-          : `<button onclick="openPaxModal(${JSON.stringify(f).replace(/"/g,'&quot;')})"
-                     class="w-full bg-[#C9A84C] hover:bg-[#E8C97A] text-white font-bold text-sm uppercase tracking-wide py-3.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 font-sans flex items-center justify-center gap-2">
+          ? `<div class="fc-sold-btn"><i class="fa fa-ban"></i> SOLD OUT</div>`
+          : `<button class="fc-book-btn" onclick="openPax(${JSON.stringify(f).replace(/"/g,'&quot;')})">
                <i class="fa fa-calendar-check"></i> Book This Flight
              </button>`
         }
@@ -475,96 +385,71 @@ function renderFlights(flights) {
   }).join('');
 }
 
-// ── CLEAR CATEGORY ──
-window.clearCategory = function() {
-  document.getElementById('flightSection').classList.add('hidden');
+window.clearCat = function() {
+  document.getElementById('flightSection').classList.remove('open');
+  document.getElementById('whySection').style.display = 'grid';
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
 };
 
-// ── PAX MODAL ──
-window.openPaxModal = function(flight) {
-  currentFlight = flight;
-  document.getElementById('paxFlightTitle').textContent = flight.airline + ' — ' + flight.flight_no;
-  document.getElementById('paxFlightInfo').innerHTML = `
-    <span><i class="fa fa-plane mr-1"></i>${flight.route}</span>
-    <span><i class="fa fa-calendar mr-1"></i>${flight.dep_date}</span>
-    <span><i class="fa fa-tag mr-1"></i>${flight.price_per_seat}</span>`;
-  document.getElementById('paxError').classList.add('hidden');
-  document.getElementById('paxOverlay').classList.add('open');
+// PASSENGER MODAL
+window.openPax = function(f) {
+  curFlight = f;
+  document.getElementById('paxTitle').textContent = f.airline + ' — ' + f.flight_no;
+  document.getElementById('paxFlightInfo').textContent = f.route + '  ·  ' + f.dep_date + '  ·  ' + f.price_per_seat;
+  document.getElementById('paxErr').style.display = 'none';
+  document.getElementById('paxOverlay').classList.add('show');
   document.body.style.overflow = 'hidden';
 };
-
-window.closePaxModal = function() {
-  document.getElementById('paxOverlay').classList.remove('open');
+window.closePax = function() {
+  document.getElementById('paxOverlay').classList.remove('show');
   document.body.style.overflow = '';
-  currentFlight = null;
 };
+document.getElementById('paxOverlay').addEventListener('click', e => { if(e.target===document.getElementById('paxOverlay')) closePax(); });
 
-// Close on backdrop
-document.getElementById('paxOverlay').addEventListener('click', function(e) {
-  if (e.target === this) window.closePaxModal();
-});
+window.submitPax = async function() {
+  const fn = document.getElementById('pFn').value.trim();
+  const ln = document.getElementById('pLn').value.trim();
+  const ph = document.getElementById('pPh').value.trim();
+  const pp = document.getElementById('pPp').value.trim();
+  const seats = parseInt(document.getElementById('pSt').value) || 1;
+  const cls  = document.getElementById('pCl').value;
+  const err  = document.getElementById('paxErr');
 
-// ── SUBMIT BOOKING ──
-window.submitPaxForm = async function() {
-  const f    = currentFlight;
-  const fn   = document.getElementById('paxFName').value.trim();
-  const ln   = document.getElementById('paxLName').value.trim();
-  const ph   = document.getElementById('paxPhone').value.trim();
-  const em   = document.getElementById('paxEmail').value.trim();
-  const pp   = document.getElementById('paxPassport').value.trim();
-  const seats= parseInt(document.getElementById('paxSeats').value) || 1;
-  const cls  = document.getElementById('paxClass').value;
-  const err  = document.getElementById('paxError');
+  if (!fn||!ln||!ph||!pp) { err.textContent='Please fill all required fields.'; err.style.display='block'; return; }
 
-  if (!fn || !ln || !ph || !pp) {
-    err.textContent = 'Please fill all required fields.';
-    err.classList.remove('hidden');
-    return;
-  }
-
-  const btn = document.getElementById('paxSubmitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-
-  // ── SAVE TO SUPABASE ──
+  // Save to DB
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/group_bookings`, {
-      method: 'POST',
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        Prefer: 'return=minimal'
-      },
-      body: JSON.stringify({
-        passenger_name: fn + ' ' + ln,
-        phone: ph, email: em || null,
-        passport_no: pp,
-        seats_booked: seats,
-        travel_class: cls,
-        flight_id: f.id,
-        flight_no: f.flight_no,
-        airline: f.airline,
-        route: f.route,
-        dep_date: f.dep_date,
-        price_per_seat: f.price_per_seat,
-        status: 'pending'
+    await fetch(`${SUPA_URL}/rest/v1/group_bookings`, {
+      method:'POST',
+      headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({
+        passenger_name: fn+' '+ln, phone:ph, passport_no:pp,
+        seats_booked:seats, travel_class:cls,
+        flight_no:curFlight.flight_no, airline:curFlight.airline,
+        route:curFlight.route, dep_date:curFlight.dep_date,
+        price_per_seat:curFlight.price_per_seat, status:'pending'
       })
     });
-  } catch(e) { /* continue even if save fails */ }
+  } catch(e) {}
 
-  // ── WHATSAPP MESSAGE ──
-  const waMsg = encodeURIComponent(
+  // WhatsApp
+  const msg = encodeURIComponent(
     `Assalam o Alaikum! I want to book a group ticket.\n\n` +
-    `✈️ Flight: ${f.airline} ${f.flight_no}\n` +
-    `🗺️ Route: ${f.route}\n` +
-    `📅 Date: ${f.dep_date}\n` +
+    `✈️ Flight: ${curFlight.airline} ${curFlight.flight_no}\n` +
+    `🗺️ Route: ${curFlight.route}\n` +
+    `📅 Date: ${curFlight.dep_date}\n` +
     `💺 Seats: ${seats} x ${cls}\n` +
-    `💰 Price: ${f.price_per_seat} per seat\n\n` +
-    `👤 Passenger: ${fn} ${ln}\n` +
+    `💰 Price: ${curFlight.price_per_seat} per seat\n\n` +
+    `👤 Name: ${fn} ${ln}\n` +
     `📱 Phone: ${ph}\n` +
     `🛂 Passport: ${pp}\n\n` +
-    `Please confirm my booking. Jazak Allah Khair!`
+    `Please confirm my booking. Jazak Allah!`
   );
+  window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
+  closePax();
+};
 
-  window.open(`https://wa.me/${WA
+renderCats();
+</script>
+</body>
+</html>
