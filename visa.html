@@ -25,7 +25,7 @@
 <body class="bg-[#FAFAF8]">
 
 <!-- OVERLAY -->
-<div class="nav-overlay" id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s" onclick="closeMenu()"></div>
+<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
@@ -33,48 +33,44 @@
   </a>
 
   <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
 
-    <!-- ── DESKTOP: Home hidden, Services dropdown, About ── -->
-    <!-- Mobile: Home shown -->
-    <a href="index.html" class="" id="nav-home" style="display:none">Home</a>
+    <!-- Desktop+Mobile: shown via JS in mobile -->
+    <a href="index.html" id="mlink-home">Home</a>
 
-    <!-- Services — desktop dropdown -->
-    <div class="nav-has-drop" id="nav-svc-desktop">
-      <a href="services.html" class="">
-        Services <i class="fa fa-chevron-down nav-drop-chevron"></i>
-      </a>
+    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
+    <div class="nav-has-drop" id="mlink-svc-desk">
+      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
-        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
         <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
         <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
       </div>
     </div>
 
-    <a href="about.html" class="">About</a>
-    <!-- Contact — mobile only -->
-    <a href="contact.html" class="" id="nav-contact" style="display:none">Contact</a>
-
-    <!-- Services — mobile expandable -->
-    <div class="mob-services" id="nav-svc-mobile" style="display:none">
-      <div class="mob-parent" onclick="toggleMobSvc(this)">
-        <span class="mob-parent-label">Services</span>
-        <i class="fa fa-chevron-down mob-parent-arrow"></i>
+    <!-- Mobile: services expand -->
+    <div id="mlink-svc-mob" style="display:none">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
-      <div class="mob-sub">
-        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
-        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
-        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      <div id="mobSvcSub" style="display:none;background:#F9F7F2">
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
+        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
 
-    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" id="mlink-contact">Contact</a>
+
+    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
     <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
 
-  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
 </nav>
 
 <!-- HERO -->
@@ -225,22 +221,27 @@ const FLAG = { UAE:'🇦🇪', Saudi:'🇸🇦', Thailand:'🇹🇭', Indonesia:
 
 let allVisas = [];
 
+const VISA_FALLBACK = [
+  { id:'v1', title:'UAE Tourist Visa',        country:'UAE',          type:'tourist', price:'Rs. 15,000', days:'30 Days', validity:'90 Days',   max_stay:'30 Days',  processing_time:'5–7 days',  requirements:'Passport (6mo+), Photo, Bank Statement (3mo), Hotel Booking, Return Ticket', status:'active' },
+  { id:'v2', title:'Saudi Umrah Visa',         country:'Saudi Arabia', type:'umrah',   price:'Rs. 18,000', days:'30 Days', validity:'3 Months',  max_stay:'30 Days',  processing_time:'7–10 days', requirements:'Passport, Mehram Certificate (ladies), Vaccination Card, Umrah Package Confirmation', status:'active' },
+  { id:'v3', title:'Thailand Tourist Visa',    country:'Thailand',     type:'tourist', price:'Rs. 12,000', days:'30 Days', validity:'6 Months',  max_stay:'30 Days',  processing_time:'5–7 days',  requirements:'Passport, Photo, Bank Statement, Hotel Booking, Return Ticket', status:'active' },
+  { id:'v4', title:'Indonesia VOA',            country:'Indonesia',    type:'tourist', price:'Rs. 8,000',  days:'30 Days', validity:'Single',    max_stay:'30 Days',  processing_time:'3–5 days',  requirements:'Passport (6mo+), Photo, Return Ticket, Sufficient Funds', status:'active' },
+  { id:'v5', title:'Turkey e-Visa',            country:'Turkey',       type:'tourist', price:'Rs. 14,000', days:'90 Days', validity:'6 Months',  max_stay:'90 Days',  processing_time:'3–5 days',  requirements:'Passport, Credit Card for online payment, Recent Photo', status:'active' },
+  { id:'v6', title:'Malaysia Tourist Visa',    country:'Malaysia',     type:'tourist', price:'Rs. 10,000', days:'30 Days', validity:'3 Months',  max_stay:'30 Days',  processing_time:'5–7 days',  requirements:'Passport, Photo, Bank Statement, Hotel Booking, Return Ticket', status:'active' },
+  { id:'v7', title:'Qatar Tourist Visa',       country:'Qatar',        type:'tourist', price:'Rs. 12,000', days:'30 Days', validity:'3 Months',  max_stay:'30 Days',  processing_time:'5–7 days',  requirements:'Passport, Photo, Bank Statement, Hotel Booking Confirmation', status:'active' },
+  { id:'v8', title:'UK Visit Visa',            country:'UK',           type:'tourist', price:'Rs. 45,000', days:'6 Months',validity:'6 Months',  max_stay:'6 Months', processing_time:'15–20 days', requirements:'Passport, 6mo Bank Statement, Employment Letter, Property Documents, Invitation Letter', status:'active' },
+];
+
 async function loadVisas() {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/visa_services?select=*&status=eq.active&order=sort_order.asc`, {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
     });
-    allVisas = await res.json();
+    const data = await res.json();
+    // Use DB data if available and is an array with items, else use fallback
+    allVisas = (Array.isArray(data) && data.length > 0) ? data : VISA_FALLBACK;
   } catch(e) {
-    // Fallback demo data if table doesn't exist yet
-    allVisas = [
-      { id:'1', title:'UAE Tourist Visa', country:'UAE', type:'tourist', price:'Rs. 15,000', days:'30 Days', validity:'90 Days', max_stay:'30 Days', processing_time:'5–7 working days', requirements:'Passport (6mo valid), Photo, Bank Statement, Ticket, Hotel Booking', status:'active', sort_order:1 },
-      { id:'2', title:'Saudi Arabia Umrah Visa', country:'Saudi', type:'umrah', price:'Rs. 18,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days', processing_time:'7–10 working days', requirements:'Passport, Mehram Certificate (for ladies), Vaccination card, Umrah Package Booking', status:'active', sort_order:2 },
-      { id:'3', title:'Thailand Tourist Visa', country:'Thailand', type:'tourist', price:'Rs. 12,000', days:'30 Days', validity:'6 Months', max_stay:'30 Days', processing_time:'5–7 working days', requirements:'Passport, Photo, Bank Statement, Hotel Booking', status:'active', sort_order:3 },
-      { id:'4', title:'Indonesia Visa on Arrival', country:'Indonesia', type:'tourist', price:'Rs. 8,000', days:'30 Days', validity:'Single Entry', max_stay:'30 Days', processing_time:'3–5 working days', requirements:'Passport, Photo, Return Ticket', status:'active', sort_order:4 },
-      { id:'5', title:'Turkey e-Visa', country:'Turkey', type:'tourist', price:'Rs. 14,000', days:'90 Days', validity:'6 Months', max_stay:'90 Days', processing_time:'3–5 working days', requirements:'Passport, Credit Card for online fee, Photo', status:'active', sort_order:5 },
-      { id:'6', title:'Malaysia Tourist Visa', country:'Malaysia', type:'tourist', price:'Rs. 10,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days', processing_time:'5–7 working days', requirements:'Passport, Photo, Bank Statement, Hotel Booking', status:'active', sort_order:6 },
-    ];
+    allVisas = VISA_FALLBACK;
   }
   renderVisas(allVisas);
 }
