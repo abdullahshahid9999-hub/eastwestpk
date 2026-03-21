@@ -125,7 +125,7 @@
 </head>
 <body>
 
-<div class="nav-overlay" id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s" onclick="closeMenu()"></div>
+<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
@@ -133,48 +133,44 @@
   </a>
 
   <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
 
-    <!-- ── DESKTOP: Home hidden, Services dropdown, About ── -->
-    <!-- Mobile: Home shown -->
-    <a href="index.html" class="" id="nav-home" style="display:none">Home</a>
+    <!-- Desktop+Mobile: shown via JS in mobile -->
+    <a href="index.html" id="mlink-home">Home</a>
 
-    <!-- Services — desktop dropdown -->
-    <div class="nav-has-drop" id="nav-svc-desktop">
-      <a href="services.html" class="">
-        Services <i class="fa fa-chevron-down nav-drop-chevron"></i>
-      </a>
+    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
+    <div class="nav-has-drop" id="mlink-svc-desk">
+      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
-        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
         <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
         <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
       </div>
     </div>
 
-    <a href="about.html" class="">About</a>
-    <!-- Contact — mobile only -->
-    <a href="contact.html" class="" id="nav-contact" style="display:none">Contact</a>
-
-    <!-- Services — mobile expandable -->
-    <div class="mob-services" id="nav-svc-mobile" style="display:none">
-      <div class="mob-parent" onclick="toggleMobSvc(this)">
-        <span class="mob-parent-label">Services</span>
-        <i class="fa fa-chevron-down mob-parent-arrow"></i>
+    <!-- Mobile: services expand -->
+    <div id="mlink-svc-mob" style="display:none">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
-      <div class="mob-sub">
-        <a href="services.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="services.html"><i class="fa fa-globe"></i> World Tours</a>
-        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
-        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      <div id="mobSvcSub" style="display:none;background:#F9F7F2">
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
+        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
 
-    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" id="mlink-contact">Contact</a>
+
+    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
     <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
 
-  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
 </nav>
 
 <div class="page-hero">
