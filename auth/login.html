@@ -1,328 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — East & West Travel Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --navy:#0A1628;--navy-mid:#0F2040;--navy-light:#162847;
-      --teal:#0EA5E9;--teal-dark:#0284C7;--teal-glow:rgba(14,165,233,0.15);
-      --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--border-gold:rgba(201,168,76,0.3);
-      --white:#fff;--text:#E8EDF2;--text-dim:#8899AA;
-      --border:rgba(255,255,255,0.08);--green:#10B981;--red:#EF4444;
-      --radius:14px;
-    }
-    body{font-family:'DM Sans',sans-serif;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:var(--navy)}
-    h1,h2,h3,h4{font-family:'Playfair Display',serif}
-    em{color:var(--gold);font-style:italic}
-    a{text-decoration:none;color:inherit}
+/* EASTWESTPK Global JS — Final Clean Version */
 
-    /* LEFT PANEL */
-    .auth-left{
-      background:linear-gradient(160deg,#060E1A 0%,var(--navy-mid) 100%);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      padding:60px 48px;position:relative;overflow:hidden;
-      border-right:1px solid var(--border);
-    }
-    .auth-left::before{
-      content:'';position:absolute;inset:0;
-      background:radial-gradient(ellipse at 30% 40%,rgba(14,165,233,0.08) 0%,transparent 60%),
-                 radial-gradient(ellipse at 70% 80%,rgba(201,168,76,0.05) 0%,transparent 50%);
-    }
-    .grid-lines{
-      position:absolute;inset:0;
-      background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
-                       linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
-      background-size:50px 50px;
-    }
-    .auth-left-content{position:relative;z-index:1;text-align:center;max-width:380px}
-    .brand{display:inline-flex;align-items:center;gap:12px;margin-bottom:52px}
-    .brand img{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
-    .brand-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--white)}
-    .brand-name span{color:var(--teal)}
-    .auth-left h2{font-size:44px;color:var(--white);line-height:1.15;margin-bottom:18px}
-    .auth-left p{color:var(--text-dim);font-size:15px;line-height:1.8;margin-bottom:44px}
-    .feat-list{list-style:none;display:flex;flex-direction:column;gap:16px;text-align:left}
-    .feat-list li{display:flex;align-items:center;gap:14px;color:var(--text-dim);font-size:14px}
-    .feat-icon{width:36px;height:36px;background:var(--teal-glow);border:1px solid rgba(14,165,233,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--teal);flex-shrink:0}
+// Page fade
+(function(){
+  const ov=document.createElement('div');
+  ov.id='page-fade';
+  ov.style.cssText='position:fixed;inset:0;background:#FAFAF8;z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.3s';
+  document.documentElement.appendChild(ov);
+  window.addEventListener('DOMContentLoaded',()=>{
+    ov.style.opacity='1';ov.style.transition='none';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ov.style.transition='opacity 0.4s';ov.style.opacity='0';}));
+  });
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a[href]');if(!a)return;
+    const h=a.getAttribute('href');
+    if(!h||a.target==='_blank'||h.startsWith('http')||h.startsWith('//')||h.startsWith('#')||h.startsWith('mailto')||h.startsWith('tel')||e.ctrlKey||e.metaKey||e.shiftKey)return;
+    e.preventDefault();ov.style.opacity='1';
+    setTimeout(()=>{window.location.href=h;},300);
+  });
+})();
 
-    /* RIGHT PANEL */
-    .auth-right{display:flex;align-items:center;justify-content:center;padding:40px;overflow-y:auto}
-    .auth-box{width:100%;max-width:440px}
-    .auth-box h2{font-size:36px;color:var(--white);margin-bottom:6px}
-    .auth-box>p{font-size:14px;color:var(--text-dim);margin-bottom:32px}
+// Navbar scroll
+window.addEventListener('scroll',()=>{
+  const n=document.getElementById('navbar');
+  if(n)n.classList.toggle('scrolled',window.scrollY>50);
+},{passive:true});
 
-    /* TABS */
-    .tab-row{display:flex;background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:28px;gap:4px}
-    .tab-btn{flex:1;padding:11px;text-align:center;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;color:var(--text-dim);transition:all 0.2s}
-    .tab-btn.active{background:var(--teal);color:white;box-shadow:0 4px 14px rgba(14,165,233,0.3)}
+// Open drawer
+window.openMenu=function(){
+  const links=document.getElementById('navLinks');
+  const ov=document.getElementById('navOverlay');
+  if(!links)return;
 
-    /* FORM */
-    .form-group{margin-bottom:18px}
-    .form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:7px}
-    .inp-wrap{position:relative}
-    .inp-wrap .pre-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:13px;pointer-events:none}
-    .form-group input{
-      width:100%;background:var(--navy-mid);border:1.5px solid var(--border);
-      border-radius:10px;padding:12px 13px 12px 38px;font-size:14px;
-      font-family:'DM Sans',sans-serif;color:var(--white);outline:none;transition:all 0.3s;
-    }
-    .form-group input::placeholder{color:var(--text-dim);opacity:0.6}
-    .form-group input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
-    .form-group input.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,0.1)}
-    .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;font-size:13px;transition:color 0.2s}
-    .eye-btn:hover{color:var(--white)}
-    .forgot{text-align:right;margin-top:-10px;margin-bottom:18px}
-    .forgot a{font-size:12px;color:var(--teal);font-weight:600}
+  // Show mobile-only items
+  const home=document.getElementById('mlink-home');
+  const contact=document.getElementById('mlink-contact');
+  const svcDesk=document.getElementById('mlink-svc-desk');
+  const svcMob=document.getElementById('mlink-svc-mob');
+  if(home){home.style.display='flex';}
+  if(contact){contact.style.display='flex';}
+  if(svcDesk){svcDesk.style.display='none';}
+  if(svcMob){svcMob.style.display='block';}
 
-    /* UNVERIFIED NOTICE */
-    .unverified-notice{
-      background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
-      border-radius:10px;padding:16px;margin-bottom:20px;display:none;
-    }
-    .unverified-notice p{font-size:13.5px;color:#FCA5A5;line-height:1.6}
-    .unverified-notice strong{color:var(--white)}
-    .unverified-notice.show{display:block}
+  links.classList.add('open');
 
-    /* ALERT BOXES */
-    .alert{border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:10px;line-height:1.5}
-    .alert.show{display:flex}
-    .alert-err{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:#FCA5A5}
-    .alert-suc{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);color:#6EE7B7}
-
-    /* SUBMIT */
-    .submit-btn{
-      width:100%;background:var(--teal);color:white;border:none;
-      padding:14px;border-radius:10px;font-size:15px;font-weight:700;
-      font-family:'DM Sans',sans-serif;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:10px;
-      transition:all 0.3s;
-    }
-    .submit-btn:hover:not(:disabled){background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,0.35)}
-    .submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-    .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;display:none;flex-shrink:0}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    .switch-p{text-align:center;font-size:13px;color:var(--text-dim);margin-top:20px}
-    .switch-p a{color:var(--teal);font-weight:700}
-    .back-link{text-align:center;margin-top:14px}
-    .back-link a{font-size:13px;color:var(--text-dim);transition:color 0.2s;display:inline-flex;align-items:center;gap:6px}
-    .back-link a:hover{color:var(--teal)}
-
-    @media(max-width:768px){body{grid-template-columns:1fr}.auth-left{display:none}.auth-right{min-height:100vh}}
-  </style>
-</head>
-<body>
-
-<!-- LEFT -->
-<div class="auth-left">
-  <div class="grid-lines"></div>
-  <div class="auth-left-content">
-    <a href="../index.html" class="brand">
-      <img src="../logo.jpg" alt="East & West Travel Services" onerror="this.style.display='none'">
-      <div class="brand-name">East & <span>West</span></div>
-    </a>
-    <h2>Track Your <em>Journey</em></h2>
-    <p>Login to view your bookings, check status, and access payment details anytime.</p>
-    <ul class="feat-list">
-      <li><div class="feat-icon"><i class="fa fa-calendar-check"></i></div> View all your bookings in one place</li>
-      <li><div class="feat-icon"><i class="fa fa-bell"></i></div> Get real-time booking status updates</li>
-      <li><div class="feat-icon"><i class="fa fa-university"></i></div> Access payment details anytime</li>
-      <li><div class="feat-icon"><i class="fa fa-headset"></i></div> Priority customer support</li>
-    </ul>
-  </div>
-</div>
-
-<!-- RIGHT -->
-<div class="auth-right">
-  <div class="auth-box">
-    <h2>Welcome <em>Back</em></h2>
-    <p>Sign in or create your account</p>
-
-    <div class="tab-row">
-      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
-      <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Create Account</button>
-    </div>
-
-    <div class="alert alert-err" id="errBox"><i class="fa fa-exclamation-circle"></i><span id="errTxt"></span></div>
-    <div class="alert alert-suc" id="sucBox"><i class="fa fa-check-circle"></i><span id="sucTxt"></span></div>
-
-    <!-- UNVERIFIED NOTICE -->
-    <div class="unverified-notice" id="unverifiedNotice">
-      <p>⚠️ Your account is <strong>not verified</strong> yet. Please contact us to verify your account:<br>
-      📱 <strong>WhatsApp: 0313-6515349</strong><br>
-      📧 <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="34555650415858555c475c555c5d500d0d0d0d745359555d581a575b59">[email&#160;protected]</a></strong></p>
-    </div>
-
-    <!-- LOGIN -->
-    <div id="loginTab">
-      <div class="form-group">
-        <label>Email Address</label>
-        <div class="inp-wrap"><i class="fa fa-envelope pre-icon"></i><input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="email"></div>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="inp-wrap">
-          <i class="fa fa-lock pre-icon"></i>
-          <input type="password" id="loginPwd" placeholder="••••••••" autocomplete="current-password">
-          <button class="eye-btn" type="button" onclick="togglePwd('loginPwd',this)"><i class="fa fa-eye"></i></button>
-        </div>
-      </div>
-      <div class="forgot"><a href="#" onclick="doForgotPassword();return false">Forgot password?</a></div>
-      <button class="submit-btn" id="loginBtn" onclick="doLogin()">
-        <div class="spin" id="loginSpin"></div>
-        <i class="fa fa-sign-in-alt" id="loginIcon"></i>
-        <span id="loginTxt">Login to My Account</span>
-      </button>
-      <p class="switch-p">No account? <a href="#" onclick="switchTab('signup');return false">Create one free</a></p>
-    </div>
-
-    <!-- SIGNUP -->
-    <div id="signupTab" style="display:none">
-      <div class="form-group">
-        <label>Full Name</label>
-        <div class="inp-wrap"><i class="fa fa-user pre-icon"></i><input type="text" id="signupName" placeholder="Your full name" autocomplete="name"></div>
-      </div>
-      <div class="form-group">
-        <label>Phone / WhatsApp</label>
-        <div class="inp-wrap"><i class="fa fa-phone pre-icon"></i><input type="tel" id="signupPhone" placeholder="03XX-XXXXXXX"></div>
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <div class="inp-wrap"><i class="fa fa-envelope pre-icon"></i><input type="email" id="signupEmail" placeholder="email@example.com" autocomplete="email"></div>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="inp-wrap">
-          <i class="fa fa-lock pre-icon"></i>
-          <input type="password" id="signupPwd" placeholder="Min 8 characters">
-          <button class="eye-btn" type="button" onclick="togglePwd('signupPwd',this)"><i class="fa fa-eye"></i></button>
-        </div>
-      </div>
-      <button class="submit-btn" id="signupBtn" onclick="doSignup()">
-        <div class="spin" id="signupSpin"></div>
-        <i class="fa fa-user-plus" id="signupIcon"></i>
-        <span id="signupTxt">Create Account</span>
-      </button>
-      <p class="switch-p">Already have an account? <a href="#" onclick="switchTab('login');return false">Login</a></p>
-    </div>
-
-    <div class="back-link"><a href="../index.html"><i class="fa fa-arrow-left"></i> Back to Website</a></div>
-    <div style="text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06)">
-      <a href="../admin/index.html" style="font-size:11.5px;color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:5px;transition:color 0.2s" onmouseover="this.style.color='rgba(201,168,76,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'"><i class="fa fa-shield-alt" style="font-size:10px"></i> Admin Login</a>
-    </div>
-  </div>
-</div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-import { SUPABASE_URL, SUPABASE_ANON } from '../supabase-config.js';
-
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
-
-// Check already logged in
-const existing = sessionStorage.getItem('ew_user');
-if (existing) window.location.href = 'my-bookings.html';
-
-function showErr(msg){ const b=document.getElementById('errBox'); document.getElementById('errTxt').textContent=msg; b.classList.add('show'); document.getElementById('sucBox').classList.remove('show'); }
-function showSuc(msg){ const b=document.getElementById('sucBox'); document.getElementById('sucTxt').textContent=msg; b.classList.add('show'); document.getElementById('errBox').classList.remove('show'); }
-function clearAlerts(){ document.getElementById('errBox').classList.remove('show'); document.getElementById('sucBox').classList.remove('show'); document.getElementById('unverifiedNotice').classList.remove('show'); }
-
-function setLoading(form, on){
-  const btn=document.getElementById(form+'Btn');
-  btn.disabled=on;
-  document.getElementById(form+'Spin').style.display=on?'inline-block':'none';
-  document.getElementById(form+'Icon').style.display=on?'none':'inline';
-  const labels={login:{on:'Logging in...',off:'Login to My Account'},signup:{on:'Creating account...',off:'Create Account'}};
-  document.getElementById(form+'Txt').textContent=on?labels[form].on:labels[form].off;
-}
-
-window.switchTab = (tab) => {
-  document.getElementById('loginTab').style.display  = tab==='login'  ? 'block':'none';
-  document.getElementById('signupTab').style.display = tab==='signup' ? 'block':'none';
-  document.getElementById('loginTabBtn').classList.toggle('active',  tab==='login');
-  document.getElementById('signupTabBtn').classList.toggle('active', tab==='signup');
-  clearAlerts();
-};
-
-window.togglePwd = (id, btn) => {
-  const inp=document.getElementById(id);
-  inp.type=inp.type==='password'?'text':'password';
-  btn.querySelector('i').className=inp.type==='password'?'fa fa-eye':'fa fa-eye-slash';
-};
-
-// Check URL for signup redirect
-const urlP = new URLSearchParams(window.location.search);
-if (urlP.get('signup')==='1') window.switchTab('signup');
-
-// ── LOGIN ──
-window.doLogin = async () => {
-  clearAlerts();
-  const email = document.getElementById('loginEmail').value.trim();
-  const pwd   = document.getElementById('loginPwd').value;
-  if (!email||!pwd){ showErr('Please enter email and password.'); return; }
-  setLoading('login', true);
-
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
-  if (error) {
-    const msgs = { 'Invalid login credentials':'Wrong email or password.', 'Email not confirmed':'Please verify your email first.' };
-    showErr(msgs[error.message] || error.message);
-    setLoading('login', false);
-    return;
+  if(ov){
+    ov.style.display='block';
+    requestAnimationFrame(()=>{ov.style.opacity='1';ov.style.pointerEvents='all';});
   }
-
-  // Check if verified in customers table
-  const { data: customer } = await sb.from('customers').select('*').eq('email', email).single();
-  if (customer && customer.is_verified === false) {
-    document.getElementById('unverifiedNotice').classList.add('show');
-    setLoading('login', false);
-    // Still allow login but show notice
-  }
-
-  // Save to session
-  sessionStorage.setItem('ew_user', JSON.stringify({
-    id: data.user.id, email: data.user.email,
-    name:  customer?.full_name || data.user.email.split('@')[0],
-    phone: customer?.phone || '',
-  }));
-  window.location.href = 'my-bookings.html';
+  document.body.style.overflow='hidden';
 };
 
-// ── SIGNUP ──
-window.doSignup = async () => {
-  clearAlerts();
-  const name  = document.getElementById('signupName').value.trim();
-  const phone = document.getElementById('signupPhone').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const pwd   = document.getElementById('signupPwd').value;
-  if (!name)  { showErr('Please enter your full name.'); return; }
-  if (!phone) { showErr('Please enter your WhatsApp number.'); return; }
-  if (!email || !/\S+@\S+\.\S+/.test(email)) { showErr('Please enter a valid email.'); return; }
-  if (pwd.length < 8) { showErr('Password must be at least 8 characters.'); return; }
-  setLoading('signup', true);
-
-  const { data, error } = await sb.auth.signUp({ email, password: pwd, options:{ data:{ full_name:name } } });
-  if (error) {
-    const msgs = { 'User already registered':'This email is already registered. Please login.' };
-    showErr(msgs[error.message] || error.message);
-    setLoading('signup', false);
-    return;
+// Close drawer
+window.closeMenu=function(){
+  const links=document.getElementById('navLinks');
+  const ov=document.getElementById('navOverlay');
+  if(!links)return;
+  links.classList.remove('open');
+  if(ov){
+    ov.style.opacity='0';ov.style.pointerEvents='none';
+    setTimeout(()=>{ov.style.display='none';},310);
   }
-
-  // Save to customers table (unverified by default)
-  await sb.from('customers').upsert([{ email, phone, full_name:name, is_verified:false }], { onConflict:'email' });
-
-  showSuc('Account created! Please check your email to verify, then login.');
-  setLoading('signup', false);
-  setTimeout(() => window.switchTab('login'), 2000);
+  document.body.style.overflow='';
 };
 
-// ── FORGOT PASSWORD ──
-window.doForgotPassword = async () => {
-  const email = document.getElementById('loginEmail').value.trim();
-  if (!email) { showErr('Enter your email address first, then click Forgot Password.'); return; }
-  const { error } = await s
+// Mobile services sub-menu
+window.toggleMobSvc=function(parent){
+  const sub=document.getElementById('mobSvcSub');
+  const arrow=document.getElementById('mobSvcArrow');
+  const label=document.getElementById('mobSvcLabel');
+  if(!sub)return;
+  const open=sub.style.display!=='none';
+  sub.style.display=open?'none':'block';
+  if(arrow)arrow.style.transform=open?'':'rotate(180deg)';
+  if(label)label.style.color=open?'#4A4A6A':'#C9A84C';
+};
+
+// ESC
+document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeMenu();});
+
+// FAQ
+window.toggleFaq=function(el){
+  const item=el.closest('.faq-item');
+  const ans=item.querySelector('.faq-a');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(f=>{f.classList.remove('open');f.querySelector('.faq-a')?.classList.remove('open');});
+  if(!isOpen){item.classList.add('open');ans?.classList.add('open');}
+};
+
+// Scroll reveal + counters
+window.addEventListener('DOMContentLoaded',()=>{
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.pkg-card,.why-card,.testi-card,.stat-item,.faq-item,.svc-card,.what-card,.team-card,.cert-card,.award-card,.svc-item-card').forEach((el,i)=>{
+    el.style.opacity='0';el.style.transform='translateY(22px)';
+    el.style.transition=`opacity 0.5s ease ${(i%9)*0.06}s,transform 0.5s ease ${(i%9)*0.06}s`;
+    obs.observe(el);
+  });
+  const cObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const span=e.target;const text=span.textContent.trim();
+      const num=parseFloat(text.replace(/[^0-9.]/g,''));if(!num)return;
+      const sfx=text.replace(/[0-9.]/g,'').trim();let cur=0;const step=num/55;
+      const t=setInterval(()=>{cur+=step;if(cur>=num){cur=num;clearInterval(t);}span.textContent=(Number.isInteger(num)?Math.floor(cur):cur.toFixed(1))+sfx;},22);
+      cObs.unobserve(span);
+    });
+  },{threshold:0.5});
+  document.querySelectorAll('.stat-item span').forEach(s=>cObs.observe(s));
+});
