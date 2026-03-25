@@ -224,21 +224,24 @@ const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-// Check already logged in
-const existing = sessionStorage.getItem('ew_user');
-if (existing) window.location.href = 'my-bookings.html';
+// Redirect if already logged in
+if (sessionStorage.getItem('ew_user')) window.location.href = 'my-bookings.html';
 
 function showErr(msg){ const b=document.getElementById('errBox'); document.getElementById('errTxt').textContent=msg; b.classList.add('show'); document.getElementById('sucBox').classList.remove('show'); }
 function showSuc(msg){ const b=document.getElementById('sucBox'); document.getElementById('sucTxt').textContent=msg; b.classList.add('show'); document.getElementById('errBox').classList.remove('show'); }
-function clearAlerts(){ document.getElementById('errBox').classList.remove('show'); document.getElementById('sucBox').classList.remove('show'); document.getElementById('unverifiedNotice').classList.remove('show'); }
+function clearAlerts(){ document.getElementById('errBox').classList.remove('show'); document.getElementById('sucBox').classList.remove('show'); try{document.getElementById('unverifiedNotice').classList.remove('show');}catch(e){} }
 
 function setLoading(form, on){
   const btn=document.getElementById(form+'Btn');
+  if(!btn)return;
   btn.disabled=on;
-  document.getElementById(form+'Spin').style.display=on?'inline-block':'none';
-  document.getElementById(form+'Icon').style.display=on?'none':'inline';
+  const spin=document.getElementById(form+'Spin');
+  const ico=document.getElementById(form+'Icon');
+  const txt=document.getElementById(form+'Txt');
+  if(spin)spin.style.display=on?'inline-block':'none';
+  if(ico)ico.style.display=on?'none':'inline';
   const labels={login:{on:'Logging in...',off:'Login to My Account'},signup:{on:'Creating account...',off:'Create Account'}};
-  document.getElementById(form+'Txt').textContent=on?labels[form].on:labels[form].off;
+  if(txt)txt.textContent=on?labels[form].on:labels[form].off;
 }
 
 window.switchTab = (tab) => {
@@ -255,9 +258,9 @@ window.togglePwd = (id, btn) => {
   btn.querySelector('i').className=inp.type==='password'?'fa fa-eye':'fa fa-eye-slash';
 };
 
-// Check URL for signup redirect
 const urlP = new URLSearchParams(window.location.search);
 if (urlP.get('signup')==='1') window.switchTab('signup');
+const redirectUrl = urlP.get('redirect') || 'my-bookings.html';
 
 // ── LOGIN ──
 window.doLogin = async () => {
@@ -269,27 +272,38 @@ window.doLogin = async () => {
 
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
   if (error) {
-    const msgs = { 'Invalid login credentials':'Wrong email or password.', 'Email not confirmed':'Please verify your email first.' };
+    const msgs = {
+      'Invalid login credentials': 'Wrong email or password. Try again.',
+      'Email not confirmed': 'Please verify your email first. Check your inbox.',
+    };
     showErr(msgs[error.message] || error.message);
     setLoading('login', false);
     return;
   }
 
-  // Check if verified in customers table
-  const { data: customer } = await sb.from('customers').select('*').eq('email', email).single();
-  if (customer && customer.is_verified === false) {
-    document.getElementById('unverifiedNotice').classList.add('show');
-    setLoading('login', false);
-    // Still allow login but show notice
-  }
+  // Get customer profile
+  let customerName = data.user.user_metadata?.full_name || email.split('@')[0];
+  let customerPhone = '';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/customers?email=eq.${encodeURIComponent(email)}&select=*&limit=1`, {
+      headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + SUPABASE_ANON }
+    });
+    const customers = await res.json();
+    if (customers?.[0]) {
+      customerName  = customers[0].full_name || customerName;
+      customerPhone = customers[0].phone || '';
+    }
+  } catch(e) {}
 
-  // Save to session
   sessionStorage.setItem('ew_user', JSON.stringify({
-    id: data.user.id, email: data.user.email,
-    name:  customer?.full_name || data.user.email.split('@')[0],
-    phone: customer?.phone || '',
+    id: data.user.id,
+    email: data.user.email,
+    name: customerName,
+    phone: customerPhone,
+    access_token: data.session.access_token,
   }));
-  window.location.href = 'my-bookings.html';
+
+  window.location.href = decodeURIComponent(redirectUrl);
 };
 
 // ── SIGNUP ──
@@ -299,30 +313,61 @@ window.doSignup = async () => {
   const phone = document.getElementById('signupPhone').value.trim();
   const email = document.getElementById('signupEmail').value.trim();
   const pwd   = document.getElementById('signupPwd').value;
+
   if (!name)  { showErr('Please enter your full name.'); return; }
   if (!phone) { showErr('Please enter your WhatsApp number.'); return; }
-  if (!email || !/\S+@\S+\.\S+/.test(email)) { showErr('Please enter a valid email.'); return; }
+  if (!email || !/\S+@\S+\.\S+/.test(email)) { showErr('Please enter a valid email address.'); return; }
   if (pwd.length < 8) { showErr('Password must be at least 8 characters.'); return; }
   setLoading('signup', true);
 
-  const { data, error } = await sb.auth.signUp({ email, password: pwd, options:{ data:{ full_name:name } } });
+  // Create auth account
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pwd,
+    options: { data: { full_name: name } }
+  });
+
   if (error) {
-    const msgs = { 'User already registered':'This email is already registered. Please login.' };
+    const msgs = {
+      'User already registered': 'This email is already registered. Please login instead.',
+      'Password should be at least 6 characters': 'Password must be at least 8 characters.',
+    };
     showErr(msgs[error.message] || error.message);
     setLoading('signup', false);
     return;
   }
 
-  // Save to customers table (unverified by default)
-  await sb.from('customers').upsert([{ email, phone, full_name:name, is_verified:false }], { onConflict:'email' });
+  // Save to customers table via REST (no upsert, simple POST)
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/customers`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON,
+        Authorization: 'Bearer ' + SUPABASE_ANON,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates,return=minimal'
+      },
+      body: JSON.stringify({ email, phone, full_name: name })
+    });
+  } catch(e) { /* continue even if customers save fails */ }
 
   showSuc('Account created! Please check your email to verify, then login.');
   setLoading('signup', false);
-  setTimeout(() => window.switchTab('login'), 2000);
+  setTimeout(() => window.switchTab('login'), 2500);
 };
 
 // ── FORGOT PASSWORD ──
 window.doForgotPassword = async () => {
   const email = document.getElementById('loginEmail').value.trim();
   if (!email) { showErr('Enter your email address first, then click Forgot Password.'); return; }
-  const { error } = await s
+
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/auth/login.html'
+  });
+
+  if (error) { showErr('Could not send reset email: ' + error.message); return; }
+  showSuc('Password reset link sent! Check your email inbox.');
+};
+</script>
+</body>
+</html>
