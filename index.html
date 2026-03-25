@@ -278,70 +278,69 @@
         <div class="eyebrow">Our Packages</div>
         <h2>Handpicked <em>Tours</em></h2>
       </div>
-      <a href="packages.html" class="btn-ghost" style="padding:11px 22px;font-size:13px">View All <i class="fa fa-arrow-right"></i></a>
+      <a href="services.html" class="btn-ghost" style="padding:11px 22px;font-size:13px">View All <i class="fa fa-arrow-right"></i></a>
     </div>
 
-    <div class="packages-grid">
-      <!-- Umrah -->
+    <!-- Package grid — loaded from DB, fallback to static -->
+    <div class="packages-grid" id="featuredGrid">
+      <!-- Card 1: Umrah -->
       <div class="pkg-card">
         <div class="pkg-img">
-          <img src="assets/images/makarem_7.jpg" alt="Umrah Package">
+          <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80" alt="Umrah" onerror="this.src='assets/images/makarem_1.jpeg'">
           <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
         </div>
         <div class="pkg-body">
-          <h3>7 Night Umrah Package</h3>
+          <h3>7 Night Economy Umrah</h3>
           <div class="pkg-meta">
             <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
-            <span><i class="fa fa-users"></i> 4 Sharing</span>
+            <span><i class="fa fa-plane"></i> PIA Direct</span>
             <span><i class="fa fa-hotel"></i> 4★ + 5★ Hotels</span>
           </div>
           <div class="pkg-footer">
             <div class="pkg-price"><span>Rs. 85,000</span><small>per person</small></div>
-            <a href="booking.html?tour=7+Night+Umrah+Package&price=Rs.+85%2C000&duration=7N%2F8D&type=Umrah" class="btn-teal" style="padding:9px 18px;font-size:13px">Book Now</a>
+            <a href="umrah.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
           </div>
         </div>
       </div>
-
-      <!-- Dubai -->
+      <!-- Card 2: Dubai -->
       <div class="pkg-card">
         <div class="pkg-img">
-          <img src="assets/images/pullman_2.jpg" alt="Dubai Tour">
+          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Dubai" onerror="this.src='assets/images/pullman_2.jpg'">
           <span class="pkg-badge hot"><i class="fa fa-fire"></i> Hot Deal</span>
         </div>
         <div class="pkg-body">
           <h3>Dubai Premium Tour</h3>
           <div class="pkg-meta">
             <span><i class="fa fa-clock"></i> 5 Nights / 6 Days</span>
-            <span><i class="fa fa-plane"></i> Visa Included</span>
-            <span><i class="fa fa-star"></i> 4.8</span>
+            <span><i class="fa fa-passport"></i> Visa Included</span>
+            <span><i class="fa fa-star"></i> 4.8 Rated</span>
           </div>
           <div class="pkg-footer">
             <div class="pkg-price"><span>Rs. 1,20,000</span><small>per person</small></div>
-            <a href="booking.html?tour=Dubai+Premium+Tour&price=Rs.+1%2C20%2C000&duration=5N%2F6D&type=Holiday" class="btn-teal" style="padding:9px 18px;font-size:13px">Book Now</a>
+            <a href="tours.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
           </div>
         </div>
       </div>
-
-      <!-- 14 Night Umrah -->
+      <!-- Card 3: Thailand -->
       <div class="pkg-card">
         <div class="pkg-img">
-          <img src="assets/images/makarem_3.jpeg" alt="14 Night Umrah">
-          <span class="pkg-badge gold-badge"><i class="fa fa-crown"></i> Premium</span>
+          <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80" alt="Thailand" onerror="this.src='assets/images/makarem_3.jpeg'">
+          <span class="pkg-badge gold-badge"><i class="fa fa-globe"></i> World Tour</span>
         </div>
         <div class="pkg-body">
-          <h3>14 Night Umrah Package</h3>
+          <h3>Thailand Adventure</h3>
           <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 14 Nights / 15 Days</span>
-            <span><i class="fa fa-users"></i> All Sharing</span>
-            <span><i class="fa fa-star"></i> 5.0</span>
+            <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
+            <span><i class="fa fa-utensils"></i> Halal Meals</span>
+            <span><i class="fa fa-star"></i> 4.9 Rated</span>
           </div>
           <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 1,50,000</span><small>per person</small></div>
-            <a href="booking.html?tour=14+Night+Umrah+Package&price=Rs.+1%2C50%2C000&duration=14N%2F15D&type=Umrah" class="btn-teal" style="padding:9px 18px;font-size:13px">Book Now</a>
+            <div class="pkg-price"><span>Rs. 95,000</span><small>per person</small></div>
+            <a href="tours.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
           </div>
         </div>
       </div>
-    </div>
+    </div>    </div>
   </div>
 </section>
 
@@ -496,7 +495,7 @@
         <h4>Navigation</h4>
         <ul>
           <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Packages</a></li>
+          <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
           <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
           <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
           <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
@@ -505,12 +504,12 @@
       <div class="footer-links">
         <h4>Services</h4>
         <ul>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Umrah Packages</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Dubai Tours</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Thailand / Bali</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Family Packages</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
-          <li><a href="packages.html"><i class="fa fa-chevron-right"></i> Air Tickets</a></li>
+          <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah Packages</a></li>
+          <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Dubai Tours</a></li>
+          <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Thailand / Bali</a></li>
+          <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Family Packages</a></li>
+          <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+          <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Air Tickets</a></li>
         </ul>
       </div>
       <div class="footer-contact">
