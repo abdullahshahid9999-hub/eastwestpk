@@ -1,4 +1,4 @@
-/* EASTWESTPK Global JS — Final Clean Version */
+/* EASTWESTPK Global JS — Final */
 
 // Page fade
 (function(){
@@ -25,7 +25,7 @@ window.addEventListener('scroll',()=>{
   if(n)n.classList.toggle('scrolled',window.scrollY>50);
 },{passive:true});
 
-// Open drawer
+// Open mobile menu
 window.openMenu=function(){
   const links=document.getElementById('navLinks');
   const ov=document.getElementById('navOverlay');
@@ -34,48 +34,59 @@ window.openMenu=function(){
   // Show mobile-only items
   const home=document.getElementById('mlink-home');
   const contact=document.getElementById('mlink-contact');
-  const svcDesk=document.getElementById('mlink-svc-desk');
-  const svcMob=document.getElementById('mlink-svc-mob');
-  if(home){home.style.display='flex';}
-  if(contact){contact.style.display='flex';}
-  if(svcDesk){svcDesk.style.display='none';}
-  if(svcMob){svcMob.style.display='block';}
+  const desk=document.getElementById('mlink-svc-desk');
+  const mob=document.getElementById('mlink-svc-mob');
+  if(home)    { home.style.display='flex'; home.style.width='100%'; }
+  if(contact) { contact.style.display='flex'; contact.style.width='100%'; }
+  if(desk)    { desk.style.display='none'; }
+  if(mob)     { mob.style.display='block'; }
 
   links.classList.add('open');
 
   if(ov){
     ov.style.display='block';
-    requestAnimationFrame(()=>{ov.style.opacity='1';ov.style.pointerEvents='all';});
+    ov.style.position='fixed';
+    ov.style.inset='0';
+    ov.style.zIndex='8998';
+    ov.style.background='rgba(0,0,0,0.52)';
+    ov.style.pointerEvents='all';
+    requestAnimationFrame(()=>{ ov.style.opacity='1'; });
   }
   document.body.style.overflow='hidden';
 };
 
-// Close drawer
+// Close mobile menu
 window.closeMenu=function(){
   const links=document.getElementById('navLinks');
   const ov=document.getElementById('navOverlay');
   if(!links)return;
   links.classList.remove('open');
   if(ov){
-    ov.style.opacity='0';ov.style.pointerEvents='none';
-    setTimeout(()=>{ov.style.display='none';},310);
+    ov.style.opacity='0';
+    ov.style.pointerEvents='none';
+    setTimeout(()=>{ ov.style.display='none'; },320);
   }
   document.body.style.overflow='';
 };
 
-// Mobile services sub-menu
+// Close on overlay click
+window.addEventListener('DOMContentLoaded',()=>{
+  const ov=document.getElementById('navOverlay');
+  if(ov) ov.addEventListener('click',()=>window.closeMenu());
+});
+
+// Mobile services expand
 window.toggleMobSvc=function(parent){
+  parent.classList.toggle('open');
   const sub=document.getElementById('mobSvcSub');
   const arrow=document.getElementById('mobSvcArrow');
   const label=document.getElementById('mobSvcLabel');
-  if(!sub)return;
-  const open=sub.style.display!=='none';
-  sub.style.display=open?'none':'block';
-  if(arrow)arrow.style.transform=open?'':'rotate(180deg)';
-  if(label)label.style.color=open?'#4A4A6A':'#C9A84C';
+  if(sub){ sub.style.display=sub.style.display==='none'?'block':'none'; }
+  if(arrow){ arrow.style.transform=sub&&sub.style.display==='block'?'rotate(180deg)':''; }
+  if(label){ label.style.color=sub&&sub.style.display==='block'?'#C9A84C':'#4A4A6A'; }
 };
 
-// ESC
+// ESC closes menu
 document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeMenu();});
 
 // FAQ
@@ -94,7 +105,7 @@ window.addEventListener('DOMContentLoaded',()=>{
       if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}
     });
   },{threshold:0.08,rootMargin:'0px 0px -20px 0px'});
-  document.querySelectorAll('.pkg-card,.why-card,.testi-card,.stat-item,.faq-item,.svc-card,.what-card,.team-card,.cert-card,.award-card,.svc-item-card').forEach((el,i)=>{
+  document.querySelectorAll('.pkg-card,.why-card,.testi-card,.stat-item,.faq-item,.svc-card,.what-card,.team-card,.cert-card,.award-card,.svc-item-card,.visa-card,.flight-card').forEach((el,i)=>{
     el.style.opacity='0';el.style.transform='translateY(22px)';
     el.style.transition=`opacity 0.5s ease ${(i%9)*0.06}s,transform 0.5s ease ${(i%9)*0.06}s`;
     obs.observe(el);
