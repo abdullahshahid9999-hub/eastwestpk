@@ -1,158 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Now — East & West Travel Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    /* Dark theme vars for this page */
-    :root {
-      --navy:#0A1628; --navy-mid:#0F2040; --navy-light:#162847;
-      --teal:#0EA5E9; --teal-dark:#0284C7; --teal-glow:rgba(14,165,233,0.15);
-      --shadow-teal:0 8px 32px rgba(14,165,233,0.25);
-      --gold:#C9A84C; --gold-dim:rgba(201,168,76,0.12); --border-gold:rgba(201,168,76,0.3);
-      --white:#fff; --text:#E8EDF2; --text-dim:#8899AA;
-      --border:rgba(255,255,255,0.08); --border-dark:rgba(255,255,255,0.08);
-      --radius:12px; --radius-lg:20px;
-      --green:#10B981; --red:#EF4444;
-    }
-    body { background: #0A1628; color: #E8EDF2; padding-top:0; }
-    .page-hero { background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy) 100%); padding: 120px 0 60px; text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
-    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.07) 0%, transparent 70%); }
-    .page-hero h1 { font-size: clamp(30px, 4vw, 48px); color: var(--white); position: relative; }
-    .page-hero p { color: var(--text-dim); margin-top: 10px; font-size: 14px; position: relative; }
-    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-dim); margin-top: 14px; position: relative; }
-    .breadcrumb a { color: var(--teal); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Now — East & West Travel Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* Override body bg for this dark page */
+:root{
+  --nb:#0A1628;--nm:#0F2040;--nl:#162847;
+  --tl:#0EA5E9;--tld:#0284C7;--tlg:rgba(14,165,233,0.15);
+  --go:#C9A84C;--gd:rgba(201,168,76,0.12);--gb:rgba(201,168,76,0.3);
+  --bd:rgba(255,255,255,0.08);--tx:#E8EDF2;--txd:#8899AA;
+  --re:#EF4444;--gr:#10B981;
+}
+body{background:var(--nb);color:var(--tx);padding-top:68px}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif}
 
-    /* STEPS */
-    .steps-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 44px; flex-wrap: wrap; }
-    .step-item { display: flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 50px; font-size: 13px; font-weight: 600; color: var(--text-dim); background: var(--navy-light); border: 1px solid var(--border); transition: all 0.3s; }
-    .step-item.active { background: var(--teal); color: white; border-color: var(--teal); box-shadow: var(--shadow-teal); }
-    .step-item.done { color: var(--gold); border-color: var(--border-gold); background: var(--navy-light); }
-    .step-num { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
-    .step-item.active .step-num { background: rgba(255,255,255,0.25); }
-    .step-item.done .step-num { background: var(--gold-dim); color: var(--gold); }
+/* STEPS */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:40px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;color:var(--txd);background:var(--nl);border:1px solid var(--bd);font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+.step.active{background:var(--tl);color:#fff;border-color:var(--tl);box-shadow:0 4px 20px rgba(14,165,233,0.3)}
+.step.done{color:var(--go);border-color:var(--gb)}
+.step-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.step.active .step-num{background:rgba(255,255,255,0.25)}
+.step.done .step-num{background:var(--gd);color:var(--go)}
+.step-sep{width:40px;height:1px;background:var(--bd);flex-shrink:0}
 
-    /* LAYOUT */
-    .booking-layout { display: grid; grid-template-columns: 1fr 340px; gap: 28px; align-items: start; }
-    @media(max-width:900px) { .booking-layout { grid-template-columns: 1fr; } }
+/* LAYOUT */
+.bk-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
+@media(max-width:900px){.bk-layout{grid-template-columns:1fr}}
 
-    /* FORM CARD */
-    .form-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; }
-    .form-card h3 { font-size: 22px; color: var(--white); margin-bottom: 6px; }
-    .form-card > p { color: var(--text-dim); font-size: 13.5px; margin-bottom: 26px; }
-    .sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 7px; }
-    .form-sec { margin-bottom: 28px; }
-    .fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .fg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-    .col-full { grid-column: 1/-1; }
-    .fg { display: flex; flex-direction: column; gap: 6px; }
-    .fg label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); }
-    .fg label .req { color: var(--gold); }
-    .fg input, .fg select, .fg textarea { background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--white); outline: none; transition: all 0.3s; }
-    .fg input::placeholder { color: var(--text-dim); opacity: 0.6; }
-    .fg input:focus, .fg select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
-    .fg input.err { border-color: #EF4444; }
-    .field-err { font-size: 11px; color: #EF4444; display: none; margin-top: 2px; }
-    .field-err.show { display: block; }
-    option { background: #0F2040; }
-    .fg textarea { resize: vertical; min-height: 80px; }
+/* CARD */
+.bk-card{background:var(--nl);border:1px solid var(--bd);border-radius:18px;padding:28px;margin-bottom:20px}
+.bk-card h3{font-size:22px;color:#fff;margin-bottom:6px}
+.bk-card>p{font-size:13px;color:var(--txd);margin-bottom:22px}
+.sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--tl);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px}
 
-    /* PAX COUNTER */
-    .pax-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
-    .pax-box { background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
-    .pax-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 3px; }
-    .pax-sub { font-size: 10px; color: var(--text-dim); opacity: 0.6; margin-bottom: 10px; }
-    .pax-counter { display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .pax-btn { width: 30px; height: 30px; border-radius: 7px; border: 1.5px solid var(--border); background: none; color: var(--white); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; line-height: 1; }
-    .pax-btn:hover { border-color: var(--teal); color: var(--teal); }
-    .pax-val { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--white); min-width: 28px; text-align: center; }
+/* FORM */
+.fg{margin-bottom:15px}
+.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--txd);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.fg input,.fg select{width:100%;background:var(--nm);border:1.5px solid var(--bd);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:#fff;outline:none;transition:all 0.3s}
+.fg input::placeholder{color:var(--txd);opacity:0.6}
+.fg input:focus,.fg select:focus{border-color:var(--tl);box-shadow:0 0 0 3px var(--tlg)}
+.fg select option{background:#0F2040;color:#fff}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.trav-card{background:var(--nm);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px}
+.trav-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px;font-size:14px;font-weight:700;color:var(--go)}
+.trav-card-hdr i{width:28px;height:28px;background:var(--gd);border:1px solid var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
 
-    /* TRAVELER CARD */
-    .trav-card { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 14px; }
-    .trav-card-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .trav-badge { padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    .trav-badge.adult  { background: var(--teal-glow); color: var(--teal); border: 1px solid rgba(14,165,233,0.3); }
-    .trav-badge.child  { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border-gold); }
-    .trav-badge.infant { background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid rgba(16,185,129,0.3); }
+/* PAX COUNTER */
+.pax-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bd)}
+.pax-row:last-child{border-bottom:none}
+.pax-info h4{font-size:15px;color:#fff;font-family:'Cormorant Garamond',serif}
+.pax-info p{font-size:12px;color:var(--txd);margin-top:2px}
+.pax-ctrl{display:flex;align-items:center;gap:10px}
+.pax-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--bd);background:var(--nm);color:var(--txd);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.pax-btn:hover{border-color:var(--go);color:var(--go)}
+.pax-num{font-size:18px;font-weight:700;color:#fff;min-width:24px;text-align:center;font-family:'Cormorant Garamond',serif}
 
-    /* LOGGED IN BANNER */
-    .user-banner { background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(14,165,233,0.04)); border: 1px solid rgba(14,165,233,0.2); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
-    .user-banner-ico { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-glow); border: 2px solid rgba(14,165,233,0.3); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--teal); flex-shrink: 0; font-weight: 700; }
-    .user-banner p { font-size: 13.5px; color: var(--white); }
-    .user-banner small { color: var(--text-dim); font-size: 12px; }
+/* SUMMARY CARD */
+.sum-card{background:var(--nm);border:1px solid var(--bd);border-radius:18px;overflow:hidden;position:sticky;top:90px}
+.sum-img{height:160px;overflow:hidden;position:relative}
+.sum-img img{width:100%;height:100%;object-fit:cover}
+.sum-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(10,22,40,0.9))}
+.sum-body{padding:20px}
+.sum-title{font-size:20px;color:#fff;margin-bottom:14px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.sum-row:last-of-type{border-bottom:none}
+.sum-row span:first-child{color:var(--txd)}
+.sum-row span:last-child{color:#fff;font-weight:600;text-align:right;max-width:160px}
+.sum-price{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--go);font-weight:700;margin-top:14px;padding-top:14px;border-top:1px solid var(--bd)}
+.sum-price small{display:block;font-size:12px;color:var(--txd);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400}
 
-    /* GUEST BANNER */
-    .guest-banner { background: var(--navy-mid); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-    .guest-banner p { font-size: 13px; color: var(--text-dim); }
-    .guest-banner strong { color: var(--gold); }
+/* BUTTONS */
+.btn-next{width:100%;background:var(--tl);color:#fff;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.3s}
+.btn-next:hover{background:var(--tld);transform:translateY(-1px)}
+.btn-back{background:none;border:1px solid var(--bd);color:var(--txd);padding:11px 20px;border-radius:10px;font-size:13px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.btn-back:hover{border-color:#fff;color:#fff}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--go),#E8C97A);color:var(--nb);border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.3s}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(201,168,76,0.35)}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 
-    /* TERMS */
-    .terms-row { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; }
-    .terms-row input[type="checkbox"] { margin-top: 3px; accent-color: var(--teal); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
-    .terms-row label { font-size: 13px; color: var(--text-dim); cursor: pointer; line-height: 1.5; }
-    .terms-row a { color: var(--teal); }
+/* TERMS */
+.terms-row{display:flex;align-items:flex-start;gap:10px;margin-top:16px;font-size:13px;color:var(--txd)}
+.terms-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--go);flex-shrink:0;margin-top:2px;cursor:pointer}
+.terms-row a{color:var(--go)}
 
-    /* SUMMARY CARD */
-    .summary-card { background: var(--navy-light); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 24px; position: sticky; top: 90px; }
-    .summary-card h4 { font-size: 17px; color: var(--white); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-    .summary-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; margin-bottom: 16px; display: none; }
-    .sum-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 9px; font-size: 13px; gap: 8px; }
-    .sum-row span:first-child { color: var(--text-dim); flex-shrink: 0; }
-    .sum-row span:last-child { font-weight: 600; color: var(--white); text-align: right; }
-    .sum-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
-    .sum-price { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--gold); font-weight: 700; text-align: right; }
-    .info-box { background: var(--navy-mid); border-radius: 10px; padding: 12px 14px; font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 14px; }
-    .info-box i { color: var(--teal); margin-right: 4px; }
+/* SUCCESS */
+.success-box{text-align:center;padding:60px 20px;display:none}
+.success-icon{width:80px;height:80px;background:rgba(16,185,129,0.12);border:2px solid rgba(16,185,129,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;color:#10B981}
+.ref-badge{display:inline-block;background:var(--gd);border:1px solid var(--gb);color:var(--go);padding:10px 24px;border-radius:8px;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif;margin:16px 0}
 
-    /* SUCCESS */
-    .success-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 56px 40px; text-align: center; max-width: 640px; margin: 0 auto; }
-    .success-ico { width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, #10B981, #059669); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 36px; color: white; box-shadow: 0 12px 32px rgba(16,185,129,0.35); }
-    .success-card h2 { font-size: 30px; color: var(--white); margin-bottom: 10px; }
-    .success-card p { color: var(--text-dim); font-size: 14.5px; line-height: 1.7; margin-bottom: 28px; }
-    .ref-badge { background: var(--navy-mid); border: 1px solid var(--border-gold); border-radius: 10px; padding: 12px 20px; display: inline-block; font-family: 'Courier New', monospace; font-size: 18px; font-weight: 700; color: var(--gold); letter-spacing: 2px; margin-bottom: 28px; }
+/* Guest banner */
+.guest-strip{background:var(--nm);border:1px solid var(--gb);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.guest-strip p{font-size:13px;color:var(--txd);}
+.guest-strip strong{color:var(--go)}
+.guest-strip a{font-size:12px;background:var(--gd);border:1px solid var(--gb);color:var(--go);padding:6px 14px;border-radius:7px;text-decoration:none;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
 
-    /* BANK CARDS */
-    .bank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; text-align: left; }
-    @media(max-width:580px) { .bank-grid { grid-template-columns: 1fr; } }
-    .bank-card { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
-    .bank-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .bank-ico { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: white; flex-shrink: 0; }
-    .bank-nm { font-size: 13px; font-weight: 700; color: var(--white); }
-    .bank-nm small { display: block; font-size: 11px; color: var(--text-dim); font-weight: 400; }
-    .bf { margin-bottom: 8px; }
-    .bf-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 2px; }
-    .bf-row { display: flex; align-items: center; gap: 6px; }
-    .bf-val { font-size: 12px; font-weight: 600; color: var(--white); font-family: 'Courier New', monospace; flex: 1; word-break: break-all; }
-    .cp-btn { background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.25); color: var(--teal); padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
-    .cp-btn:hover { background: var(--teal); color: white; }
-    .cp-btn.copied { background: rgba(16,185,129,0.2); color: #10B981; }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media(max-width:600px) { .form-card { padding: 22px 18px; } .fg2 { grid-template-columns: 1fr; } .fg3 { grid-template-columns: 1fr; } .pax-grid { grid-template-columns: 1fr; } }
-  </style>
+@media(max-width:640px){.fg-row{grid-template-columns:1fr}.steps{gap:4px}.step-sep{width:16px}.step{padding:8px 12px;font-size:12px}}
+</style>
 </head>
 <body>
 
+<!-- NAVBAR -->
 <div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
-<nav class="navbar" id="navbar">
+<nav class="navbar" id="navbar" style="background:#060E1A;box-shadow:0 1px 0 rgba(255,255,255,0.08)">
   <a href="index.html" class="nav-logo">
-    <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
-    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
+    <img src="assets/images/logo.jpg" alt="Logo" onerror="this.style.display='none'">
+    <span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span> Travels</span>
   </a>
-
   <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
-
-    <!-- Desktop+Mobile: shown via JS in mobile -->
-    <a href="index.html" id="mlink-home">Home</a>
-
-    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html" id="mlink-home" style="color:rgba(255,255,255,0.6)">Home</a>
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="services.html" style="color:rgba(255,255,255,0.6)">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
@@ -160,8 +124,6 @@
         <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
       </div>
     </div>
-
-    <!-- Mobile: services expand -->
     <div id="mlink-svc-mob" style="display:none">
       <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
         <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
@@ -174,455 +136,492 @@
         <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
-
-    <a href="about.html">About</a>
-    <a href="contact.html" id="mlink-contact">Contact</a>
-
+    <a href="about.html" style="color:rgba(255,255,255,0.6)" id="mlink-contact">About</a>
     <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+    <a href="services.html" class="nav-cta">Book Now</a>
   </div>
-
-  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
-<div class="page-hero">
-  <div class="container">
-    <h1>Complete Your <em>Booking</em></h1>
-    <p>Fill traveler details — we confirm within 24 hours</p>
-    <div class="breadcrumb"><a href="index.html">Home</a> <i class="fa fa-chevron-right" style="font-size:9px"></i> <a href="packages.html">Packages</a> <i class="fa fa-chevron-right" style="font-size:9px"></i> <span>Book Now</span></div>
+<!-- PAGE HERO -->
+<div style="background:linear-gradient(135deg,#060E1A,var(--nm));border-bottom:1px solid var(--bd);padding:44px 0 32px;text-align:center">
+  <div style="font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--go);margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-calendar-check" style="margin-right:6px"></i> Secure Booking</div>
+  <h1 id="pageTitle" style="font-size:clamp(28px,4vw,44px);color:#fff">Complete Your <em style="color:var(--go)">Booking</em></h1>
+  <div style="display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;color:var(--txd);margin-top:12px">
+    <a href="index.html" style="color:var(--tl)">Home</a>
+    <i class="fa fa-chevron-right" style="font-size:9px"></i>
+    <span>Booking</span>
   </div>
 </div>
 
-<section class="section" style="padding-top:52px">
-  <div class="container">
+<div style="max-width:1160px;margin:0 auto;padding:36px 20px">
 
-    <div class="steps-bar">
-      <div class="step-item active" id="step1-tab"><span class="step-num">1</span> Traveler Details</div>
-      <div class="step-item" id="step2-tab"><span class="step-num">2</span> Confirm & Pay</div>
-    </div>
-
-    <!-- BOOKING FORM -->
-    <div id="bookingFlow">
-      <div class="booking-layout">
-
-        <!-- LEFT -->
-        <div>
-
-          <!-- STEP 1 -->
-          <div id="step1">
-
-            <!-- User banner -->
-            <div id="userBanner" style="display:none"></div>
-
-            <!-- Guest contact section -->
-            <div class="form-card" id="guestContactCard" style="margin-bottom:20px;display:none">
-              <div class="sec-title"><i class="fa fa-phone"></i> Your Contact Details</div>
-              <div class="fg2">
-                <div class="fg">
-                  <label>First Name <span class="req">*</span></label>
-                  <input type="text" id="guestFName" placeholder="Muhammad">
-                </div>
-                <div class="fg">
-                  <label>Last Name <span class="req">*</span></label>
-                  <input type="text" id="guestLName" placeholder="Ali">
-                </div>
-                <div class="fg">
-                  <label>Phone / WhatsApp <span class="req">*</span></label>
-                  <input type="tel" id="guestPhone" placeholder="+92 3XX XXXXXXX">
-                </div>
-                <div class="fg">
-                  <label>Email Address <span class="req">*</span></label>
-                  <input type="email" id="guestEmail" placeholder="email@example.com">
-                </div>
-              </div>
-            </div>
-
-            <!-- PAX -->
-            <div class="form-card" style="margin-bottom:20px">
-              <div class="sec-title"><i class="fa fa-users"></i> Number of Travelers</div>
-              <div class="pax-grid">
-                <div class="pax-box">
-                  <div class="pax-label">Adults</div>
-                  <div class="pax-sub">Age 12+</div>
-                  <div class="pax-counter">
-                    <button class="pax-btn" onclick="changePax('adults',-1)">−</button>
-                    <div class="pax-val" id="pax-adults-val">1</div>
-                    <button class="pax-btn" onclick="changePax('adults',1)">+</button>
-                  </div>
-                </div>
-                <div class="pax-box">
-                  <div class="pax-label">Children</div>
-                  <div class="pax-sub">Age 2–11</div>
-                  <div class="pax-counter">
-                    <button class="pax-btn" onclick="changePax('children',-1)">−</button>
-                    <div class="pax-val" id="pax-children-val">0</div>
-                    <button class="pax-btn" onclick="changePax('children',1)">+</button>
-                  </div>
-                </div>
-                <div class="pax-box">
-                  <div class="pax-label">Infants</div>
-                  <div class="pax-sub">Age 0–1</div>
-                  <div class="pax-counter">
-                    <button class="pax-btn" onclick="changePax('infants',-1)">−</button>
-                    <div class="pax-val" id="pax-infants-val">0</div>
-                    <button class="pax-btn" onclick="changePax('infants',1)">+</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Room preference -->
-            <div class="form-card" style="margin-bottom:20px">
-              <div class="sec-title"><i class="fa fa-bed"></i> Room Preference</div>
-              <div class="fg">
-                <label>Room Type</label>
-                <select id="roomType">
-                  <option value="4 Sharing">4 Sharing (Most Economical)</option>
-                  <option value="3 Sharing">3 Sharing</option>
-                  <option value="Double Room">Double Room</option>
-                  <option value="Single Room">Single Room (Premium)</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Traveler passport details -->
-            <div class="form-card" style="margin-bottom:20px">
-              <div class="sec-title"><i class="fa fa-id-card"></i> Passport Details — All Travelers</div>
-              <p style="font-size:13px;color:var(--text-dim);margin-bottom:18px">Enter details exactly as per passport.</p>
-              <div id="travelerCards"></div>
-            </div>
-
-            <!-- Extra info -->
-            <div class="form-card">
-              <div class="sec-title"><i class="fa fa-comment-alt"></i> Additional Information</div>
-              <div class="fg2" style="margin-bottom:14px">
-                <div class="fg">
-                  <label>Contact Preference</label>
-                  <select id="contactPref">
-                    <option>WhatsApp (Fastest)</option>
-                    <option>Phone Call</option>
-                    <option>Email</option>
-                  </select>
-                </div>
-                <div class="fg">
-                  <label>Meal Preference</label>
-                  <select id="mealPref">
-                    <option>Halal (Default)</option>
-                    <option>Vegetarian</option>
-                    <option>No Preference</option>
-                  </select>
-                </div>
-              </div>
-              <div class="fg">
-                <label>Special Requests</label>
-                <textarea id="specialReq" placeholder="Wheelchair access, medical conditions, room preferences..."></textarea>
-              </div>
-
-              <div class="terms-row">
-                <input type="checkbox" id="termsCheck">
-                <label for="termsCheck">I agree to the <a href="about.html">Booking Terms & Conditions</a>. I understand 50% advance payment is required to confirm this booking.</label>
-              </div>
-
-              <button style="width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:white;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.3s;margin-top:4px" onclick="submitBooking()" id="submitBtn">
-                <span style="display:none;width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite" id="submitSpinner"></span>
-                <i class="fa fa-check-circle" id="submitIco"></i>
-                <span id="submitTxt">Confirm Booking</span>
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- RIGHT: SUMMARY -->
-        <div>
-          <div class="summary-card">
-            <h4><i class="fa fa-receipt" style="color:var(--gold);margin-right:8px"></i> Booking Summary</h4>
-            <img id="summaryImg" src="" alt="">
-            <div class="sum-row"><span>Package</span><span id="sumPackage">—</span></div>
-            <div class="sum-row"><span>Type</span><span id="sumType">—</span></div>
-            <div class="sum-row"><span>Duration</span><span id="sumDuration">—</span></div>
-            <div class="sum-row"><span>Departure</span><span id="sumDep">—</span></div>
-            <div class="sum-row"><span>Return</span><span id="sumRet">—</span></div>
-            <div class="sum-row"><span>Flight</span><span id="sumFlight">—</span></div>
-            <hr class="sum-divider">
-            <div class="sum-row"><span>Adults</span><span id="sumAdults">1</span></div>
-            <div class="sum-row"><span>Children</span><span id="sumChildren">0</span></div>
-            <div class="sum-row"><span>Infants</span><span id="sumInfants">0</span></div>
-            <div class="sum-row"><span>Room</span><span id="sumRoom">4 Sharing</span></div>
-            <hr class="sum-divider">
-            <div style="text-align:right"><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Package Price</div><div class="sum-price" id="sumPrice">—</div></div>
-            <div class="info-box">
-              <i class="fa fa-info-circle"></i> 50% advance required to confirm. Send payment proof on WhatsApp.
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- SUCCESS -->
-    <div id="bookingSuccess" style="display:none">
-      <div class="success-card">
-        <div class="success-ico"><i class="fa fa-check"></i></div>
-        <h2>Booking <em>Submitted!</em></h2>
-        <p>Your booking request has been received. Our team will confirm within <strong style="color:var(--gold)">24 hours</strong>.</p>
-        <div class="ref-badge" id="refBadge">EW-XXXXXX</div>
-        <p style="margin-bottom:20px">To confirm your booking, please transfer <strong style="color:var(--gold)">50% advance</strong> to any of the accounts below and send proof on WhatsApp.</p>
-
-        <div class="bank-grid">
-          <div class="bank-card"><div class="bank-hdr"><div class="bank-ico" style="background:linear-gradient(135deg,#00695C,#00897B)">M</div><div class="bank-nm">Meezan Bank<small>Islamic Banking</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0401 0101810050</span><button class="cp-btn" onclick="cp(this,'04010101810050')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK30MEZN0004010101810050</span><button class="cp-btn" onclick="cp(this,'PK30MEZN0004010101810050')">Copy</button></div></div></div>
-          <div class="bank-card"><div class="bank-hdr"><div class="bank-ico" style="background:linear-gradient(135deg,#0066CC,#0088FF)">A</div><div class="bank-nm">Bank Alfalah<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0106 001004974807</span><button class="cp-btn" onclick="cp(this,'0106001004974807')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK95ALFH0106001004974807</span><button class="cp-btn" onclick="cp(this,'PK95ALFH0106001004974807')">Copy</button></div></div></div>
-          <div class="bank-card"><div class="bank-hdr"><div class="bank-ico" style="background:linear-gradient(135deg,#1a237e,#283593)">H</div><div class="bank-nm">HBL<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">0611 7900354703</span><button class="cp-btn" onclick="cp(this,'06117900354703')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK75HABB0006117900354703</span><button class="cp-btn" onclick="cp(this,'PK75HABB0006117900354703')">Copy</button></div></div></div>
-          <div class="bank-card"><div class="bank-hdr"><div class="bank-ico" style="background:linear-gradient(135deg,#b71c1c,#c62828)">U</div><div class="bank-nm">UBL<small>Conventional</small></div></div><div class="bf"><span class="bf-lbl">Account Title</span><div class="bf-row"><span class="bf-val">East & West Travel Services</span><button class="cp-btn" onclick="cp(this,'East & West Travel Services')">Copy</button></div></div><div class="bf"><span class="bf-lbl">Account No</span><div class="bf-row"><span class="bf-val">1487 4003806673</span><button class="cp-btn" onclick="cp(this,'14874003806673')">Copy</button></div></div><div class="bf"><span class="bf-lbl">IBAN</span><div class="bf-row"><span class="bf-val">PK81UNIL011487003806673</span><button class="cp-btn" onclick="cp(this,'PK81UNIL011487003806673')">Copy</button></div></div></div>
-        </div>
-
-        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I've+submitted+my+booking+and+made+the+advance+payment." class="btn-gold" target="_blank" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:13px 28px;border-radius:50px;background:linear-gradient(135deg,var(--gold),#B8860B);color:#0A1628;font-weight:700;font-size:14px;margin-bottom:20px"><i class="fab fa-whatsapp"></i> Send Payment Proof on WhatsApp</a>
-        <br>
-        <a href="packages.html" style="font-size:13px;color:var(--teal)"><i class="fa fa-arrow-left"></i> Back to Packages</a>
-      </div>
-    </div>
-
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step active" id="st1"><div class="step-num">1</div> Travellers</div>
+    <div class="step-sep"></div>
+    <div class="step" id="st2"><div class="step-num">2</div> Details</div>
+    <div class="step-sep"></div>
+    <div class="step" id="st3"><div class="step-num">3</div> Confirm</div>
   </div>
-</section>
 
-<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  <div class="bk-layout">
+    <div>
+
+      <!-- ══ STEP 1: PAX COUNT ══ -->
+      <div id="step1">
+        <div class="bk-card">
+          <h3><i class="fa fa-users" style="color:var(--tl);margin-right:10px"></i>How Many Travellers?</h3>
+          <p>Select number of adults, children and infants for this booking.</p>
+          <div class="pax-row">
+            <div class="pax-info"><h4>Adults</h4><p>Age 12 and above</p></div>
+            <div class="pax-ctrl">
+              <button class="pax-btn" onclick="changePax('a',-1)">−</button>
+              <div class="pax-num" id="paxA">1</div>
+              <button class="pax-btn" onclick="changePax('a',1)">+</button>
+            </div>
+          </div>
+          <div class="pax-row">
+            <div class="pax-info"><h4>Children</h4><p>Age 2–11</p></div>
+            <div class="pax-ctrl">
+              <button class="pax-btn" onclick="changePax('c',-1)">−</button>
+              <div class="pax-num" id="paxC">0</div>
+              <button class="pax-btn" onclick="changePax('c',1)">+</button>
+            </div>
+          </div>
+          <div class="pax-row">
+            <div class="pax-info"><h4>Infants</h4><p>Under 2 years</p></div>
+            <div class="pax-ctrl">
+              <button class="pax-btn" onclick="changePax('i',-1)">−</button>
+              <div class="pax-num" id="paxI">0</div>
+              <button class="pax-btn" onclick="changePax('i',1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guest/Login check -->
+        <div id="guestStripBox"></div>
+
+        <!-- Contact (guest only) -->
+        <div class="bk-card" id="guestContactCard" style="display:none">
+          <h3>Your Contact Info</h3>
+          <p>As a guest — we'll use this to confirm your booking.</p>
+          <div class="fg-row">
+            <div class="fg"><label>First Name *</label><input type="text" id="gFn" placeholder="Muhammad"></div>
+            <div class="fg"><label>Last Name *</label><input type="text" id="gLn" placeholder="Ali"></div>
+          </div>
+          <div class="fg"><label>WhatsApp Number *</label><input type="tel" id="gPh" placeholder="+92 3XX XXXXXXX"></div>
+          <div class="fg"><label>Email *</label><input type="email" id="gEm" placeholder="email@example.com"></div>
+        </div>
+
+        <button class="btn-next" onclick="goStep2()">
+          Continue <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- ══ STEP 2: TRAVELLER DETAILS ══ -->
+      <div id="step2" style="display:none">
+        <div id="travForms"></div>
+        <div style="display:flex;gap:12px;margin-top:4px">
+          <button class="btn-back" onclick="goStep1()"><i class="fa fa-arrow-left"></i> Back</button>
+          <button class="btn-next" style="flex:1" onclick="goStep3()">Review Booking <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 3: CONFIRM ══ -->
+      <div id="step3" style="display:none">
+        <div class="bk-card">
+          <h3>Booking <em style="color:var(--go)">Review</em></h3>
+          <p>Please review all details before confirming.</p>
+
+          <div class="sec-lbl"><i class="fa fa-user"></i> Contact Information</div>
+          <div id="reviewContact" style="margin-bottom:20px"></div>
+
+          <div class="sec-lbl"><i class="fa fa-users"></i> Traveller Details</div>
+          <div id="reviewTravellers" style="margin-bottom:20px"></div>
+
+          <div class="sec-lbl"><i class="fa fa-sliders-h"></i> Preferences</div>
+          <div class="fg-row">
+            <div class="fg"><label>Room Type</label>
+              <select id="roomType">
+                <option>Quad Sharing (4)</option>
+                <option>Triple Sharing (3)</option>
+                <option>Double Sharing (2)</option>
+                <option>Single Room</option>
+              </select>
+            </div>
+            <div class="fg"><label>Meal Preference</label>
+              <select id="mealPref">
+                <option>Halal — Standard</option>
+                <option>Vegetarian</option>
+                <option>No Preference</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>Special Requests (optional)</label>
+            <input type="text" id="specReq" placeholder="Wheelchair, medical needs, adjacent rooms...">
+          </div>
+        </div>
+
+        <div class="terms-row">
+          <input type="checkbox" id="termsChk">
+          <label for="termsChk" style="cursor:pointer">I agree to the <a href="#" style="color:var(--go)">Terms & Conditions</a> and confirm all information is accurate.</label>
+        </div>
+
+        <div id="bkErr" style="display:none;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:12px 16px;font-size:13px;color:#FCA5A5;margin-top:14px"></div>
+
+        <div style="display:flex;gap:12px;margin-top:16px">
+          <button class="btn-back" onclick="goStep2()"><i class="fa fa-arrow-left"></i> Back</button>
+          <button class="btn-submit" style="flex:1" id="submitBtn" onclick="submitBooking()">
+            <span id="submitIco"><i class="fa fa-check-circle"></i></span>
+            <span class="spin" id="submitSpin"></span>
+            <span id="submitTxt">Confirm Booking</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ SUCCESS ══ -->
+      <div class="success-box" id="successBox">
+        <div class="success-icon"><i class="fa fa-check"></i></div>
+        <h2 style="font-size:32px;color:#fff;margin-bottom:10px">Booking <em style="color:#10B981">Confirmed!</em></h2>
+        <p style="color:var(--txd);max-width:400px;margin:0 auto 20px">Your booking has been submitted. Our team will contact you within 2 hours on WhatsApp.</p>
+        <div class="ref-badge" id="refBadge">EW-XXXXXX</div>
+        <p style="font-size:13px;color:var(--txd);margin-top:8px;margin-bottom:28px">Save this reference number for tracking</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a id="waConfirmBtn" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;padding:13px 24px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif"><i class="fab fa-whatsapp" style="font-size:17px"></i> WhatsApp Team</a>
+          <a href="index.html" style="display:inline-flex;align-items:center;gap:9px;background:var(--nl);border:1px solid var(--bd);color:var(--txd);padding:13px 22px;border-radius:10px;font-size:14px;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-home"></i> Back to Home</a>
+        </div>
+      </div>
+
+    </div><!-- /left col -->
+
+    <!-- SUMMARY SIDEBAR -->
+    <div>
+      <div class="sum-card" id="summaryCard">
+        <div class="sum-img">
+          <img id="sumImg" src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80" alt="Package">
+        </div>
+        <div class="sum-body">
+          <div class="sum-title" id="sumTitle">Your Package</div>
+          <div class="sum-row"><span>Tour</span><span id="sumTour">—</span></div>
+          <div class="sum-row"><span>Duration</span><span id="sumDur">—</span></div>
+          <div class="sum-row"><span>Departure</span><span id="sumDep">—</span></div>
+          <div class="sum-row"><span>Return</span><span id="sumRet">—</span></div>
+          <div class="sum-row"><span>Airline</span><span id="sumFlight">—</span></div>
+          <div class="sum-row"><span>Travellers</span><span id="sumPax">1 Adult</span></div>
+          <div class="sum-price" id="sumPrice">—<small>price per person</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
 
 <script src="assets/js/script.js"></script>
 <script>
-const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
-const sb = { from: (t) => ({ select: async(f) => { const r = await fetch('https://bciqlmvheqlsmogpnmal.supabase.co/rest/v1/' + t + '?select=' + (f||'*'), { headers: { apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o', Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o' } }); return { data: await r.json(), error: null }; }, insert: async(rows) => { const r = await fetch('https://bciqlmvheqlsmogpnmal.supabase.co/rest/v1/' + t, { method: 'POST', headers: { apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o', Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o', 'Content-Type': 'application/json', Prefer: 'return=representation' }, body: JSON.stringify(rows[0]) }); return { data: await r.json(), error: null }; } }) }, auth: { getSession: async() => ({ data: { session: JSON.parse(sessionStorage.getItem('ew_user') || 'null') }, error: null }), signOut: async() => { sessionStorage.clear(); } } };
+const SUPA = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const WA = '923336515349';
+
 // ── GET URL PARAMS ──
-const p = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 const PKG = {
-  title:    p.get('tour')     || '',
-  duration: p.get('duration') || '',
-  price:    p.get('price')    || '',
-  type:     p.get('type')     || '',
-  dep:      p.get('dep')      || 'Contact Us',
-  ret:      p.get('ret')      || 'Fixed Departure',
-  flight:   p.get('flight')   || '',
-  img:      p.get('img')      || '',
-  isLogged: p.get('logged')   === '1',
-  isGuest:  p.get('guest')    === '1',
+  tour:     params.get('tour')     || 'Travel Package',
+  price:    params.get('price')    || '',
+  duration: params.get('duration') || '',
+  dep:      params.get('dep')      || '',
+  ret:      params.get('ret')      || '',
+  flight:   params.get('flight')   || '',
+  img:      params.get('img')      || '',
+  type:     params.get('type')     || '',
 };
 
-// ── CHECK AUTH (sync - no await needed) ──
-const _storedUser = JSON.parse(sessionStorage.getItem('ew_user') || 'null');
-const loggedIn = !!_storedUser;
-const user = _storedUser ? { email: _storedUser.email, id: _storedUser.id, user_metadata: { full_name: _storedUser.name } } : null;
+// Fill summary
+document.getElementById('sumTour').textContent   = PKG.tour;
+document.getElementById('sumDur').textContent    = PKG.duration || '—';
+document.getElementById('sumDep').textContent    = PKG.dep      || '—';
+document.getElementById('sumRet').textContent    = PKG.ret      || '—';
+document.getElementById('sumFlight').textContent = PKG.flight   || '—';
+document.getElementById('sumPrice').innerHTML    = (PKG.price||'Contact Us')+'<small>price per person</small>';
+document.getElementById('pageTitle').innerHTML   = 'Book: <em style="color:var(--go)">'+PKG.tour+'</em>';
+if (PKG.img) document.getElementById('sumImg').src = PKG.img;
 
-// ── FILL SUMMARY ──
-document.getElementById('sumPackage').textContent  = PKG.title    || '—';
-document.getElementById('sumType').textContent     = PKG.type     || '—';
-document.getElementById('sumDuration').textContent = PKG.duration || '—';
-document.getElementById('sumDep').textContent      = PKG.dep;
-document.getElementById('sumRet').textContent      = PKG.ret;
-document.getElementById('sumFlight').textContent   = PKG.flight   || '—';
-document.getElementById('sumPrice').textContent    = PKG.price    || '—';
-if (PKG.img) {
-  const img = document.getElementById('summaryImg');
-  img.src = PKG.img; img.style.display = 'block';
-}
+// ── AUTH CHECK ──
+const storedUser = JSON.parse(sessionStorage.getItem('ew_user') || 'null');
+const loggedIn   = !!storedUser;
 
-// ── SHOW USER BANNER or GUEST CONTACT FORM ──
 if (loggedIn) {
-  const savedProfile = JSON.parse(sessionStorage.getItem('ew_profile') || '{}');
-  const name = savedProfile.name || user.user_metadata?.full_name || user.email.split('@')[0];
-  const initials = name.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('userBanner').style.display = 'flex';
-  document.getElementById('userBanner').innerHTML = `
-    <div class="user-banner">
-      <div class="user-banner-ico">${initials}</div>
-      <div>
-        <p style="margin:0"><strong>${name}</strong> — booking as logged-in user</p>
-        <small>${user.email}</small>
-      </div>
+  const initials = (storedUser.name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('guestStripBox').innerHTML = `
+    <div class="guest-strip" style="border-color:rgba(14,165,233,0.3)">
+      <p>Logged in as <strong style="color:var(--tl)">${storedUser.name}</strong> (${storedUser.email})</p>
+      <a href="auth/login.html" onclick="sessionStorage.removeItem('ew_user');return true">Sign out</a>
     </div>`;
 } else {
   document.getElementById('guestContactCard').style.display = 'block';
+  document.getElementById('guestStripBox').innerHTML = `
+    <div class="guest-strip">
+      <p>Already have an account? <strong>Sign in</strong> to save booking history.</p>
+      <a href="auth/login.html?redirect=${encodeURIComponent(window.location.href)}">Login</a>
+    </div>`;
 }
 
-// ── PAX ──
-let pax = { adults: 1, children: 0, infants: 0 };
-window.changePax = (type, delta) => {
-  if (type==='adults')   pax.adults   = Math.max(1, pax.adults + delta);
-  if (type==='children') pax.children = Math.max(0, pax.children + delta);
-  if (type==='infants')  pax.infants  = Math.max(0, pax.infants + delta);
-  document.getElementById('pax-adults-val').textContent   = pax.adults;
-  document.getElementById('pax-children-val').textContent = pax.children;
-  document.getElementById('pax-infants-val').textContent  = pax.infants;
-  document.getElementById('sumAdults').textContent   = pax.adults;
-  document.getElementById('sumChildren').textContent = pax.children;
-  document.getElementById('sumInfants').textContent  = pax.infants;
-  buildTravelerCards();
+// ── PAX COUNTER ──
+let pax = {a:1, c:0, i:0};
+window.changePax = function(type, delta) {
+  if (type==='a') pax.a = Math.max(1, pax.a + delta);
+  if (type==='c') pax.c = Math.max(0, pax.c + delta);
+  if (type==='i') pax.i = Math.max(0, pax.i + delta);
+  document.getElementById('paxA').textContent = pax.a;
+  document.getElementById('paxC').textContent = pax.c;
+  document.getElementById('paxI').textContent = pax.i;
+  const total = pax.a + pax.c + pax.i;
+  document.getElementById('sumPax').textContent = pax.a+'A'+(pax.c?' '+pax.c+'C':'')+(pax.i?' '+pax.i+'I':'');
 };
 
-document.getElementById('roomType').addEventListener('change', () => {
-  document.getElementById('sumRoom').textContent = document.getElementById('roomType').value;
-});
+// ── STEP 1 → 2 ──
+window.goStep2 = function() {
+  // Validate guest contact
+  if (!loggedIn) {
+    const fn = document.getElementById('gFn').value.trim();
+    const ln = document.getElementById('gLn').value.trim();
+    const ph = document.getElementById('gPh').value.trim();
+    const em = document.getElementById('gEm').value.trim();
+    if (!fn||!ln) { alert('Please enter your first and last name.'); return; }
+    if (!ph)      { alert('Please enter your WhatsApp number.'); return; }
+    if (!em)      { alert('Please enter your email address.'); return; }
+  }
 
-// ── BUILD TRAVELER CARDS ──
-function buildTravelerCards() {
-  const container = document.getElementById('travelerCards');
-  const existing = {};
-  container.querySelectorAll('input').forEach(inp => {
-    if (inp.dataset.field && inp.dataset.idx !== undefined) {
-      existing[`${inp.dataset.field}_${inp.dataset.idx}`] = inp.value;
-    }
-  });
-  container.innerHTML = '';
-  const types = [...Array(pax.adults).fill('adult'), ...Array(pax.children).fill('child'), ...Array(pax.infants).fill('infant')];
-  types.forEach((type, i) => {
-    const num = types.slice(0, i).filter(t=>t===type).length + 1;
-    const card = document.createElement('div');
-    card.className = 'trav-card';
-    card.innerHTML = `
+  // Build traveller forms
+  const total = pax.a + pax.c + pax.i;
+  const types = [
+    ...Array(pax.a).fill('Adult'),
+    ...Array(pax.c).fill('Child'),
+    ...Array(pax.i).fill('Infant'),
+  ];
+
+  document.getElementById('travForms').innerHTML = types.map((type, i) => `
+    <div class="trav-card">
       <div class="trav-card-hdr">
-        <span class="trav-badge ${type}">${type.charAt(0).toUpperCase()+type.slice(1)} ${num}</span>
+        <i class="fa fa-${i===0?'user-tie':'user'}"></i>
+        Traveller ${i+1} — ${type}${i===0&&type==='Adult'?' (Lead Passenger)':''}
       </div>
-      <div class="fg2">
-        <div class="fg">
-          <label>First Name <span class="req">*</span></label>
-          <input type="text" data-field="first_name" data-idx="${i}" placeholder="Muhammad" value="${existing[`first_name_${i}`]||''}">
-          <span class="field-err" id="err-fn-${i}">First name required</span>
-        </div>
-        <div class="fg">
-          <label>Last Name <span class="req">*</span></label>
-          <input type="text" data-field="last_name" data-idx="${i}" placeholder="Ali" value="${existing[`last_name_${i}`]||''}">
-          <span class="field-err" id="err-ln-${i}">Last name required</span>
-        </div>
-        <div class="fg">
-          <label>Passport Number <span class="req">*</span></label>
-          <input type="text" data-field="passport_no" data-idx="${i}" placeholder="AA1234567" value="${existing[`passport_no_${i}`]||''}" oninput="this.value=this.value.toUpperCase()">
-          <span class="field-err" id="err-pp-${i}">Passport number required</span>
-        </div>
-        <div class="fg">
-          <label>Nationality</label>
-          <input type="text" data-field="nationality" data-idx="${i}" placeholder="Pakistani" value="${existing[`nationality_${i}`]||'Pakistani'}">
-        </div>
-        <div class="fg">
-          <label>Date of Birth <span class="req">*</span></label>
-          <input type="date" data-field="dob" data-idx="${i}" value="${existing[`dob_${i}`]||''}">
-          <span class="field-err" id="err-dob-${i}">Date of birth required</span>
-        </div>
-        <div class="fg">
-          <label>Passport Expiry <span class="req">*</span></label>
-          <input type="date" data-field="passport_expiry" data-idx="${i}" value="${existing[`passport_expiry_${i}`]||''}">
-          <span class="field-err" id="err-exp-${i}">Passport expiry required</span>
-        </div>
-        <div class="fg">
-          <label>Gender</label>
-          <select data-field="gender" data-idx="${i}">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-      </div>`;
-    container.appendChild(card);
-  });
-}
-buildTravelerCards();
+      <div class="fg-row">
+        <div class="fg"><label>First Name *</label><input type="text" id="tf_fn_${i}" placeholder="Muhammad"></div>
+        <div class="fg"><label>Last Name *</label><input type="text" id="tf_ln_${i}" placeholder="Ali"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Passport Number *</label><input type="text" id="tf_pp_${i}" placeholder="AB1234567" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>
+        <div class="fg"><label>CNIC / ID Card *</label><input type="text" id="tf_cn_${i}" placeholder="35201-1234567-8"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Date of Birth *</label><input type="date" id="tf_dob_${i}"></div>
+        <div class="fg"><label>Passport Expiry *</label><input type="date" id="tf_exp_${i}"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Nationality</label><input type="text" id="tf_nat_${i}" value="Pakistani"></div>
+        <div class="fg"><label>Gender</label><select id="tf_gn_${i}"><option>Male</option><option>Female</option></select></div>
+      </div>
+    </div>
+  `).join('');
+
+  setStep(2);
+};
+
+// ── STEP 2 → 3 ──
+window.goStep3 = function() {
+  const total = pax.a + pax.c + pax.i;
+  for (let i = 0; i < total; i++) {
+    if (!document.getElementById('tf_fn_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': First name required.'); return; }
+    if (!document.getElementById('tf_ln_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': Last name required.'); return; }
+    if (!document.getElementById('tf_pp_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': Passport number required.'); return; }
+    if (!document.getElementById('tf_cn_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': CNIC required.'); return; }
+    if (!document.getElementById('tf_dob_'+i)?.value)       { alert('Traveller '+(i+1)+': Date of birth required.'); return; }
+    if (!document.getElementById('tf_exp_'+i)?.value)       { alert('Traveller '+(i+1)+': Passport expiry required.'); return; }
+  }
+
+  // Show review
+  let contactHtml = '';
+  if (loggedIn) {
+    contactHtml = `<div style="display:flex;gap:20px;font-size:13px;color:var(--txd);flex-wrap:wrap">
+      <span><i class="fa fa-user" style="color:var(--go);margin-right:6px"></i>${storedUser.name}</span>
+      <span><i class="fa fa-envelope" style="color:var(--go);margin-right:6px"></i>${storedUser.email}</span>
+      ${storedUser.phone?`<span><i class="fa fa-phone" style="color:var(--go);margin-right:6px"></i>${storedUser.phone}</span>`:''}
+    </div>`;
+  } else {
+    const fn=document.getElementById('gFn').value, ln=document.getElementById('gLn').value;
+    const ph=document.getElementById('gPh').value, em=document.getElementById('gEm').value;
+    contactHtml = `<div style="display:flex;gap:20px;font-size:13px;color:var(--txd);flex-wrap:wrap">
+      <span><i class="fa fa-user" style="color:var(--go);margin-right:6px"></i>${fn} ${ln}</span>
+      <span><i class="fa fa-phone" style="color:var(--go);margin-right:6px"></i>${ph}</span>
+      <span><i class="fa fa-envelope" style="color:var(--go);margin-right:6px"></i>${em}</span>
+    </div>`;
+  }
+  document.getElementById('reviewContact').innerHTML = contactHtml;
+
+  const travHtml = Array.from({length:total}, (_,i) => {
+    const fn=document.getElementById('tf_fn_'+i)?.value||'';
+    const ln=document.getElementById('tf_ln_'+i)?.value||'';
+    const pp=document.getElementById('tf_pp_'+i)?.value||'';
+    const cn=document.getElementById('tf_cn_'+i)?.value||'';
+    const dob=document.getElementById('tf_dob_'+i)?.value||'';
+    const exp=document.getElementById('tf_exp_'+i)?.value||'';
+    return `<div style="background:var(--nm);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px;font-size:13px">
+      <div style="font-weight:700;color:var(--go);margin-bottom:8px;font-family:'Cormorant Garamond',serif;font-size:15px">${fn} ${ln}</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;color:var(--txd)">
+        <span>Passport: <strong style="color:#fff">${pp}</strong></span>
+        <span>CNIC: <strong style="color:#fff">${cn}</strong></span>
+        <span>DOB: <strong style="color:#fff">${dob}</strong></span>
+        <span>Expiry: <strong style="color:#fff">${exp}</strong></span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('reviewTravellers').innerHTML = travHtml;
+
+  setStep(3);
+};
 
 // ── SUBMIT ──
-window.submitBooking = async () => {
-  // Guest validation
-  if (!loggedIn) {
-    const fn = document.getElementById('guestFName').value.trim();
-    const ln = document.getElementById('guestLName').value.trim();
-    const ph = document.getElementById('guestPhone').value.trim();
-    const em = document.getElementById('guestEmail').value.trim();
-    if (!fn) { alert('Please enter your first name.'); return; }
-    if (!ln) { alert('Please enter your last name.'); return; }
-    if (!ph) { alert('Please enter your phone/WhatsApp number.'); return; }
-    if (!em || !/\S+@\S+\.\S+/.test(em)) { alert('Please enter a valid email.'); return; }
+window.submitBooking = async function() {
+  if (!document.getElementById('termsChk').checked) {
+    document.getElementById('bkErr').textContent = 'Please accept the terms & conditions.';
+    document.getElementById('bkErr').style.display = 'block';
+    return;
   }
+  document.getElementById('bkErr').style.display = 'none';
 
-  if (!document.getElementById('termsCheck').checked) { alert('Please accept the terms & conditions.'); return; }
-
-  // Collect travelers
-  const types = [...Array(pax.adults).fill('adult'), ...Array(pax.children).fill('child'), ...Array(pax.infants).fill('infant')];
-  let valid = true;
-  const travelers = types.map((type, i) => {
-    const get = f => document.querySelector(`[data-field="${f}"][data-idx="${i}"]`)?.value?.trim() || '';
-    const fn = get('first_name'), ln = get('last_name'), pp = get('passport_no'), dob = get('dob'), exp = get('passport_expiry');
-    if (!fn) { document.getElementById(`err-fn-${i}`).classList.add('show'); valid = false; }
-    if (!ln) { document.getElementById(`err-ln-${i}`).classList.add('show'); valid = false; }
-    if (!pp) { document.getElementById(`err-pp-${i}`).classList.add('show'); valid = false; }
-    if (!dob){ document.getElementById(`err-dob-${i}`).classList.add('show'); valid = false; }
-    if (!exp){ document.getElementById(`err-exp-${i}`).classList.add('show'); valid = false; }
-    return { type, first_name: fn, last_name: ln, full_name: `${fn} ${ln}`.trim(), passport_no: pp, nationality: get('nationality'), dob, passport_expiry: exp, gender: get('gender') };
-  });
-  if (!valid) { alert('Please fill all traveler details.'); return; }
-
-  // Contact info
-  let cName, cEmail, cPhone;
-  if (loggedIn) {
-    const saved = JSON.parse(sessionStorage.getItem('ew_profile') || '{}');
-    cName  = saved.name || user.user_metadata?.full_name || user.email.split('@')[0];
-    cEmail = user.email;
-    cPhone = saved.phone || '';
-  } else {
-    cName  = document.getElementById('guestFName').value.trim() + ' ' + document.getElementById('guestLName').value.trim();
-    cEmail = document.getElementById('guestEmail').value.trim();
-    cPhone = document.getElementById('guestPhone').value.trim();
-  }
-
-  // Loading
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  document.getElementById('submitSpinner').style.display = 'inline-block';
   document.getElementById('submitIco').style.display = 'none';
+  document.getElementById('submitSpin').style.display = 'inline-block';
   document.getElementById('submitTxt').textContent = 'Submitting...';
 
-  const ref = 'EW-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const total = pax.a + pax.c + pax.i;
+
+  // Collect contact
+  let cName, cEmail, cPhone;
+  if (loggedIn) {
+    cName=storedUser.name; cEmail=storedUser.email; cPhone=storedUser.phone||'';
+  } else {
+    cName=document.getElementById('gFn').value.trim()+' '+document.getElementById('gLn').value.trim();
+    cEmail=document.getElementById('gEm').value.trim();
+    cPhone=document.getElementById('gPh').value.trim();
+  }
+
+  // Collect travellers
+  const travellers = Array.from({length:total},(_,i)=>({
+    first_name: document.getElementById('tf_fn_'+i)?.value.trim()||'',
+    last_name:  document.getElementById('tf_ln_'+i)?.value.trim()||'',
+    full_name:  (document.getElementById('tf_fn_'+i)?.value.trim()||'')+' '+(document.getElementById('tf_ln_'+i)?.value.trim()||''),
+    passport_no:document.getElementById('tf_pp_'+i)?.value.trim()||'',
+    cnic:       document.getElementById('tf_cn_'+i)?.value.trim()||'',
+    dob:        document.getElementById('tf_dob_'+i)?.value||null,
+    passport_expiry:document.getElementById('tf_exp_'+i)?.value||null,
+    nationality:document.getElementById('tf_nat_'+i)?.value||'Pakistani',
+    gender:     document.getElementById('tf_gn_'+i)?.value||'Male',
+  }));
+
+  const ref = 'EW-'+Date.now().toString(36).toUpperCase().slice(-6);
+
   const booking = {
     booking_ref:      ref,
     customer_name:    cName,
     customer_email:   cEmail,
     customer_phone:   cPhone,
     is_guest:         !loggedIn,
-    tour_name:        PKG.title,
+    tour_name:        PKG.tour,
     tour_type:        PKG.type,
     duration:         PKG.duration,
     price:            PKG.price,
     dep_date:         PKG.dep,
     ret_date:         PKG.ret,
     airline:          PKG.flight,
-    pax_adults:       pax.adults,
-    pax_children:     pax.children,
-    pax_infants:      pax.infants,
+    pax_adults:       pax.a,
+    pax_children:     pax.c,
+    pax_infants:      pax.i,
     room_type:        document.getElementById('roomType').value,
-    travelers:        travelers,
-    special_requests: document.getElementById('specialReq').value,
-    contact_pref:     document.getElementById('contactPref').value,
     meal_pref:        document.getElementById('mealPref').value,
+    special_requests: document.getElementById('specReq').value,
+    travellers:       JSON.stringify(travellers),
     status:           'new',
+    payment_status:   'unpaid',
   };
 
+  // Save to Supabase
   try {
-    await sb.from('bookings').insert([booking]);
-    if (!loggedIn) {
-      await sb.from('customers').upsert([{ email: cEmail, phone: cPhone, full_name: cName }], { onConflict: 'email' });
+    await fetch(`${SUPA}/rest/v1/bookings`, {
+      method: 'POST',
+      headers: { apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
+      body: JSON.stringify(booking)
+    });
+
+    // Also save each traveller
+    for (const t of travellers) {
+      try {
+        await fetch(`${SUPA}/rest/v1/travellers`, {
+          method: 'POST',
+          headers: { apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
+          body: JSON.stringify({...t, name:t.full_name, tour:PKG.tour, email:cEmail, phone:cPhone})
+        });
+      } catch(e2) {}
     }
-  } catch(e) { console.error(e); }
 
-  // Success
-  document.getElementById('refBadge').textContent = `Booking Ref: ${ref}`;
-  document.getElementById('bookingFlow').style.display = 'none';
-  document.getElementById('bookingSuccess').style.display = 'block';
-  document.getElementById('step1-tab').classList.remove('active');
-  document.getElementById('step1-tab').classList.add('done');
-  document.getElementById('step2-tab').classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Save customer if guest
+    if (!loggedIn) {
+      try {
+        await fetch(`${SUPA}/rest/v1/customers`, {
+          method: 'POST',
+          headers: { apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json', Prefer:'resolution=merge-duplicates,return=minimal' },
+          body: JSON.stringify({ email:cEmail, phone:cPhone, full_name:cName })
+        });
+      } catch(e3) {}
+    }
+  } catch(e) { console.warn('DB save failed:', e); }
+
+  // Show success
+  document.getElementById('refBadge').textContent = 'Ref: ' + ref;
+
+  // WhatsApp confirmation message
+  const waMsg = encodeURIComponent(
+    `Assalam o Alaikum! Booking Confirmed!\n\n`+
+    `📋 Ref: ${ref}\n`+
+    `✈️ Tour: ${PKG.tour}\n`+
+    `👤 Lead: ${cName}\n`+
+    `📱 Phone: ${cPhone}\n`+
+    `👥 Travellers: ${pax.a}A${pax.c?' '+pax.c+'C':''}${pax.i?' '+pax.i+'I':''}\n`+
+    `🗓️ Departure: ${PKG.dep||'—'}\n`+
+    `💰 Price: ${PKG.price||'—'}/person\n\n`+
+    `Passport details submitted online. Please confirm.`
+  );
+  document.getElementById('waConfirmBtn').href = `https://wa.me/${WA}?text=${waMsg}`;
+
+  // Switch to success view
+  document.getElementById('step3').style.display = 'none';
+  document.getElementById('successBox').style.display = 'block';
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('st3').classList.add('done');
+  window.scrollTo({top:0,behavior:'smooth'});
 };
 
-// ── COPY ──
-window.cp = (btn, txt) => {
-  navigator.clipboard.writeText(txt).catch(()=>{});
-  btn.textContent = '✓ Copied!'; btn.classList.add('copied');
-  setTimeout(()=>{ btn.textContent='Copy'; btn.classList.remove('copied'); }, 2000);
-};
+// Step navigation helpers
+function setStep(n) {
+  ['step1','step2','step3'].forEach((id,i) => {
+    document.getElementById(id).style.display = (i+1===n)?'block':'none';
+  });
+  ['st1','st2','st3'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if (i+1 < n)  el.classList.add('done');
+    if (i+1 === n) el.classList.add('active');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+window.goStep1 = () => setStep(1);
+
+// ── SPIN CSS ──
+const spinStyle = document.createElement('style');
+spinStyle.textContent = '.spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:sp 0.8s linear infinite;display:none;flex-shrink:0}@keyframes sp{to{transform:rotate(360deg)}}';
+document.head.appendChild(spinStyle);
 </script>
 </body>
 </html>
