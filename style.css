@@ -21,6 +21,7 @@
 
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65;padding-top:68px}
+.navbar{z-index:9000!important}
 h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;line-height:1.2}
 em{color:var(--gold);font-style:italic}
 a{text-decoration:none;color:inherit}
@@ -430,7 +431,7 @@ option{background:#fff;color:var(--text)}
   .section,.section-alt,.section-dark{padding:60px 0!important}
   .container{padding:0 16px!important}
   .hero-content{grid-template-columns:1fr!important;gap:40px!important}
-  .hero-right{display: none!important}
+  .hero-right{display:none!important}
   .cta-band{grid-template-columns:1fr!important;padding:40px 28px!important}
 }
 
