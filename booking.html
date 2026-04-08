@@ -3,120 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book Now — East & West Travel Services</title>
+<title>Our Services — East & West Travel Services</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-/* Override body bg for this dark page */
-:root{
-  --nb:#0A1628;--nm:#0F2040;--nl:#162847;
-  --tl:#0EA5E9;--tld:#0284C7;--tlg:rgba(14,165,233,0.15);
-  --go:#C9A84C;--gd:rgba(201,168,76,0.12);--gb:rgba(201,168,76,0.3);
-  --bd:rgba(255,255,255,0.08);--tx:#E8EDF2;--txd:#8899AA;
-  --re:#EF4444;--gr:#10B981;
+/* SERVICE CARDS */
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 16px;
 }
-body{background:var(--nb);color:var(--tx);padding-top:68px}
-h1,h2,h3,h4{font-family:'Cormorant Garamond',serif}
+.svc-card {
+  background: #fff;
+  border: 1px solid #E8E4DA;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.35s;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+.svc-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,76,0.5);
+  box-shadow: 0 16px 48px rgba(201,168,76,0.15);
+}
+.svc-img {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: #0A1628;
+}
+.svc-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s;
+  opacity: 0.85;
+}
+.svc-card:hover .svc-img img { transform: scale(1.07); opacity: 1; }
+.svc-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(10,22,40,0.75) 100%);
+}
+.svc-badge {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  padding: 5px 13px; border-radius: 50px;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.badge-gold { background: rgba(201,168,76,0.92); color: #0A1628; }
+.badge-teal { background: rgba(14,165,233,0.92); color: #fff; }
+.badge-green { background: rgba(16,185,129,0.92); color: #fff; }
+.badge-red { background: rgba(239,68,68,0.9); color: #fff; }
+.badge-purple { background: rgba(139,92,246,0.9); color: #fff; }
+.svc-tag {
+  position: absolute; bottom: 14px; left: 14px; z-index: 2;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; color: rgba(255,255,255,0.7);
+}
+.svc-tag i { color: #C9A84C; }
+.svc-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.svc-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: #1C1C2E; margin-bottom: 8px;
+}
+.svc-body p {
+  font-size: 13px; color: #6B6B8A; line-height: 1.7;
+  flex: 1; margin-bottom: 16px;
+}
+.svc-features {
+  display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px;
+}
+.svc-feat {
+  font-size: 11px; color: #4A4A6A;
+  background: #F3F0EA; border: 1px solid #E8E4DA;
+  padding: 4px 10px; border-radius: 50px;
+  display: flex; align-items: center; gap: 5px;
+}
+.svc-feat i { color: #C9A84C; font-size: 10px; }
+.svc-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid #E8E4DA;
+}
+.svc-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #C9A84C; font-weight: 700; }
+.svc-price small { display: block; font-size: 11px; color: #9090AA; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; }
+.svc-btn-page {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #C9A84C; color: #fff;
+  padding: 9px 18px; border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  border: none; cursor: pointer; transition: all 0.25s;
+  text-decoration: none;
+}
+.svc-btn-page:hover { background: #E8C97A; transform: translateY(-1px); }
+.svc-btn-wa {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #25D366; color: #fff;
+  padding: 9px 16px; border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border: none; cursor: pointer; transition: all 0.25s;
+  text-decoration: none;
+}
+.svc-btn-wa:hover { background: #1DA851; transform: translateY(-1px); }
 
-/* STEPS */
-.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:40px;flex-wrap:wrap}
-.step{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;color:var(--txd);background:var(--nl);border:1px solid var(--bd);font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
-.step.active{background:var(--tl);color:#fff;border-color:var(--tl);box-shadow:0 4px 20px rgba(14,165,233,0.3)}
-.step.done{color:var(--go);border-color:var(--gb)}
-.step-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.step.active .step-num{background:rgba(255,255,255,0.25)}
-.step.done .step-num{background:var(--gd);color:var(--go)}
-.step-sep{width:40px;height:1px;background:var(--bd);flex-shrink:0}
+/* Filter tabs */
+.svc-filters {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 44px;
+}
+.svc-filter {
+  padding: 9px 22px; border-radius: 50px;
+  border: 2px solid #E8E4DA; background: #fff;
+  color: #6B6B8A; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.25s; display: flex; align-items: center; gap: 7px;
+}
+.svc-filter.active,
+.svc-filter:hover { background: #C9A84C; color: #fff; border-color: #C9A84C; }
 
-/* LAYOUT */
-.bk-layout{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
-@media(max-width:900px){.bk-layout{grid-template-columns:1fr}}
-
-/* CARD */
-.bk-card{background:var(--nl);border:1px solid var(--bd);border-radius:18px;padding:28px;margin-bottom:20px}
-.bk-card h3{font-size:22px;color:#fff;margin-bottom:6px}
-.bk-card>p{font-size:13px;color:var(--txd);margin-bottom:22px}
-.sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--tl);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px}
-
-/* FORM */
-.fg{margin-bottom:15px}
-.fg label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--txd);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
-.fg input,.fg select{width:100%;background:var(--nm);border:1.5px solid var(--bd);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:#fff;outline:none;transition:all 0.3s}
-.fg input::placeholder{color:var(--txd);opacity:0.6}
-.fg input:focus,.fg select:focus{border-color:var(--tl);box-shadow:0 0 0 3px var(--tlg)}
-.fg select option{background:#0F2040;color:#fff}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.trav-card{background:var(--nm);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px}
-.trav-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px;font-size:14px;font-weight:700;color:var(--go)}
-.trav-card-hdr i{width:28px;height:28px;background:var(--gd);border:1px solid var(--gb);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-
-/* PAX COUNTER */
-.pax-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bd)}
-.pax-row:last-child{border-bottom:none}
-.pax-info h4{font-size:15px;color:#fff;font-family:'Cormorant Garamond',serif}
-.pax-info p{font-size:12px;color:var(--txd);margin-top:2px}
-.pax-ctrl{display:flex;align-items:center;gap:10px}
-.pax-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--bd);background:var(--nm);color:var(--txd);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.pax-btn:hover{border-color:var(--go);color:var(--go)}
-.pax-num{font-size:18px;font-weight:700;color:#fff;min-width:24px;text-align:center;font-family:'Cormorant Garamond',serif}
-
-/* SUMMARY CARD */
-.sum-card{background:var(--nm);border:1px solid var(--bd);border-radius:18px;overflow:hidden;position:sticky;top:90px}
-.sum-img{height:160px;overflow:hidden;position:relative}
-.sum-img img{width:100%;height:100%;object-fit:cover}
-.sum-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(10,22,40,0.9))}
-.sum-body{padding:20px}
-.sum-title{font-size:20px;color:#fff;margin-bottom:14px}
-.sum-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
-.sum-row:last-of-type{border-bottom:none}
-.sum-row span:first-child{color:var(--txd)}
-.sum-row span:last-child{color:#fff;font-weight:600;text-align:right;max-width:160px}
-.sum-price{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--go);font-weight:700;margin-top:14px;padding-top:14px;border-top:1px solid var(--bd)}
-.sum-price small{display:block;font-size:12px;color:var(--txd);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400}
-
-/* BUTTONS */
-.btn-next{width:100%;background:var(--tl);color:#fff;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.3s}
-.btn-next:hover{background:var(--tld);transform:translateY(-1px)}
-.btn-back{background:none;border:1px solid var(--bd);color:var(--txd);padding:11px 20px;border-radius:10px;font-size:13px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
-.btn-back:hover{border-color:#fff;color:#fff}
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--go),#E8C97A);color:var(--nb);border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.3s}
-.btn-submit:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(201,168,76,0.35)}
-.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-
-/* TERMS */
-.terms-row{display:flex;align-items:flex-start;gap:10px;margin-top:16px;font-size:13px;color:var(--txd)}
-.terms-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--go);flex-shrink:0;margin-top:2px;cursor:pointer}
-.terms-row a{color:var(--go)}
-
-/* SUCCESS */
-.success-box{text-align:center;padding:60px 20px;display:none}
-.success-icon{width:80px;height:80px;background:rgba(16,185,129,0.12);border:2px solid rgba(16,185,129,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;color:#10B981}
-.ref-badge{display:inline-block;background:var(--gd);border:1px solid var(--gb);color:var(--go);padding:10px 24px;border-radius:8px;font-size:18px;font-weight:700;font-family:'Cormorant Garamond',serif;margin:16px 0}
-
-/* Guest banner */
-.guest-strip{background:var(--nm);border:1px solid var(--gb);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.guest-strip p{font-size:13px;color:var(--txd);}
-.guest-strip strong{color:var(--go)}
-.guest-strip a{font-size:12px;background:var(--gd);border:1px solid var(--gb);color:var(--go);padding:6px 14px;border-radius:7px;text-decoration:none;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif}
-
-@media(max-width:640px){.fg-row{grid-template-columns:1fr}.steps{gap:4px}.step-sep{width:16px}.step{padding:8px 12px;font-size:12px}}
+@media (max-width: 1024px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px)  { .svc-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
-<nav class="navbar" id="navbar" style="background:#060E1A;box-shadow:0 1px 0 rgba(255,255,255,0.08)">
+<nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="assets/images/logo.jpg" alt="Logo" onerror="this.style.display='none'">
-    <span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span> Travels</span>
+    <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
+    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
   <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
-    <a href="index.html" id="mlink-home" style="color:rgba(255,255,255,0.6)">Home</a>
+    <a href="index.html" id="mlink-home">Home</a>
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" style="color:rgba(255,255,255,0.6)">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="services.html" class="active">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
@@ -126,8 +155,8 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif}
     </div>
     <div id="mlink-svc-mob" style="display:none">
       <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
-        <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#C9A84C;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <i class="fa fa-chevron-down" style="font-size:11px;color:#C9A84C;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
         <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
@@ -136,492 +165,318 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif}
         <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
-    <a href="about.html" style="color:rgba(255,255,255,0.6)" id="mlink-contact">About</a>
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta">Book Now</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" id="mlink-contact">Contact</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
 <!-- PAGE HERO -->
-<div style="background:linear-gradient(135deg,#060E1A,var(--nm));border-bottom:1px solid var(--bd);padding:44px 0 32px;text-align:center">
-  <div style="font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--go);margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-calendar-check" style="margin-right:6px"></i> Secure Booking</div>
-  <h1 id="pageTitle" style="font-size:clamp(28px,4vw,44px);color:#fff">Complete Your <em style="color:var(--go)">Booking</em></h1>
-  <div style="display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;color:var(--txd);margin-top:12px">
-    <a href="index.html" style="color:var(--tl)">Home</a>
-    <i class="fa fa-chevron-right" style="font-size:9px"></i>
-    <span>Booking</span>
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:12px">
+      <i class="fa fa-compass" style="margin-right:8px"></i> What We Offer
+    </div>
+    <h1>Our Travel <em>Services</em></h1>
+    <p style="position:relative">From sacred Umrah journeys to exotic world tours — we have everything you need</p>
   </div>
-</div>
+</section>
 
-<div style="max-width:1160px;margin:0 auto;padding:36px 20px">
+<!-- SERVICES SECTION -->
+<section class="section">
+  <div class="container">
 
-  <!-- STEP INDICATOR -->
-  <div class="steps">
-    <div class="step active" id="st1"><div class="step-num">1</div> Travellers</div>
-    <div class="step-sep"></div>
-    <div class="step" id="st2"><div class="step-num">2</div> Details</div>
-    <div class="step-sep"></div>
-    <div class="step" id="st3"><div class="step-num">3</div> Confirm</div>
+    <!-- FILTER TABS -->
+    <div class="svc-filters">
+      <button class="svc-filter active" onclick="filterSvc('all', this)"><i class="fa fa-th-large"></i> All Services</button>
+      <button class="svc-filter" onclick="filterSvc('umrah', this)"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</button>
+      <button class="svc-filter" onclick="filterSvc('tours', this)"><i class="fa fa-globe"></i> World Tours</button>
+      <button class="svc-filter" onclick="filterSvc('tickets', this)"><i class="fa fa-plane"></i> Air Tickets</button>
+      <button class="svc-filter" onclick="filterSvc('visa', this)"><i class="fa fa-passport"></i> Visa</button>
+      <button class="svc-filter" onclick="filterSvc('hotel', this)"><i class="fa fa-hotel"></i> Hotels</button>
+    </div>
+
+    <!-- SERVICE CARDS GRID -->
+    <div class="svc-grid" id="svcGrid">
+
+      <!-- 1. UMRAH PACKAGES -->
+      <a href="umrah.html" class="svc-card" data-cat="umrah">
+        <div class="svc-img">
+          <img src="assets/images/makarem_1.jpeg" alt="Umrah" onerror="this.style.background='#1a2840'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-gold"><i class="fa fa-star-and-crescent"></i> Umrah</span>
+          <div class="svc-tag"><i class="fa fa-users"></i> 4 Sharing Available</div>
+        </div>
+        <div class="svc-body">
+          <h3>Umrah Packages</h3>
+          <p>Complete Umrah packages with flights, 4★/5★ hotels, Ziyarat tours and 24/7 support. Economy to premium options available.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Flights Included</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> 4★/5★ Hotels</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Ziyarat Tour</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> 24/7 Support</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Rs. 85,000<small>per person</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Packages</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. HAJJ PACKAGES -->
+      <a href="umrah.html" class="svc-card" data-cat="umrah">
+        <div class="svc-img">
+          <img src="assets/images/makarem_3.jpeg" alt="Hajj" onerror="this.style.background='#1a2840'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-gold"><i class="fa fa-star-and-crescent"></i> Hajj</span>
+          <div class="svc-tag"><i class="fa fa-calendar"></i> 2026 Season</div>
+        </div>
+        <div class="svc-body">
+          <h3>Hajj Packages</h3>
+          <p>Perform Hajj with complete peace of mind. Government approved Hajj packages with all inclusions and expert guidance throughout.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Govt Approved</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Full Guidance</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Group Travel</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Enquire<small>for 2026 pricing</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Packages</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. WORLD TOURS -->
+      <a href="tours.html" class="svc-card" data-cat="tours">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="World Tours" onerror="this.src='assets/images/pullman_1.jpeg'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-teal"><i class="fa fa-globe"></i> International</span>
+          <div class="svc-tag"><i class="fa fa-map-marker-alt"></i> Dubai, Thailand, Bali & More</div>
+        </div>
+        <div class="svc-body">
+          <h3>World Tours</h3>
+          <p>Explore the world with our expertly crafted holiday packages. Dubai, Thailand, Bali, Malaysia, Turkey and more destinations.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Visa Included</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Hotel + Flights</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Sightseeing</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Halal Meals</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Rs. 95,000<small>per person</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Tours</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. GROUP AIR TICKETS -->
+      <a href="group-tickets.html" class="svc-card" data-cat="tickets">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80" alt="Group Tickets" onerror="this.src='assets/images/pullman_2.jpg'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-red"><i class="fa fa-plane"></i> Group Fares</span>
+          <div class="svc-tag"><i class="fa fa-users"></i> 10+ Passengers</div>
+        </div>
+        <div class="svc-body">
+          <h3>Group Air Tickets</h3>
+          <p>Special group fares for 10+ passengers. Saudi, UK, Qatar, USA, Europe and domestic routes. Best negotiated rates guaranteed.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Best Rates</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> All Airlines</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Group Check-In</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Best Rate<small>for 10+ pax</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Flights</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5. AIR TICKET RESERVATION -->
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+to+book+an+air+ticket.+Please+share+the+best+available+rates." target="_blank" class="svc-card" data-cat="tickets">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=600&q=80" alt="Air Tickets" onerror="this.src='assets/images/pullman_3.jpeg'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-teal"><i class="fa fa-ticket-alt"></i> Tickets</span>
+          <div class="svc-tag"><i class="fa fa-bolt"></i> Instant Confirmation</div>
+        </div>
+        <div class="svc-body">
+          <h3>Air Ticket Reservation</h3>
+          <p>Individual and family air tickets for all domestic and international routes. All airlines, best available fares with instant confirmation.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> All Airlines</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Domestic + International</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Economy &amp; Business</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Best Fare<small>guaranteed</small></div>
+            <span class="svc-btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp Us</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 6. VISA SERVICES -->
+      <a href="visa.html" class="svc-card" data-cat="visa">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1637858868799-7f26a0640eb6?w=600&q=80" alt="Visa" onerror="this.src='assets/images/makarem_2.jpeg'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-purple"><i class="fa fa-passport"></i> Visa</span>
+          <div class="svc-tag"><i class="fa fa-percentage"></i> 95% Approval Rate</div>
+        </div>
+        <div class="svc-body">
+          <h3>Visa Services</h3>
+          <p>UAE, Saudi, Thailand, Turkey, UK, Malaysia and more. We handle all documentation, embassy submission and tracking for you.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> 20+ Countries</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Doc Assistance</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Embassy Track</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Fast Processing</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Rs. 8,000<small>starting from</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Visas</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 7. HOTEL BOOKING -->
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+hotel+booking+assistance.+Please+help+me+find+the+best+hotels." target="_blank" class="svc-card" data-cat="hotel">
+        <div class="svc-img">
+          <img src="assets/images/pullman_1.jpeg" alt="Hotels" onerror="this.style.background='#1a2840'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-green"><i class="fa fa-hotel"></i> Hotels</span>
+          <div class="svc-tag"><i class="fa fa-star"></i> 3★ to 5★ Available</div>
+        </div>
+        <div class="svc-body">
+          <h3>Hotel Booking</h3>
+          <p>Hotel bookings across Pakistan and worldwide. Special rates for Makkah, Madinah, Dubai, Bangkok and all major destinations.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Makkah &amp; Madinah</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Best Rates</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> 3★ to 5★</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Rs. 5,000<small>per night starting</small></div>
+            <span class="svc-btn-wa"><i class="fab fa-whatsapp"></i> Enquire Now</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 8. DOMESTIC TOURS -->
+      <a href="tours.html" class="svc-card" data-cat="tours">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=80" alt="Pakistan" onerror="this.src='assets/images/makarem_4.jpeg'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-green"><i class="fa fa-mountain"></i> Pakistan</span>
+          <div class="svc-tag"><i class="fa fa-map-marker-alt"></i> Hunza, Swat, Naran &amp; More</div>
+        </div>
+        <div class="svc-body">
+          <h3>Domestic Tours</h3>
+          <p>Discover the beauty of Pakistan — Hunza, Swat, Naran, Kaghan, Murree, Azad Kashmir and all northern areas. Custom family tours available.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Custom Itinerary</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Hotel Included</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Family Friendly</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Rs. 25,000<small>per person</small></div>
+            <span class="svc-btn-page"><i class="fa fa-eye"></i> View Tours</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 9. HONEYMOON / COUPLE -->
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+a+honeymoon+or+couple+tour+package.+Please+share+details." target="_blank" class="svc-card" data-cat="tours">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Honeymoon" onerror="this.src='assets/images/pullman_4.jpeg'">
+          <div class="svc-img-overlay"></div>
+          <span class="svc-badge badge-red"><i class="fa fa-heart"></i> Honeymoon</span>
+          <div class="svc-tag"><i class="fa fa-map-marker-alt"></i> Bali, Maldives, Thailand</div>
+        </div>
+        <div class="svc-body">
+          <h3>Honeymoon &amp; Couple Tours</h3>
+          <p>Romantic getaways crafted for couples. Bali, Maldives, Thailand, Turkey and more — with private villas, spa and candlelight dining.</p>
+          <div class="svc-features">
+            <span class="svc-feat"><i class="fa fa-check"></i> Private Villa</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> Couples Spa</span>
+            <span class="svc-feat"><i class="fa fa-check"></i> All Inclusive</span>
+          </div>
+          <div class="svc-footer">
+            <div class="svc-price">Rs. 1,50,000<small>per couple</small></div>
+            <span class="svc-btn-wa"><i class="fab fa-whatsapp"></i> Enquire Now</span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- /svc-grid -->
   </div>
+</section>
 
-  <div class="bk-layout">
-    <div>
-
-      <!-- ══ STEP 1: PAX COUNT ══ -->
-      <div id="step1">
-        <div class="bk-card">
-          <h3><i class="fa fa-users" style="color:var(--tl);margin-right:10px"></i>How Many Travellers?</h3>
-          <p>Select number of adults, children and infants for this booking.</p>
-          <div class="pax-row">
-            <div class="pax-info"><h4>Adults</h4><p>Age 12 and above</p></div>
-            <div class="pax-ctrl">
-              <button class="pax-btn" onclick="changePax('a',-1)">−</button>
-              <div class="pax-num" id="paxA">1</div>
-              <button class="pax-btn" onclick="changePax('a',1)">+</button>
-            </div>
-          </div>
-          <div class="pax-row">
-            <div class="pax-info"><h4>Children</h4><p>Age 2–11</p></div>
-            <div class="pax-ctrl">
-              <button class="pax-btn" onclick="changePax('c',-1)">−</button>
-              <div class="pax-num" id="paxC">0</div>
-              <button class="pax-btn" onclick="changePax('c',1)">+</button>
-            </div>
-          </div>
-          <div class="pax-row">
-            <div class="pax-info"><h4>Infants</h4><p>Under 2 years</p></div>
-            <div class="pax-ctrl">
-              <button class="pax-btn" onclick="changePax('i',-1)">−</button>
-              <div class="pax-num" id="paxI">0</div>
-              <button class="pax-btn" onclick="changePax('i',1)">+</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Guest/Login check -->
-        <div id="guestStripBox"></div>
-
-        <!-- Contact (guest only) -->
-        <div class="bk-card" id="guestContactCard" style="display:none">
-          <h3>Your Contact Info</h3>
-          <p>As a guest — we'll use this to confirm your booking.</p>
-          <div class="fg-row">
-            <div class="fg"><label>First Name *</label><input type="text" id="gFn" placeholder="Muhammad"></div>
-            <div class="fg"><label>Last Name *</label><input type="text" id="gLn" placeholder="Ali"></div>
-          </div>
-          <div class="fg"><label>WhatsApp Number *</label><input type="tel" id="gPh" placeholder="+92 3XX XXXXXXX"></div>
-          <div class="fg"><label>Email *</label><input type="email" id="gEm" placeholder="email@example.com"></div>
-        </div>
-
-        <button class="btn-next" onclick="goStep2()">
-          Continue <i class="fa fa-arrow-right"></i>
-        </button>
-      </div>
-
-      <!-- ══ STEP 2: TRAVELLER DETAILS ══ -->
-      <div id="step2" style="display:none">
-        <div id="travForms"></div>
-        <div style="display:flex;gap:12px;margin-top:4px">
-          <button class="btn-back" onclick="goStep1()"><i class="fa fa-arrow-left"></i> Back</button>
-          <button class="btn-next" style="flex:1" onclick="goStep3()">Review Booking <i class="fa fa-arrow-right"></i></button>
-        </div>
-      </div>
-
-      <!-- ══ STEP 3: CONFIRM ══ -->
-      <div id="step3" style="display:none">
-        <div class="bk-card">
-          <h3>Booking <em style="color:var(--go)">Review</em></h3>
-          <p>Please review all details before confirming.</p>
-
-          <div class="sec-lbl"><i class="fa fa-user"></i> Contact Information</div>
-          <div id="reviewContact" style="margin-bottom:20px"></div>
-
-          <div class="sec-lbl"><i class="fa fa-users"></i> Traveller Details</div>
-          <div id="reviewTravellers" style="margin-bottom:20px"></div>
-
-          <div class="sec-lbl"><i class="fa fa-sliders-h"></i> Preferences</div>
-          <div class="fg-row">
-            <div class="fg"><label>Room Type</label>
-              <select id="roomType">
-                <option>Quad Sharing (4)</option>
-                <option>Triple Sharing (3)</option>
-                <option>Double Sharing (2)</option>
-                <option>Single Room</option>
-              </select>
-            </div>
-            <div class="fg"><label>Meal Preference</label>
-              <select id="mealPref">
-                <option>Halal — Standard</option>
-                <option>Vegetarian</option>
-                <option>No Preference</option>
-              </select>
-            </div>
-          </div>
-          <div class="fg"><label>Special Requests (optional)</label>
-            <input type="text" id="specReq" placeholder="Wheelchair, medical needs, adjacent rooms...">
-          </div>
-        </div>
-
-        <div class="terms-row">
-          <input type="checkbox" id="termsChk">
-          <label for="termsChk" style="cursor:pointer">I agree to the <a href="#" style="color:var(--go)">Terms & Conditions</a> and confirm all information is accurate.</label>
-        </div>
-
-        <div id="bkErr" style="display:none;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:12px 16px;font-size:13px;color:#FCA5A5;margin-top:14px"></div>
-
-        <div style="display:flex;gap:12px;margin-top:16px">
-          <button class="btn-back" onclick="goStep2()"><i class="fa fa-arrow-left"></i> Back</button>
-          <button class="btn-submit" style="flex:1" id="submitBtn" onclick="submitBooking()">
-            <span id="submitIco"><i class="fa fa-check-circle"></i></span>
-            <span class="spin" id="submitSpin"></span>
-            <span id="submitTxt">Confirm Booking</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ══ SUCCESS ══ -->
-      <div class="success-box" id="successBox">
-        <div class="success-icon"><i class="fa fa-check"></i></div>
-        <h2 style="font-size:32px;color:#fff;margin-bottom:10px">Booking <em style="color:#10B981">Confirmed!</em></h2>
-        <p style="color:var(--txd);max-width:400px;margin:0 auto 20px">Your booking has been submitted. Our team will contact you within 2 hours on WhatsApp.</p>
-        <div class="ref-badge" id="refBadge">EW-XXXXXX</div>
-        <p style="font-size:13px;color:var(--txd);margin-top:8px;margin-bottom:28px">Save this reference number for tracking</p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <a id="waConfirmBtn" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;padding:13px 24px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif"><i class="fab fa-whatsapp" style="font-size:17px"></i> WhatsApp Team</a>
-          <a href="index.html" style="display:inline-flex;align-items:center;gap:9px;background:var(--nl);border:1px solid var(--bd);color:var(--txd);padding:13px 22px;border-radius:10px;font-size:14px;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-home"></i> Back to Home</a>
-        </div>
-      </div>
-
-    </div><!-- /left col -->
-
-    <!-- SUMMARY SIDEBAR -->
-    <div>
-      <div class="sum-card" id="summaryCard">
-        <div class="sum-img">
-          <img id="sumImg" src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80" alt="Package">
-        </div>
-        <div class="sum-body">
-          <div class="sum-title" id="sumTitle">Your Package</div>
-          <div class="sum-row"><span>Tour</span><span id="sumTour">—</span></div>
-          <div class="sum-row"><span>Duration</span><span id="sumDur">—</span></div>
-          <div class="sum-row"><span>Departure</span><span id="sumDep">—</span></div>
-          <div class="sum-row"><span>Return</span><span id="sumRet">—</span></div>
-          <div class="sum-row"><span>Airline</span><span id="sumFlight">—</span></div>
-          <div class="sum-row"><span>Travellers</span><span id="sumPax">1 Adult</span></div>
-          <div class="sum-price" id="sumPrice">—<small>price per person</small></div>
-        </div>
-      </div>
+<!-- CTA SECTION -->
+<section class="section-alt" style="padding:60px 0">
+  <div class="container" style="text-align:center">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:14px">Get In Touch</div>
+    <h2 style="font-size:clamp(28px,4vw,46px);color:#1C1C2E;margin-bottom:14px">Can't Find What You <em>Need?</em></h2>
+    <p style="font-size:15px;color:#6B6B8A;max-width:480px;margin:0 auto 28px">We offer custom travel packages for any destination. Just tell us where you want to go!</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+help+planning+a+custom+trip." target="_blank" class="btn-gold" style="display:inline-flex;align-items:center;gap:9px"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      <a href="contact.html" class="btn-ghost" style="display:inline-flex;align-items:center;gap:9px"><i class="fa fa-envelope"></i> Contact Form</a>
     </div>
   </div>
+</section>
 
-</div><!-- /container -->
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px">
+          <img src="assets/images/logo.jpg" style="width:40px;height:40px;border-radius:50%;border:2px solid #C9A84C;padding:2px;object-fit:contain;background:white">
+          <span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span></span>
+        </a>
+        <p style="color:rgba(255,255,255,0.4);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:10px">Our Services in Your Hands, Where Ever You Are.</p>
+      </div>
+      <div class="footer-links"><h4>Services</h4><ul>
+        <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah &amp; Hajj</a></li>
+        <li><a href="tours.html"><i class="fa fa-chevron-right"></i> World Tours</a></li>
+        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
+        <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
+        <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:rgba(255,255,255,0.4)">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com" style="color:rgba(255,255,255,0.4)">eastwestpk@hotmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 East &amp; West Travel Services. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923336515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script src="assets/js/script.js"></script>
 <script>
-const SUPA = 'https://bciqlmvheqlsmogpnmal.supabase.co';
-const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
-const WA = '923336515349';
-
-// ── GET URL PARAMS ──
-const params = new URLSearchParams(window.location.search);
-const PKG = {
-  tour:     params.get('tour')     || 'Travel Package',
-  price:    params.get('price')    || '',
-  duration: params.get('duration') || '',
-  dep:      params.get('dep')      || '',
-  ret:      params.get('ret')      || '',
-  flight:   params.get('flight')   || '',
-  img:      params.get('img')      || '',
-  type:     params.get('type')     || '',
-};
-
-// Fill summary
-document.getElementById('sumTour').textContent   = PKG.tour;
-document.getElementById('sumDur').textContent    = PKG.duration || '—';
-document.getElementById('sumDep').textContent    = PKG.dep      || '—';
-document.getElementById('sumRet').textContent    = PKG.ret      || '—';
-document.getElementById('sumFlight').textContent = PKG.flight   || '—';
-document.getElementById('sumPrice').innerHTML    = (PKG.price||'Contact Us')+'<small>price per person</small>';
-document.getElementById('pageTitle').innerHTML   = 'Book: <em style="color:var(--go)">'+PKG.tour+'</em>';
-if (PKG.img) document.getElementById('sumImg').src = PKG.img;
-
-// ── AUTH CHECK ──
-const storedUser = JSON.parse(sessionStorage.getItem('ew_user') || 'null');
-const loggedIn   = !!storedUser;
-
-if (loggedIn) {
-  const initials = (storedUser.name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('guestStripBox').innerHTML = `
-    <div class="guest-strip" style="border-color:rgba(14,165,233,0.3)">
-      <p>Logged in as <strong style="color:var(--tl)">${storedUser.name}</strong> (${storedUser.email})</p>
-      <a href="auth/login.html" onclick="sessionStorage.removeItem('ew_user');return true">Sign out</a>
-    </div>`;
-} else {
-  document.getElementById('guestContactCard').style.display = 'block';
-  document.getElementById('guestStripBox').innerHTML = `
-    <div class="guest-strip">
-      <p>Already have an account? <strong>Sign in</strong> to save booking history.</p>
-      <a href="auth/login.html?redirect=${encodeURIComponent(window.location.href)}">Login</a>
-    </div>`;
-}
-
-// ── PAX COUNTER ──
-let pax = {a:1, c:0, i:0};
-window.changePax = function(type, delta) {
-  if (type==='a') pax.a = Math.max(1, pax.a + delta);
-  if (type==='c') pax.c = Math.max(0, pax.c + delta);
-  if (type==='i') pax.i = Math.max(0, pax.i + delta);
-  document.getElementById('paxA').textContent = pax.a;
-  document.getElementById('paxC').textContent = pax.c;
-  document.getElementById('paxI').textContent = pax.i;
-  const total = pax.a + pax.c + pax.i;
-  document.getElementById('sumPax').textContent = pax.a+'A'+(pax.c?' '+pax.c+'C':'')+(pax.i?' '+pax.i+'I':'');
-};
-
-// ── STEP 1 → 2 ──
-window.goStep2 = function() {
-  // Validate guest contact
-  if (!loggedIn) {
-    const fn = document.getElementById('gFn').value.trim();
-    const ln = document.getElementById('gLn').value.trim();
-    const ph = document.getElementById('gPh').value.trim();
-    const em = document.getElementById('gEm').value.trim();
-    if (!fn||!ln) { alert('Please enter your first and last name.'); return; }
-    if (!ph)      { alert('Please enter your WhatsApp number.'); return; }
-    if (!em)      { alert('Please enter your email address.'); return; }
-  }
-
-  // Build traveller forms
-  const total = pax.a + pax.c + pax.i;
-  const types = [
-    ...Array(pax.a).fill('Adult'),
-    ...Array(pax.c).fill('Child'),
-    ...Array(pax.i).fill('Infant'),
-  ];
-
-  document.getElementById('travForms').innerHTML = types.map((type, i) => `
-    <div class="trav-card">
-      <div class="trav-card-hdr">
-        <i class="fa fa-${i===0?'user-tie':'user'}"></i>
-        Traveller ${i+1} — ${type}${i===0&&type==='Adult'?' (Lead Passenger)':''}
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>First Name *</label><input type="text" id="tf_fn_${i}" placeholder="Muhammad"></div>
-        <div class="fg"><label>Last Name *</label><input type="text" id="tf_ln_${i}" placeholder="Ali"></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Passport Number *</label><input type="text" id="tf_pp_${i}" placeholder="AB1234567" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>
-        <div class="fg"><label>CNIC / ID Card *</label><input type="text" id="tf_cn_${i}" placeholder="35201-1234567-8"></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Date of Birth *</label><input type="date" id="tf_dob_${i}"></div>
-        <div class="fg"><label>Passport Expiry *</label><input type="date" id="tf_exp_${i}"></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Nationality</label><input type="text" id="tf_nat_${i}" value="Pakistani"></div>
-        <div class="fg"><label>Gender</label><select id="tf_gn_${i}"><option>Male</option><option>Female</option></select></div>
-      </div>
-    </div>
-  `).join('');
-
-  setStep(2);
-};
-
-// ── STEP 2 → 3 ──
-window.goStep3 = function() {
-  const total = pax.a + pax.c + pax.i;
-  for (let i = 0; i < total; i++) {
-    if (!document.getElementById('tf_fn_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': First name required.'); return; }
-    if (!document.getElementById('tf_ln_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': Last name required.'); return; }
-    if (!document.getElementById('tf_pp_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': Passport number required.'); return; }
-    if (!document.getElementById('tf_cn_'+i)?.value.trim()) { alert('Traveller '+(i+1)+': CNIC required.'); return; }
-    if (!document.getElementById('tf_dob_'+i)?.value)       { alert('Traveller '+(i+1)+': Date of birth required.'); return; }
-    if (!document.getElementById('tf_exp_'+i)?.value)       { alert('Traveller '+(i+1)+': Passport expiry required.'); return; }
-  }
-
-  // Show review
-  let contactHtml = '';
-  if (loggedIn) {
-    contactHtml = `<div style="display:flex;gap:20px;font-size:13px;color:var(--txd);flex-wrap:wrap">
-      <span><i class="fa fa-user" style="color:var(--go);margin-right:6px"></i>${storedUser.name}</span>
-      <span><i class="fa fa-envelope" style="color:var(--go);margin-right:6px"></i>${storedUser.email}</span>
-      ${storedUser.phone?`<span><i class="fa fa-phone" style="color:var(--go);margin-right:6px"></i>${storedUser.phone}</span>`:''}
-    </div>`;
-  } else {
-    const fn=document.getElementById('gFn').value, ln=document.getElementById('gLn').value;
-    const ph=document.getElementById('gPh').value, em=document.getElementById('gEm').value;
-    contactHtml = `<div style="display:flex;gap:20px;font-size:13px;color:var(--txd);flex-wrap:wrap">
-      <span><i class="fa fa-user" style="color:var(--go);margin-right:6px"></i>${fn} ${ln}</span>
-      <span><i class="fa fa-phone" style="color:var(--go);margin-right:6px"></i>${ph}</span>
-      <span><i class="fa fa-envelope" style="color:var(--go);margin-right:6px"></i>${em}</span>
-    </div>`;
-  }
-  document.getElementById('reviewContact').innerHTML = contactHtml;
-
-  const travHtml = Array.from({length:total}, (_,i) => {
-    const fn=document.getElementById('tf_fn_'+i)?.value||'';
-    const ln=document.getElementById('tf_ln_'+i)?.value||'';
-    const pp=document.getElementById('tf_pp_'+i)?.value||'';
-    const cn=document.getElementById('tf_cn_'+i)?.value||'';
-    const dob=document.getElementById('tf_dob_'+i)?.value||'';
-    const exp=document.getElementById('tf_exp_'+i)?.value||'';
-    return `<div style="background:var(--nm);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px;font-size:13px">
-      <div style="font-weight:700;color:var(--go);margin-bottom:8px;font-family:'Cormorant Garamond',serif;font-size:15px">${fn} ${ln}</div>
-      <div style="display:flex;gap:16px;flex-wrap:wrap;color:var(--txd)">
-        <span>Passport: <strong style="color:#fff">${pp}</strong></span>
-        <span>CNIC: <strong style="color:#fff">${cn}</strong></span>
-        <span>DOB: <strong style="color:#fff">${dob}</strong></span>
-        <span>Expiry: <strong style="color:#fff">${exp}</strong></span>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('reviewTravellers').innerHTML = travHtml;
-
-  setStep(3);
-};
-
-// ── SUBMIT ──
-window.submitBooking = async function() {
-  if (!document.getElementById('termsChk').checked) {
-    document.getElementById('bkErr').textContent = 'Please accept the terms & conditions.';
-    document.getElementById('bkErr').style.display = 'block';
-    return;
-  }
-  document.getElementById('bkErr').style.display = 'none';
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  document.getElementById('submitIco').style.display = 'none';
-  document.getElementById('submitSpin').style.display = 'inline-block';
-  document.getElementById('submitTxt').textContent = 'Submitting...';
-
-  const total = pax.a + pax.c + pax.i;
-
-  // Collect contact
-  let cName, cEmail, cPhone;
-  if (loggedIn) {
-    cName=storedUser.name; cEmail=storedUser.email; cPhone=storedUser.phone||'';
-  } else {
-    cName=document.getElementById('gFn').value.trim()+' '+document.getElementById('gLn').value.trim();
-    cEmail=document.getElementById('gEm').value.trim();
-    cPhone=document.getElementById('gPh').value.trim();
-  }
-
-  // Collect travellers
-  const travellers = Array.from({length:total},(_,i)=>({
-    first_name: document.getElementById('tf_fn_'+i)?.value.trim()||'',
-    last_name:  document.getElementById('tf_ln_'+i)?.value.trim()||'',
-    full_name:  (document.getElementById('tf_fn_'+i)?.value.trim()||'')+' '+(document.getElementById('tf_ln_'+i)?.value.trim()||''),
-    passport_no:document.getElementById('tf_pp_'+i)?.value.trim()||'',
-    cnic:       document.getElementById('tf_cn_'+i)?.value.trim()||'',
-    dob:        document.getElementById('tf_dob_'+i)?.value||null,
-    passport_expiry:document.getElementById('tf_exp_'+i)?.value||null,
-    nationality:document.getElementById('tf_nat_'+i)?.value||'Pakistani',
-    gender:     document.getElementById('tf_gn_'+i)?.value||'Male',
-  }));
-
-  const ref = 'EW-'+Date.now().toString(36).toUpperCase().slice(-6);
-
-  const booking = {
-    booking_ref:      ref,
-    customer_name:    cName,
-    customer_email:   cEmail,
-    customer_phone:   cPhone,
-    is_guest:         !loggedIn,
-    tour_name:        PKG.tour,
-    tour_type:        PKG.type,
-    duration:         PKG.duration,
-    price:            PKG.price,
-    dep_date:         PKG.dep,
-    ret_date:         PKG.ret,
-    airline:          PKG.flight,
-    pax_adults:       pax.a,
-    pax_children:     pax.c,
-    pax_infants:      pax.i,
-    room_type:        document.getElementById('roomType').value,
-    meal_pref:        document.getElementById('mealPref').value,
-    special_requests: document.getElementById('specReq').value,
-    travellers:       JSON.stringify(travellers),
-    status:           'new',
-    payment_status:   'unpaid',
-  };
-
-  // Save to Supabase
-  try {
-    await fetch(`${SUPA}/rest/v1/bookings`, {
-      method: 'POST',
-      headers: { apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
-      body: JSON.stringify(booking)
-    });
-
-    // Also save each traveller
-    for (const t of travellers) {
-      try {
-        await fetch(`${SUPA}/rest/v1/travellers`, {
-          method: 'POST',
-          headers: { apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json', Prefer:'return=minimal' },
-          body: JSON.stringify({...t, name:t.full_name, tour:PKG.tour, email:cEmail, phone:cPhone})
-        });
-      } catch(e2) {}
+// Filter
+window.filterSvc = function(cat, btn) {
+  document.querySelectorAll('.svc-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.svc-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
     }
-
-    // Save customer if guest
-    if (!loggedIn) {
-      try {
-        await fetch(`${SUPA}/rest/v1/customers`, {
-          method: 'POST',
-          headers: { apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json', Prefer:'resolution=merge-duplicates,return=minimal' },
-          body: JSON.stringify({ email:cEmail, phone:cPhone, full_name:cName })
-        });
-      } catch(e3) {}
-    }
-  } catch(e) { console.warn('DB save failed:', e); }
-
-  // Show success
-  document.getElementById('refBadge').textContent = 'Ref: ' + ref;
-
-  // WhatsApp confirmation message
-  const waMsg = encodeURIComponent(
-    `Assalam o Alaikum! Booking Confirmed!\n\n`+
-    `📋 Ref: ${ref}\n`+
-    `✈️ Tour: ${PKG.tour}\n`+
-    `👤 Lead: ${cName}\n`+
-    `📱 Phone: ${cPhone}\n`+
-    `👥 Travellers: ${pax.a}A${pax.c?' '+pax.c+'C':''}${pax.i?' '+pax.i+'I':''}\n`+
-    `🗓️ Departure: ${PKG.dep||'—'}\n`+
-    `💰 Price: ${PKG.price||'—'}/person\n\n`+
-    `Passport details submitted online. Please confirm.`
-  );
-  document.getElementById('waConfirmBtn').href = `https://wa.me/${WA}?text=${waMsg}`;
-
-  // Switch to success view
-  document.getElementById('step3').style.display = 'none';
-  document.getElementById('successBox').style.display = 'block';
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('st3').classList.add('done');
-  window.scrollTo({top:0,behavior:'smooth'});
+  });
 };
-
-// Step navigation helpers
-function setStep(n) {
-  ['step1','step2','step3'].forEach((id,i) => {
-    document.getElementById(id).style.display = (i+1===n)?'block':'none';
-  });
-  ['st1','st2','st3'].forEach((id,i) => {
-    const el = document.getElementById(id);
-    el.classList.remove('active','done');
-    if (i+1 < n)  el.classList.add('done');
-    if (i+1 === n) el.classList.add('active');
-  });
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-window.goStep1 = () => setStep(1);
-
-// ── SPIN CSS ──
-const spinStyle = document.createElement('style');
-spinStyle.textContent = '.spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:sp 0.8s linear infinite;display:none;flex-shrink:0}@keyframes sp{to{transform:rotate(360deg)}}';
-document.head.appendChild(spinStyle);
 </script>
 </body>
 </html>
