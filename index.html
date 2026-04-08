@@ -1,530 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>East & West Travel Services — Faisalabad</title>
-  <meta name="description" content="East & West Travel Services — Umrah packages, Dubai tours, Thailand, visa services from Faisalabad, Pakistan.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    /* ── HERO — BRIGHT THEME ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #0A1628 0%, #0F2A50 50%, #0A1628 100%);
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-    }
-    /* Bright animated orbs */
-    .orb {
-      position: absolute; border-radius: 50%;
-      filter: blur(80px); animation: float 8s ease-in-out infinite;
-    }
-    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%); top: -200px; right: -100px; animation-delay: 0s; }
-    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%); bottom: -100px; left: 100px; animation-delay: 3s; }
-    .orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%); top: 30%; left: 30%; animation-delay: 5s; }
-    @keyframes float { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)} }
-
-    /* Grid lines */
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-
-    .hero-content {
-      position: relative; z-index: 2;
-      max-width: 1200px; margin: 0 auto; padding: 0 28px;
-      width: 100%;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-      padding-top: 80px; padding-bottom: 60px;
-    }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
-      padding: 7px 16px; border-radius: 50px;
-      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      color: #C9A84C; margin-bottom: 28px;
-    }
-    .hero-left h1 {
-      font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-      font-size: clamp(42px, 5.5vw, 72px);
-      color: #FFFFFF; line-height: 1.05; margin-bottom: 24px; font-weight: 700;
-    }
-    .hero-left h1 .line2 { color: #C9A84C; display: block; }
-    .hero-left h1 em { color: #C9A84C; }
-    .hero-left p { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 40px; max-width: 480px; }
-    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; }
-
-    /* ── BRIGHT BUTTONS ── */
-    .btn-primary-bright {
-      display: inline-flex; align-items: center; gap: 9px;
-      background: #C9A84C; color: #fff;
-      padding: 14px 28px; border-radius: 8px;
-      font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
-      border: none; cursor: pointer; transition: all 0.3s;
-      text-decoration: none; font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
-    }
-    .btn-primary-bright:hover { background: #E8C97A; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
-    .btn-outline-bright {
-      display: inline-flex; align-items: center; gap: 9px;
-      background: rgba(255,255,255,0.08); color: #fff;
-      padding: 13px 26px; border-radius: 8px;
-      font-size: 13px; font-weight: 600;
-      border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer; transition: all 0.3s;
-      text-decoration: none; font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif;
-    }
-    .btn-outline-bright:hover { border-color: #25D366; color: #25D366; background: rgba(37,211,102,0.08); }
-
-    .hero-stats-row { display: flex; gap: 36px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px; flex-wrap: wrap; }
-    .h-stat strong { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 26px; color: #fff; display: block; line-height: 1; }
-    .h-stat span { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; display: block; }
-
-    /* Hero right — image mosaic */
-    .hero-right { position: relative; }
-    .hero-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 220px 220px; gap: 14px; }
-    .mosaic-img { border-radius: 14px; overflow: hidden; position: relative; }
-    .mosaic-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-    .mosaic-img:hover img { transform: scale(1.06); }
-    .mosaic-img-1 { grid-row: 1/3; }
-    .mosaic-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,22,40,0.65) 100%); }
-    .mosaic-label { position: absolute; bottom: 14px; left: 14px; font-size: 11px; font-weight: 700; color: #fff; background: #C9A84C; backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 6px; letter-spacing: 0.5px; }
-
-    .hero-badge {
-      position: absolute; bottom: -20px; left: -20px;
-      background: linear-gradient(135deg, #C9A84C, #E8C97A);
-      color: #0A1628; padding: 18px 22px; border-radius: 16px;
-      font-weight: 700; box-shadow: 0 8px 32px rgba(201,168,76,0.4); z-index: 3;
-    }
-    .hero-badge .num { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 28px; display: block; line-height: 1; }
-    .hero-badge .lbl { font-size: 11px; font-weight: 700; opacity: 0.8; }
-
-    /* ── DESTINATIONS STRIP ── */
-    .dest-strip { background: var(--navy-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; overflow: hidden; }
-    .dest-scroll { display: flex; gap: 0; animation: scroll-x 20s linear infinite; width: max-content; }
-    .dest-scroll:hover { animation-play-state: paused; }
-    .dest-item { display: flex; align-items: center; gap: 10px; padding: 0 40px; border-right: 1px solid var(--border); color: var(--text-dim); font-size: 13px; font-weight: 500; white-space: nowrap; }
-    .dest-item i { color: var(--teal); font-size: 15px; }
-    @keyframes scroll-x { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-    /* ── FEATURED SECTION INTRO ── */
-    .packages-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; gap: 20px; flex-wrap: wrap; }
-    .packages-intro .section-header { text-align: left; margin-bottom: 0; }
-    .packages-intro .section-header h2 { margin-bottom: 8px; }
-
-    /* ── CTA BANNER ── */
-    .cta-band {
-      background: linear-gradient(135deg, var(--navy-mid) 0%, rgba(14,165,233,0.08) 50%, var(--navy-mid) 100%);
-      border: 1px solid var(--border);
-      border-radius: 24px; padding: 60px 56px;
-      display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
-      position: relative; overflow: hidden;
-    }
-    .cta-band::before { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%); border-radius: 50%; }
-    .cta-band h2 { font-size: clamp(28px, 3.5vw, 42px); color: var(--white); margin-bottom: 10px; }
-    .cta-band p { color: var(--text-dim); font-size: 15px; }
-    .cta-band-actions { display: flex; gap: 12px; flex-shrink: 0; flex-wrap: wrap; }
-
-    @media(max-width: 900px) {
-      .hero-content { grid-template-columns: 1fr; gap: 50px; padding-top: 60px; }
-      .hero-right { display: none; }
-      .cta-band { grid-template-columns: 1fr; }
-      .packages-intro { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>East & West Travel Services — Faisalabad</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
-<!-- NAVBAR -->
-<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
-<nav class="navbar" id="navbar">
-  <a href="index.html" class="nav-logo">
-    <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
-    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
-  </a>
-
-  <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
-
-    <!-- Desktop+Mobile: shown via JS in mobile -->
-    <a href="index.html" class="active" id="mlink-home">Home</a>
-
-    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
-    <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
-      <div class="nav-drop">
-        <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
-        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
-        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
-      </div>
-    </div>
-
-    <!-- Mobile: services expand -->
-    <div id="mlink-svc-mob" style="display:none">
-      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
-        <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
-      </div>
-      <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
-        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
-        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
-      </div>
-    </div>
-
-    <a href="about.html">About</a>
-    <a href="contact.html" id="mlink-contact">Contact</a>
-
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
-  </div>
-
-  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
-</nav>
-
-<!-- HERO — Original mosaic layout, bright theme -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="hero-grid"></div>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-left">
-      <div class="hero-tag"><i class="fa fa-map-marker-alt"></i> Faisalabad's Trusted Travel Partner</div>
-      <h1>
-        Your Journey<br>
-        <span class="line2">Starts Here</span>
-      </h1>
-      <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and 20+ years of experience. No shortcuts. No hidden charges.</p>
-      <div class="hero-btns">
-        <a href="services.html" class="btn-primary-bright"><i class="fa fa-compass"></i> Explore Services</a>
-        <a href="https://wa.me/923336515349" target="_blank" class="btn-outline-bright"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
-      </div>
-      <div class="hero-stats-row">
-        <div class="h-stat"><strong>5,000+</strong><span>Travelers Served</span></div>
-        <div class="h-stat"><strong>20+</strong><span>Years in Business</span></div>
-        <div class="h-stat"><strong>15+</strong><span>Destinations</span></div>
-        <div class="h-stat"><strong>500+</strong><span>Umrah Pilgrims</span></div>
-      </div>
-    </div>
-
-    <div class="hero-right">
-      <div class="hero-mosaic">
-        <div class="mosaic-img mosaic-img-1">
-          <img src="assets/images/makarem_1.jpeg" alt="Makarem Ajyad Makkah">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Makkah</span>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">East & West</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Services <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="umrah.html">Umrah & Hajj</a></li>
+                        <li><a href="world-tours.html">World Tours</a></li>
+                        <li><a href="group-tickets.html">Group Tickets</a></li>
+                        <li><a href="visa-services.html">Visa Services</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="booking.html" class="nav-btn">Book Now</a></li>
+            </ul>
+            <div class="hamburger" onclick="openMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
-        <div class="mosaic-img">
-          <img src="assets/images/pullman_1.jpeg" alt="Pullman ZamZam Madinah">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Madinah</span>
-        </div>
-        <div class="mosaic-img">
-          <img src="assets/images/makarem_4.jpeg" alt="Hotel Room">
-          <div class="mosaic-overlay"></div>
-          <span class="mosaic-label">Premium Rooms</span>
-        </div>
-      </div>
-      <div class="hero-badge">
-        <span class="num">4.9★</span>
-        <span class="lbl">Customer Rating</span>
-      </div>
-    </div>
-  </div>
-</section>
+    </nav>
 
-<!-- DESTINATIONS SCROLL -->
-<div class="dest-strip">
-  <div class="dest-scroll" id="destScroll">
-    <div class="dest-item"><i class="fa fa-kaaba"></i> Umrah & Hajj</div>
-    <div class="dest-item"><i class="fa fa-mosque"></i> Makkah & Madinah</div>
-    <div class="dest-item"><i class="fa fa-city"></i> Dubai, UAE</div>
-    <div class="dest-item"><i class="fa fa-umbrella-beach"></i> Thailand</div>
-    <div class="dest-item"><i class="fa fa-mountain"></i> Bali, Indonesia</div>
-    <div class="dest-item"><i class="fa fa-users"></i> Family Packages</div>
-    <div class="dest-item"><i class="fa fa-passport"></i> Visa Services</div>
-    <div class="dest-item"><i class="fa fa-plane"></i> Air Tickets</div>
-    <div class="dest-item"><i class="fa fa-hotel"></i> Hotel Booking</div>
-    <!-- duplicate for infinite scroll -->
-    <div class="dest-item"><i class="fa fa-kaaba"></i> Umrah & Hajj</div>
-    <div class="dest-item"><i class="fa fa-mosque"></i> Makkah & Madinah</div>
-    <div class="dest-item"><i class="fa fa-city"></i> Dubai, UAE</div>
-    <div class="dest-item"><i class="fa fa-umbrella-beach"></i> Thailand</div>
-    <div class="dest-item"><i class="fa fa-mountain"></i> Bali, Indonesia</div>
-    <div class="dest-item"><i class="fa fa-users"></i> Family Packages</div>
-    <div class="dest-item"><i class="fa fa-passport"></i> Visa Services</div>
-    <div class="dest-item"><i class="fa fa-plane"></i> Air Tickets</div>
-    <div class="dest-item"><i class="fa fa-hotel"></i> Hotel Booking</div>
-  </div>
-</div>
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-left">
+                <h1>Faisalabad's Trusted <br><span>Travel Partner</span></h1>
+                <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and years of experience. No shortcuts. No hidden charges.</p>
+                <div class="hero-btns">
+                    <a href="#services" class="btn-primary">Explore Services</a>
+                    <a href="https://wa.me/923136515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." class="btn-secondary">WhatsApp Us</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<!-- FEATURED PACKAGES -->
-<section class="section">
-  <div class="container">
-    <div class="packages-intro">
-      <div class="section-header">
-        <div class="eyebrow">Our Packages</div>
-        <h2>Handpicked <em>Tours</em></h2>
-      </div>
-      <a href="services.html" class="btn-ghost" style="padding:11px 22px;font-size:13px">View All <i class="fa fa-arrow-right"></i></a>
-    </div>
+    <section class="packages" id="services">
+        <div class="section-title">
+            <h2>Our Packages</h2>
+            <p>Handpicked Tours</p>
+        </div>
+        <div class="package-grid">
+            <div class="package-card">
+                <div class="p-image" style="background-image: url('https://images.unsplash.com/photo-1564767609342-620cb19b2357?auto=format&fit=crop&q=80');">
+                    <span class="p-tag">Umrah</span>
+                </div>
+                <div class="p-content">
+                    <h3>7 Night Economy Umrah</h3>
+                    <p>7 Nights / 8 Days | PIA Direct | 4★ + 5★ Hotels</p>
+                    <div class="p-price">Rs. 85,000<span>per person</span></div>
+                    <a href="booking.html" class="p-btn">View Details</a>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="p-image" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80');">
+                    <span class="p-tag">Dubai</span>
+                </div>
+                <div class="p-content">
+                    <h3>Dubai Premium Tour</h3>
+                    <p>5 Nights / 6 Days | Visa Included</p>
+                    <div class="p-price">Rs. 1,20,000<span>per person</span></div>
+                    <a href="booking.html" class="p-btn">View Details</a>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="p-image" style="background-image: url('https://images.unsplash.com/photo-1528181304800-2f140819898f?auto=format&fit=crop&q=80');">
+                    <span class="p-tag">Thailand</span>
+                </div>
+                <div class="p-content">
+                    <h3>Thailand Adventure</h3>
+                    <p>7 Nights / 8 Days | Halal Meals</p>
+                    <div class="p-price">Rs. 95,000<span>per person</span></div>
+                    <a href="booking.html" class="p-btn">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Package grid — loaded from DB, fallback to static -->
-    <div class="packages-grid" id="featuredGrid">
-      <!-- Card 1: Umrah -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80" alt="Umrah" onerror="this.src='assets/images/makarem_1.jpeg'">
-          <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
+    <section class="why-choose">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Us</h2>
+                <p>We Do Things Differently</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Zero Hidden Charges</h3>
+                    <p>What we quote is what you pay. No surprise fees. No fine print.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mosque"></i>
+                    <h3>100% Halal Travel</h3>
+                    <p>Every package is designed with Islamic values in mind — halal food, prayer times.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Reach us around the clock, from Faisalabad airport to your destination.</p>
+                </div>
+            </div>
         </div>
-        <div class="pkg-body">
-          <h3>7 Night Economy Umrah</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
-            <span><i class="fa fa-plane"></i> PIA Direct</span>
-            <span><i class="fa fa-hotel"></i> 4★ + 5★ Hotels</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 85,000</span><small>per person</small></div>
-            <a href="umrah.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
-          </div>
-        </div>
-      </div>
-      <!-- Card 2: Dubai -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Dubai" onerror="this.src='assets/images/pullman_2.jpg'">
-          <span class="pkg-badge hot"><i class="fa fa-fire"></i> Hot Deal</span>
-        </div>
-        <div class="pkg-body">
-          <h3>Dubai Premium Tour</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 5 Nights / 6 Days</span>
-            <span><i class="fa fa-passport"></i> Visa Included</span>
-            <span><i class="fa fa-star"></i> 4.8 Rated</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 1,20,000</span><small>per person</small></div>
-            <a href="tours.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
-          </div>
-        </div>
-      </div>
-      <!-- Card 3: Thailand -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80" alt="Thailand" onerror="this.src='assets/images/makarem_3.jpeg'">
-          <span class="pkg-badge gold-badge"><i class="fa fa-globe"></i> World Tour</span>
-        </div>
-        <div class="pkg-body">
-          <h3>Thailand Adventure</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
-            <span><i class="fa fa-utensils"></i> Halal Meals</span>
-            <span><i class="fa fa-star"></i> 4.9 Rated</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 95,000</span><small>per person</small></div>
-            <a href="tours.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
-          </div>
-        </div>
-      </div>
-    </div>    </div>
-  </div>
-</section>
+    </section>
 
-<!-- WHY US -->
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">Why Choose Us</div>
-      <h2>We Do Things <em>Differently</em></h2>
-      <p>Eight years of building trust — one journey at a time.</p>
-    </div>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-shield-alt"></i></div>
-        <h3>Zero Hidden Charges</h3>
-        <p>What we quote is what you pay. No surprise fees. No fine print. Complete transparency from day one.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-star-and-crescent"></i></div>
-        <h3>100% Halal Travel</h3>
-        <p>Every package is designed with Islamic values in mind — halal food, prayer times, family-friendly accommodations.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-headset"></i></div>
-        <h3>24/7 On-Ground Support</h3>
-        <p>From Faisalabad airport to your hotel abroad — our team is reachable around the clock, every day.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa fa-certificate"></i></div>
-        <h3>Licensed & Trusted</h3>
-        <p>Officially licensed, Umrah Ministry approved, and trusted by 5,000+ Pakistani families over 8 years.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stats-band">
-  <div class="container">
-    <div class="stats-row">
-      <div class="stat-item"><span>5,000+</span><p>Travelers Served</p></div>
-      <div class="stat-item"><span>500+</span><p>Umrah Pilgrims</p></div>
-      <div class="stat-item"><span>15+</span><p>Destinations</p></div>
-      <div class="stat-item"><span>8+</span><p>Years Experience</p></div>
-      <div class="stat-item"><span>4.9★</span><p>Average Rating</p></div>
-    </div>
-  </div>
-</div>
-
-<!-- TESTIMONIALS -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">Real Reviews</div>
-      <h2>Words from Our <em>Travelers</em></h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p>"The Umrah package was exceptional. Hotel was right next to Haram, meals were great, and the team was available whenever we needed. Will definitely book again for my parents."</p>
-        <div class="testi-author">
-          <div class="testi-author-avatar">M</div>
-          <div><strong>Muhammad Asif</strong><span>Faisalabad — Umrah 2024</span></div>
+    <section class="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Common Questions</h2>
+            </div>
+            <div class="faq-item">
+                <h4>How much advance payment is required?</h4>
+                <p>50% advance per person is required to confirm your booking.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What documents are needed for Umrah visa?</h4>
+                <p>Valid passport (6 months), 2 photos, and CNIC copy.</p>
+            </div>
         </div>
-      </div>
-      <div class="testi-card" style="border-color: var(--border-gold)">
-        <div class="stars">★★★★★</div>
-        <p>"Booked the Dubai tour for my family — visa, flights, hotel, everything handled. Not a single problem throughout the trip. These people are genuine professionals."</p>
-        <div class="testi-author">
-          <div class="testi-author-avatar" style="background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy)">F</div>
-          <div><strong>Fatima Khalid</strong><span>Lahore — Dubai Tour 2024</span></div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p>"14-night Umrah was the most peaceful experience of my life. Abdullah bhai personally made sure everything was perfect. Jazakallah khair to the whole team."</p>
-        <div class="testi-author">
-          <div class="testi-author-avatar" style="background: linear-gradient(135deg, #0EA5E9, #0284C7)">H</div>
-          <div><strong>Haji Zubair Ahmed</strong><span>Faisalabad — Umrah 2023</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- FAQ -->
-<section class="section" style="padding-top: 0">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow">FAQ</div>
-      <h2>Common <em>Questions</em></h2>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How much advance payment is required to confirm a booking? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>50% advance per person is required to confirm your booking. The remaining balance is due 15 days before departure. Bank account details are provided after booking confirmation.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What documents are needed for Umrah visa? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Valid passport (minimum 6 months validity), 2 passport-size photos, and CNIC copy. We handle the entire visa application process — normally takes 7–15 working days.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Can I book from outside Faisalabad? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Absolutely. We serve clients from all across Pakistan. Everything — documents, payments, confirmations — can be handled online through WhatsApp and email.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What is the cancellation policy? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Cancellations 30+ days before departure: 70% refund. 15–30 days: 50% refund. Less than 15 days: no refund. Unexpected airline fare changes remain the passenger's responsibility.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Are halal meals guaranteed on international tours? <i class="fa fa-chevron-down"></i></div>
-        <div class="faq-a"><p>Yes. We specifically partner with halal-certified hotels and restaurants on all our international tours including Dubai, Thailand, and Bali.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA BAND -->
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <div class="cta-band">
-      <div>
-        <h2>Ready to Plan Your <em>Next Journey?</em></h2>
-        <p>Talk to us today — no obligation, just honest advice about the best package for you.</p>
-      </div>
-      <div class="cta-band-actions">
-        <a href="booking.html" class="btn-gold"><i class="fa fa-calendar-check"></i> Book a Tour</a>
-        <a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+want+to+enquire+about+a+travel+package." class="btn-ghost" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="nav-logo" style="margin-bottom:18px">
-          <img src="assets/images/logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
-          <span class="nav-logo-text">East & <span style="color:var(--teal)">West</span></span>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>East & West</h3>
+                <p>Faisalabad's trusted partner for Umrah, Hajj, and international travel since 2016.</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Info</h4>
+                <p><i class="fas fa-phone"></i> 0313-6515349</p>
+                <p><i class="fas fa-envelope"></i> info@eastwestpk.com</p>
+            </div>
         </div>
-        <p>East & West Travel Services — Faisalabad's trusted partner for Umrah, Hajj, and international travel since 2016.</p>
-        <div class="footer-socials">
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://wa.me/923136515349" target="_blank"><i class="fab fa-whatsapp"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
+        <div class="footer-bottom">
+            <p>© 2026 East & West Travel Services, Faisalabad. All rights reserved.</p>
         </div>
-      </div>
-      <div class="footer-links">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-          <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
-          <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
-          <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah Packages</a></li>
-          <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Dubai Tours</a></li>
-          <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Thailand / Bali</a></li>
-          <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Family Packages</a></li>
-          <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
-          <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Air Tickets</a></li>
-        </ul>
-      </div>
-      <div class="footer-contact">
-        <h4>Contact</h4>
-        <p><i class="fa fa-map-marker-alt"></i> Faisalabad, Punjab, Pakistan</p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349">0313-6515349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#d9b8bbbdacb5b5b8b1aab1b8b1b0bde0e0e0e099beb4b8b0b5f7bab6b4"><span class="__cf_email__" data-cfemail="5d3c3f392831313c352e353c353439646464641d3a303c3431733e3230">[email&#160;protected]</span></a></p>
-        <p><i class="fa fa-clock"></i> Mon – Sat: 9AM – 7PM</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 East & West Travel Services, Faisalabad. All rights reserved.</p>
-      <p><a href="#">Privacy Policy</a> · <a href="#">Terms & Conditions</a></p>
-    </div>
-  </div>
-</footer>
+    </footer>
 
-<a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+want+to+enquire+about+travel+package
+    <a href="https://wa.me/923136515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." 
+       class="wa-float" target="_blank" aria-label="WhatsApp Us">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
