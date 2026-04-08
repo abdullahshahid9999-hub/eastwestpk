@@ -1,82 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umrah Packages — East & West Travel Services</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<meta charaset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umrah & Hajj Packages — East & West Travel Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">East & West</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="umrah.html" class="active">Umrah</a></li>
-                <li><a href="booking.html" class="nav-btn">Book Now</a></li>
-            </ul>
-            <div class="hamburger" onclick="openMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
+<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
+    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html" id="mlink-home">Home</a>
+    <div class="nav-has-drop" id="mlink-svc-desk">
+      <a href="services.html" class="active">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <div class="nav-drop">
+        <a href="umrah.html" style="color:#C9A84C!important"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+      </div>
+    </div>
+    <div id="mlink-svc-mob" style="display:none">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
+        <span style="flex:1;font-size:14px;font-weight:600;color:#C9A84C;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <i class="fa fa-chevron-down" style="font-size:11px;color:#C9A84C;transition:transform 0.25s" id="mobSvcArrow"></i>
+      </div>
+      <div id="mobSvcSub" style="display:none;background:#F9F7F2">
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#C9A84C;font-weight:700;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
+        <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="contact.html" id="mlink-contact">Contact</a>
+    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
+    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+  </div>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:12px"><i class="fa fa-star-and-crescent" style="margin-right:8px"></i> Spiritual Journeys</div>
+    <h1>Umrah &amp; Hajj <em>Packages</em></h1>
+    <p>"Perform your sacred duty with comfort and peace of mind"</p>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><i class="fa fa-chevron-right"></i>
+      <a href="services.html">Services</a><i class="fa fa-chevron-right"></i>
+      <span>Umrah &amp; Hajj</span>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES GRID -->
+<section class="section">
+  <div class="container">
+
+    <!-- Filter tabs -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:40px">
+      <button onclick="filterPkgs('all',this)" class="ftab active" style="padding:9px 22px;border-radius:50px;border:2px solid #C9A84C;background:#C9A84C;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s">All</button>
+      <button onclick="filterPkgs('Umrah',this)" class="ftab" style="padding:9px 22px;border-radius:50px;border:2px solid #E8E4DA;background:#fff;color:#6B6B8A;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s">Umrah</button>
+      <button onclick="filterPkgs('Hajj',this)" class="ftab" style="padding:9px 22px;border-radius:50px;border:2px solid #E8E4DA;background:#fff;color:#6B6B8A;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s">Hajj</button>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" style="text-align:center;padding:60px 0;color:#9090AA">
+      <i class="fa fa-spinner fa-spin" style="font-size:28px;color:#C9A84C"></i>
+      <p style="margin-top:14px">Loading packages...</p>
+    </div>
+
+    <!-- Grid -->
+    <div id="pkgGrid" class="packages-grid" style="display:none"></div>
+
+    <!-- Empty -->
+    <div id="empty" style="display:none;text-align:center;padding:80px 0">
+      <div style="font-size:56px;margin-bottom:16px">🕌</div>
+      <h3 style="font-size:24px;color:#1C1C2E;margin-bottom:8px">No Packages Available</h3>
+      <p style="color:#6B6B8A;margin-bottom:24px">Our team is preparing amazing Umrah packages. Contact us for custom quotes.</p>
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Umrah+packages.+Please+share+details." target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#C9A84C;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;font-size:13px"><i class="fab fa-whatsapp"></i> WhatsApp for Umrah Quote</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- DETAIL MODAL -->
+<div id="detModal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(10,22,40,0.88);backdrop-filter:blur(8px);overflow-y:auto;padding:24px 16px">
+  <div style="background:#fff;border-radius:22px;max-width:800px;margin:0 auto;overflow:hidden;animation:slideUp 0.3s ease;position:relative">
+    <button onclick="closeDet()" style="position:absolute;top:14px;right:14px;width:34px;height:34px;background:rgba(10,22,40,0.6);border:none;border-radius:50%;color:#fff;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center"><i class="fa fa-times"></i></button>
+    <div id="detImg" style="height:260px;overflow:hidden;position:relative">
+      <img id="dImg" src="" style="width:100%;height:100%;object-fit:cover">
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(10,22,40,0.9) 100%)"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:22px 28px">
+        <h2 id="dTitle" style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#fff;margin-bottom:6px"></h2>
+        <div id="dMeta" style="display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,0.7)"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:0" id="detBody">
+      <div style="padding:24px 26px;border-right:1px solid #E8E4DA">
+        <div id="dDesc" style="font-size:15px;color:#4A4A6A;line-height:1.85;margin-bottom:20px"></div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#C9A84C;margin-bottom:12px;border-bottom:1px solid #E8E4DA;padding-bottom:8px">What's Included</div>
+        <div id="dInc" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"></div>
+        <div id="dExcl" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:13px;color:#991B1B;display:none"></div>
+      </div>
+      <div style="padding:22px;background:#FAFAF8">
+        <div id="dPrice" style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#C9A84C;font-weight:700;line-height:1"></div>
+        <div id="dPriceNote" style="font-size:12px;color:#9090AA;margin-bottom:16px;margin-top:4px"></div>
+        <div id="dRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #E8E4DA;font-size:13px"></div>
+        <button id="dBookBtn" onclick="bookPkg()" style="width:100%;background:#C9A84C;color:#fff;border:none;padding:13px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;letter-spacing:0.5px"><i class="fa fa-calendar-check"></i> Book This Package</button>
+        <a id="dWaBtn" href="#" target="_blank" style="width:100%;background:rgba(37,211,102,0.1);color:#25D366;border:1.5px solid rgba(37,211,102,0.3);padding:11px;border-radius:10px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif"><i class="fab fa-whatsapp"></i> Enquire on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING CHOICE MODAL -->
+<div id="bkModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(10,22,40,0.9);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:440px;overflow:hidden;animation:slideUp 0.3s ease;position:relative">
+    <button onclick="closeBk()" style="position:absolute;top:12px;right:12px;width:30px;height:30px;background:#F3F0EA;border:1px solid #E8E4DA;border-radius:50%;color:#6B6B8A;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fa fa-times"></i></button>
+    <div style="background:#F3F0EA;border-bottom:1px solid #E8E4DA;padding:18px 20px;display:flex;align-items:center;gap:14px">
+      <img id="bkImg" src="" style="width:64px;height:52px;object-fit:cover;border-radius:8px">
+      <div>
+        <div id="bkTitle" style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#1C1C2E"></div>
+        <div id="bkPrice" style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#C9A84C;font-weight:700"></div>
+      </div>
+    </div>
+    <div style="padding:22px">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#1C1C2E;margin-bottom:6px">How to Proceed?</h3>
+      <p style="font-size:13px;color:#6B6B8A;margin-bottom:18px">Sign in to save booking history or continue as guest.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button onclick="goBookLogin()" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#F3F0EA;border:2px solid #E8E4DA;border-radius:12px;cursor:pointer;width:100%;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif" onmouseover="this.style.borderColor='#C9A84C'" onmouseout="this.style.borderColor='#E8E4DA'">
+          <div style="width:40px;height:40px;background:rgba(14,165,233,0.1);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#0EA5E9;font-size:17px;flex-shrink:0"><i class="fa fa-user-circle"></i></div>
+          <div style="text-align:left"><div style="font-size:14px;font-weight:700;color:#1C1C2E">Sign In / Create Account</div><div style="font-size:12px;color:#6B6B8A">Save booking history &amp; get updates</div></div>
+          <i class="fa fa-chevron-right" style="margin-left:auto;color:#9090AA"></i>
+        </button>
+        <div style="text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;color:#9090AA;text-transform:uppercase">or</div>
+        <button onclick="goBookGuest()" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#FBF7EE;border:2px solid #E8E4DA;border-radius:12px;cursor:pointer;width:100%;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif" onmouseover="this.style.borderColor='#C9A84C'" onmouseout="this.style.borderColor='#E8E4DA'">
+          <div style="width:40px;height:40px;background:rgba(201,168,76,0.12);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#C9A84C;font-size:17px;flex-shrink:0"><i class="fa fa-user"></i></div>
+          <div style="text-align:left"><div style="font-size:14px;font-weight:700;color:#1C1C2E">Continue as Guest</div><div style="font-size:12px;color:#6B6B8A">Quick booking without account</div></div>
+          <i class="fa fa-chevron-right" style="margin-left:auto;color:#9090AA"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.ftab:hover{border-color:#C9A84C!important;color:#C9A84C!important}
+@media(max-width:700px){#detBody{grid-template-columns:1fr!important}}
+</style>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px"><img src="assets/images/logo.jpg" style="width:40px;height:40px;border-radius:50%;border:2px solid #C9A84C;padding:2px;object-fit:contain;background:white"><span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span></span></a>
+        <p style="color:rgba(255,255,255,0.4);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:10px">Our Services in Your Hands,<br>Where Ever You Are.</p>
+      </div>
+      <div class="footer-links"><h4>Services</h4><ul>
+        <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah &amp; Hajj</a></li>
+        <li><a href="tours.html"><i class="fa fa-chevron-right"></i> World Tours</a></li>
+        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
+        <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
+        <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:rgba(255,255,255,0.4)">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#513430222526342225213a11393e253c30383d7f323e3c" style="color:rgba(255,255,255,0.4)"><span class="__cf_email__" data-cfemail="96f3f7e5e2e1f3e5e2e6fdd6fef9e2fbf7fffab8f5f9fb">[email&#160;protected]</span></a></p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 East &amp; West Travel Services. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
+<script>
+const SUPA = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const WA   = '923336515349';
+const PAGE_TYPE = 'umrah'; // This page shows umrah+hajj only
+
+let allPkgs = [];
+let curPkg  = null;
+const loggedIn = !!sessionStorage.getItem('ew_user') || !!sessionStorage.getItem('ew_admin');
+
+// Load packages
+async function loadPkgs(typeFilter) {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('pkgGrid').style.display = 'none';
+  document.getElementById('empty').style.display   = 'none';
+
+  let q = `category=eq.umrah&status=eq.active&order=created_at.desc`;
+  if (typeFilter && typeFilter !== 'all') {
+    q = `type=eq.${typeFilter}&status=eq.active&order=created_at.desc`;
+  }
+
+  try {
+    const res = await fetch(`${SUPA}/rest/v1/packages?${q}`, {
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` }
+    });
+    let data = await res.json();
+    if (!Array.isArray(data)) data = [];
+
+    // No bad fallback - only show umrah category
+
+    allPkgs = data;
+    renderPkgs(data);
+  } catch(e) {
+    renderPkgs([]);
+  }
+}
+
+function renderPkgs(data) {
+  document.getElementById('loading').style.display = 'none';
+  if (!data.length) {
+    document.getElementById('empty').style.display = 'block';
+    return;
+  }
+  document.getElementById('pkgGrid').style.display = 'grid';
+  document.getElementById('pkgGrid').innerHTML = data.map(p => {
+    const img = p.image_url || 'assets/images/makarem_1.jpeg';
+    const badge = p.type === 'Hajj' ? 'Hajj' : 'Umrah';
+    return `
+    <div class="pkg-card" onclick="openDet('${p.id}')" style="cursor:pointer">
+      <div class="pkg-img">
+        <img src="${img}" alt="${p.name}" onerror="this.src='assets/images/makarem_1.jpeg'">
+        <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> ${badge}</span>
+      </div>
+      <div class="pkg-body">
+        <h3>${p.name}</h3>
+        <div class="pkg-meta">
+          ${p.duration ? `<span><i class="fa fa-clock"></i> ${p.duration}</span>` : ''}
+          ${p.airline  ? `<span><i class="fa fa-plane"></i> ${p.airline}</span>` : ''}
+          ${p.hotels   ? `<span><i class="fa fa-hotel"></i> ${p.hotels.split(',')[0]}</span>` : ''}
         </div>
-    </nav>
-
-    <header class="page-header" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1564767609342-620cb19b2357?auto=format&fit=crop&q=80'); background-size: cover; background-position: center; padding: 100px 0; text-align: center; color: white;">
-        <h1>Umrah Packages 2026</h1>
-        <p>Premium & Economy Services from Faisalabad</p>
-    </header>
-
-    <section class="packages" style="padding: 60px 20px;">
-        <div class="package-grid">
-            <div class="package-card">
-                <div class="p-image" style="background-image: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=80');">
-                    <span class="p-tag">Economy</span>
-                </div>
-                <div class="p-content">
-                    <h3>7 Night Economy Umrah</h3>
-                    <p>Includes Visa, PIA Ticket, and 4★ Hotel stay in Makkah & Madinah.</p>
-                    <div class="p-price">Rs. 85,000<span>per person</span></div>
-                    <a href="booking.html" class="p-btn">Book Now</a>
-                </div>
-            </div>
-
-            <div class="package-card">
-                <div class="p-image" style="background-image: url('https://images.unsplash.com/photo-1548236374-94e80352934a?auto=format&fit=crop&q=80');">
-                    <span class="p-tag">Premium</span>
-                </div>
-                <div class="p-content">
-                    <h3>14 Night Premium Umrah</h3>
-                    <p>5★ Hotels right next to Haram, full transport, and Ziyarat included.</p>
-                    <div class="p-price">Rs. 145,000<span>per person</span></div>
-                    <a href="booking.html" class="p-btn">Book Now</a>
-                </div>
-            </div>
+        <div class="pkg-footer">
+          <div class="pkg-price">
+            <span>${p.price || 'Contact Us'}</span>
+            <small>${p.price_note || 'per person'}</small>
+          </div>
+          <button onclick="event.stopPropagation();openDet('${p.id}')" style="background:#C9A84C;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px"><i class="fa fa-eye"></i> View</button>
         </div>
-    </section>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-about">
-                <h3>East & West</h3>
-                <p>Faisalabad's trusted partner for Umrah and travel since 2016.</p>
-            </div>
-            <div class="footer-contact">
-                <p><i class="fas fa-phone"></i> 0313-6515349</p>
-                <p><i class="fas fa-envelope"></i> info@eastwestpk.com</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 East & West Travel Services, Faisalabad. All rights reserved.</p>
-        </div>
-    </footer>
+window.filterPkgs = function(type, btn) {
+  document.querySelectorAll('.ftab').forEach(b => {
+    b.style.background = '#fff'; b.style.color = '#6B6B8A'; b.style.borderColor = '#E8E4DA';
+  });
+  btn.style.background = '#C9A84C'; btn.style.color = '#fff'; btn.style.borderColor = '#C9A84C';
+  loadPkgs(type);
+};
 
-    <a href="https://wa.me/923136515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." 
-       class="wa-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+// Detail modal
+window.openDet = function(id) {
+  const p = allPkgs.find(x => x.id === id);
+  if (!p) return;
+  curPkg = p;
+  const img = p.image_url || 'assets/images/makarem_1.jpeg';
+  document.getElementById('dImg').src = img;
+  document.getElementById('dTitle').textContent = p.name;
+  document.getElementById('dMeta').innerHTML = [
+    p.duration && `<span><i class="fa fa-clock" style="color:#C9A84C"></i> ${p.duration}</span>`,
+    p.airline  && `<span><i class="fa fa-plane" style="color:#C9A84C"></i> ${p.airline}</span>`,
+    p.route    && `<span><i class="fa fa-route" style="color:#C9A84C"></i> ${p.route}</span>`,
+  ].filter(Boolean).join('');
+  document.getElementById('dPrice').textContent     = p.price || 'Contact Us';
+  document.getElementById('dPriceNote').textContent = p.price_note || 'per person';
+  document.getElementById('dDesc').textContent      = p.description || `${p.name} — complete package with accommodation, transfers and full support throughout your journey.`;
+  document.getElementById('dRows').innerHTML = [
+    p.dep_date && `<div style="display:flex;justify-content:space-between"><span style="color:#9090AA">Departure</span><span style="font-weight:600;color:#1C1C2E">${p.dep_date}</span></div>`,
+    p.ret_date && `<div style="display:flex;justify-content:space-between"><span style="color:#9090AA">Return</span><span style="font-weight:600;color:#1C1C2E">${p.ret_date}</span></div>`,
+    p.hotels   && `<div style="display:flex;justify-content:space-between"><span style="color:#9090AA">Hotels</span><span style="font-weight:600;color:#1C1C2E;text-align:right;max-width:160px">${p.hotels}</span></div>`,
+    p.airline  && `<div style="display:flex;justify-content:space-between"><span style="color:#9090AA">Airline</span><span style="font-weight:600;color:#1C1C2E">${p.airline}</span></div>`,
+  ].filter(Boolean).join('');
 
-    <script src="assets/js/script.js"></script>
-</body>
-</html>
+  const incEl = document.getElementById('dInc');
+  if (p.includes) {
+    incEl.innerHTML = p.includes.split(',').map(i => `<div style="display:flex;align-items:center;gap:7px;font-size:13px;background:#F3F0EA;border-radius:8px;padding:7px 12px"><i class="fa fa-check-circle" style="color:#C9A84C;font-size:11px"></i>${i.trim()}</div>`).join('');
+  } else {
+    incEl.innerHTML = '<span style="color:#9090AA;font-size:13px">Contact us for full inclusions</span>';
+  }
+
+  const exclEl = document.getElementById('dExcl');
+  if (p.excludes) { exclEl.textContent = 'Excludes: '+p.excludes; exclEl.style.display='block'; }
+  else { exclEl.style.display = 'none'; }
+
+  document.getElementById('dWaBtn').href = `https://wa.me/${WA}?text=${encodeURIComponent(`Assalam o Alaikum! I am interested in "${p.name}" (${p.price||''}). Please share details.`)}`;
+
+  document.getElementById('detModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeDet = function() {
+  document.getElementById('detModal').style.display = 'none';
+  document.body.style.overflow = '';
+};
+
+// Book button
+window.bookPkg = function() {
+  if (!curPkg) return;
+  document.getElementById('detModal').style.display = 'none';
+  if (loggedIn) {
+    goToBooking();
+  } else {
+    document.getElementById('bkImg').src            = curPkg.image_url || 'assets/images/makarem_1.jpeg';
+    document.getElementById('bkTitle').textContent  = curPkg.name;
+    document.getElementById('bkPrice').textContent  = curPkg.price || '';
+    document.getElementById('bkModal').style.display= 'flex';
+  }
+};
+
+function goToBooking() {
+  const p = curPkg;
+  const params = new URLSearchParams({
+    tour:     p.name,
+    price:    p.price||'',
+    duration: p.duration||'',
+    dep:      p.dep_date||'',
+    ret:      p.ret_date||'',
+    flight:   p.airline||'',
+    img:      p.image_url||'',
+    type:     p.type||'Umrah',
+  });
+  window.location.href = 'booking.html?' + params.toString();
+}
+
+window.closeBk      = function() { document.getElementById('bkModal').style.display='none'; document.getElementById('detModal').style.display='block'; };
+window.goBookLogin  = function() { const p=encodeURIComponent('booking.html?'+new URLSearchParams({tour:curPkg?.name||'',price:curPkg?.price||''}).toString()); window.location.href=`auth/login.html?redirect=${p}`; };
+window.goBookGuest  = function() { closeBk(); goToBooking(); };
+
+// Close modals on backdrop
+document.getElementById('detModal').addEventListener('click', e => { if(e.target===document.getElementById('detModal')) closeDet(); });
+document.getElementById('bkModal').addEventListener('click',  e => { if(e.target===document.getElementById('bkModal'))  { document.get
