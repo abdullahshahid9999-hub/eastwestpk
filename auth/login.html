@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — East & West Travel Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -14,206 +14,283 @@
       --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);--border-gold:rgba(201,168,76,0.3);
       --white:#fff;--text:#E8EDF2;--text-dim:#8899AA;
       --border:rgba(255,255,255,0.08);--green:#10B981;--red:#EF4444;
-      --radius:14px;
     }
-    body{font-family:'DM Sans',sans-serif;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:var(--navy);padding-top:0!important}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;min-height:100vh;background:var(--navy);overflow-x:hidden;overflow-y:auto}
     h1,h2,h3,h4{font-family:'Playfair Display',serif}
     em{color:var(--gold);font-style:italic}
     a{text-decoration:none;color:inherit}
 
-    /* LEFT PANEL */
-    .auth-left{
-      background:linear-gradient(160deg,#060E1A 0%,var(--navy-mid) 100%);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      padding:60px 48px;position:relative;overflow:hidden;
-      border-right:1px solid var(--border);
-    }
-    .auth-left::before{
-      content:'';position:absolute;inset:0;
-      background:radial-gradient(ellipse at 30% 40%,rgba(14,165,233,0.08) 0%,transparent 60%),
-                 radial-gradient(ellipse at 70% 80%,rgba(201,168,76,0.05) 0%,transparent 50%);
-    }
-    .grid-lines{
-      position:absolute;inset:0;
-      background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
-                       linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
-      background-size:50px 50px;
-    }
-    .auth-left-content{position:relative;z-index:1;text-align:center;max-width:380px}
-    .brand{display:inline-flex;align-items:center;gap:12px;margin-bottom:52px}
-    .brand img{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white}
-    .brand-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--white)}
-    .brand-name span{color:var(--teal)}
-    .auth-left h2{font-size:44px;color:var(--white);line-height:1.15;margin-bottom:18px}
-    .auth-left p{color:var(--text-dim);font-size:15px;line-height:1.8;margin-bottom:44px}
-    .feat-list{list-style:none;display:flex;flex-direction:column;gap:16px;text-align:left}
-    .feat-list li{display:flex;align-items:center;gap:14px;color:var(--text-dim);font-size:14px}
-    .feat-icon{width:36px;height:36px;background:var(--teal-glow);border:1px solid rgba(14,165,233,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--teal);flex-shrink:0}
+    /* BG */
+    .bg-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+    .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 10s ease-in-out infinite}
+    .bg-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,0.12),transparent 70%);top:-200px;left:-100px;animation-delay:0s}
+    .bg-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,0.10),transparent 70%);bottom:-150px;right:-100px;animation-delay:4s}
+    .bg-orb-3{width:350px;height:350px;background:radial-gradient(circle,rgba(14,165,233,0.08),transparent 70%);top:40%;right:20%;animation-delay:7s}
+    @keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-40px) scale(1.06)}}
+    .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:60px 60px}
 
-    /* RIGHT PANEL */
-    .auth-right{display:flex;align-items:center;justify-content:center;padding:40px;overflow-y:auto}
-    .auth-box{width:100%;max-width:440px}
-    .auth-box h2{font-size:36px;color:var(--white);margin-bottom:6px}
-    .auth-box>p{font-size:14px;color:var(--text-dim);margin-bottom:32px}
+    /* LAYOUT */
+    .auth-wrap{position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+
+    /* LEFT */
+    .auth-left{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 48px;border-right:1px solid var(--border);position:sticky;top:0;height:100vh}
+    .auth-left-content{text-align:center;max-width:380px}
+    .brand{display:inline-flex;align-items:center;gap:14px;margin-bottom:44px;animation:fadeSlideDown 0.7s ease both}
+    .brand img{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white;box-shadow:0 0 20px rgba(201,168,76,0.3)}
+    .brand-name{font-family:'Playfair Display',serif;font-size:24px;color:var(--white)}
+    .brand-name span{color:var(--teal)}
+    .auth-left h2{font-size:clamp(36px,4vw,52px);color:var(--white);line-height:1.15;margin-bottom:16px;animation:fadeSlideDown 0.7s 0.1s ease both}
+    .auth-left .sub-p{color:var(--text-dim);font-size:15px;line-height:1.8;margin-bottom:40px;animation:fadeSlideDown 0.7s 0.2s ease both}
+    .feat-list{list-style:none;display:flex;flex-direction:column;gap:12px;text-align:left;animation:fadeSlideDown 0.7s 0.3s ease both}
+    .feat-list li{display:flex;align-items:center;gap:14px;color:var(--text-dim);font-size:14px;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;transition:all 0.3s}
+    .feat-list li:hover{border-color:rgba(14,165,233,0.3);background:rgba(14,165,233,0.04);color:var(--white);transform:translateX(4px)}
+    .feat-icon{width:36px;height:36px;background:var(--teal-glow);border:1px solid rgba(14,165,233,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--teal);flex-shrink:0}
+    .trust-row{display:flex;gap:10px;margin-top:28px;animation:fadeSlideDown 0.7s 0.4s ease both}
+    .trust-badge{flex:1;padding:10px 6px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);text-align:center}
+    .trust-badge .t-num{font-size:17px;font-weight:700;color:var(--gold);display:block}
+    .trust-badge .t-lbl{font-size:10px;color:var(--text-dim);margin-top:2px;display:block}
+
+    /* RIGHT */
+    .auth-right{display:flex;align-items:flex-start;justify-content:center;padding:60px 40px;overflow-y:auto}
+    .auth-box{width:100%;max-width:460px;animation:fadeSlideUp 0.6s 0.1s ease both}
+    .auth-box h2{font-size:38px;color:var(--white);margin-bottom:6px}
+    .auth-box>.sub-p2{font-size:14px;color:var(--text-dim);margin-bottom:28px}
 
     /* TABS */
-    .tab-row{display:flex;background:var(--navy-mid);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:28px;gap:4px}
-    .tab-btn{flex:1;padding:11px;text-align:center;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;color:var(--text-dim);transition:all 0.2s}
-    .tab-btn.active{background:var(--teal);color:white;box-shadow:0 4px 14px rgba(14,165,233,0.3)}
+    .tab-row{display:flex;background:var(--navy-mid);border:1px solid var(--border);border-radius:13px;padding:4px;margin-bottom:24px;gap:4px}
+    .tab-btn{flex:1;padding:11px;text-align:center;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;color:var(--text-dim);transition:all 0.25s}
+    .tab-btn.active{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:white;box-shadow:0 4px 16px rgba(14,165,233,0.35)}
 
     /* FORM */
-    .form-group{margin-bottom:18px}
+    .form-group{margin-bottom:18px;animation:fadeSlideUp 0.5s ease both}
     .form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:7px}
     .inp-wrap{position:relative}
-    .inp-wrap .pre-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:13px;pointer-events:none}
-    .form-group input{
-      width:100%;background:var(--navy-mid);border:1.5px solid var(--border);
-      border-radius:10px;padding:12px 13px 12px 38px;font-size:14px;
-      font-family:'DM Sans',sans-serif;color:var(--white);outline:none;transition:all 0.3s;
-    }
-    .form-group input::placeholder{color:var(--text-dim);opacity:0.6}
-    .form-group input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
-    .form-group input.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,0.1)}
-    .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;font-size:13px;transition:color 0.2s}
+    .inp-wrap .pre-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:13px;pointer-events:none;transition:color 0.3s}
+    .inp-wrap:focus-within .pre-icon{color:var(--teal)}
+    .form-group input{width:100%;background:var(--navy-mid);border:1.5px solid var(--border);border-radius:11px;padding:13px 14px 13px 40px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--white);outline:none;transition:all 0.3s}
+    .form-group input::placeholder{color:var(--text-dim);opacity:0.5}
+    .form-group input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow);background:#101F38}
+    .eye-btn{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;font-size:13px;transition:color 0.2s}
     .eye-btn:hover{color:var(--white)}
     .forgot{text-align:right;margin-top:-10px;margin-bottom:18px}
     .forgot a{font-size:12px;color:var(--teal);font-weight:600}
+    .forgot a:hover{color:var(--gold)}
 
-    /* UNVERIFIED NOTICE */
-    .unverified-notice{
-      background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
-      border-radius:10px;padding:16px;margin-bottom:20px;display:none;
-    }
-    .unverified-notice p{font-size:13.5px;color:#FCA5A5;line-height:1.6}
-    .unverified-notice strong{color:var(--white)}
+    /* ALERTS */
+    .alert{border-radius:11px;padding:13px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:flex-start;gap:10px;line-height:1.6}
+    .alert.show{display:flex;animation:shake 0.4s ease}
+    .alert-err{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5}
+    .alert-suc{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);color:#6EE7B7}
+    .alert-warn{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);color:#FDE68A}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    .unverified-notice{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:11px;padding:16px;margin-bottom:20px;display:none}
     .unverified-notice.show{display:block}
-
-    /* ALERT BOXES */
-    .alert{border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:10px;line-height:1.5}
-    .alert.show{display:flex}
-    .alert-err{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:#FCA5A5}
-    .alert-suc{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);color:#6EE7B7}
+    .unverified-notice p{font-size:13.5px;color:#FCA5A5;line-height:1.7}
+    .unverified-notice strong{color:var(--white)}
 
     /* SUBMIT */
-    .submit-btn{
-      width:100%;background:var(--teal);color:white;border:none;
-      padding:14px;border-radius:10px;font-size:15px;font-weight:700;
-      font-family:'DM Sans',sans-serif;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:10px;
-      transition:all 0.3s;
-    }
-    .submit-btn:hover:not(:disabled){background:var(--teal-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,0.35)}
+    .submit-btn{width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:white;border:none;padding:15px;border-radius:11px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.3s;box-shadow:0 4px 20px rgba(14,165,233,0.25)}
+    .submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px rgba(14,165,233,0.4)}
+    .submit-btn:active:not(:disabled){transform:translateY(0)}
     .submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
     .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;display:none;flex-shrink:0}
     @keyframes spin{to{transform:rotate(360deg)}}
 
+    /* OTP */
+    .otp-header{text-align:center;margin-bottom:28px;animation:fadeSlideUp 0.5s ease both}
+    .otp-icon-ring{width:72px;height:72px;background:rgba(14,165,233,0.1);border:2px solid rgba(14,165,233,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;color:var(--teal);animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,0.3)}50%{box-shadow:0 0 0 14px rgba(14,165,233,0)}}
+    .otp-box{letter-spacing:8px!important;font-size:28px!important;text-align:center!important;font-weight:700!important;padding:16px 14px!important;border-color:rgba(14,165,233,0.3)!important;background:rgba(14,165,233,0.05)!important}
+    .otp-box:focus{border-color:var(--teal)!important;box-shadow:0 0 0 4px var(--teal-glow)!important}
+
+    /* OR divider */
+    .or-div{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text-dim);font-size:12px}
+    .or-div::before,.or-div::after{content:'';flex:1;height:1px;background:var(--border)}
+
+    /* WhatsApp btn */
+    .wa-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px;border-radius:11px;background:rgba(37,211,102,0.08);border:1.5px solid rgba(37,211,102,0.3);color:#25D366;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.3s;text-decoration:none}
+    .wa-btn:hover{background:rgba(37,211,102,0.15);border-color:rgba(37,211,102,0.6);transform:translateY(-1px)}
+
     .switch-p{text-align:center;font-size:13px;color:var(--text-dim);margin-top:20px}
     .switch-p a{color:var(--teal);font-weight:700}
-    .back-link{text-align:center;margin-top:14px}
-    .back-link a{font-size:13px;color:var(--text-dim);transition:color 0.2s;display:inline-flex;align-items:center;gap:6px}
+    .switch-p a:hover{color:var(--gold)}
+    .back-link{text-align:center;margin-top:20px}
+    .back-link a{font-size:13px;color:var(--text-dim);display:inline-flex;align-items:center;gap:6px;transition:color 0.2s}
     .back-link a:hover{color:var(--teal)}
+    .admin-link{text-align:center;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)}
+    .admin-link a{font-size:11.5px;color:rgba(255,255,255,0.2);display:inline-flex;align-items:center;gap:5px;transition:color 0.2s}
+    .admin-link a:hover{color:rgba(201,168,76,0.7)}
 
-    @media(max-width:768px){body{grid-template-columns:1fr}.auth-left{display:none}.auth-right{min-height:100vh}}
+    /* Stagger animations */
+    @keyframes fadeSlideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    #loginTab .form-group:nth-child(1){animation-delay:.05s}
+    #loginTab .form-group:nth-child(2){animation-delay:.10s}
+    #signupFormStep .form-group:nth-child(1){animation-delay:.05s}
+    #signupFormStep .form-group:nth-child(2){animation-delay:.10s}
+    #signupFormStep .form-group:nth-child(3){animation-delay:.15s}
+    #signupFormStep .form-group:nth-child(4){animation-delay:.20s}
+
+    @media(max-width:860px){
+      .auth-wrap{grid-template-columns:1fr}
+      .auth-left{display:none}
+      .auth-right{padding:40px 24px;align-items:flex-start}
+      .auth-box{max-width:100%}
+    }
+    @media(max-width:480px){.auth-right{padding:28px 18px}}
   </style>
 </head>
 <body>
 
-<!-- LEFT -->
-<div class="auth-left">
-  <div class="grid-lines"></div>
-  <div class="auth-left-content">
-    <a href="../index.html" class="brand">
-      <img src="../assets/images/logo.jpg" alt="East & West Travel Services" onerror="this.style.display='none'">
-      <div class="brand-name">East & <span>West</span></div>
-    </a>
-    <h2>Track Your <em>Journey</em></h2>
-    <p>Login to view your bookings, check status, and access payment details anytime.</p>
-    <ul class="feat-list">
-      <li><div class="feat-icon"><i class="fa fa-calendar-check"></i></div> View all your bookings in one place</li>
-      <li><div class="feat-icon"><i class="fa fa-bell"></i></div> Get real-time booking status updates</li>
-      <li><div class="feat-icon"><i class="fa fa-university"></i></div> Access payment details anytime</li>
-      <li><div class="feat-icon"><i class="fa fa-headset"></i></div> Priority customer support</li>
-    </ul>
-  </div>
+<div class="bg-scene">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
 </div>
 
-<!-- RIGHT -->
-<div class="auth-right">
-  <div class="auth-box">
-    <h2>Welcome <em>Back</em></h2>
-    <p>Sign in or create your account</p>
+<div class="auth-wrap">
 
-    <div class="tab-row">
-      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
-      <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Create Account</button>
-    </div>
-
-    <div class="alert alert-err" id="errBox"><i class="fa fa-exclamation-circle"></i><span id="errTxt"></span></div>
-    <div class="alert alert-suc" id="sucBox"><i class="fa fa-check-circle"></i><span id="sucTxt"></span></div>
-
-    <!-- UNVERIFIED NOTICE -->
-    <div class="unverified-notice" id="unverifiedNotice">
-      <p>⚠️ Your account is <strong>not verified</strong> yet. Please contact us to verify your account:<br>
-      📱 <strong>WhatsApp: 0313-6515349</strong><br>
-      📧 <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="34555650415858555c475c555c5d500d0d0d0d745359555d581a575b59">[email&#160;protected]</a></strong></p>
-    </div>
-
-    <!-- LOGIN -->
-    <div id="loginTab">
-      <div class="form-group">
-        <label>Email Address</label>
-        <div class="inp-wrap"><i class="fa fa-envelope pre-icon"></i><input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="email"></div>
+  <!-- LEFT -->
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <a href="index.html" class="brand">
+        <img src="assets/images/logo.jpg" alt="East & West" onerror="this.style.display='none'">
+        <div class="brand-name">East &amp; <span>West</span></div>
+      </a>
+      <h2>Track Your <em>Journey</em></h2>
+      <p class="sub-p">Login to manage your bookings, track visa status, and get real-time travel updates — all in one place.</p>
+      <ul class="feat-list">
+        <li><div class="feat-icon"><i class="fa fa-calendar-check"></i></div> View &amp; manage all bookings</li>
+        <li><div class="feat-icon"><i class="fa fa-bell"></i></div> Real-time booking status alerts</li>
+        <li><div class="feat-icon"><i class="fa fa-passport"></i></div> Track visa application status</li>
+        <li><div class="feat-icon"><i class="fa fa-headset"></i></div> Priority customer support</li>
+      </ul>
+      <div class="trust-row">
+        <div class="trust-badge"><span class="t-num">5,000+</span><span class="t-lbl">Happy Travelers</span></div>
+        <div class="trust-badge"><span class="t-num">20+</span><span class="t-lbl">Years Trusted</span></div>
+        <div class="trust-badge"><span class="t-num">IATA</span><span class="t-lbl">Certified</span></div>
       </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="inp-wrap">
-          <i class="fa fa-lock pre-icon"></i>
-          <input type="password" id="loginPwd" placeholder="••••••••" autocomplete="current-password">
-          <button class="eye-btn" type="button" onclick="togglePwd('loginPwd',this)"><i class="fa fa-eye"></i></button>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="auth-right">
+    <div class="auth-box">
+      <h2>Welcome <em>Back</em></h2>
+      <p class="sub-p2">Sign in or create your free account</p>
+
+      <div class="tab-row">
+        <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <div class="alert alert-err"  id="errBox"><i class="fa fa-exclamation-circle" style="flex-shrink:0;margin-top:2px"></i><span id="errTxt"></span></div>
+      <div class="alert alert-suc"  id="sucBox"><i class="fa fa-check-circle"       style="flex-shrink:0;margin-top:2px"></i><span id="sucTxt"></span></div>
+      <div class="alert alert-warn" id="warnBox"><i class="fa fa-exclamation-triangle" style="flex-shrink:0;margin-top:2px"></i><span id="warnTxt"></span></div>
+
+      <div class="unverified-notice" id="unverifiedNotice">
+        <p>⚠️ Email <strong>not verified</strong> yet. Check your inbox for the 6-digit code, or
+        <a href="#" onclick="switchTab('signup');return false" style="color:var(--teal)">re-register</a>
+        for a new one. WhatsApp: <strong>0313-6515349</strong></p>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="loginTab">
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="inp-wrap">
+            <i class="fa fa-envelope pre-icon"></i>
+            <input type="email" id="loginEmail" placeholder="email@example.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="inp-wrap">
+            <i class="fa fa-lock pre-icon"></i>
+            <input type="password" id="loginPwd" placeholder="••••••••" autocomplete="current-password">
+            <button class="eye-btn" type="button" onclick="togglePwd('loginPwd',this)"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="forgot"><a href="#" onclick="doForgotPassword();return false">Forgot password?</a></div>
+        <button class="submit-btn" id="loginBtn" onclick="doLogin()">
+          <div class="spin" id="loginSpin"></div>
+          <i class="fa fa-sign-in-alt" id="loginIcon"></i>
+          <span id="loginTxt">Login to My Account</span>
+        </button>
+        <p class="switch-p">No account? <a href="#" onclick="switchTab('signup');return false">Create one free</a></p>
+      </div>
+
+      <!-- SIGNUP -->
+      <div id="signupTab" style="display:none">
+        <!-- STEP 1 -->
+        <div id="signupFormStep">
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="inp-wrap"><i class="fa fa-user pre-icon"></i><input type="text" id="signupName" placeholder="Your full name" autocomplete="name"></div>
+          </div>
+          <div class="form-group">
+            <label>Phone / WhatsApp</label>
+            <div class="inp-wrap"><i class="fa fa-phone pre-icon"></i><input type="tel" id="signupPhone" placeholder="03XX-XXXXXXX"></div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <div class="inp-wrap"><i class="fa fa-envelope pre-icon"></i><input type="email" id="signupEmail" placeholder="email@example.com" autocomplete="email"></div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="inp-wrap">
+              <i class="fa fa-lock pre-icon"></i>
+              <input type="password" id="signupPwd" placeholder="Min 8 characters">
+              <button class="eye-btn" type="button" onclick="togglePwd('signupPwd',this)"><i class="fa fa-eye"></i></button>
+            </div>
+          </div>
+          <button class="submit-btn" id="signupBtn" onclick="doSignup()">
+            <div class="spin" id="signupSpin"></div>
+            <i class="fa fa-user-plus" id="signupIcon"></i>
+            <span id="signupTxt">Create Account</span>
+          </button>
+          <p class="switch-p">Already have an account? <a href="#" onclick="switchTab('login');return false">Login</a></p>
+        </div>
+
+        <!-- STEP 2: OTP -->
+        <div id="otpVerifyStep" style="display:none">
+          <div class="otp-header">
+            <div class="otp-icon-ring"><i class="fa fa-envelope-open-text"></i></div>
+            <h3 style="font-size:22px;color:var(--white);margin-bottom:8px">Check Your Email</h3>
+            <p style="font-size:13px;color:var(--text-dim);line-height:1.7">
+              We sent a 6-digit code to<br>
+              <strong id="otpEmailDisplay" style="color:var(--white)"></strong>
+            </p>
+          </div>
+          <div class="form-group">
+            <label>Verification Code</label>
+            <div class="inp-wrap">
+              <input type="text" id="otpInput" placeholder="——————" maxlength="6" class="otp-box"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'');if(this.value.length===6)setTimeout(doVerifyOtp,300)">
+            </div>
+          </div>
+          <button class="submit-btn" id="otpBtn" onclick="doVerifyOtp()">
+            <div class="spin" id="otpSpin"></div>
+            <i class="fa fa-check-circle" id="otpIcon"></i>
+            <span id="otpTxt">Verify Email</span>
+          </button>
+          <p class="switch-p" style="margin-top:16px">
+            Didn't get it? <a href="#" onclick="doResendOtp();return false">Resend code</a> &nbsp;·&nbsp;
+            <a href="#" onclick="backToSignupForm();return false">Change email</a>
+          </p>
+          <div class="or-div">or verify another way</div>
+          <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+registered+on+eastwestpk.com+and+need+account+verification+help." class="wa-btn" target="_blank">
+            <i class="fab fa-whatsapp" style="font-size:20px"></i> Verify via WhatsApp Instead
+          </a>
         </div>
       </div>
-      <div class="forgot"><a href="#" onclick="doForgotPassword();return false">Forgot password?</a></div>
-      <button class="submit-btn" id="loginBtn" onclick="doLogin()">
-        <div class="spin" id="loginSpin"></div>
-        <i class="fa fa-sign-in-alt" id="loginIcon"></i>
-        <span id="loginTxt">Login to My Account</span>
-      </button>
-      <p class="switch-p">No account? <a href="#" onclick="switchTab('signup');return false">Create one free</a></p>
-    </div>
 
-    <!-- SIGNUP -->
-    <div id="signupTab" style="display:none">
-      <div class="form-group">
-        <label>Full Name</label>
-        <div class="inp-wrap"><i class="fa fa-user pre-icon"></i><input type="text" id="signupName" placeholder="Your full name" autocomplete="name"></div>
+      <div class="back-link"><a href="index.html"><i class="fa fa-arrow-left"></i> Back to Website</a></div>
+      <div class="admin-link">
+        <a href="admin/index.html"><i class="fa fa-shield-alt" style="font-size:10px"></i> Admin Login</a>
       </div>
-      <div class="form-group">
-        <label>Phone / WhatsApp</label>
-        <div class="inp-wrap"><i class="fa fa-phone pre-icon"></i><input type="tel" id="signupPhone" placeholder="03XX-XXXXXXX"></div>
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <div class="inp-wrap"><i class="fa fa-envelope pre-icon"></i><input type="email" id="signupEmail" placeholder="email@example.com" autocomplete="email"></div>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="inp-wrap">
-          <i class="fa fa-lock pre-icon"></i>
-          <input type="password" id="signupPwd" placeholder="Min 8 characters">
-          <button class="eye-btn" type="button" onclick="togglePwd('signupPwd',this)"><i class="fa fa-eye"></i></button>
-        </div>
-      </div>
-      <button class="submit-btn" id="signupBtn" onclick="doSignup()">
-        <div class="spin" id="signupSpin"></div>
-        <i class="fa fa-user-plus" id="signupIcon"></i>
-        <span id="signupTxt">Create Account</span>
-      </button>
-      <p class="switch-p">Already have an account? <a href="#" onclick="switchTab('login');return false">Login</a></p>
-    </div>
-
-    <div class="back-link"><a href="../index.html"><i class="fa fa-arrow-left"></i> Back to Website</a></div>
-    <div style="text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06)">
-      <a href="../admin/index.html" style="font-size:11.5px;color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:5px;transition:color 0.2s" onmouseover="this.style.color='rgba(201,168,76,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'"><i class="fa fa-shield-alt" style="font-size:10px"></i> Admin Login</a>
     </div>
   </div>
 </div>
@@ -224,148 +301,138 @@ const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-// Redirect if already logged in
-if (sessionStorage.getItem('ew_user')) window.location.href = 'my-bookings.html';
+if(sessionStorage.getItem('ew_user')) window.location.href='my-bookings.html';
 
-function showErr(msg){ const b=document.getElementById('errBox'); document.getElementById('errTxt').textContent=msg; b.classList.add('show'); document.getElementById('sucBox').classList.remove('show'); }
-function showSuc(msg){ const b=document.getElementById('sucBox'); document.getElementById('sucTxt').textContent=msg; b.classList.add('show'); document.getElementById('errBox').classList.remove('show'); }
-function clearAlerts(){ document.getElementById('errBox').classList.remove('show'); document.getElementById('sucBox').classList.remove('show'); try{document.getElementById('unverifiedNotice').classList.remove('show');}catch(e){} }
+function showErr(msg){hide('warnBox');hide('sucBox');document.getElementById('errTxt').innerHTML=msg;show('errBox')}
+function showSuc(msg){hide('errBox');hide('warnBox');document.getElementById('sucTxt').innerHTML=msg;show('sucBox')}
+function showWarn(msg){hide('errBox');hide('sucBox');document.getElementById('warnTxt').innerHTML=msg;show('warnBox')}
+function clearAlerts(){hide('errBox');hide('sucBox');hide('warnBox');try{document.getElementById('unverifiedNotice').classList.remove('show')}catch(e){}}
+function show(id){document.getElementById(id).classList.add('show')}
+function hide(id){document.getElementById(id).classList.remove('show')}
 
-function setLoading(form, on){
-  const btn=document.getElementById(form+'Btn');
-  if(!btn)return;
-  btn.disabled=on;
-  const spin=document.getElementById(form+'Spin');
-  const ico=document.getElementById(form+'Icon');
-  const txt=document.getElementById(form+'Txt');
+function setLoading(form,on){
+  const btn=document.getElementById(form+'Btn'); if(!btn)return; btn.disabled=on;
+  const spin=document.getElementById(form+'Spin'),ico=document.getElementById(form+'Icon'),txt=document.getElementById(form+'Txt');
   if(spin)spin.style.display=on?'inline-block':'none';
   if(ico)ico.style.display=on?'none':'inline';
-  const labels={login:{on:'Logging in...',off:'Login to My Account'},signup:{on:'Creating account...',off:'Create Account'}};
-  if(txt)txt.textContent=on?labels[form].on:labels[form].off;
+  const lbl={login:{on:'Logging in…',off:'Login to My Account'},signup:{on:'Creating account…',off:'Create Account'}};
+  if(txt&&lbl[form])txt.textContent=on?lbl[form].on:lbl[form].off;
 }
 
-window.switchTab = (tab) => {
-  document.getElementById('loginTab').style.display  = tab==='login'  ? 'block':'none';
-  document.getElementById('signupTab').style.display = tab==='signup' ? 'block':'none';
-  document.getElementById('loginTabBtn').classList.toggle('active',  tab==='login');
-  document.getElementById('signupTabBtn').classList.toggle('active', tab==='signup');
+window.switchTab=(tab)=>{
+  document.getElementById('loginTab').style.display=tab==='login'?'block':'none';
+  document.getElementById('signupTab').style.display=tab==='signup'?'block':'none';
+  document.getElementById('loginTabBtn').classList.toggle('active',tab==='login');
+  document.getElementById('signupTabBtn').classList.toggle('active',tab==='signup');
   clearAlerts();
 };
+window.togglePwd=(id,btn)=>{const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.querySelector('i').className=inp.type==='password'?'fa fa-eye':'fa fa-eye-slash'};
 
-window.togglePwd = (id, btn) => {
-  const inp=document.getElementById(id);
-  inp.type=inp.type==='password'?'text':'password';
-  btn.querySelector('i').className=inp.type==='password'?'fa fa-eye':'fa fa-eye-slash';
-};
+const urlP=new URLSearchParams(window.location.search);
+if(urlP.get('signup')==='1')window.switchTab('signup');
+const redirectUrl=urlP.get('redirect')||'my-bookings.html';
 
-const urlP = new URLSearchParams(window.location.search);
-if (urlP.get('signup')==='1') window.switchTab('signup');
-const redirectUrl = urlP.get('redirect') || 'my-bookings.html';
-
-// ── LOGIN ──
-window.doLogin = async () => {
+/* LOGIN */
+window.doLogin=async()=>{
   clearAlerts();
-  const email = document.getElementById('loginEmail').value.trim();
-  const pwd   = document.getElementById('loginPwd').value;
-  if (!email||!pwd){ showErr('Please enter email and password.'); return; }
-  setLoading('login', true);
-
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
-  if (error) {
-    const msgs = {
-      'Invalid login credentials': 'Wrong email or password. Try again.',
-      'Email not confirmed': 'Please verify your email first. Check your inbox.',
-    };
-    showErr(msgs[error.message] || error.message);
-    setLoading('login', false);
-    return;
+  const email=document.getElementById('loginEmail').value.trim();
+  const pwd=document.getElementById('loginPwd').value;
+  if(!email||!pwd){showErr('Please enter both email and password.');return;}
+  setLoading('login',true);
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pwd});
+  if(error){
+    setLoading('login',false);
+    const msgs={'Invalid login credentials':'Wrong email or password. Please try again.','Email not confirmed':'Please verify your email first. Check your inbox for the 6-digit code.'};
+    if(error.message==='Email not confirmed')document.getElementById('unverifiedNotice').classList.add('show');
+    showErr(msgs[error.message]||error.message);return;
   }
+  let customerName=data.user.user_metadata?.full_name||email.split('@')[0],customerPhone='';
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/customers?email=eq.${encodeURIComponent(email)}&select=*&limit=1`,{headers:{apikey:SUPABASE_ANON,Authorization:'Bearer '+SUPABASE_ANON}});
+    const rows=await res.json();
+    if(rows?.[0]){customerName=rows[0].full_name||customerName;customerPhone=rows[0].phone||'';}
+  }catch(e){}
+  sessionStorage.setItem('ew_user',JSON.stringify({id:data.user.id,email:data.user.email,name:customerName,phone:customerPhone,access_token:data.session.access_token}));
+  window.location.href=decodeURIComponent(redirectUrl);
+};
 
-  // Get customer profile
-  let customerName = data.user.user_metadata?.full_name || email.split('@')[0];
-  let customerPhone = '';
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/customers?email=eq.${encodeURIComponent(email)}&select=*&limit=1`, {
-      headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + SUPABASE_ANON }
-    });
-    const customers = await res.json();
-    if (customers?.[0]) {
-      customerName  = customers[0].full_name || customerName;
-      customerPhone = customers[0].phone || '';
+/* SIGNUP */
+let _pendingEmail='',_pendingPhone='',_pendingName='';
+window.doSignup=async()=>{
+  clearAlerts();
+  const name=document.getElementById('signupName').value.trim();
+  const phone=document.getElementById('signupPhone').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const pwd=document.getElementById('signupPwd').value;
+  if(!name){showErr('Please enter your full name.');return;}
+  if(!phone){showErr('Please enter your WhatsApp number.');return;}
+  if(!email||!/\S+@\S+\.\S+/.test(email)){showErr('Please enter a valid email address.');return;}
+  if(pwd.length<8){showErr('Password must be at least 8 characters.');return;}
+  setLoading('signup',true);
+  const{data,error}=await sb.auth.signUp({email,password:pwd,options:{data:{full_name:name}}});
+  setLoading('signup',false);
+  if(error){
+    const msgs={'User already registered':'This email is already registered. <a href="#" onclick="switchTab(\'login\');return false" style="color:var(--teal)">Login instead</a>','Password should be at least 6 characters':'Password must be at least 8 characters.'};
+    /* ── MAIN FIX: Handle "Error sending confirmation email" ── */
+    if(error.message.toLowerCase().includes('error sending')||error.message.toLowerCase().includes('confirmation email')||error.message.toLowerCase().includes('sending confirmation')){
+      // Account was created but email failed — show WhatsApp fallback
+      showWarn(
+        `⚠️ Your account was created but the verification email couldn't be sent `+
+        `(Supabase free plan has a limit of 4 emails/hour).<br><br>`+
+        `<strong>Quick fix:</strong> Message us on WhatsApp with your name & email and we'll activate your account within minutes:<br>`+
+        `<a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+registered+on+eastwestpk.com+as+${encodeURIComponent(name)}+with+email+${encodeURIComponent(email)}.+Please+verify+my+account." `+
+        `target="_blank" style="color:#25D366;font-weight:700;font-size:15px">📲 0333-651-5349</a>`
+      );
+      try{await fetch(`${SUPABASE_URL}/rest/v1/customers`,{method:'POST',headers:{apikey:SUPABASE_ANON,Authorization:'Bearer '+SUPABASE_ANON,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({email,phone,full_name:name})})}catch(e){}
+      return;
     }
-  } catch(e) {}
-
-  sessionStorage.setItem('ew_user', JSON.stringify({
-    id: data.user.id,
-    email: data.user.email,
-    name: customerName,
-    phone: customerPhone,
-    access_token: data.session.access_token,
-  }));
-
-  window.location.href = decodeURIComponent(redirectUrl);
+    showErr(msgs[error.message]||error.message);return;
+  }
+  try{await fetch(`${SUPABASE_URL}/rest/v1/customers`,{method:'POST',headers:{apikey:SUPABASE_ANON,Authorization:'Bearer '+SUPABASE_ANON,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({email,phone,full_name:name})})}catch(e){}
+  _pendingEmail=email;_pendingPhone=phone;_pendingName=name;
+  document.getElementById('otpEmailDisplay').textContent=email;
+  document.getElementById('signupFormStep').style.display='none';
+  document.getElementById('otpVerifyStep').style.display='block';
+  showSuc('✅ A 6-digit verification code has been sent to your email!');
 };
 
-// ── SIGNUP ──
-window.doSignup = async () => {
+/* OTP */
+window.doVerifyOtp=async()=>{
   clearAlerts();
-  const name  = document.getElementById('signupName').value.trim();
-  const phone = document.getElementById('signupPhone').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const pwd   = document.getElementById('signupPwd').value;
+  const token=(document.getElementById('otpInput').value||'').trim();
+  if(token.length<6){showErr('Please enter the complete 6-digit code.');return;}
+  const btn=document.getElementById('otpBtn'),spin=document.getElementById('otpSpin'),ico=document.getElementById('otpIcon'),txt=document.getElementById('otpTxt');
+  btn.disabled=true;spin.style.display='inline-block';ico.style.display='none';txt.textContent='Verifying…';
+  const{error}=await sb.auth.verifyOtp({email:_pendingEmail,token,type:'signup'});
+  btn.disabled=false;spin.style.display='none';ico.style.display='inline';txt.textContent='Verify Email';
+  if(error){showErr('Invalid or expired code. Please try again or click Resend.');return;}
+  showSuc('🎉 Email verified! Your account is ready. Taking you to login…');
+  setTimeout(()=>window.switchTab('login'),2200);
+};
 
-  if (!name)  { showErr('Please enter your full name.'); return; }
-  if (!phone) { showErr('Please enter your WhatsApp number.'); return; }
-  if (!email || !/\S+@\S+\.\S+/.test(email)) { showErr('Please enter a valid email address.'); return; }
-  if (pwd.length < 8) { showErr('Password must be at least 8 characters.'); return; }
-  setLoading('signup', true);
-
-  // Create auth account
-  const { data, error } = await sb.auth.signUp({
-    email,
-    password: pwd,
-    options: { data: { full_name: name } }
-  });
-
-  if (error) {
-    const msgs = {
-      'User already registered': 'This email is already registered. Please login instead.',
-      'Password should be at least 6 characters': 'Password must be at least 8 characters.',
-    };
-    showErr(msgs[error.message] || error.message);
-    setLoading('signup', false);
+window.doResendOtp=async()=>{
+  if(!_pendingEmail)return;
+  const{error}=await sb.auth.resend({email:_pendingEmail,type:'signup'});
+  if(error){
+    if(error.message.toLowerCase().includes('email')){showWarn('Email service busy. Use WhatsApp verification below or try again in a few minutes.');}
+    else{showErr('Could not resend: '+error.message);}
     return;
   }
-
-  // Save to customers table via REST (no upsert, simple POST)
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/customers`, {
-      method: 'POST',
-      headers: {
-        apikey: SUPABASE_ANON,
-        Authorization: 'Bearer ' + SUPABASE_ANON,
-        'Content-Type': 'application/json',
-        Prefer: 'resolution=merge-duplicates,return=minimal'
-      },
-      body: JSON.stringify({ email, phone, full_name: name })
-    });
-  } catch(e) { /* continue even if customers save fails */ }
-
-  showSuc('Account created! Please check your email to verify, then login.');
-  setLoading('signup', false);
-  setTimeout(() => window.switchTab('login'), 2500);
+  showSuc('New code sent! Check your inbox.');
+  document.getElementById('otpInput').value='';
 };
 
-// ── FORGOT PASSWORD ──
-window.doForgotPassword = async () => {
-  const email = document.getElementById('loginEmail').value.trim();
-  if (!email) { showErr('Enter your email address first, then click Forgot Password.'); return; }
+window.backToSignupForm=()=>{
+  document.getElementById('otpVerifyStep').style.display='none';
+  document.getElementById('signupFormStep').style.display='block';
+  clearAlerts();
+};
 
-  const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/auth/login.html'
-  });
-
-  if (error) { showErr('Could not send reset email: ' + error.message); return; }
+window.doForgotPassword=async()=>{
+  const email=document.getElementById('loginEmail').value.trim();
+  if(!email){showErr('Enter your email address first, then click Forgot Password.');return;}
+  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/login.html'});
+  if(error){showErr('Could not send reset email: '+error.message);return;}
   showSuc('Password reset link sent! Check your email inbox.');
 };
 </script>
