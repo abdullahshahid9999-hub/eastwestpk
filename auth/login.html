@@ -112,6 +112,25 @@
     .wa-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px;border-radius:11px;background:rgba(37,211,102,0.08);border:1.5px solid rgba(37,211,102,0.3);color:#25D366;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.3s;text-decoration:none}
     .wa-btn:hover{background:rgba(37,211,102,0.15);border-color:rgba(37,211,102,0.6);transform:translateY(-1px)}
 
+    // Google Login Function
+async function signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: 'https://eastwestpk.com/login.html', // Ye wahi link hai jo Supabase mein dala tha
+        },
+    });
+
+    if (error) {
+        console.error("Login Error:", error.message);
+        alert("Login nahi ho saka: " + error.message);
+    }
+}
+
+// Button par click event lagayen
+// Farz karein aapke button ki ID 'google-btn' hai
+document.getElementById('google-btn').addEventListener('click', signInWithGoogle);
+
     .switch-p{text-align:center;font-size:13px;color:var(--text-dim);margin-top:20px}
     .switch-p a{color:var(--teal);font-weight:700}
     .switch-p a:hover{color:var(--gold)}
