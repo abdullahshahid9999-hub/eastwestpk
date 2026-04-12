@@ -299,6 +299,10 @@ tbody td strong{color:var(--white)}
       <div class="fg"><label>Excludes</label><input type="text" id="pkgExc" placeholder="Flights, Visa"></div>
       <div class="fg"><label>Image URL</label><input type="url" id="pkgImg" placeholder="https://..."></div>
       <div class="fg"><label>Status</label><select id="pkgSt"><option value="active">Active (visible)</option><option value="inactive">Inactive (hidden)</option></select></div>
+      <div class="fg" style="display:flex;align-items:center;gap:10px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:12px 16px">
+        <input type="checkbox" id="pkgFeatured" style="width:18px;height:18px;accent-color:#C9A84C;cursor:pointer">
+        <label for="pkgFeatured" style="cursor:pointer;font-size:13px;font-weight:600;color:#C9A84C;text-transform:none;letter-spacing:0;margin-bottom:0">⭐ Feature this package on homepage</label>
+      </div>
       <div class="mf">
         <button class="btn btn-g" onclick="savePkg()"><i class="fa fa-save"></i> Save</button>
         <button class="btn btn-gh" onclick="closeModal('pkgModal')">Cancel</button>
@@ -324,6 +328,10 @@ tbody td strong{color:var(--white)}
         <div class="fg"><label>Processing Time</label><input type="text" id="vProc" placeholder="5-7 working days"></div>
       </div>
       <div class="fg"><label>Requirements</label><textarea id="vReq" placeholder="Passport (6mo valid), Photo, Bank Statement..."></textarea></div>
+      <div class="fr">
+        <div class="fg"><label>Country Flag Emoji</label><input type="text" id="vFlag" placeholder="🇦🇪" style="font-size:20px" maxlength="4"></div>
+        <div class="fg"><label>Country Image URL</label><input type="url" id="vImg" placeholder="https://... (optional country photo)"></div>
+      </div>
       <div class="fg"><label>Status</label><select id="vSt"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
       <div class="mf">
         <button class="btn btn-g" onclick="saveVisa()"><i class="fa fa-save"></i> Save</button>
@@ -621,6 +629,7 @@ function editPkg(id,cat){
   document.getElementById('pkgInc').value=p.includes||'';
   document.getElementById('pkgExc').value=p.excludes||'';
   document.getElementById('pkgImg').value=p.image_url||'';
+  document.getElementById('pkgFeatured').checked=p.featured||false;
   document.getElementById('pkgSt').value=p.status||'active';
   openModal('pkgModal');
 }
@@ -630,7 +639,7 @@ async function savePkg(){
   const cat=document.getElementById('pkgCat').value;
   const id=document.getElementById('pkgId').value;
   const typeVal=cat==='umrah'?'Umrah':'World Tour';
-  const d={name:nm,type:typeVal,category:cat,duration:document.getElementById('pkgDur').value.trim(),price:document.getElementById('pkgPrice').value.trim(),price_note:document.getElementById('pkgPn').value.trim(),destination:document.getElementById('pkgDest').value.trim(),dep_date:document.getElementById('pkgDep').value.trim(),ret_date:document.getElementById('pkgRet').value.trim(),airline:document.getElementById('pkgAl').value.trim(),route:document.getElementById('pkgRt').value.trim(),hotels:document.getElementById('pkgHt').value.trim(),includes:document.getElementById('pkgInc').value.trim(),excludes:document.getElementById('pkgExc').value.trim(),image_url:document.getElementById('pkgImg').value.trim(),status:document.getElementById('pkgSt').value,updated_at:new Date().toISOString()};
+  const d={name:nm,type:typeVal,category:cat,duration:document.getElementById('pkgDur').value.trim(),price:document.getElementById('pkgPrice').value.trim(),price_note:document.getElementById('pkgPn').value.trim(),destination:document.getElementById('pkgDest').value.trim(),dep_date:document.getElementById('pkgDep').value.trim(),ret_date:document.getElementById('pkgRet').value.trim(),airline:document.getElementById('pkgAl').value.trim(),route:document.getElementById('pkgRt').value.trim(),hotels:document.getElementById('pkgHt').value.trim(),includes:document.getElementById('pkgInc').value.trim(),excludes:document.getElementById('pkgExc').value.trim(),image_url:document.getElementById('pkgImg').value.trim(),status:document.getElementById('pkgSt').value,featured:document.getElementById('pkgFeatured').checked,updated_at:new Date().toISOString()};
   try{
     if(id){
       await PATCH('packages',id,d);
@@ -698,13 +707,15 @@ function editVisa(id){
   document.getElementById('vProc').value=v.processing_time||'';
   document.getElementById('vReq').value=v.requirements||'';
   document.getElementById('vSt').value=v.status||'active';
+  document.getElementById('vFlag').value=v.country_flag||'';
+  document.getElementById('vImg').value=v.country_image||'';
   openModal('visaModal');
 }
 async function saveVisa(){
   const t=document.getElementById('vTitle').value.trim();
   if(!t){toast('Title required!',true);return;}
   const id=document.getElementById('visaId').value;
-  const d={title:t,country:document.getElementById('vCountry').value.trim(),type:document.getElementById('vType').value,price:document.getElementById('vPrice').value.trim(),days:document.getElementById('vDays').value.trim(),validity:document.getElementById('vValidity').value.trim(),max_stay:document.getElementById('vMaxStay').value.trim(),processing_time:document.getElementById('vProc').value.trim(),requirements:document.getElementById('vReq').value.trim(),status:document.getElementById('vSt').value,updated_at:new Date().toISOString()};
+  const d={title:t,country:document.getElementById('vCountry').value.trim(),type:document.getElementById('vType').value,price:document.getElementById('vPrice').value.trim(),days:document.getElementById('vDays').value.trim(),validity:document.getElementById('vValidity').value.trim(),max_stay:document.getElementById('vMaxStay').value.trim(),processing_time:document.getElementById('vProc').value.trim(),requirements:document.getElementById('vReq').value.trim(),country_flag:document.getElementById('vFlag').value.trim()||'🌍',country_image:document.getElementById('vImg').value.trim(),status:document.getElementById('vSt').value,updated_at:new Date().toISOString()};
   try{
     if(id){await PATCH('visa_services',id,d);visas=visas.map(v=>v.id===id?{...v,...d,id}:v);}
     else{const r=await POST('visa_services',d);visas=[r,...visas];}
