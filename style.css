@@ -17,6 +17,19 @@
   --sh:0 8px 40px rgba(0,0,0,0.08);
   --sh-g:0 8px 32px rgba(201,168,76,0.25);
   --sh-t:0 8px 32px rgba(14,165,233,0.25);
+
+  /* ── Dark-theme variables (used by pages with inline dark sections) ── */
+  --navy-mid:#0F2040;
+  --navy-light:#162847;
+  --border:rgba(255,255,255,0.08);
+  --border-gold:rgba(201,168,76,0.30);
+  --text-dim:#8899AA;
+  --teal-dark:#0284C7;
+  --teal-glow:rgba(14,165,233,0.15);
+  --gold-light:#E8C97A;
+  --shadow-teal:rgba(14,165,233,0.25);
+  --radius:14px;
+  --radius-lg:22px;
 }
 
 html{scroll-behavior:smooth}
