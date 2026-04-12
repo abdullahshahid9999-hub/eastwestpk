@@ -81,7 +81,9 @@
     }
     .btn-outline-bright:hover { border-color: #25D366; color: #25D366; background: rgba(37,211,102,0.08); }
 
-
+    .hero-stats-row { display: flex; gap: 36px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px; flex-wrap: wrap; }
+    .h-stat strong { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 26px; color: #fff; display: block; line-height: 1; }
+    .h-stat span { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; display: block; }
 
     /* Hero right — image mosaic */
     .hero-right { position: relative; }
@@ -147,15 +149,14 @@
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
 
-  <div class="nav-links" id="navLinks">
+    <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
 
-    <!-- Desktop+Mobile: shown via JS in mobile -->
     <a href="index.html" class="active" id="mlink-home">Home</a>
 
-    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
+    <!-- Our Services dropdown (no services.html page) -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="#">Our Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
@@ -164,10 +165,10 @@
       </div>
     </div>
 
-    <!-- Mobile: services expand -->
+    <!-- Mobile services expand -->
     <div id="mlink-svc-mob" style="display:none">
       <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Our Services</span>
         <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
@@ -179,10 +180,11 @@
     </div>
 
     <a href="about.html">About</a>
+    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px;margin-right:3px"></i> Blog</a>
     <a href="contact.html" id="mlink-contact">Contact</a>
 
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+    <a href="login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
+    <a href="booking.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
 
   <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
@@ -206,10 +208,15 @@
       </h1>
       <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and 20+ years of experience. No shortcuts. No hidden charges.</p>
       <div class="hero-btns">
-        <a href="services.html" class="btn-primary-bright"><i class="fa fa-compass"></i> Explore Services</a>
+        <a href="booking.html" class="btn-primary-bright"><i class="fa fa-compass"></i> Explore Services</a>
         <a href="https://wa.me/923336515349" target="_blank" class="btn-outline-bright"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
       </div>
-
+      <div class="hero-stats-row">
+        <div class="h-stat"><strong>5,000+</strong><span>Travelers Served</span></div>
+        <div class="h-stat"><strong>20+</strong><span>Years in Business</span></div>
+        <div class="h-stat"><strong>15+</strong><span>Destinations</span></div>
+        <div class="h-stat"><strong>500+</strong><span>Umrah Pilgrims</span></div>
+      </div>
     </div>
 
     <div class="hero-right">
@@ -263,79 +270,297 @@
   </div>
 </div>
 
-<!-- FEATURED PACKAGES -->
-<section class="section">
+<!-- ══ HAND-PICKED PACKAGES (live from DB) ══ -->
+<section class="section" id="featuredSection" style="padding-bottom:0">
+  <style>
+    .fp-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px;flex-wrap:wrap;gap:16px}
+    .fp-header .section-header{text-align:left;margin-bottom:0}
+    .fp-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .fp-tab{padding:8px 18px;border-radius:50px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .25s;font-family:'DM Sans','Plus Jakarta Sans',sans-serif;letter-spacing:.3px}
+    .fp-tab.active,.fp-tab:hover{background:var(--gold);color:#fff;border-color:var(--gold);box-shadow:0 4px 16px rgba(201,168,76,.3)}
+    .fp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+    .fp-loading{text-align:center;padding:60px;color:var(--text-dim)}
+    .fp-loading .fa-spinner{font-size:28px;color:var(--gold);margin-bottom:12px;display:block}
+    .fp-empty{text-align:center;padding:50px;color:var(--text-dim)}
+    .fp-card{background:var(--navy-light);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .3s;cursor:pointer;display:flex;flex-direction:column}
+    .fp-card:hover{transform:translateY(-6px);border-color:var(--border-gold);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+    .fp-img{position:relative;height:200px;overflow:hidden}
+    .fp-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+    .fp-card:hover .fp-img img{transform:scale(1.06)}
+    .fp-badge{position:absolute;top:12px;left:12px;background:rgba(10,22,40,.85);backdrop-filter:blur(8px);border:1px solid rgba(201,168,76,.4);color:#C9A84C;font-size:10px;font-weight:700;padding:4px 10px;border-radius:50px;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+    .fp-feat-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#0A1628;font-size:10px;font-weight:700;padding:4px 10px;border-radius:50px;display:flex;align-items:center;gap:4px}
+    .fp-body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+    .fp-body h3{font-size:16px;color:var(--white);margin-bottom:10px;line-height:1.4}
+    .fp-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .fp-meta span{font-size:11px;color:var(--text-dim);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:4px 9px;border-radius:6px;display:flex;align-items:center;gap:5px}
+    .fp-meta span i{color:var(--teal);font-size:10px}
+    .fp-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+    .fp-price{line-height:1.2}
+    .fp-price strong{font-size:17px;color:var(--white);display:block}
+    .fp-price small{font-size:10px;color:var(--text-dim)}
+    .fp-book-btn{background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#0A1628;border:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px}
+    .fp-book-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(201,168,76,.4)}
+    @media(max-width:600px){.fp-tabs{display:none}}
+  </style>
   <div class="container">
-    <div class="packages-intro">
+    <div class="fp-header">
       <div class="section-header">
-        <div class="eyebrow">Our Packages</div>
-        <h2>Handpicked <em>Tours</em></h2>
+        <div class="eyebrow"><i class="fa fa-star" style="margin-right:6px"></i>Hand-Picked For You</div>
+        <h2>Featured <em>Packages</em></h2>
       </div>
-      <a href="services.html" class="btn-ghost" style="padding:11px 22px;font-size:13px">View All <i class="fa fa-arrow-right"></i></a>
+      <div class="fp-tabs">
+        <button class="fp-tab active" onclick="loadFeatured('all',this)">All</button>
+        <button class="fp-tab" onclick="loadFeatured('umrah',this)"><i class="fa fa-star-and-crescent"></i> Umrah</button>
+        <button class="fp-tab" onclick="loadFeatured('tour',this)"><i class="fa fa-globe"></i> Tours</button>
+        <button class="fp-tab" onclick="loadFeatured('visa',this)"><i class="fa fa-passport"></i> Visas</button>
+        <button class="fp-tab" onclick="loadFeatured('flight',this)"><i class="fa fa-plane"></i> Tickets</button>
+      </div>
     </div>
-
-    <!-- Package grid — loaded from DB, fallback to static -->
-    <div class="packages-grid" id="featuredGrid">
-      <!-- Card 1: Umrah -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80" alt="Umrah" onerror="this.src='assets/images/makarem_1.jpeg'">
-          <span class="pkg-badge umrah"><i class="fa fa-star-and-crescent"></i> Umrah</span>
-        </div>
-        <div class="pkg-body">
-          <h3>7 Night Economy Umrah</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
-            <span><i class="fa fa-plane"></i> PIA Direct</span>
-            <span><i class="fa fa-hotel"></i> 4★ + 5★ Hotels</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 85,000</span><small>per person</small></div>
-            <a href="umrah.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
-          </div>
-        </div>
-      </div>
-      <!-- Card 2: Dubai -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Dubai" onerror="this.src='assets/images/pullman_2.jpg'">
-          <span class="pkg-badge hot"><i class="fa fa-fire"></i> Hot Deal</span>
-        </div>
-        <div class="pkg-body">
-          <h3>Dubai Premium Tour</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 5 Nights / 6 Days</span>
-            <span><i class="fa fa-passport"></i> Visa Included</span>
-            <span><i class="fa fa-star"></i> 4.8 Rated</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 1,20,000</span><small>per person</small></div>
-            <a href="tours.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
-          </div>
-        </div>
-      </div>
-      <!-- Card 3: Thailand -->
-      <div class="pkg-card">
-        <div class="pkg-img">
-          <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=600&q=80" alt="Thailand" onerror="this.src='assets/images/makarem_3.jpeg'">
-          <span class="pkg-badge gold-badge"><i class="fa fa-globe"></i> World Tour</span>
-        </div>
-        <div class="pkg-body">
-          <h3>Thailand Adventure</h3>
-          <div class="pkg-meta">
-            <span><i class="fa fa-clock"></i> 7 Nights / 8 Days</span>
-            <span><i class="fa fa-utensils"></i> Halal Meals</span>
-            <span><i class="fa fa-star"></i> 4.9 Rated</span>
-          </div>
-          <div class="pkg-footer">
-            <div class="pkg-price"><span>Rs. 95,000</span><small>per person</small></div>
-            <a href="tours.html" class="btn-gold" style="padding:9px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">View</a>
-          </div>
-        </div>
-      </div>
-    </div>    </div>
+    <div id="fpLoading" class="fp-loading">
+      <i class="fa fa-spinner fa-spin"></i>
+      <p>Loading featured packages…</p>
+    </div>
+    <div id="fpGrid" class="fp-grid" style="display:none"></div>
+    <div id="fpEmpty" class="fp-empty" style="display:none">
+      <i class="fa fa-compass" style="font-size:32px;color:var(--gold);margin-bottom:12px;display:block"></i>
+      <p style="color:var(--text-dim)">No packages available right now. WhatsApp us for custom quotes!</p>
+      <a href="https://wa.me/923336515349" target="_blank" class="btn-gold" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:13px"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+    </div>
   </div>
 </section>
+
+<!-- BOOKING DETAIL MODAL (for featured packages) -->
+<div id="fpModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9000;overflow-y:auto;padding:20px">
+  <div style="max-width:680px;margin:40px auto;background:#0F2040;border:1px solid rgba(201,168,76,.25);border-radius:20px;overflow:hidden;position:relative">
+    <button onclick="closeFpModal()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.08);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;z-index:1;display:flex;align-items:center;justify-content:center"><i class="fa fa-times"></i></button>
+    <div id="fpModalBody"></div>
+  </div>
+</div>
+
+<script>
+const FP_SUPA = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const FP_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const FP_WA   = '923336515349';
+
+let fpCurrentTab = 'all';
+let fpAllData = [];
+
+async function fpGet(table, query) {
+  const r = await fetch(`${FP_SUPA}/rest/v1/${table}?${query}`, {
+    headers: { apikey: FP_KEY, Authorization: `Bearer ${FP_KEY}` }
+  });
+  const d = await r.json();
+  return Array.isArray(d) ? d : [];
+}
+
+async function loadFeatured(tab, btn) {
+  fpCurrentTab = tab;
+  document.querySelectorAll('.fp-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('fpLoading').style.display = 'block';
+  document.getElementById('fpGrid').style.display    = 'none';
+  document.getElementById('fpEmpty').style.display   = 'none';
+
+  try {
+    let items = [];
+
+    if (tab === 'all' || tab === 'umrah') {
+      const pkgs = await fpGet('packages', 'status=eq.active&order=featured.desc,created_at.desc&limit=8');
+      const umrah = pkgs.filter(p => p.category === 'umrah' || p.type === 'Umrah' || p.type === 'Hajj');
+      items.push(...umrah.map(p => ({...p, _type:'package', _cat:'umrah'})));
+    }
+    if (tab === 'all' || tab === 'tour') {
+      const pkgs = await fpGet('packages', 'status=eq.active&order=featured.desc,created_at.desc&limit=8');
+      const tours = pkgs.filter(p => p.category !== 'umrah' && p.type !== 'Umrah' && p.type !== 'Hajj');
+      items.push(...tours.map(p => ({...p, _type:'package', _cat:'tour'})));
+    }
+    if (tab === 'visa') {
+      const visas = await fpGet('visa_services', 'status=eq.active&order=sort_order.asc&limit=6');
+      items.push(...visas.map(v => ({...v, _type:'visa'})));
+    }
+    if (tab === 'flight') {
+      const flights = await fpGet('group_flights', 'status=eq.active&order=dep_date.asc&limit=6');
+      items.push(...flights.map(f => ({...f, _type:'flight'})));
+    }
+
+    // For 'all': mix featured first
+    if (tab === 'all') {
+      items.sort((a,b) => (b.featured?1:0) - (a.featured?1:0));
+      items = items.slice(0, 6);
+    }
+
+    fpAllData = items;
+    renderFpGrid(items);
+  } catch(e) {
+    renderFpGrid([]);
+  }
+}
+
+function renderFpGrid(items) {
+  document.getElementById('fpLoading').style.display = 'none';
+  if (!items.length) {
+    document.getElementById('fpEmpty').style.display = 'block';
+    return;
+  }
+  document.getElementById('fpGrid').style.display = 'grid';
+  document.getElementById('fpGrid').innerHTML = items.map((item, idx) => {
+    if (item._type === 'visa')   return renderVisaCard(item);
+    if (item._type === 'flight') return renderFlightCard(item);
+    return renderPkgCard(item, idx);
+  }).join('');
+}
+
+function renderPkgCard(p, idx) {
+  const isUmrah = p._cat === 'umrah';
+  const img = p.image_url || (isUmrah ? 'assets/images/makarem_1.jpeg' : 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80');
+  const catLabel = isUmrah ? `<i class="fa fa-star-and-crescent"></i> ${p.type||'Umrah'}` : `<i class="fa fa-globe"></i> ${p.destination||'Tour'}`;
+  return `
+  <div class="fp-card" onclick="openFpModal('pkg','${p.id}')">
+    <div class="fp-img">
+      <img src="${img}" alt="${p.name}" onerror="this.src='assets/images/makarem_1.jpeg'">
+      <span class="fp-badge">${catLabel}</span>
+      ${p.featured ? '<span class="fp-feat-badge"><i class="fa fa-star"></i> Featured</span>' : ''}
+    </div>
+    <div class="fp-body">
+      <h3>${p.name}</h3>
+      <div class="fp-meta">
+        ${p.duration ? `<span><i class="fa fa-clock"></i> ${p.duration}</span>` : ''}
+        ${p.airline  ? `<span><i class="fa fa-plane"></i> ${p.airline}</span>` : ''}
+        ${p.dep_date ? `<span><i class="fa fa-calendar"></i> ${p.dep_date}</span>` : ''}
+      </div>
+      <div class="fp-footer">
+        <div class="fp-price">
+          <strong>${p.price || 'Contact Us'}</strong>
+          <small>${p.price_note || 'per person'}</small>
+        </div>
+        <button class="fp-book-btn" onclick="event.stopPropagation();openFpModal('pkg','${p.id}')">
+          <i class="fa fa-calendar-check"></i> Book Now
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderVisaCard(v) {
+  const flag = v.country_flag || '🌍';
+  const img  = v.country_image || null;
+  return `
+  <div class="fp-card" onclick="openFpModal('visa','${v.id}')">
+    <div class="fp-img" style="background:linear-gradient(135deg,#0F2A50,#0A1628);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+      ${img ? `<img src="${img}" alt="${v.country}" style="width:100%;height:100%;object-fit:cover">` : 
+              `<div style="font-size:72px;line-height:1">${flag}</div><div style="font-size:13px;color:rgba(255,255,255,.5);font-weight:600">${v.country||''}</div>`}
+      <span class="fp-badge"><i class="fa fa-passport"></i> Visa</span>
+    </div>
+    <div class="fp-body">
+      <h3>${v.title}</h3>
+      <div class="fp-meta">
+        ${v.days      ? `<span><i class="fa fa-calendar"></i> ${v.days}</span>` : ''}
+        ${v.validity  ? `<span><i class="fa fa-clock"></i> ${v.validity}</span>` : ''}
+        ${v.processing_time ? `<span><i class="fa fa-hourglass"></i> ${v.processing_time}</span>` : ''}
+      </div>
+      <div class="fp-footer">
+        <div class="fp-price">
+          <strong>${v.price || 'Contact Us'}</strong>
+          <small>per person</small>
+        </div>
+        <button class="fp-book-btn" onclick="event.stopPropagation();openFpModal('visa','${v.id}')">
+          <i class="fa fa-file-alt"></i> Apply Now
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderFlightCard(f) {
+  return `
+  <div class="fp-card" onclick="openFpModal('flight','${f.id}')">
+    <div class="fp-img" style="background:linear-gradient(135deg,#0A1628,#0F2A50);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px">
+      <i class="fa fa-plane" style="font-size:52px;color:var(--teal);opacity:.5"></i>
+      <div style="font-size:18px;font-weight:700;color:#fff">${f.route||'—'}</div>
+      <span class="fp-badge"><i class="fa fa-ticket-alt"></i> Group Ticket</span>
+    </div>
+    <div class="fp-body">
+      <h3>${f.airline||'Flight'} — ${f.route||''}</h3>
+      <div class="fp-meta">
+        <span><i class="fa fa-calendar"></i> ${f.dep_date||'TBA'}</span>
+        ${f.dep_time ? `<span><i class="fa fa-clock"></i> ${f.dep_time}</span>` : ''}
+        ${f.seats_available ? `<span><i class="fa fa-users"></i> ${f.seats_available} seats</span>` : ''}
+      </div>
+      <div class="fp-footer">
+        <div class="fp-price">
+          <strong>${f.price||'Contact Us'}</strong>
+          <small>per seat</small>
+        </div>
+        <button class="fp-book-btn" onclick="event.stopPropagation();openFpModal('flight','${f.id}')">
+          <i class="fa fa-ticket-alt"></i> Book Seat
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function openFpModal(type, id) {
+  const item = fpAllData.find(x => x.id === id || x.id == id);
+  if (!item) return;
+  let body = '';
+  const waText = encodeURIComponent(`Assalam o Alaikum! I want to book: ${item.name||item.title||item.route} (${item.price||''}). Please confirm availability.`);
+
+  if (type === 'pkg') {
+    const img = item.image_url || 'assets/images/makarem_1.jpeg';
+    body = `
+      <img src="${img}" alt="${item.name}" style="width:100%;height:240px;object-fit:cover" onerror="this.src='assets/images/makarem_1.jpeg'">
+      <div style="padding:28px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px">${item.type||'Package'}</div>
+        <h2 style="font-size:24px;color:#fff;margin-bottom:16px;font-family:'Playfair Display',serif">${item.name}</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+          ${item.duration  ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase;letter-spacing:1px">Duration</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.duration}</div></div>` : ''}
+          ${item.price     ? `<div style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase;letter-spacing:1px">Price</div><div style="color:#C9A84C;font-weight:700;font-size:16px;margin-top:3px">${item.price}</div></div>` : ''}
+          ${item.airline   ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase;letter-spacing:1px">Airline</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.airline}</div></div>` : ''}
+          ${item.dep_date  ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase;letter-spacing:1px">Departure</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.dep_date}</div></div>` : ''}
+          ${item.hotels    ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;grid-column:1/-1"><div style="font-size:10px;color:#8899AA;text-transform:uppercase;letter-spacing:1px">Hotels</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.hotels}</div></div>` : ''}
+        </div>
+        ${item.includes ? `<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:#8899AA;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Includes</div><div style="display:flex;flex-wrap:wrap;gap:6px">${item.includes.split(',').map(i=>`<span style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:#6EE7B7;font-size:11px;padding:4px 10px;border-radius:50px"><i class="fa fa-check" style="margin-right:4px"></i>${i.trim()}</span>`).join('')}</div></div>` : ''}
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <a href="https://wa.me/${FP_WA}?text=${waText}" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#0A1628;padding:14px;border-radius:11px;font-weight:700;font-size:14px;text-decoration:none"><i class="fab fa-whatsapp" style="font-size:18px"></i> Book via WhatsApp</a>
+          <a href="booking.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff;padding:14px 18px;border-radius:11px;font-weight:600;font-size:14px;text-decoration:none"><i class="fa fa-calendar-check"></i> Online Form</a>
+        </div>
+      </div>`;
+  } else if (type === 'visa') {
+    const flag = item.country_flag || '🌍';
+    body = `
+      <div style="background:linear-gradient(135deg,#0F2A50,#0A1628);padding:40px;text-align:center;border-bottom:1px solid rgba(255,255,255,.08)">
+        ${item.country_image ? `<img src="${item.country_image}" alt="${item.country}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:3px solid rgba(201,168,76,.4);margin-bottom:12px">` : `<div style="font-size:80px;margin-bottom:8px">${flag}</div>`}
+        <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase">${item.country||''} VISA</div>
+        <h2 style="font-size:22px;color:#fff;margin-top:6px;font-family:'Playfair Display',serif">${item.title}</h2>
+      </div>
+      <div style="padding:24px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+          ${item.price           ? `<div style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase">Fee</div><div style="color:#C9A84C;font-weight:700;font-size:16px;margin-top:3px">${item.price}</div></div>` : ''}
+          ${item.processing_time ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase">Processing</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.processing_time}</div></div>` : ''}
+          ${item.days            ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase">Stay</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.days}</div></div>` : ''}
+          ${item.validity        ? `<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px"><div style="font-size:10px;color:#8899AA;text-transform:uppercase">Validity</div><div style="color:#fff;font-weight:600;margin-top:3px">${item.validity}</div></div>` : ''}
+        </div>
+        ${item.requirements ? `<div style="margin-bottom:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px"><div style="font-size:11px;font-weight:700;color:#8899AA;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Requirements</div><p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.7">${item.requirements}</p></div>` : ''}
+        <a href="https://wa.me/${FP_WA}?text=${waText}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#0A1628;padding:15px;border-radius:11px;font-weight:700;font-size:14px;text-decoration:none;margin-top:4px"><i class="fab fa-whatsapp" style="font-size:18px"></i> Apply via WhatsApp</a>
+      </div>`;
+  } else {
+    body = `<div style="padding:28px"><h3 style="color:#fff;margin-bottom:12px">${item.airline||''} — ${item.route||''}</h3><p style="color:#8899AA">Contact us to book this flight.</p><a href="https://wa.me/${FP_WA}?text=${waText}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#C9A84C;color:#0A1628;padding:13px 24px;border-radius:10px;font-weight:700;text-decoration:none;margin-top:16px"><i class="fab fa-whatsapp"></i> Book via WhatsApp</a></div>`;
+  }
+
+  document.getElementById('fpModalBody').innerHTML = body;
+  document.getElementById('fpModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFpModal() {
+  document.getElementById('fpModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('fpModal').addEventListener('click', function(e){ if(e.target===this) closeFpModal(); });
+
+// Load on page start
+loadFeatured('all', document.querySelector('.fp-tab'));
+</script>
 
 <!-- WHY US -->
 <section class="section" style="padding-top:0">
@@ -488,10 +713,10 @@
         <h4>Navigation</h4>
         <ul>
           <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
-          <li><a href="services.html"><i class="fa fa-chevron-right"></i> Services</a></li>
+          <li><a href="booking.html"><i class="fa fa-chevron-right"></i> Services</a></li>
           <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
           <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
-          <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
+          <li><a href="login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
         </ul>
       </div>
       <div class="footer-links">
@@ -520,7 +745,4 @@
   </div>
 </footer>
 
-<a href="https://wa.me/923336515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." class="wa-float" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-<script src="assets/js/script.js"></script>
-</body>
-</html>
+<a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+want+to+enquire+about+travel+package
