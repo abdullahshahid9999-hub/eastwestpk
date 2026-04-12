@@ -16,35 +16,44 @@
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
-  <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
+
     <a href="index.html" id="mlink-home">Home</a>
+
+    <!-- Our Services dropdown (no services.html page) -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" class="active">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="#">Our Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html" style="color:#C9A84C!important"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
         <a href="group-tickets.html"><i class="fa fa-plane"></i> Group Tickets</a>
         <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
       </div>
     </div>
+
+    <!-- Mobile services expand -->
     <div id="mlink-svc-mob" style="display:none">
       <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#C9A84C;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
-        <i class="fa fa-chevron-down" style="font-size:11px;color:#C9A84C;transition:transform 0.25s" id="mobSvcArrow"></i>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Our Services</span>
+        <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#C9A84C;font-weight:700;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
         <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
         <a href="group-tickets.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-plane" style="color:#C9A84C;width:16px"></i> Group Tickets</a>
         <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
       </div>
     </div>
+
     <a href="about.html">About</a>
+    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px;margin-right:3px"></i> Blog</a>
     <a href="contact.html" id="mlink-contact">Contact</a>
-    <a href="auth/login.html" class="nav-login"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+
+    <a href="login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
+    <a href="booking.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
+
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
@@ -177,7 +186,7 @@
         <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
         <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
         <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
-        <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
+        <li><a href="login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
       </ul></div>
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
@@ -189,7 +198,7 @@
   </div>
 </footer>
 
-<a href="https://wa.me/923336515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
 <script>
@@ -208,23 +217,29 @@ async function loadPkgs(typeFilter) {
   document.getElementById('pkgGrid').style.display = 'none';
   document.getElementById('empty').style.display   = 'none';
 
-  let q = `category=eq.tour&status=eq.active&order=created_at.desc`;
-  if (typeFilter && typeFilter !== 'all') {
-    q = `type=eq.${typeFilter}&status=eq.active&order=created_at.desc`;
-  }
-
   try {
-    const res = await fetch(`${SUPA}/rest/v1/packages?${q}`, {
+    // Fetch ALL active packages, filter client-side for tours
+    const res = await fetch(`${SUPA}/rest/v1/packages?status=eq.active&order=featured.desc,created_at.desc`, {
       headers: { apikey: KEY, Authorization: `Bearer ${KEY}` }
     });
     let data = await res.json();
     if (!Array.isArray(data)) data = [];
 
-    // No fallback - only show tour category packages
+    // Filter: NOT umrah/hajj = tours
+    let filtered = data.filter(p =>
+      p.category !== 'umrah' &&
+      (!p.type || (p.type.toLowerCase() !== 'umrah' && p.type.toLowerCase() !== 'hajj'))
+    );
 
-    allPkgs = data;
-    renderPkgs(data);
+    // Sub-filter by type if selected
+    if (typeFilter && typeFilter !== 'all') {
+      filtered = filtered.filter(p => p.type && p.type === typeFilter);
+    }
+
+    allPkgs = filtered;
+    renderPkgs(filtered);
   } catch(e) {
+    console.error('Error loading packages:', e);
     renderPkgs([]);
   }
 }
@@ -238,12 +253,12 @@ function renderPkgs(data) {
   document.getElementById('pkgGrid').style.display = 'grid';
   document.getElementById('pkgGrid').innerHTML = data.map(p => {
     const img = p.image_url || 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80';
-    const badge = p.type === 'Hajj' ? 'Hajj' : 'Umrah';
+    const badge = p.type || p.destination || 'Tour';
     return `
     <div class="pkg-card" onclick="openDet('${p.id}')" style="cursor:pointer">
       <div class="pkg-img">
         <img src="${img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80'">
-        <span class="pkg-badge hot"><i class="fa fa-star-and-crescent"></i> ${badge}</span>
+        <span class="pkg-badge hot"><i class="fa fa-globe"></i> ${badge}</span>
       </div>
       <div class="pkg-body">
         <h3>${p.name}</h3>
@@ -347,7 +362,7 @@ function goToBooking() {
 }
 
 window.closeBk      = function() { document.getElementById('bkModal').style.display='none'; document.getElementById('detModal').style.display='block'; };
-window.goBookLogin  = function() { const p=encodeURIComponent('booking.html?'+new URLSearchParams({tour:curPkg?.name||'',price:curPkg?.price||''}).toString()); window.location.href=`auth/login.html?redirect=${p}`; };
+window.goBookLogin  = function() { const p=encodeURIComponent('booking.html?'+new URLSearchParams({tour:curPkg?.name||'',price:curPkg?.price||''}).toString()); window.location.href=`login.html?redirect=${p}`; };
 window.goBookGuest  = function() { closeBk(); goToBooking(); };
 
 // Close modals on backdrop
