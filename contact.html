@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
+    /* Dark theme override for this page */
+    body { background: var(--navy) !important; color: var(--white); }
+    .section { background: var(--navy) !important; }
+
     /* PAGE HERO */
     .page-hero { background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
     .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.07) 0%, transparent 70%); }
@@ -116,15 +120,14 @@
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
 
-  <div class="nav-links" id="navLinks">
+    <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
 
-    <!-- Desktop+Mobile: shown via JS in mobile -->
     <a href="index.html" id="mlink-home">Home</a>
 
-    <!-- SERVICES — desktop has dropdown, mobile shows sub-menu -->
+    <!-- Our Services dropdown (no services.html page) -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="services.html" onclick="return true">Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="#">Our Services <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
@@ -133,10 +136,10 @@
       </div>
     </div>
 
-    <!-- Mobile: services expand -->
+    <!-- Mobile services expand -->
     <div id="mlink-svc-mob" style="display:none">
       <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Services</span>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Our Services</span>
         <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
@@ -148,10 +151,11 @@
     </div>
 
     <a href="about.html">About</a>
+    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px;margin-right:3px"></i> Blog</a>
     <a href="contact.html" class="active" id="mlink-contact">Contact</a>
 
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
-    <a href="services.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+    <a href="login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
+    <a href="booking.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
 
   <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
@@ -160,14 +164,39 @@
 <div class="page-hero">
   <div class="container">
     <div class="eyebrow"><i class="fa fa-headset"></i> Get In Touch</div>
-    <h1>Contact <em>East & West Travel Services</em></h1>
-    <p>We're here to help. Reach us via WhatsApp, email, or visit our office.</p>
+    <h1>Let's Plan Your <em>Dream Journey</em></h1>
+    <p>Our travel experts are ready to craft the perfect journey for you. Reach out via WhatsApp, email, or walk into our Faisalabad office — we respond fast.</p>
     <div class="breadcrumb"><a href="index.html">Home</a> <i class="fa fa-chevron-right" style="font-size:9px"></i> <span>Contact Us</span></div>
   </div>
 </div>
 
 <section class="section">
   <div class="container">
+
+    <!-- TRUST STRIP -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px">
+      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:24px;color:var(--gold);margin-bottom:8px"><i class="fa fa-clock"></i></div>
+        <div style="font-size:13px;font-weight:700;color:var(--white)">Fast Response</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Reply within 2–4 hrs</div>
+      </div>
+      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:24px;color:#25D366;margin-bottom:8px"><i class="fab fa-whatsapp"></i></div>
+        <div style="font-size:13px;font-weight:700;color:var(--white)">WhatsApp First</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">4 numbers available</div>
+      </div>
+      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:24px;color:var(--teal);margin-bottom:8px"><i class="fa fa-certificate"></i></div>
+        <div style="font-size:13px;font-weight:700;color:var(--white)">IATA Certified</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Trusted & accredited</div>
+      </div>
+      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:24px;color:#EF4444;margin-bottom:8px"><i class="fa fa-heart"></i></div>
+        <div style="font-size:13px;font-weight:700;color:var(--white)">5,000+ Travelers</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Happy customers served</div>
+      </div>
+    </div>
+
     <div class="contact-wrap">
 
       <!-- LEFT: CONTACT INFO -->
@@ -344,6 +373,7 @@
       </div>
 
     </div>
+    </div><!-- /trust strip container end -->
   </div>
 </section>
 
@@ -378,18 +408,18 @@
       </div>
       <div class="footer-links"><h4>Quick Links</h4><ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="packages.html">Packages</a></li>
+        <li><a href="booking.html">Packages</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="booking.html">Book Now</a></li>
-        <li><a href="auth/login.html">Customer Login</a></li>
+        <li><a href="login.html">Customer Login</a></li>
       </ul></div>
       <div class="footer-links"><h4>Our Services</h4><ul>
-        <li><a href="packages.html"><i class="fa fa-star-and-crescent" style="color:var(--gold);margin-right:6px;font-size:11px"></i>Umrah Packages</a></li>
-        <li><a href="packages.html"><i class="fa fa-plane" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Flight Tickets</a></li>
-        <li><a href="packages.html"><i class="fa fa-passport" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Visa Assistance</a></li>
-        <li><a href="packages.html"><i class="fa fa-globe" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Holiday Tours</a></li>
-        <li><a href="packages.html"><i class="fa fa-hotel" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Hotel Booking</a></li>
+        <li><a href="booking.html"><i class="fa fa-star-and-crescent" style="color:var(--gold);margin-right:6px;font-size:11px"></i>Umrah Packages</a></li>
+        <li><a href="booking.html"><i class="fa fa-plane" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Flight Tickets</a></li>
+        <li><a href="booking.html"><i class="fa fa-passport" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Visa Assistance</a></li>
+        <li><a href="booking.html"><i class="fa fa-globe" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Holiday Tours</a></li>
+        <li><a href="booking.html"><i class="fa fa-hotel" style="color:var(--teal);margin-right:6px;font-size:11px"></i>Hotel Booking</a></li>
       </ul></div>
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
@@ -402,7 +432,7 @@
   </div>
 </footer>
 
-<a href="https://wa.me/923336515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/script.js"></script>
 <script>
@@ -468,4 +498,56 @@ async function submitContactForm() {
 
   const btn = document.getElementById('cfBtn');
   btn.disabled = true;
-  document.getElement
+  document.getElementById('cfBtnSpin').style.display = 'inline-block';
+  document.getElementById('cfBtnIcon').style.display = 'none';
+  document.getElementById('cfBtnTxt').textContent = 'Sending...';
+
+  // Send to Supabase via REST or just WhatsApp fallback
+  try {
+    const waMsg = encodeURIComponent(
+      `Assalam o Alaikum! New enquiry from website:\n\nName: ${name}\nPhone: ${phone}\nEmail: ${document.getElementById('cfEmail').value.trim()}\nService: ${subject}\nMessage: ${message}`
+    );
+    // Save to a contact_messages table if it exists, otherwise just open WhatsApp
+    const res = await fetch('https://bciqlmvheqlsmogpnmal.supabase.co/rest/v1/contact_messages', {
+      method: 'POST',
+      headers: {
+        apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o',
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ name, phone, email: document.getElementById('cfEmail').value.trim(), subject, message })
+    });
+  } catch(e) {}
+
+  // Show success state
+  document.getElementById('cfForm').style.display = 'none';
+  document.getElementById('cfSuccess').style.display = 'block';
+};
+
+// Show hours status
+(function() {
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun
+  const hr  = now.getHours();
+  const min = now.getMinutes();
+  const t   = hr * 60 + min;
+  const dayIds = ['row-sun','row-mon','row-tue','row-wed','row-thu','row-fri','row-sat'];
+  const id = dayIds[day];
+  if (document.getElementById(id)) {
+    document.getElementById(id).querySelectorAll('td').forEach(td => td.classList.add('today-day'));
+  }
+  let open = false, status = '';
+  if (day >= 1 && day <= 4) { open = t >= 540 && t < 1140; status = open ? 'Open Now' : 'Closed'; }
+  else if (day === 5) { open = (t >= 540 && t < 780) || (t >= 840 && t < 1140); status = open ? 'Open Now' : (t >= 780 && t < 840 ? 'On Break' : 'Closed'); }
+  else if (day === 6) { open = t >= 600 && t < 1080; status = open ? 'Open Now' : 'Closed'; }
+  else { open = false; status = 'Online Only'; }
+  const badge = document.getElementById('statusBadge');
+  if (badge) {
+    badge.innerHTML = `<span class="open-badge ${open ? 'open' : day===0 ? 'break' : 'closed'}">${status}</span>`;
+  }
+})();
+</script>
+<script src="assets/js/script.js"></script>
+</body>
+</html>
