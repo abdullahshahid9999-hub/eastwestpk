@@ -367,4 +367,10 @@ window.goBookGuest  = function() { closeBk(); goToBooking(); };
 
 // Close modals on backdrop
 document.getElementById('detModal').addEventListener('click', e => { if(e.target===document.getElementById('detModal')) closeDet(); });
-document.getElementById('bkModal').addEventListener('click',  e => { if(e.target===document.getElementById('bkModal'))  { document.get
+document.getElementById('bkModal').addEventListener('click',  e => { if(e.target===document.getElementById('bkModal')) { document.getElementById('bkModal').style.display='none'; document.getElementById('detModal').style.display='block'; } });
+
+// init
+loadPkgs('all');
+</script>
+</body>
+</html>
