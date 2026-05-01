@@ -356,10 +356,21 @@
 ═══════════════════════════════════════════════════════ */
 const SUPABASE_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-// Already logged in? → go to bookings
-if (sessionStorage.getItem('ew_user')) window.location.href = 'my-bookings.html';
+/* ── CLIENT-SIDE GUARD: only init Supabase in browser ── */
+let sb;
+if (typeof window !== 'undefined' && typeof supabase !== 'undefined') {
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+} else {
+  console.error('Supabase SDK not loaded');
+}
+
+/* ── SESSION HELPERS (localStorage for persistence across refreshes) ── */
+function ewGetUser(){try{const r=localStorage.getItem('ew_user');return r?JSON.parse(r):null;}catch(e){return null;}}
+function ewSaveUser(d){try{localStorage.setItem('ew_user',JSON.stringify(d));sessionStorage.setItem('ew_user',JSON.stringify(d));}catch(e){}}
+
+/* ── Already logged in? Skip to bookings ── */
+if (ewGetUser()) window.location.href = 'my-bookings.html';
 
 /* ── URL params ── */
 const urlP = new URLSearchParams(window.location.search);
@@ -407,10 +418,10 @@ async function saveSession(user, session) {
     const rows = await r.json();
     if (rows?.[0]) { name = rows[0].full_name || name; phone = rows[0].phone || ''; }
   } catch(e) {}
-  sessionStorage.setItem('ew_user', JSON.stringify({
+  ewSaveUser({
     id: user.id, email: user.email, name, phone,
     access_token: session.access_token
-  }));
+  });
 }
 
 /* ══════════════════════
@@ -597,5 +608,6 @@ window.doGoogleAuth = async () => {
 })();
 
 </script>
+<script src="../assets/js/script.js"></script>
 </body>
 </html>
