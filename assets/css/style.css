@@ -44,122 +44,109 @@ img{max-width:100%;display:block}
 .section-header p{color:var(--text3);font-size:15px;margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto}
 
 /* ============================================================
-   NAVBAR
-   Desktop: Logo | Services▾ | About | MyAccount | BookNow
-   Mobile:  Hamburger → Right Drawer
+   NAVBAR v7
+   Desktop (>900px): Logo | Packages▾ | Visa | Blog | Account | Book Now
+   Tablet/Mobile (<900px): Logo | Hamburger → Right Drawer
    ============================================================ */
 .navbar{
   position:fixed;top:0;left:0;right:0;z-index:9000;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 5%;height:68px;
+  padding:0 4%;height:68px;
   background:#fff;
   box-shadow:0 1px 0 var(--bdr),0 2px 16px rgba(0,0,0,0.07);
   transition:height 0.3s,box-shadow 0.3s;
 }
 .navbar.scrolled{height:60px;box-shadow:0 2px 24px rgba(0,0,0,0.1)}
 
-/* Logo */
+/* ── LOGO ── */
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
-.nav-logo img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:#fff}
-.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text);font-weight:700;white-space:nowrap}
+.nav-logo img{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:#fff}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--text);font-weight:700;white-space:nowrap}
 .nav-logo-text span{color:var(--gold)}
 
-/* Desktop links wrapper */
-.nav-links{display:flex;align-items:center;gap:4px}
+/* ── DESKTOP LINKS WRAPPER ── */
+.nav-links{display:flex;align-items:center;gap:2px}
 
-/* ALL desktop direct links (NOT inside dropdown) */
+/* ── DESKTOP DIRECT LINKS ── */
 .nav-links > a{
   font-size:13px;font-weight:600;color:var(--text2);
-  padding:8px 13px;border-radius:7px;
+  padding:8px 12px;border-radius:7px;
   transition:all 0.22s;white-space:nowrap;
   font-family:'Plus Jakarta Sans',sans-serif;
-  text-decoration:none;display:flex;align-items:center;gap:6px;
+  text-decoration:none;display:flex;align-items:center;gap:5px;
 }
 .nav-links > a:hover{color:var(--text);background:var(--bg2)}
 .nav-links > a.active{color:var(--gold);background:var(--gold-dim)}
-.nav-links > a.nav-login{border:1.5px solid var(--gold-b);color:var(--gold);padding:7px 14px}
+
+/* Account button */
+.nav-links > a.nav-login{
+  border:1.5px solid var(--gold-b);color:var(--gold);
+  padding:7px 14px;border-radius:7px;margin-left:2px;
+}
 .nav-links > a.nav-login:hover{background:var(--gold-dim)}
+
+/* CTA Book Now */
 .nav-links > a.nav-cta{
   background:var(--gold)!important;color:#fff!important;
-  font-weight:700!important;padding:9px 20px!important;
-  border-radius:8px!important;margin-left:4px!important;border:none!important;
+  font-weight:700!important;padding:9px 18px!important;
+  border-radius:8px!important;margin-left:6px!important;border:none!important;
+  font-size:12px!important;letter-spacing:0.3px!important;
 }
-.nav-links > a.nav-cta:hover{background:var(--gold-l)!important;transform:translateY(-1px)!important}
+.nav-links > a.nav-cta:hover{background:var(--gold-l)!important;transform:translateY(-1px)!important;box-shadow:var(--sh-g)!important}
 
-/* Services dropdown wrapper */
+/* ── DROPDOWN WRAPPER ── */
 .nav-has-drop{position:relative;display:flex;align-items:center}
 .nav-has-drop > a{
   font-size:13px;font-weight:600;color:var(--text2);
-  padding:8px 13px;border-radius:7px;
+  padding:8px 12px;border-radius:7px;
   cursor:pointer;transition:all 0.22s;
   font-family:'Plus Jakarta Sans',sans-serif;
   text-decoration:none;white-space:nowrap;
   display:flex;align-items:center;gap:5px;
 }
-.nav-has-drop > a:hover{color:var(--text);background:var(--bg2)}
-.nav-chevron{font-size:10px;transition:transform 0.25s}
-.nav-has-drop:hover .nav-chevron{transform:rotate(180deg)}
+.nav-has-drop > a:hover,.nav-has-drop > a.active{color:var(--gold);background:var(--gold-dim)}
+.nav-chevron{font-size:9px;transition:transform 0.25s;opacity:0.6}
+.nav-has-drop:hover .nav-chevron{transform:rotate(180deg);opacity:1}
 
-/* THE DROPDOWN — HIDDEN BY DEFAULT */
+/* ── DROPDOWN PANEL ── */
 .nav-drop{
-  display:none; /* HIDDEN */
-  position:absolute;
-  top:calc(100% + 6px);
-  left:50%;
+  display:none;
+  position:absolute;top:calc(100% + 8px);left:50%;
   transform:translateX(-50%);
-  background:#fff;
-  border:1px solid var(--bdr);
-  border-radius:14px;
-  padding:8px;
-  min-width:210px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.12);
-  z-index:9999;
+  background:#fff;border:1px solid var(--bdr);
+  border-radius:14px;padding:8px;min-width:200px;
+  box-shadow:0 16px 48px rgba(0,0,0,0.13);z-index:9999;
 }
-.nav-has-drop:hover .nav-drop{display:block} /* SHOW ON HOVER */
-
-/* Dropdown links — completely separate from nav-links > a */
+.nav-has-drop:hover .nav-drop{display:block}
 .nav-drop a{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 14px;
-  border-radius:8px;
-  font-size:13px;
-  color:var(--text2);
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:8px;
+  font-size:13px;color:var(--text2);
   font-family:'Plus Jakarta Sans',sans-serif;
-  text-decoration:none;
-  transition:all 0.2s;
-  white-space:nowrap;
-  width:100%;
+  text-decoration:none;transition:all 0.2s;
+  white-space:nowrap;width:100%;
 }
 .nav-drop a:hover{background:var(--gold-dim);color:var(--gold)}
-.nav-drop a i{width:18px;text-align:center;color:var(--gold);font-size:13px}
+.nav-drop a i{width:18px;text-align:center;color:var(--gold);font-size:12px}
 
-/* Hamburger */
+/* ── HAMBURGER (hidden on desktop) ── */
 #menuBtn{
   display:none;
   background:none;border:1.5px solid var(--bdr);
-  color:var(--text);font-size:17px;cursor:pointer;
+  color:var(--text2);font-size:16px;cursor:pointer;
   padding:7px 10px;border-radius:8px;
   line-height:1;transition:all 0.2s;
-  align-items:center;justify-content:center;
+  align-items:center;justify-content:center;flex-shrink:0;
 }
 #menuBtn:hover{border-color:var(--gold);color:var(--gold)}
 
-/* Overlay */
-.nav-overlay{
-  display:none;position:fixed;inset:0;
-  z-index:8998;background:rgba(0,0,0,0.5);
-  opacity:0;pointer-events:none;transition:opacity 0.3s;
-}
-
-/* Close button inside drawer */
+/* ── CLOSE BUTTON (inside drawer, hidden on desktop) ── */
 .nav-close{
   display:none;
   position:absolute;top:14px;right:14px;
-  width:34px;height:34px;
+  width:32px;height:32px;
   background:var(--bg2);border:1px solid var(--bdr);
-  border-radius:8px;color:var(--text3);font-size:14px;
+  border-radius:8px;color:var(--text3);font-size:13px;
   cursor:pointer;align-items:center;justify-content:center;
   transition:all 0.2s;z-index:10;
 }
@@ -331,28 +318,36 @@ option{background:#fff;color:var(--text)}
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width:1024px){
+
+/* ── TABLET ── */
+@media (max-width:1100px){
   .packages-grid{grid-template-columns:1fr 1fr}
   .why-grid{grid-template-columns:1fr 1fr}
   .stats-row{grid-template-columns:repeat(3,1fr)}
   .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+  /* Slightly tighter nav on smaller laptops */
+  .nav-links > a{padding:7px 9px;font-size:12px}
+  .nav-links > a.nav-login{padding:6px 11px}
+  .nav-links > a.nav-cta{padding:8px 14px!important;font-size:11px!important}
 }
 
+/* ── MOBILE / TABLET: hamburger menu ── */
 @media (max-width:900px){
+
   /* Show hamburger */
   #menuBtn{display:flex!important}
 
-  /* Hide desktop dropdown */
-  .nav-has-drop{display:none!important}
+  /* Hide desktop-only dropdown trigger */
+  #mlink-svc-desk{display:none!important}
 
-  /* DRAWER */
+  /* ── DRAWER ── */
   .nav-links{
     position:fixed!important;
     top:0!important; right:-320px!important;
-    width:280px!important; height:100vh!important;
+    width:288px!important; height:100vh!important;
     background:#fff!important;
     border-left:1px solid var(--bdr)!important;
-    box-shadow:-8px 0 40px rgba(0,0,0,0.15)!important;
+    box-shadow:-8px 0 48px rgba(0,0,0,0.18)!important;
     flex-direction:column!important;
     align-items:stretch!important;
     padding:0!important; gap:0!important;
@@ -362,21 +357,28 @@ option{background:#fff;color:var(--text)}
   }
   .nav-links.open{right:0!important}
 
-  /* Drawer header */
+  /* Drawer header label */
   .nav-links::before{
-    content:'Navigation';
+    content:'Menu';
     display:block!important;
-    padding:22px 20px 16px!important;
+    padding:22px 20px 15px!important;
     font-size:10px;font-weight:700;letter-spacing:4px;
     text-transform:uppercase;color:var(--gold);
     border-bottom:1px solid var(--bdr);
     font-family:'Plus Jakarta Sans',sans-serif;
   }
 
-  /* Close button */
+  /* Show close button */
   .nav-close{display:flex!important}
 
-  /* Drawer links */
+  /* Hide desktop-only direct Visa/Blog links from drawer top level
+     (they show inside the mobile sub-menu instead) */
+  .nav-links > a[href="visa.html"],
+  .nav-links > a[href="../visa.html"]{display:none!important}
+  .nav-links > a[href="blog.html"],
+  .nav-links > a[href="../blog.html"]{display:none!important}
+
+  /* ── DRAWER LINKS ── */
   .nav-links > a{
     width:100%!important;
     padding:14px 20px!important;
@@ -386,55 +388,55 @@ option{background:#fff;color:var(--text)}
     color:var(--text2)!important;
     background:none!important;
   }
-  .nav-links > a:hover,.nav-links > a.active{
+  .nav-links > a:hover{
     background:rgba(201,168,76,0.07)!important;
     color:var(--gold)!important;
     border-left:3px solid var(--gold)!important;
     padding-left:17px!important;
   }
+  .nav-links > a.active{
+    background:rgba(201,168,76,0.08)!important;
+    color:var(--gold)!important;
+    border-left:3px solid var(--gold)!important;
+    padding-left:17px!important;
+  }
+  /* Account button in drawer */
   .nav-links > a.nav-login{
-    margin:12px 16px 4px!important;
+    margin:14px 16px 4px!important;
     width:calc(100% - 32px)!important;
     border-radius:8px!important;
     justify-content:center!important;
-    padding:12px!important;
+    padding:12px 16px!important;
     border:1.5px solid var(--gold-b)!important;
+    color:var(--gold)!important;
   }
+  /* CTA button in drawer */
   .nav-links > a.nav-cta{
     margin:4px 16px 20px!important;
     width:calc(100% - 32px)!important;
     border-radius:8px!important;
     justify-content:center!important;
-    padding:13px!important;
+    padding:13px 16px!important;
+    font-size:13px!important;
+    letter-spacing:0.3px!important;
   }
 
-  /* Mobile services section */
-  .mob-services{border-bottom:1px solid rgba(0,0,0,0.04)}
-  .mob-parent{display:flex;align-items:center;padding:14px 20px;cursor:pointer;user-select:none}
-  .mob-parent-label{flex:1;font-size:14px;font-weight:600;color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif}
-  .mob-parent-arrow{font-size:11px;color:var(--text4);transition:transform 0.25s}
-  .mob-parent.open .mob-parent-arrow{transform:rotate(180deg);color:var(--gold)}
-  .mob-parent.open .mob-parent-label{color:var(--gold)}
-  .mob-sub{display:none;background:#F9F7F2}
-  .mob-sub.open{display:block}
-  .mob-sub a{display:flex!important;align-items:center!important;gap:10px!important;padding:12px 32px!important;font-size:13px!important;color:var(--text3)!important;border-bottom:1px solid rgba(0,0,0,0.03)!important;border-radius:0!important;border-left:none!important;background:none!important;text-decoration:none;transition:all 0.2s}
-  .mob-sub a:hover{color:var(--gold)!important;background:rgba(201,168,76,0.06)!important}
-  .mob-sub a i{color:var(--gold);width:16px;text-align:center;font-size:12px}
-
-  /* Content */
+  /* Content adjustments */
   .packages-grid{grid-template-columns:1fr!important}
   .testi-grid{grid-template-columns:1fr!important}
   .why-grid{grid-template-columns:1fr 1fr!important}
   .stats-row{grid-template-columns:1fr 1fr!important}
   .footer-grid{grid-template-columns:1fr!important;gap:28px!important}
-  .section,.section-alt,.section-dark{padding:60px 0!important}
-  .container{padding:0 16px!important}
+  .section,.section-alt,.section-dark{padding:64px 0!important}
+  .container{padding:0 18px!important}
   .hero-content{grid-template-columns:1fr!important;gap:40px!important}
   .hero-right{display:none!important}
   .cta-band{grid-template-columns:1fr!important;padding:40px 28px!important}
 }
 
+/* ── SMALL MOBILE ── */
 @media (max-width:480px){
   .why-grid{grid-template-columns:1fr!important}
   .stats-row{grid-template-columns:1fr 1fr!important}
+  .container{padding:0 14px!important}
 }

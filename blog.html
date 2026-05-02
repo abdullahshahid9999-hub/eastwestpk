@@ -9,60 +9,60 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     /* Dark theme override for this page */
-    body { background: var(--navy) !important; color: var(--white); }
+    body { background: var(--navy) !important; color: #fff; }
     .section { background: var(--navy) !important; }
-    .footer { background: var(--navy-mid) !important; }
+    .footer { background: var(--navy2) !important; }
 
-    .page-hero { background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero { background: linear-gradient(160deg, var(--navy2) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--bdr-dark); position: relative; overflow: hidden; }
     .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 70%); }
     .page-hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; position: relative; }
-    .page-hero h1 { font-size: clamp(34px, 5vw, 56px); color: var(--white); position: relative; }
-    .page-hero > .container > p { color: var(--text-dim); margin-top: 12px; font-size: 15px; position: relative; }
-    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-dim); margin-top: 16px; position: relative; }
+    .page-hero h1 { font-size: clamp(34px, 5vw, 56px); color: #fff; position: relative; }
+    .page-hero > .container > p { color: var(--text3); margin-top: 12px; font-size: 15px; position: relative; }
+    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text3); margin-top: 16px; position: relative; }
     .breadcrumb a { color: var(--teal); }
 
     /* BLOG GRID */
     .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 
-    .blog-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
-    .blog-card:hover { transform: translateY(-6px); border-color: var(--border-gold); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
-    .blog-thumb { width: 100%; height: 210px; object-fit: cover; background: var(--navy-mid); display: block; }
-    .blog-thumb-placeholder { width: 100%; height: 210px; background: linear-gradient(135deg, var(--navy-mid), #0D1E3A); display: flex; align-items: center; justify-content: center; font-size: 48px; opacity: 0.4; }
+    .blog-card { background: var(--navy3); border: 1px solid var(--bdr-dark); border-radius: 18px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+    .blog-card:hover { transform: translateY(-6px); border-color: var(--gold-b); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
+    .blog-thumb { width: 100%; height: 210px; object-fit: cover; background: var(--navy2); display: block; }
+    .blog-thumb-placeholder { width: 100%; height: 210px; background: linear-gradient(135deg, var(--navy2), #0D1E3A); display: flex; align-items: center; justify-content: center; font-size: 48px; opacity: 0.4; }
     .blog-body { padding: 22px 24px 28px; }
-    .blog-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); background: var(--gold-dim); border: 1px solid var(--border-gold); padding: 4px 12px; border-radius: 50px; margin-bottom: 12px; }
-    .blog-title { font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.4; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
-    .blog-excerpt { font-size: 13.5px; color: var(--text-dim); line-height: 1.7; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .blog-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
-    .blog-date { font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .blog-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); background: var(--gold-dim); border: 1px solid var(--gold-b); padding: 4px 12px; border-radius: 50px; margin-bottom: 12px; }
+    .blog-title { font-size: 18px; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 10px; font-family: 'Cormorant Garamond', serif; }
+    .blog-excerpt { font-size: 13.5px; color: var(--text3); line-height: 1.7; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .blog-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--bdr-dark); }
+    .blog-date { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
     .blog-read { font-size: 12px; color: var(--teal); font-weight: 600; display: flex; align-items: center; gap: 5px; text-decoration: none; }
     .blog-read:hover { color: var(--gold); }
 
     /* LOADING */
-    .blog-skeleton { background: var(--navy-light); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
-    .skel { background: linear-gradient(90deg, var(--navy-mid) 25%, rgba(255,255,255,0.04) 50%, var(--navy-mid) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
+    .blog-skeleton { background: var(--navy3); border: 1px solid var(--bdr-dark); border-radius: 18px; overflow: hidden; }
+    .skel { background: linear-gradient(90deg, var(--navy2) 25%, rgba(255,255,255,0.04) 50%, var(--navy2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
     /* EMPTY STATE */
     .empty-state { text-align: center; padding: 80px 20px; grid-column: 1/-1; }
-    .empty-state i { font-size: 56px; color: var(--text-dim); opacity: 0.4; margin-bottom: 20px; display: block; }
-    .empty-state h3 { font-size: 22px; color: var(--white); margin-bottom: 8px; }
-    .empty-state p { color: var(--text-dim); font-size: 14px; }
+    .empty-state i { font-size: 56px; color: var(--text3); opacity: 0.4; margin-bottom: 20px; display: block; }
+    .empty-state h3 { font-size: 22px; color: #fff; margin-bottom: 8px; }
+    .empty-state p { color: var(--text3); font-size: 14px; }
 
     /* SINGLE POST MODAL */
     .post-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(5, 12, 26, 0.95); backdrop-filter: blur(10px); overflow-y: auto; padding: 40px 20px; }
     .post-modal.active { display: flex; align-items: flex-start; justify-content: center; }
-    .post-inner { background: var(--navy-light); border: 1px solid var(--border); border-radius: 24px; max-width: 780px; width: 100%; overflow: hidden; position: relative; margin: auto; }
-    .post-close { position: absolute; top: 20px; right: 20px; width: 38px; height: 38px; background: var(--navy-mid); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-dim); font-size: 14px; transition: all 0.3s; z-index: 10; }
-    .post-close:hover { color: var(--white); border-color: var(--teal); }
+    .post-inner { background: var(--navy3); border: 1px solid var(--bdr-dark); border-radius: 24px; max-width: 780px; width: 100%; overflow: hidden; position: relative; margin: auto; }
+    .post-close { position: absolute; top: 20px; right: 20px; width: 38px; height: 38px; background: var(--navy2); border: 1px solid var(--bdr-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text3); font-size: 14px; transition: all 0.3s; z-index: 10; }
+    .post-close:hover { color: #fff; border-color: var(--teal); }
     .post-hero-img { width: 100%; height: 320px; object-fit: cover; display: block; }
     .post-content { padding: 36px 40px 48px; }
     .post-content .blog-tag { margin-bottom: 16px; }
-    .post-content h1 { font-size: clamp(24px, 4vw, 34px); color: var(--white); line-height: 1.3; margin-bottom: 14px; }
-    .post-content .post-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text-dim); margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .post-content h1 { font-size: clamp(24px, 4vw, 34px); color: #fff; line-height: 1.3; margin-bottom: 14px; }
+    .post-content .post-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text3); margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--bdr-dark); }
     .post-body { font-size: 15px; color: #94A3B8; line-height: 1.85; }
-    .post-body h2 { font-size: 22px; color: var(--white); margin: 28px 0 12px; }
+    .post-body h2 { font-size: 22px; color: #fff; margin: 28px 0 12px; }
     .post-body p { margin-bottom: 16px; }
-    .post-body strong, .post-body b { color: var(--white); }
+    .post-body strong, .post-body b { color: #fff; }
     .post-body a { color: var(--teal); }
 
     @media(max-width: 960px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -78,33 +78,45 @@
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
 
-      <div class="nav-links" id="navLinks">
+        <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
+
+    <!-- Home -->
     <a href="index.html" id="mlink-home">Home</a>
+
+    <!-- Desktop: Packages dropdown -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="booking.html">Packages <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="booking.html">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
       </div>
     </div>
-    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px;margin-right:2px"></i> Visa</a>
-    <a href="blog.html" class="active" style="color:var(--gold)!important"><i class="fa fa-pen-nib" style="font-size:11px;margin-right:2px"></i> Blog</a>
-    <div id="mlink-svc-mob" style="display:none">
-      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Packages</span>
+
+    <!-- Desktop: Direct links -->
+    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px"></i> Visa</a>
+    <a href="blog.html" class="active"><i class="fa fa-pen-nib" style="font-size:11px"></i> Blog</a>
+
+    <!-- Mobile only: expandable packages -->
+    <div id="mlink-svc-mob" style="display:none;border-bottom:1px solid rgba(0,0,0,0.04)">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;user-select:none">
+        <i class="fa fa-th-large" style="color:#C9A84C;font-size:13px;margin-right:10px;width:16px;text-align:center"></i>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif" id="mobSvcLabel">Packages</span>
         <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
-        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
-        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px"></i> Blog</a>
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px;text-align:center"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px;text-align:center"></i> World Tours</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px;text-align:center"></i> Visa Services</a>
+        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px;text-align:center"></i> Blog</a>
       </div>
     </div>
+
+    <!-- Account + CTA -->
     <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
     <a href="visa.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
+
   <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
 </nav>
 
@@ -168,7 +180,7 @@
           <img src="assets/images/logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
           <span class="nav-logo-text">East & <span>West</span></span>
         </a>
-        <p style="color:var(--text-dim);font-size:13.5px;margin-top:10px;line-height:1.7;font-style:italic">Our Services in Your Hands,<br>Where Ever You Are.</p>
+        <p style="color:var(--text3);font-size:13.5px;margin-top:10px;line-height:1.7;font-style:italic">Our Services in Your Hands,<br>Where Ever You Are.</p>
         <div style="display:flex;gap:10px;margin-top:18px">
           <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.25);display:flex;align-items:center;justify-content:center;"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
           <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.25);display:flex;align-items:center;justify-content:center;"><i class="fab fa-facebook" style="color:#1877F2;font-size:15px"></i></a>
@@ -192,8 +204,8 @@
       </ul></div>
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text-dim)">+92 333 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#a0c5c1d3d4d7c5d3d4d0cbe0c8cfd4cdc1c9cc8ec3cfcd" style="color:var(--text-dim)"><span class="__cf_email__" data-cfemail="a6c3c7d5d2d1c3d5d2d6cde6cec9d2cbc7cfca88c5c9cb">[email&#160;protected]</span></a></p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text3)">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#a0c5c1d3d4d7c5d3d4d0cbe0c8cfd4cdc1c9cc8ec3cfcd" style="color:var(--text3)"><span class="__cf_email__" data-cfemail="a6c3c7d5d2d1c3d5d2d6cde6cec9d2cbc7cfca88c5c9cb">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>

@@ -9,77 +9,77 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     /* Dark theme override for this page */
-    body { background: var(--navy) !important; color: var(--white); }
+    body { background: var(--navy) !important; color: #fff; }
     .section { background: var(--navy) !important; }
 
     /* PAGE HERO */
-    .page-hero { background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero { background: linear-gradient(160deg, var(--navy2) 0%, var(--navy) 100%); padding: 140px 0 70px; text-align: center; border-bottom: 1px solid var(--bdr-dark); position: relative; overflow: hidden; }
     .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.07) 0%, transparent 70%); }
     .page-hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; position: relative; }
-    .page-hero h1 { font-size: clamp(34px, 5vw, 56px); color: var(--white); position: relative; }
-    .page-hero > .container > p { color: var(--text-dim); margin-top: 12px; font-size: 15px; position: relative; }
-    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-dim); margin-top: 16px; position: relative; }
+    .page-hero h1 { font-size: clamp(34px, 5vw, 56px); color: #fff; position: relative; }
+    .page-hero > .container > p { color: var(--text3); margin-top: 12px; font-size: 15px; position: relative; }
+    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text3); margin-top: 16px; position: relative; }
     .breadcrumb a { color: var(--teal); }
 
     /* LAYOUT */
     .contact-wrap { display: grid; grid-template-columns: 1fr 1.55fr; gap: 40px; align-items: start; }
 
     /* CONTACT INFO CARD */
-    .ci-block { background: var(--navy-light); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-    .ci-block-hdr { background: linear-gradient(135deg, var(--navy-mid), #0D1E3A); padding: 28px 28px 22px; border-bottom: 1px solid var(--border); }
-    .ci-block-hdr h3 { font-size: 22px; color: var(--white); margin-bottom: 6px; }
-    .ci-block-hdr p { font-size: 13px; color: var(--text-dim); }
+    .ci-block { background: var(--navy3); border: 1px solid var(--bdr-dark); border-radius: 20px; overflow: hidden; }
+    .ci-block-hdr { background: linear-gradient(135deg, var(--navy2), #0D1E3A); padding: 28px 28px 22px; border-bottom: 1px solid var(--bdr-dark); }
+    .ci-block-hdr h3 { font-size: 22px; color: #fff; margin-bottom: 6px; }
+    .ci-block-hdr p { font-size: 13px; color: var(--text3); }
     .ci-items { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
-    .ci-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; background: var(--navy-mid); border: 1px solid var(--border); border-radius: 14px; transition: all 0.3s; }
+    .ci-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; background: var(--navy2); border: 1px solid var(--bdr-dark); border-radius: 14px; transition: all 0.3s; }
     .ci-item:hover { border-color: rgba(14,165,233,0.3); transform: translateY(-2px); }
     .ci-ico { width: 42px; height: 42px; background: var(--teal-glow); border: 1px solid rgba(14,165,233,0.2); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--teal); flex-shrink: 0; }
-    .ci-ico.gold { background: var(--gold-dim); border-color: var(--border-gold); color: var(--gold); }
+    .ci-ico.gold { background: var(--gold-dim); border-color: var(--gold-b); color: var(--gold); }
     .ci-ico.green { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.25); color: #10B981; }
-    .ci-text h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 5px; }
-    .ci-text p, .ci-text a { font-size: 13.5px; color: var(--white); line-height: 1.6; text-decoration: none; display: block; }
+    .ci-text h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 5px; }
+    .ci-text p, .ci-text a { font-size: 13.5px; color: #fff; line-height: 1.6; text-decoration: none; display: block; }
     .ci-text a:hover { color: var(--teal); }
-    .ci-text a.wa-link { color: var(--text-dim); font-size: 13px; }
+    .ci-text a.wa-link { color: var(--text3); font-size: 13px; }
     .ci-text a.wa-link:hover { color: #25D366; }
 
     /* HOURS TABLE */
     .hours-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-    .hours-table tr { border-bottom: 1px solid var(--border); }
+    .hours-table tr { border-bottom: 1px solid var(--bdr-dark); }
     .hours-table tr:last-child { border-bottom: none; }
-    .hours-table td { padding: 6px 0; font-size: 12.5px; color: var(--text-dim); }
-    .hours-table td:first-child { font-weight: 600; color: var(--white); width: 100px; }
+    .hours-table td { padding: 6px 0; font-size: 12.5px; color: var(--text3); }
+    .hours-table td:first-child { font-weight: 600; color: #fff; width: 100px; }
     .hours-table td.today { color: var(--teal); font-weight: 700; }
     .hours-table td.today-day { color: var(--teal) !important; font-weight: 700; }
     .open-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; }
     .open-badge.open { background: rgba(16,185,129,0.12); color: #10B981; border: 1px solid rgba(16,185,129,0.25); }
     .open-badge.closed { background: rgba(239,68,68,0.1); color: #EF4444; border: 1px solid rgba(239,68,68,0.2); }
-    .open-badge.break { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border-gold); }
+    .open-badge.break { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-b); }
 
     /* WA BUTTONS */
     .wa-numbers { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 8px; }
     .wa-num-btn { display: flex; align-items: center; gap: 12px; background: linear-gradient(135deg, rgba(37,211,102,0.1), rgba(37,211,102,0.05)); border: 1px solid rgba(37,211,102,0.25); border-radius: 12px; padding: 12px 16px; text-decoration: none; transition: all 0.3s; }
     .wa-num-btn:hover { background: linear-gradient(135deg, rgba(37,211,102,0.2), rgba(37,211,102,0.1)); border-color: rgba(37,211,102,0.5); transform: translateX(4px); }
     .wa-num-btn i { font-size: 20px; color: #25D366; flex-shrink: 0; }
-    .wa-num-btn span { font-size: 14px; font-weight: 600; color: var(--white); }
-    .wa-num-btn small { font-size: 11px; color: var(--text-dim); display: block; margin-top: 1px; }
+    .wa-num-btn span { font-size: 14px; font-weight: 600; color: #fff; }
+    .wa-num-btn small { font-size: 11px; color: var(--text3); display: block; margin-top: 1px; }
 
     /* FORM CARD */
-    .cf-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-    .cf-card-hdr { background: linear-gradient(135deg, var(--navy-mid), #0D1E3A); padding: 28px 32px 22px; border-bottom: 1px solid var(--border); }
-    .cf-card-hdr h3 { font-size: 24px; color: var(--white); margin-bottom: 6px; }
-    .cf-card-hdr p { font-size: 13px; color: var(--text-dim); }
+    .cf-card { background: var(--navy3); border: 1px solid var(--bdr-dark); border-radius: 20px; overflow: hidden; }
+    .cf-card-hdr { background: linear-gradient(135deg, var(--navy2), #0D1E3A); padding: 28px 32px 22px; border-bottom: 1px solid var(--bdr-dark); }
+    .cf-card-hdr h3 { font-size: 24px; color: #fff; margin-bottom: 6px; }
+    .cf-card-hdr p { font-size: 13px; color: var(--text3); }
     .cf-body { padding: 32px; }
 
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-full { grid-column: 1 / -1; }
     .fg { display: flex; flex-direction: column; gap: 7px; }
-    .fg label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); }
+    .fg label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); }
     .fg label .req { color: var(--gold); }
     .fg input, .fg select, .fg textarea {
-      background: var(--navy-mid); border: 1.5px solid var(--border); border-radius: 11px;
-      padding: 12px 15px; font-size: 14px; font-family: 'DM Sans', sans-serif;
-      color: var(--white); outline: none; transition: all 0.3s;
+      background: var(--navy2); border: 1.5px solid var(--bdr-dark); border-radius: 11px;
+      padding: 12px 15px; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #fff; outline: none; transition: all 0.3s;
     }
-    .fg input::placeholder, .fg textarea::placeholder { color: var(--text-dim); opacity: 0.6; }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--text3); opacity: 0.6; }
     .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
     .fg textarea { height: 130px; resize: vertical; }
     option { background: #0F2040; }
@@ -87,7 +87,7 @@
     .send-btn {
       width: 100%; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: white;
       border: none; padding: 15px; border-radius: 11px; font-size: 15px; font-weight: 700;
-      font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center;
+      font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center;
       justify-content: center; gap: 10px; transition: all 0.3s; margin-top: 8px; letter-spacing: 0.3px;
     }
     .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14,165,233,0.35); }
@@ -95,14 +95,14 @@
 
     .cf-success { display: none; text-align: center; padding: 56px 32px; }
     .cf-success .tick { width: 80px; height: 80px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 32px; color: white; box-shadow: 0 12px 32px rgba(16,185,129,0.35); }
-    .cf-success h3 { font-size: 28px; color: var(--white); margin-bottom: 10px; }
-    .cf-success p { color: var(--text-dim); font-size: 14.5px; line-height: 1.7; }
+    .cf-success h3 { font-size: 28px; color: #fff; margin-bottom: 10px; }
+    .cf-success p { color: var(--text3); font-size: 14.5px; line-height: 1.7; }
 
     /* MAP SECTION */
-    .map-section { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
-    .map-overlay { position: absolute; top: 20px; left: 20px; background: rgba(10,22,40,0.92); backdrop-filter: blur(12px); border: 1px solid var(--border-gold); border-radius: 14px; padding: 16px 20px; z-index: 10; max-width: 280px; }
-    .map-overlay h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
-    .map-overlay p { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+    .map-section { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--bdr-dark); box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+    .map-overlay { position: absolute; top: 20px; left: 20px; background: rgba(10,22,40,0.92); backdrop-filter: blur(12px); border: 1px solid var(--gold-b); border-radius: 14px; padding: 16px 20px; z-index: 10; max-width: 280px; }
+    .map-overlay h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .map-overlay p { font-size: 12px; color: var(--text3); line-height: 1.6; }
     .map-overlay a { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--teal); font-weight: 600; margin-top: 10px; text-decoration: none; }
     .map-overlay a:hover { color: var(--gold); }
 
@@ -120,33 +120,45 @@
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
 
-      <div class="nav-links" id="navLinks">
+        <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
+
+    <!-- Home -->
     <a href="index.html" id="mlink-home">Home</a>
+
+    <!-- Desktop: Packages dropdown -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="booking.html">Packages <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="booking.html">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
       </div>
     </div>
-    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px;margin-right:2px"></i> Visa</a>
-    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px;margin-right:2px"></i> Blog</a>
-    <div id="mlink-svc-mob" style="display:none">
-      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Packages</span>
+
+    <!-- Desktop: Direct links -->
+    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px"></i> Visa</a>
+    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px"></i> Blog</a>
+
+    <!-- Mobile only: expandable packages -->
+    <div id="mlink-svc-mob" style="display:none;border-bottom:1px solid rgba(0,0,0,0.04)">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;user-select:none">
+        <i class="fa fa-th-large" style="color:#C9A84C;font-size:13px;margin-right:10px;width:16px;text-align:center"></i>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif" id="mobSvcLabel">Packages</span>
         <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
-        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
-        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px"></i> Blog</a>
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px;text-align:center"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px;text-align:center"></i> World Tours</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px;text-align:center"></i> Visa Services</a>
+        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px;text-align:center"></i> Blog</a>
       </div>
     </div>
+
+    <!-- Account + CTA -->
     <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
     <a href="visa.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
+
   <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
 </nav>
 
@@ -164,25 +176,25 @@
 
     <!-- TRUST STRIP -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px">
-      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+      <div style="background:var(--navy3);border:1px solid var(--bdr);border-radius:14px;padding:18px;text-align:center">
         <div style="font-size:24px;color:var(--gold);margin-bottom:8px"><i class="fa fa-clock"></i></div>
-        <div style="font-size:13px;font-weight:700;color:var(--white)">Fast Response</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Reply within 2–4 hrs</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">Fast Response</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">Reply within 2–4 hrs</div>
       </div>
-      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+      <div style="background:var(--navy3);border:1px solid var(--bdr);border-radius:14px;padding:18px;text-align:center">
         <div style="font-size:24px;color:#25D366;margin-bottom:8px"><i class="fab fa-whatsapp"></i></div>
-        <div style="font-size:13px;font-weight:700;color:var(--white)">WhatsApp First</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">4 numbers available</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">WhatsApp First</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">4 numbers available</div>
       </div>
-      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+      <div style="background:var(--navy3);border:1px solid var(--bdr);border-radius:14px;padding:18px;text-align:center">
         <div style="font-size:24px;color:var(--teal);margin-bottom:8px"><i class="fa fa-certificate"></i></div>
-        <div style="font-size:13px;font-weight:700;color:var(--white)">IATA Certified</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Trusted & accredited</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">IATA Certified</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">Trusted & accredited</div>
       </div>
-      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center">
+      <div style="background:var(--navy3);border:1px solid var(--bdr);border-radius:14px;padding:18px;text-align:center">
         <div style="font-size:24px;color:#EF4444;margin-bottom:8px"><i class="fa fa-heart"></i></div>
-        <div style="font-size:13px;font-weight:700;color:var(--white)">5,000+ Travelers</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Happy customers served</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">5,000+ Travelers</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">Happy customers served</div>
       </div>
     </div>
 
@@ -229,7 +241,7 @@
           </div>
 
           <!-- WHATSAPP NUMBERS -->
-          <div style="padding:0 24px 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim)">WhatsApp Numbers</div>
+          <div style="padding:0 24px 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3)">WhatsApp Numbers</div>
           <div class="wa-numbers">
             <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+help+with+a+travel+package." class="wa-num-btn" target="_blank">
               <i class="fab fa-whatsapp"></i>
@@ -251,20 +263,20 @@
         </div>
 
         <!-- SOCIAL LINKS -->
-        <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:20px;padding:22px 24px">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:16px">Follow Us</div>
+        <div style="background:var(--navy3);border:1px solid var(--bdr);border-radius:20px;padding:22px 24px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:16px">Follow Us</div>
           <div style="display:flex;gap:12px">
             <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="flex:1;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(225,48,108,0.1),rgba(193,53,132,0.05));border:1px solid rgba(225,48,108,0.2);border-radius:12px;padding:12px 14px;text-decoration:none;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(225,48,108,0.5)'" onmouseout="this.style.borderColor='rgba(225,48,108,0.2)'">
               <i class="fab fa-instagram" style="font-size:20px;background:linear-gradient(135deg,#E1306C,#C13584);-webkit-background-clip:text;-webkit-text-fill-color:transparent"></i>
-              <div><div style="font-size:13px;font-weight:600;color:var(--white)">Instagram</div><div style="font-size:11px;color:var(--text-dim)">@eastwest_pk</div></div>
+              <div><div style="font-size:13px;font-weight:600;color:#fff">Instagram</div><div style="font-size:11px;color:var(--text3)">@eastwest_pk</div></div>
             </a>
             <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="flex:1;display:flex;align-items:center;gap:10px;background:rgba(24,119,242,0.08);border:1px solid rgba(24,119,242,0.2);border-radius:12px;padding:12px 14px;text-decoration:none;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(24,119,242,0.5)'" onmouseout="this.style.borderColor='rgba(24,119,242,0.2)'">
               <i class="fab fa-facebook" style="font-size:20px;color:#1877F2"></i>
-              <div><div style="font-size:13px;font-weight:600;color:var(--white)">Facebook</div><div style="font-size:11px;color:var(--text-dim)">East & West Travel</div></div>
+              <div><div style="font-size:13px;font-weight:600;color:#fff">Facebook</div><div style="font-size:11px;color:var(--text3)">East & West Travel</div></div>
             </a>
             <a href="https://wa.me/923336515349" target="_blank" style="flex:1;display:flex;align-items:center;gap:10px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.2);border-radius:12px;padding:12px 14px;text-decoration:none;transition:all 0.3s" onmouseover="this.style.borderColor='rgba(37,211,102,0.5)'" onmouseout="this.style.borderColor='rgba(37,211,102,0.2)'">
               <i class="fab fa-whatsapp" style="font-size:20px;color:#25D366"></i>
-              <div><div style="font-size:13px;font-weight:600;color:var(--white)">WhatsApp</div><div style="font-size:11px;color:var(--text-dim)">Chat with us</div></div>
+              <div><div style="font-size:13px;font-weight:600;color:#fff">WhatsApp</div><div style="font-size:11px;color:var(--text3)">Chat with us</div></div>
             </a>
           </div>
         </div>
@@ -347,7 +359,7 @@
               <i class="fa fa-paper-plane" id="cfIcon"></i>
               <span id="cfBtnText">Send Inquiry</span>
             </button>
-            <p style="font-size:12px;color:var(--text-dim);text-align:center;margin-top:14px"><i class="fa fa-shield-alt" style="color:var(--teal)"></i> Your information is completely safe with us. We never share your data.</p>
+            <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:14px"><i class="fa fa-shield-alt" style="color:var(--teal)"></i> Your information is completely safe with us. We never share your data.</p>
           </div>
 
           <div class="cf-success" id="cfSuccess">
@@ -388,7 +400,7 @@
           <img src="assets/images/logo.jpg" alt="East & West Travel Services" style="width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:white">
           <span class="nav-logo-text">East & <span>West</span></span>
         </a>
-        <p style="color:var(--text-dim);font-size:13.5px;margin-top:10px;line-height:1.7;font-style:italic">Our Services in Your Hands,<br>Where Ever You Are.</p>
+        <p style="color:var(--text3);font-size:13.5px;margin-top:10px;line-height:1.7;font-style:italic">Our Services in Your Hands,<br>Where Ever You Are.</p>
         <div style="display:flex;gap:10px;margin-top:18px">
           <a href="https://www.instagram.com/eastwest_pk/" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(225,48,108,0.1);border:1px solid rgba(225,48,108,0.25);display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(225,48,108,0.25)'" onmouseout="this.style.background='rgba(225,48,108,0.1)'"><i class="fab fa-instagram" style="color:#E1306C;font-size:15px"></i></a>
           <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="width:36px;height:36px;border-radius:9px;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.25);display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(24,119,242,0.25)'" onmouseout="this.style.background='rgba(24,119,242,0.1)'"><i class="fab fa-facebook" style="color:#1877F2;font-size:15px"></i></a>
@@ -412,9 +424,9 @@
       </ul></div>
       <div class="footer-contact"><h4>Contact Us</h4>
         <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, Regency Road, New Civil Lines, Faisalabad</p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text-dim)">+92 333 651 5349</a></p>
-        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349" style="color:var(--text-dim)">+92 313 651 5349</a></p>
-        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#2c494d5f585b495f585c476c444358414d4540024f4341" style="color:var(--text-dim)"><span class="__cf_email__" data-cfemail="157074666162706661657e557d7a6178747c793b767a78">[email&#160;protected]</span></a></p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349" style="color:var(--text3)">+92 333 651 5349</a></p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923136515349" style="color:var(--text3)">+92 313 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#2c494d5f585b495f585c476c444358414d4540024f4341" style="color:var(--text3)"><span class="__cf_email__" data-cfemail="157074666162706661657e557d7a6178747c793b767a78">[email&#160;protected]</span></a></p>
       </div>
     </div>
     <div class="footer-bottom"><p>© 2026 East & West Travel Services. All rights reserved.</p></div>

@@ -16,33 +16,45 @@
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
-      <div class="nav-links" id="navLinks">
+        <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
+
+    <!-- Home -->
     <a href="index.html" id="mlink-home">Home</a>
+
+    <!-- Desktop: Packages dropdown -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="booking.html" class="active">Packages <i class="fa fa-chevron-down nav-chevron" style="font-size:10px;margin-left:3px"></i></a>
+      <a href="booking.html" class="active">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
       </div>
     </div>
-    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px;margin-right:2px"></i> Visa</a>
-    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px;margin-right:2px"></i> Blog</a>
-    <div id="mlink-svc-mob" style="display:none">
-      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);user-select:none">
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:Plus Jakarta Sans,sans-serif" id="mobSvcLabel">Packages</span>
+
+    <!-- Desktop: Direct links -->
+    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px"></i> Visa</a>
+    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px"></i> Blog</a>
+
+    <!-- Mobile only: expandable packages -->
+    <div id="mlink-svc-mob" style="display:none;border-bottom:1px solid rgba(0,0,0,0.04)">
+      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;user-select:none">
+        <i class="fa fa-th-large" style="color:#C9A84C;font-size:13px;margin-right:10px;width:16px;text-align:center"></i>
+        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif" id="mobSvcLabel">Packages</span>
         <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px"></i> World Tours</a>
-        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px"></i> Visa Services</a>
-        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px"></i> Blog</a>
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px;text-align:center"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px;text-align:center"></i> World Tours</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px;text-align:center"></i> Visa Services</a>
+        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px;text-align:center"></i> Blog</a>
       </div>
     </div>
+
+    <!-- Account + CTA -->
     <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
     <a href="visa.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
+
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
