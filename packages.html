@@ -137,7 +137,7 @@
     .d-sum-row { display: flex; justify-content: space-between; font-size: 13px; }
     .d-sum-row span:first-child { color: var(--text3); }
     .d-sum-row span:last-child { font-weight: 600; color: #fff; }
-    .d-book-btn { width: 100%; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s; margin-bottom: 10px; }
+    .d-book-btn { width: 100%; background: #25D366; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s; margin-bottom: 10px; }
     .d-book-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14,165,233,0.4); }
     .d-wa-btn { width: 100%; background: linear-gradient(135deg, rgba(37,211,102,0.15), rgba(37,211,102,0.08)); color: #25D366; border: 1px solid rgba(37,211,102,0.3); padding: 11px; border-radius: 12px; font-size: 13px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; text-decoration: none; }
     .d-wa-btn:hover { background: rgba(37,211,102,0.2); }
@@ -199,7 +199,7 @@
 
     <!-- Desktop: Packages dropdown -->
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="booking.html" class="active">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
+      <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+your+travel+services.+Please+share+details." target="_blank" class="active">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
       <div class="nav-drop">
         <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
         <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
@@ -226,7 +226,7 @@
     </div>
 
     <!-- Account + CTA -->
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
+    
     <a href="visa.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
 
@@ -590,32 +590,7 @@
 </div>
 
 <!-- ══ BOOKING CHOICE MODAL ══ -->
-<div class="bmodal-overlay" id="bookModal">
-  <div class="bmodal" style="position:relative">
-    <div class="bmodal-close" onclick="closeBookModal()"><i class="fa fa-times"></i></div>
-    <div class="bmodal-body">
-      <h3>How would you like to book?</h3>
-      <p>Sign in to save your booking history, or continue as a guest.</p>
-      <div class="bmodal-options">
-        <button class="bmodal-opt login" onclick="bookWithLogin()">
-          <div class="bmodal-opt-icon"><i class="fa fa-user-circle"></i></div>
-          <div class="bmodal-opt-text">
-            <strong>Sign In / Create Account</strong>
-            <span>Save booking history, get updates & easy management</span>
-          </div>
-          <i class="fa fa-chevron-right" style="color:var(--text3);margin-left:auto"></i>
-        </button>
-        <div class="bmodal-divider">or</div>
-        <button class="bmodal-opt guest" onclick="bookAsGuest()">
-          <div class="bmodal-opt-icon"><i class="fa fa-user"></i></div>
-          <div class="bmodal-opt-text">
-            <strong>Continue as Guest</strong>
-            <span>Quick booking without creating an account</span>
-          </div>
-          <i class="fa fa-chevron-right" style="color:var(--text3);margin-left:auto"></i>
-        </button>
-      </div>
-    </div>
+
   </div>
 </div>
 
@@ -643,7 +618,7 @@
       <div class="footer-links"><h4>Quick Links</h4><ul>
         <li><a href="index.html">Home</a></li><li><a href="packages.html">Packages</a></li>
         <li><a href="blog.html">Blog</a></li><li><a href="about.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li><li><a href="auth/login.html">Customer Login</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul></div>
       <div class="footer-links"><h4>Our Services</h4><ul>
         <li><a href="packages.html"><i class="fa fa-star-and-crescent" style="color:var(--gold);margin-right:6px;font-size:11px"></i>Umrah Packages</a></li>
@@ -804,9 +779,7 @@ function openDetail(pkgId) {
 
   // RIGHT summary — check if logged in
   const loggedIn = window._loggedIn;
-  const bookBtnHtml = loggedIn
-    ? `<button class="d-book-btn" onclick="bookNowLoggedIn()"><i class="fa fa-calendar-check"></i> Confirm Booking</button>`
-    : `<button class="d-book-btn" onclick="proceedToBook()"><i class="fa fa-calendar-check"></i> Book This Package</button>`;
+  const bookBtnHtml = `<a href="https://wa.me/923336515349?text=${encodeURIComponent("Assalam o Alaikum! I am interested in the "+p.title+" ("+p.price+"). Please share details.")}" target="_blank" class="d-book-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none"><i class="fab fa-whatsapp"></i> Book via WhatsApp</a>`;
 
   document.getElementById('dRight').innerHTML = `
     <div class="d-summary">
@@ -840,22 +813,17 @@ function closeDetail() {
 window.closeDetail = closeDetail;
 
 // ── BOOKING FLOW ──
-function proceedToBook() {
-  // Check if logged in
-  if (window._loggedIn) {
-    bookNowLoggedIn();
-    return;
-  }
+
   // Not logged in — show login/guest choice
   document.getElementById('detailOverlay').classList.remove('active');
-  document.getElementById('bookModal').classList.add('active');
+  
 }
 window.proceedToBook = proceedToBook;
 
 function bookNowLoggedIn() {
   // Already logged in — go straight to booking with package info, skip contact form
   const p = _currentPkg;
-  window.location.href = 'booking.html?logged=1'
+  window.open('https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+want+to+book+a+package.+Please+share+details.','_blank')
     + '&tour='     + encodeURIComponent(p.title)
     + '&duration=' + encodeURIComponent(p.duration)
     + '&price='    + encodeURIComponent(p.price)
@@ -867,36 +835,13 @@ function bookNowLoggedIn() {
 }
 window.bookNowLoggedIn = bookNowLoggedIn;
 
-function bookWithLogin() {
-  const p = _currentPkg;
-  const redirect = encodeURIComponent('booking.html?logged=1&tour=' + encodeURIComponent(p.title)
-    + '&duration=' + encodeURIComponent(p.duration)
-    + '&price='    + encodeURIComponent(p.price)
-    + '&type='     + encodeURIComponent(p.type)
-    + '&dep='      + encodeURIComponent(p.airline.dep)
-    + '&ret='      + encodeURIComponent(p.airline.ret)
-    + '&img='      + encodeURIComponent(p.img));
-  window.location.href = 'auth/login.html?redirect=' + redirect;
-}
+
 window.bookWithLogin = bookWithLogin;
 
-function bookAsGuest() {
-  const p = _currentPkg;
-  window.location.href = 'booking.html?guest=1'
-    + '&tour='     + encodeURIComponent(p.title)
-    + '&duration=' + encodeURIComponent(p.duration)
-    + '&price='    + encodeURIComponent(p.price)
-    + '&type='     + encodeURIComponent(p.type)
-    + '&dep='      + encodeURIComponent(p.airline.dep)
-    + '&ret='      + encodeURIComponent(p.airline.ret)
-    + '&img='      + encodeURIComponent(p.img);
-}
+
 window.bookAsGuest = bookAsGuest;
 
-function closeBookModal() {
-  document.getElementById('bookModal').classList.remove('active');
-  document.getElementById('detailOverlay').classList.add('active');
-}
+
 window.closeBookModal = closeBookModal;
 
 // close on backdrop

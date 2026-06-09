@@ -148,46 +148,29 @@
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
-
-    <div class="nav-links" id="navLinks">
+  <div class="nav-links" id="navLinks">
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
-
-    <!-- DESKTOP: Home link (hidden on mobile, shown via drawer) -->
-    <a href="index.html" class="active" id="mlink-home">Home</a>
-
-    <!-- DESKTOP: Packages dropdown -->
+    <a href="index.html" id="mlink-home">Home</a>
+    <a href="about.html" id="mlink-about">About Us</a>
     <div class="nav-has-drop" id="mlink-svc-desk">
-      <a href="booking.html">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
-      <div class="nav-drop">
-        <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
+      <a href="#">Services <i class="fa fa-chevron-down nav-chevron"></i></a>
+      <div class="nav-drop svc-drop">
+        <a href="umrah.html"><i class="fa fa-kaaba"></i> Umrah Packages</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> Tour Packages</a>
+        <a href="group-tickets.html"><i class="fa fa-users"></i> Group Tickets</a>
+        <a href="insurance.html"><i class="fa fa-shield-alt"></i> Insurance</a>
       </div>
     </div>
-
-    <!-- DESKTOP: Direct links (Visa, Blog) -->
-    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px"></i> Visa</a>
-    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px"></i> Blog</a>
-
-    <!-- MOBILE ONLY: Packages expandable section (shown by openMenu()) -->
-    <div id="mlink-svc-mob" style="display:none;border-bottom:1px solid rgba(0,0,0,0.04)">
-      <div onclick="toggleMobSvc(this)" style="display:flex;align-items:center;padding:14px 20px;cursor:pointer;user-select:none">
-        <i class="fa fa-th-large" style="color:#C9A84C;font-size:13px;margin-right:10px;width:16px;text-align:center"></i>
-        <span style="flex:1;font-size:14px;font-weight:600;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif" id="mobSvcLabel">Packages</span>
-        <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
-      </div>
-      <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none;transition:all 0.2s"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px;text-align:center"></i> Umrah &amp; Hajj</a>
-        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none;transition:all 0.2s"><i class="fa fa-globe" style="color:#C9A84C;width:16px;text-align:center"></i> World Tours</a>
-        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none;transition:all 0.2s"><i class="fa fa-passport" style="color:#C9A84C;width:16px;text-align:center"></i> Visa Services</a>
-        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none;transition:all 0.2s"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px;text-align:center"></i> Blog</a>
-      </div>
-    </div>
-
-    <!-- Account + CTA (both desktop & mobile) -->
-    <a href="auth/login.html" class="nav-login" id="mlink-account"><i class="fa fa-user"></i> My Account</a>
-    <a href="visa.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+    <!-- Mobile service sub-links -->
+    <a href="umrah.html" class="mob-svc-link"><i class="fa fa-kaaba"></i> Umrah Packages</a>
+    <a href="visa.html" class="mob-svc-link"><i class="fa fa-passport"></i> Visa Services</a>
+    <a href="tours.html" class="mob-svc-link"><i class="fa fa-globe"></i> Tour Packages</a>
+    <a href="group-tickets.html" class="mob-svc-link"><i class="fa fa-users"></i> Group Tickets</a>
+    <a href="insurance.html" class="mob-svc-link"><i class="fa fa-shield-alt"></i> Insurance</a>
+    <a href="blog.html" id="mlink-blog">Blog</a>
+    <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+your+travel+services.+Please+share+details." target="_blank" class="nav-cta"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
   </div>
-
   <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
 </nav>
 
@@ -209,7 +192,7 @@
       </h1>
       <p>From the sacred lands of Makkah to the shores of Bali — we craft every journey with care, trust, and 20+ years of experience. No shortcuts. No hidden charges.</p>
       <div class="hero-btns">
-        <a href="booking.html" class="btn-primary-bright"><i class="fa fa-compass"></i> Explore Services</a>
+        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+your+travel+services.+Please+share+details." target="_blank" class="btn-primary-bright"><i class="fa fa-compass"></i> Explore Services</a>
         <a href="https://wa.me/923336515349" target="_blank" class="btn-outline-bright"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
       </div>
       <div class="hero-stats-row">
@@ -518,7 +501,7 @@ function openFpModal(type, id) {
         ${item.includes ? `<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:#8899AA;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Includes</div><div style="display:flex;flex-wrap:wrap;gap:6px">${item.includes.split(',').map(i=>`<span style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:#6EE7B7;font-size:11px;padding:4px 10px;border-radius:50px"><i class="fa fa-check" style="margin-right:4px"></i>${i.trim()}</span>`).join('')}</div></div>` : ''}
         <div style="display:flex;gap:10px;margin-top:8px">
           <a href="https://wa.me/${FP_WA}?text=${waText}" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#0A1628;padding:14px;border-radius:11px;font-weight:700;font-size:14px;text-decoration:none"><i class="fab fa-whatsapp" style="font-size:18px"></i> Book via WhatsApp</a>
-          <a href="booking.html" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff;padding:14px 18px;border-radius:11px;font-weight:600;font-size:14px;text-decoration:none"><i class="fa fa-calendar-check"></i> Online Form</a>
+          <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+your+travel+services.+Please+share+details." target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fff;padding:14px 18px;border-radius:11px;font-weight:600;font-size:14px;text-decoration:none"><i class="fa fa-calendar-check"></i> Online Form</a>
         </div>
       </div>`;
   } else if (type === 'visa') {
@@ -681,7 +664,7 @@ loadFeatured('all', document.querySelector('.fp-tab'));
         <p>Talk to us today — no obligation, just honest advice about the best package for you.</p>
       </div>
       <div class="cta-band-actions">
-        <a href="booking.html" class="btn-gold"><i class="fa fa-calendar-check"></i> Book a Tour</a>
+        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+your+travel+services.+Please+share+details." target="_blank" class="btn-gold"><i class="fa fa-calendar-check"></i> Book a Tour</a>
         <a href="https://wa.me/923136515349?text=Assalam+o+Alaikum!+I+want+to+enquire+about+a+travel+package." class="btn-ghost" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
       </div>
     </div>
@@ -712,7 +695,7 @@ loadFeatured('all', document.querySelector('.fp-tab'));
           <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
           <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
           <li><a href="blog.html"><i class="fa fa-chevron-right"></i> Blog</a></li>
-          <li><a href="auth/login.html"><i class="fa fa-chevron-right"></i> My Account</a></li>
+          
         </ul>
       </div>
       <div class="footer-links">
@@ -746,55 +729,9 @@ loadFeatured('all', document.querySelector('.fp-tab'));
 <script src="assets/js/script.js"></script>
 
 <!-- ══ DUAL-PATH BOOKING MODAL ══ -->
-<div id="bookingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9100;align-items:center;justify-content:center;padding:20px">
-  <div style="background:#0F2040;border:1px solid rgba(201,168,76,0.25);border-radius:20px;max-width:500px;width:100%;padding:36px;position:relative">
-    <button onclick="closeBookingModal()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.08);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fa fa-times"></i></button>
-    <!-- Auth Gate -->
-    <div id="modalAuthGate" style="display:none;text-align:center">
-      <div style="font-size:48px;margin-bottom:14px">🔒</div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#fff;margin-bottom:10px">One More Step</h3>
-      <p style="font-size:14px;color:#8899AA;margin-bottom:24px;line-height:1.7">Login for faster booking &amp; tracking, or continue as a guest.</p>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <a href="auth/login.html?redirect=booking.html" style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#0EA5E9,#0284C7);color:#fff;padding:14px;border-radius:11px;font-weight:700;font-size:14px;text-decoration:none"><i class="fa fa-sign-in-alt"></i> Login / Create Account</a>
-        <button onclick="showGuestBookingForm()" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:14px;border-radius:11px;font-weight:600;font-size:14px;cursor:pointer;width:100%;font-family:inherit"><i class="fa fa-user-secret"></i> Continue as Guest</button>
-      </div>
-    </div>
-    <!-- Dual-Path Choose -->
-    <div id="modalDualPath" style="display:none">
-      <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#fff;margin-bottom:8px">How would you like to book?</h3>
-      <p style="font-size:13px;color:#8899AA;margin-bottom:28px">Choose the option that's easiest for you.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <a id="modalWaBtn" href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+want+to+book." target="_blank"
-           style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#1DA851);color:#fff;padding:24px 16px;border-radius:14px;text-decoration:none;text-align:center">
-          <i class="fab fa-whatsapp" style="font-size:36px"></i>
-          <div style="font-weight:700;font-size:14px">Book via WhatsApp</div>
-          <div style="font-size:11px;opacity:0.85">Instant reply — usually within 1 hour</div>
-        </a>
-        <a href="booking.html"
-           style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(201,168,76,0.12);border:1.5px solid rgba(201,168,76,0.4);color:#C9A84C;padding:24px 16px;border-radius:14px;text-decoration:none;text-align:center">
-          <i class="fa fa-calendar-check" style="font-size:36px"></i>
-          <div style="font-weight:700;font-size:14px">Book via Portal</div>
-          <div style="font-size:11px;opacity:0.85">Fill form — confirmed within 2 hours</div>
-        </a>
-      </div>
-      <p style="text-align:center;margin-top:20px;font-size:12px;color:#8899AA"><i class="fa fa-shield-alt" style="color:#C9A84C;margin-right:4px"></i> Secure — no payment taken online</p>
-    </div>
-  </div>
-</div>
+
 <script>
-function openBookingModal(waMsg){
-  const modal=document.getElementById('bookingModal');
-  const waBtn=document.getElementById('modalWaBtn');
-  if(waMsg&&waBtn)waBtn.href='https://wa.me/923336515349?text='+encodeURIComponent(waMsg);
-  const user=(function(){try{return JSON.parse(localStorage.getItem('ew_user'));}catch(e){return null;}})();
-  const isGuest=sessionStorage.getItem('ew_guest');
-  const authGate=document.getElementById('modalAuthGate');
-  const dualPath=document.getElementById('modalDualPath');
-  if(!user&&!isGuest){authGate.style.display='block';dualPath.style.display='none';}
-  else{authGate.style.display='none';dualPath.style.display='block';}
-  modal.style.display='flex';document.body.style.overflow='hidden';
-}
-function closeBookingModal(){document.getElementById('bookingModal').style.display='none';document.body.style.overflow='';}
+
 function showGuestBookingForm(){sessionStorage.setItem('ew_guest','true');document.getElementById('modalAuthGate').style.display='none';document.getElementById('modalDualPath').style.display='block';}
 document.getElementById('bookingModal').addEventListener('click',function(e){if(e.target===this)closeBookingModal();});
 window.openBookingModal=openBookingModal;

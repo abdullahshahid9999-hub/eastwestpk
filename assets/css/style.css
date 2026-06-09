@@ -440,3 +440,63 @@ option{background:#fff;color:var(--text)}
   .stats-row{grid-template-columns:1fr 1fr!important}
   .container{padding:0 14px!important}
 }
+
+/* ── SERVICES DROPDOWN — card grid ── */
+.svc-drop {
+  min-width: 260px !important;
+  padding: 14px !important;
+}
+.svc-drop a {
+  padding: 12px 14px !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border: 1px solid transparent !important;
+  transition: all 0.2s !important;
+}
+.svc-drop a:hover {
+  background: var(--gold-dim) !important;
+  border-color: var(--gold-b) !important;
+  color: var(--gold) !important;
+}
+.svc-drop a i {
+  width: 20px !important;
+  font-size: 13px !important;
+}
+
+/* Mobile-only service sub-links (hidden on desktop) */
+.mob-svc-link { display: none !important; }
+
+@media (max-width: 900px) {
+  .mob-svc-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 20px 12px 32px !important;
+    font-size: 13px !important;
+    color: var(--text3) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.04) !important;
+    background: rgba(201,168,76,0.03) !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+  }
+  .mob-svc-link:hover {
+    color: var(--gold) !important;
+    background: rgba(201,168,76,0.07) !important;
+    border-left: 3px solid var(--gold) !important;
+    padding-left: 29px !important;
+  }
+}
+
+/* WhatsApp CTA button — green style */
+.nav-links > a.nav-cta {
+  background: #25D366 !important;
+  color: #fff !important;
+}
+.nav-links > a.nav-cta:hover {
+  background: #1ebe5a !important;
+  box-shadow: 0 6px 20px rgba(37,211,102,0.35) !important;
+}

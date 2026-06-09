@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Insurance — East & West Travel Services</title>
+  <meta name="description" content="Protect your journey with affordable travel insurance plans from East & West Travel Services, Faisalabad.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .ins-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+    .ins-card { background: #fff; border: 1px solid var(--bdr); border-radius: 20px; padding: 36px 28px; transition: all 0.35s; position: relative; overflow: hidden; }
+    .ins-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background: var(--gold); transform: scaleX(0); transition: transform 0.35s; transform-origin: left; }
+    .ins-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(201,168,76,0.15); border-color: var(--gold-b); }
+    .ins-card:hover::before { transform: scaleX(1); }
+    .ins-icon { width: 60px; height: 60px; background: var(--gold-dim); border: 1px solid var(--gold-b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gold); margin-bottom: 22px; }
+    .ins-card h3 { font-size: 22px; color: var(--text); margin-bottom: 10px; }
+    .ins-card p { font-size: 14px; color: var(--text3); line-height: 1.8; margin-bottom: 20px; }
+    .ins-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+    .ins-features li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text2); }
+    .ins-features li i { color: var(--gold); font-size: 11px; flex-shrink: 0; }
+    .ins-wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366; color: #fff; padding: 13px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.3s; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .ins-wa-btn:hover { background: #1ebe5a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.35); }
+    @media(max-width:900px){ .ins-grid{grid-template-columns:1fr 1fr!important} }
+    @media(max-width:600px){ .ins-grid{grid-template-columns:1fr!important} }
+  </style>
+</head>
+<body>
+
+<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
+    <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
+    <a href="index.html" id="mlink-home">Home</a>
+    <a href="about.html" id="mlink-about">About Us</a>
+    <div class="nav-has-drop" id="mlink-svc-desk">
+      <a href="#">Services <i class="fa fa-chevron-down nav-chevron"></i></a>
+      <div class="nav-drop svc-drop">
+        <a href="umrah.html"><i class="fa fa-kaaba"></i> Umrah Packages</a>
+        <a href="visa.html"><i class="fa fa-passport"></i> Visa Services</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> Tour Packages</a>
+        <a href="group-tickets.html"><i class="fa fa-users"></i> Group Tickets</a>
+        <a href="insurance.html"><i class="fa fa-shield-alt"></i> Insurance</a>
+      </div>
+    </div>
+    <a href="umrah.html" class="mob-svc-link"><i class="fa fa-kaaba"></i> Umrah Packages</a>
+    <a href="visa.html" class="mob-svc-link"><i class="fa fa-passport"></i> Visa Services</a>
+    <a href="tours.html" class="mob-svc-link"><i class="fa fa-globe"></i> Tour Packages</a>
+    <a href="group-tickets.html" class="mob-svc-link"><i class="fa fa-users"></i> Group Tickets</a>
+    <a href="insurance.html" class="mob-svc-link active"><i class="fa fa-shield-alt"></i> Insurance</a>
+    <a href="blog.html" id="mlink-blog">Blog</a>
+    <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+travel+insurance.+Please+share+details." target="_blank" class="nav-cta"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+  </div>
+  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow"><i class="fa fa-shield-alt"></i> Travel Insurance</div>
+    <h1>Travel <em>Protected</em></h1>
+    <p>Comprehensive insurance plans so you can journey with complete peace of mind.</p>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <i class="fa fa-chevron-right"></i>
+      <span>Insurance</span>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE PLANS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow"><i class="fa fa-shield-alt"></i> Our Plans</div>
+      <h2>Choose Your <em>Coverage</em></h2>
+      <p>WhatsApp us to get a customized quote for any plan — we'll tailor it to your destination and duration.</p>
+    </div>
+    <div class="ins-grid">
+      <div class="ins-card">
+        <div class="ins-icon"><i class="fa fa-user-shield"></i></div>
+        <h3>Basic Travel Cover</h3>
+        <p>Essential protection for short trips and budget-conscious travelers.</p>
+        <ul class="ins-features">
+          <li><i class="fa fa-check-circle"></i> Medical emergency up to $25,000</li>
+          <li><i class="fa fa-check-circle"></i> Trip cancellation cover</li>
+          <li><i class="fa fa-check-circle"></i> Lost baggage compensation</li>
+          <li><i class="fa fa-check-circle"></i> 24/7 emergency helpline</li>
+        </ul>
+        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Basic+Travel+Insurance.+Please+share+details." target="_blank" class="ins-wa-btn"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
+      </div>
+      <div class="ins-card">
+        <div class="ins-icon"><i class="fa fa-star"></i></div>
+        <h3>Umrah & Hajj Cover</h3>
+        <p>Specially designed for pilgrims — covers the full spiritual journey.</p>
+        <ul class="ins-features">
+          <li><i class="fa fa-check-circle"></i> Medical cover up to $50,000</li>
+          <li><i class="fa fa-check-circle"></i> Flight delay / cancellation</li>
+          <li><i class="fa fa-check-circle"></i> Passport loss protection</li>
+          <li><i class="fa fa-check-circle"></i> Repatriation cover</li>
+          <li><i class="fa fa-check-circle"></i> Personal accident benefit</li>
+        </ul>
+        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Umrah+%26+Hajj+Insurance.+Please+share+details." target="_blank" class="ins-wa-btn"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
+      </div>
+      <div class="ins-card">
+        <div class="ins-icon"><i class="fa fa-globe"></i></div>
+        <h3>Comprehensive World Cover</h3>
+        <p>Full protection for international tours, families, and frequent travelers.</p>
+        <ul class="ins-features">
+          <li><i class="fa fa-check-circle"></i> Medical cover up to $100,000</li>
+          <li><i class="fa fa-check-circle"></i> Full trip cancellation & interruption</li>
+          <li><i class="fa fa-check-circle"></i> Adventure sports coverage</li>
+          <li><i class="fa fa-check-circle"></i> Family & group discounts</li>
+          <li><i class="fa fa-check-circle"></i> COVID-19 coverage included</li>
+          <li><i class="fa fa-check-circle"></i> 24/7 global assistance</li>
+        </ul>
+        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Comprehensive+Travel+Insurance.+Please+share+details." target="_blank" class="ins-wa-btn"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:14px;display:inline-flex">
+          <img src="assets/images/logo.jpg" alt="Logo" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#fff;font-weight:700;margin-left:10px">East &amp; <span style="color:var(--gold)">West</span> Travels</span>
+        </a>
+        <p>Faisalabad's trusted travel partner since 2003. Umrah, Hajj, tours, visas, and now insurance — all under one roof.</p>
+      </div>
+      <div class="footer-links"><h4>Quick Links</h4><ul>
+        <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
+        <li><a href="blog.html"><i class="fa fa-chevron-right"></i> Blog</a></li>
+        <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
+      </ul></div>
+      <div class="footer-links"><h4>Services</h4><ul>
+        <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah Packages</a></li>
+        <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+        <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Tour Packages</a></li>
+        <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+        <li><a href="insurance.html"><i class="fa fa-chevron-right"></i> Insurance</a></li>
+      </ul></div>
+      <div class="footer-contact"><h4>Contact Us</h4>
+        <p><i class="fa fa-map-marker-alt"></i> G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923336515349">+92 333 651 5349</a></p>
+        <p><i class="fa fa-envelope"></i> <a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 East &amp; West Travel Services. All rights reserved.</p>
+      <div style="display:flex;gap:10px">
+        <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" style="width:34px;height:34px;border-radius:8px;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-facebook" style="color:#1877F2;font-size:14px"></i></a>
+        <a href="https://wa.me/923336515349" target="_blank" style="width:34px;height:34px;border-radius:8px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);display:flex;align-items:center;justify-content:center"><i class="fab fa-whatsapp" style="color:#25D366;font-size:14px"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+travel+insurance.+Please+share+details." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
