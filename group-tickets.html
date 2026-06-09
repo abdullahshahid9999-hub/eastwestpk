@@ -186,12 +186,12 @@
 <script src="assets/js/script.js"></script>
 <script>
 const AIRLINE_LOGOS = {
-  PIA:  'https://upload.wikimedia.org/wikipedia/en/thumb/f/fb/PIA_logo.svg/200px-PIA_logo.svg.png',
-  EK:   'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/200px-Emirates_logo.svg.png',
-  QR:   'https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Qatar_Airways_Logo.svg/200px-Qatar_Airways_Logo.svg.png',
-  GF:   'https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/Gulf_Air_Logo.svg/200px-Gulf_Air_Logo.svg.png',
-  PA:   'https://upload.wikimedia.org/wikipedia/en/thumb/8/89/AirSial_logo.svg/200px-AirSial_logo.svg.png',
-  FJ:   'https://upload.wikimedia.org/wikipedia/en/thumb/b/b8/FlyJinnah_logo.svg/200px-FlyJinnah_logo.svg.png',
+  PIA: 'https://content.airhex.com/content/logos/airlines_PK_100_100_s.png',
+  EK:  'https://content.airhex.com/content/logos/airlines_EK_100_100_s.png',
+  QR:  'https://content.airhex.com/content/logos/airlines_QR_100_100_s.png',
+  GF:  'https://content.airhex.com/content/logos/airlines_GF_100_100_s.png',
+  PA:  'https://content.airhex.com/content/logos/airlines_ER_100_100_s.png',
+  FJ:  'https://content.airhex.com/content/logos/airlines_9P_100_100_s.png',
 };
 </script>
 <script>
@@ -296,6 +296,8 @@ function renderFlights(flights) {
     return;
   }
 
+  flights = flights.filter(f => { const t=parseInt(f.total_seats)||0; const b=parseInt(f.booked_seats)||0; return (t-b)>0; });
+  if(!flights.length){ grid.innerHTML='<div style="text-align:center;padding:60px;color:#9090AA;grid-column:1/-1"><i class="fa fa-plane" style="font-size:40px;color:#C9A84C;display:block;margin-bottom:14px"></i><p>No available flights right now.</p><a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+Please+share+available+group+flights." target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#25D366;color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-family:Plus Jakarta Sans,sans-serif;text-decoration:none"><i class="fab fa-whatsapp"></i> Ask on WhatsApp</a></div>'; return; }
   grid.innerHTML = flights.map(f => {
     const total    = parseInt(f.total_seats) || 0;
     const booked   = parseInt(f.booked_seats) || 0;
@@ -340,8 +342,8 @@ function renderFlights(flights) {
       <div class="fc-chips">
         ${f.baggage ? `<span class="fc-chip"><i class="fa fa-suitcase"></i> ${f.baggage}</span>` : ''}
         ${f.meal    ? `<span class="fc-chip"><i class="fa fa-utensils"></i> ${f.meal}</span>` : ''}
-        <span class="fc-chip" style="${soldOut ? 'color:#EF4444' : 'color:#10B981'}">
-          <i class="fa fa-chair"></i> ${soldOut ? 'Sold Out' : avail+' seats left'}
+        <span class="fc-chip" style="color:#10B981">
+          <i class="fa fa-chair"></i> ${avail} seats left
         </span>
       </div>
 
@@ -351,12 +353,7 @@ function renderFlights(flights) {
       </div>
 
       <div class="fc-foot">
-        ${soldOut
-          ? `<div class="fc-sold-btn"><i class="fa fa-ban"></i> SOLD OUT</div>`
-          : `<button class="fc-book-btn" onclick="openPax(${JSON.stringify(f).replace(/"/g,'&quot;')})">
-               <i class="fa fa-calendar-check"></i> Book This Flight
-             </button>`
-        }
+        <a href="https://wa.me/923336515349?text=${encodeURIComponent(`Assalam o Alaikum! I want to book a group flight:\nFlight: ${f.flight_no} - ${f.airline}\nRoute: ${f.route}\nDate: ${f.dep_date}\nClass: ${f.class}\nPrice: ${f.price_per_seat} per seat\nPlease confirm availability.`)}" target="_blank" class="fc-book-btn"><i class="fab fa-whatsapp"></i> Book via WhatsApp</a>
       </div>
     </div>`;
   }).join('');
