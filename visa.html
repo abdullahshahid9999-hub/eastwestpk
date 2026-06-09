@@ -9,32 +9,60 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
 .visa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.visa-card{background:#fff;border:1px solid #E8E4DA;border-radius:18px;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
-.visa-card:hover{transform:translateY(-5px);border-color:#C9A84C;box-shadow:0 16px 48px rgba(201,168,76,0.18)}
-.visa-head{background:linear-gradient(135deg,#0A1628,#162847);padding:20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.visa-flag{font-size:36px;display:block;margin-bottom:8px}
-.visa-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;margin-bottom:6px;line-height:1.2}
-.visa-type-pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#C9A84C;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);padding:4px 12px;border-radius:50px;font-family:'Plus Jakarta Sans',sans-serif}
-.visa-price-box{text-align:right;flex-shrink:0}
-.visa-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:#C9A84C;font-weight:700;white-space:nowrap}
-.visa-price small{display:block;font-size:10px;color:rgba(255,255,255,0.45);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;margin-top:2px}
-.visa-pills{display:flex;flex-wrap:wrap;gap:7px;padding:14px 18px;border-bottom:1px solid #E8E4DA}
+.visa-card{background:#fff;border:1px solid #E8E4DA;border-radius:18px;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column;cursor:pointer}
+.visa-card:hover{transform:translateY(-6px);border-color:#C9A84C;box-shadow:0 20px 56px rgba(201,168,76,0.2)}
+.visa-img-wrap{position:relative;height:190px;overflow:hidden}
+.visa-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.visa-card:hover .visa-img-wrap img{transform:scale(1.06)}
+.visa-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(10,22,40,0.75) 100%)}
+.visa-img-top{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px}
+.visa-flag-badge{font-size:28px;line-height:1}
+.visa-type-pill{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#C9A84C;background:rgba(201,168,76,0.18);border:1px solid rgba(201,168,76,0.35);padding:4px 11px;border-radius:50px;font-family:'Plus Jakarta Sans',sans-serif}
+.visa-img-bottom{position:absolute;bottom:12px;left:14px;right:14px;display:flex;align-items:flex-end;justify-content:space-between}
+.visa-title{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;line-height:1.2;font-weight:700}
+.visa-price{font-family:'Cormorant Garamond',serif;font-size:20px;color:#C9A84C;font-weight:700;white-space:nowrap;text-align:right}
+.visa-price small{display:block;font-size:10px;color:rgba(255,255,255,0.55);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400}
+.visa-pills{display:flex;flex-wrap:wrap;gap:7px;padding:14px 16px;border-bottom:1px solid #F0EDE6}
 .visa-pill{font-size:11px;color:#4A4A6A;background:#F3F0EA;border:1px solid #E8E4DA;padding:5px 11px;border-radius:50px;display:flex;align-items:center;gap:5px}
 .visa-pill i{color:#C9A84C;font-size:10px}
-.visa-body{padding:16px 18px;flex:1}
-.visa-body .req-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9090AA;margin-bottom:7px;font-family:'Plus Jakarta Sans',sans-serif}
-.visa-body .req-text{font-size:13px;color:#4A4A6A;line-height:1.7}
-.visa-foot{padding:14px 18px}
-.visa-wa-btn{width:100%;background:#25D366;color:#fff;border:none;padding:13px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;letter-spacing:0.5px;text-decoration:none;transition:all 0.25s}
-.visa-wa-btn:hover{background:#1DA851;transform:translateY(-1px)}
+.visa-foot{padding:13px 16px;margin-top:auto}
+.visa-see-btn{width:100%;background:var(--navy,#0A1628);color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s;text-decoration:none}
+.visa-see-btn:hover{background:#162847}
 .filter-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
 .f-tab{padding:9px 22px;border-radius:50px;border:2px solid #E8E4DA;background:#fff;color:#6B6B8A;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s}
 .f-tab.active,.f-tab:hover{background:#C9A84C;color:#fff;border-color:#C9A84C}
-.stats-strip{background:#fff;border-bottom:1px solid #E8E4DA;display:grid;grid-template-columns:repeat(4,1fr);divide-x:1px solid #E8E4DA}
+.stats-strip{background:#fff;border-bottom:1px solid #E8E4DA;display:grid;grid-template-columns:repeat(4,1fr)}
 .stat-box{padding:24px 20px;text-align:center;border-right:1px solid #E8E4DA}
 .stat-box:last-child{border-right:none}
 .stat-box .num{font-family:'Cormorant Garamond',serif;font-size:36px;color:#C9A84C;font-weight:700;line-height:1}
 .stat-box .lbl{font-size:10px;color:#9090AA;text-transform:uppercase;letter-spacing:2px;margin-top:6px;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* VISA DETAIL MODAL */
+.visa-modal-overlay{display:none;position:fixed;inset:0;z-index:9100;background:rgba(10,22,40,0.88);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.visa-modal-overlay.show{display:flex}
+.visa-modal{background:#fff;border-radius:24px;width:100%;max-width:580px;overflow:hidden;animation:vmSlide 0.3s ease;position:relative}
+@keyframes vmSlide{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.vm-img{position:relative;height:220px;overflow:hidden}
+.vm-img img{width:100%;height:100%;object-fit:cover}
+.vm-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(10,22,40,0.78))}
+.vm-img-content{position:absolute;bottom:16px;left:20px;right:20px;display:flex;align-items:flex-end;justify-content:space-between}
+.vm-flag{font-size:34px;position:absolute;top:14px;left:18px}
+.vm-close{position:absolute;top:12px;right:12px;width:34px;height:34px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background 0.2s}
+.vm-close:hover{background:rgba(255,255,255,0.3)}
+.vm-title{font-family:'Cormorant Garamond',serif;font-size:24px;color:#fff;font-weight:700;line-height:1.2}
+.vm-price-tag{font-family:'Cormorant Garamond',serif;font-size:22px;color:#C9A84C;font-weight:700;text-align:right;flex-shrink:0}
+.vm-price-tag small{display:block;font-size:10px;color:rgba(255,255,255,0.5);font-family:'Plus Jakarta Sans',sans-serif}
+.vm-body{padding:22px 24px}
+.vm-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.vm-pill{font-size:12px;color:#4A4A6A;background:#F3F0EA;border:1px solid #E8E4DA;padding:6px 13px;border-radius:50px;display:flex;align-items:center;gap:6px}
+.vm-pill i{color:#C9A84C;font-size:11px}
+.vm-req-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#9090AA;margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif}
+.vm-req-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.vm-req-list li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#4A4A6A;line-height:1.5}
+.vm-req-list li i{color:#C9A84C;font-size:11px;margin-top:3px;flex-shrink:0}
+.vm-wa-btn{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;transition:all 0.25s}
+.vm-wa-btn:hover{background:#1DA851;transform:translateY(-1px)}
+
 @media(max-width:1024px){.visa-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.visa-grid{grid-template-columns:1fr}.stats-strip{grid-template-columns:1fr 1fr}}
 </style>
@@ -136,6 +164,7 @@
 </section>
 
 <!-- FOOTER -->
+<div class="visa-modal-overlay" id="visaModal" onclick="if(event.target===this)closeVisaModal()"></div>
 <footer class="footer"><div class="container">
   <div class="footer-grid">
     <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:14px"><img src="assets/images/logo.jpg" style="width:40px;height:40px;border-radius:50%;border:2px solid #C9A84C;padding:2px;object-fit:contain;background:white"><span class="nav-logo-text" style="color:#fff">East &amp; <span>West</span></span></a><p style="color:rgba(255,255,255,0.4);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif;margin-top:10px">Our Services in Your Hands, Where Ever You Are.</p></div>
@@ -196,49 +225,84 @@ async function loadFromDB() {
   } catch(e) { /* keep hardcoded */ }
 }
 
+
 function renderVisas(data) {
   const grid = document.getElementById('visaGrid');
   if (!data.length) {
-    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#9090AA;grid-column:1/-1"><i class="fa fa-passport" style="font-size:40px;color:#C9A84C;display:block;margin-bottom:14px"></i><p>No visas found for this filter.</p></div>';
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:#9090AA;grid-column:1/-1"><i class="fa fa-passport" style="font-size:40px;color:#C9A84C;display:block;margin-bottom:14px"></i><p>No visas found.</p></div>';
     return;
   }
   grid.innerHTML = data.map(v => {
     const flag = FLAGS[v.country] || '🌍';
-    const bgImg = COUNTRY_IMAGES[v.country] || null;
-    const waMsg = encodeURIComponent(`Assalam o Alaikum! I want to apply for ${v.title}. Please share requirements and process.`);
-    const headStyle = bgImg
-      ? `background-image:linear-gradient(135deg,rgba(10,22,40,0.82),rgba(22,40,71,0.80)),url('${bgImg}');background-size:cover;background-position:center`
-      : `background:linear-gradient(135deg,#0A1628,#162847)`;
+    const img = COUNTRY_IMAGES[v.country] || 'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=80';
     return `
-    <div class="visa-card" data-type="${v.type}">
-      <div class="visa-head" style="${headStyle}">
-        <div>
-          <span class="visa-flag">${flag}</span>
-          <div class="visa-title">${v.title}</div>
+    <div class="visa-card" onclick="openVisaModal(${JSON.stringify(v).replace(/"/g,'&quot;')})">
+      <div class="visa-img-wrap">
+        <img src="${img}" alt="${v.country}" loading="lazy">
+        <div class="visa-img-overlay"></div>
+        <div class="visa-img-top">
+          <span class="visa-flag-badge">${flag}</span>
           <span class="visa-type-pill">${v.type}</span>
         </div>
-        <div class="visa-price-box">
+        <div class="visa-img-bottom">
+          <div class="visa-title">${v.title}</div>
           <div class="visa-price">${v.price}<small>service fee</small></div>
         </div>
       </div>
       <div class="visa-pills">
         ${v.days ? `<span class="visa-pill"><i class="fa fa-clock"></i> ${v.days}</span>` : ''}
         ${v.validity ? `<span class="visa-pill"><i class="fa fa-calendar"></i> ${v.validity}</span>` : ''}
-        ${v.max_stay ? `<span class="visa-pill"><i class="fa fa-door-open"></i> Stay: ${v.max_stay}</span>` : ''}
         ${v.processing_time ? `<span class="visa-pill"><i class="fa fa-hourglass-half"></i> ${v.processing_time}</span>` : ''}
       </div>
-      <div class="visa-body">
-        <div class="req-label">Requirements</div>
-        <div class="req-text">${v.requirements || 'Contact us for document list'}</div>
-      </div>
       <div class="visa-foot">
-        <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="visa-wa-btn">
-          <i class="fab fa-whatsapp" style="font-size:17px"></i> Apply on WhatsApp
-        </a>
+        <div class="visa-see-btn"><i class="fa fa-info-circle"></i> View Details & Apply</div>
       </div>
     </div>`;
   }).join('');
 }
+
+window.openVisaModal = function(v) {
+  const flag = FLAGS[v.country] || '🌍';
+  const img = COUNTRY_IMAGES[v.country] || 'https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=80';
+  const reqs = (v.requirements || 'Contact us for document list').split(',').map(r => r.trim()).filter(Boolean);
+  const waMsg = encodeURIComponent('Assalam o Alaikum! I want to apply for ' + v.title + '. Please share requirements and next steps.');
+  const modal = document.getElementById('visaModal');
+  modal.innerHTML = `
+    <div class="visa-modal">
+      <div class="vm-img">
+        <img src="${img}" alt="${v.country}">
+        <div class="vm-img-overlay"></div>
+        <span class="vm-flag">${flag}</span>
+        <button class="vm-close" onclick="closeVisaModal()"><i class="fa fa-times"></i></button>
+        <div class="vm-img-content">
+          <div class="vm-title">${v.title}</div>
+          <div class="vm-price-tag">${v.price}<small>service fee</small></div>
+        </div>
+      </div>
+      <div class="vm-body">
+        <div class="vm-pills">
+          ${v.days ? `<span class="vm-pill"><i class="fa fa-clock"></i> Duration: ${v.days}</span>` : ''}
+          ${v.validity ? `<span class="vm-pill"><i class="fa fa-calendar-alt"></i> Validity: ${v.validity}</span>` : ''}
+          ${v.max_stay ? `<span class="vm-pill"><i class="fa fa-door-open"></i> Max Stay: ${v.max_stay}</span>` : ''}
+          ${v.processing_time ? `<span class="vm-pill"><i class="fa fa-hourglass-half"></i> Processing: ${v.processing_time}</span>` : ''}
+        </div>
+        <div class="vm-req-head"><i class="fa fa-list-check" style="margin-right:6px;color:#C9A84C"></i> Required Documents</div>
+        <ul class="vm-req-list">
+          ${reqs.map(r => `<li><i class="fa fa-check-circle"></i> ${r}</li>`).join('')}
+        </ul>
+        <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="vm-wa-btn">
+          <i class="fab fa-whatsapp" style="font-size:18px"></i> Apply on WhatsApp
+        </a>
+      </div>
+    </div>`;
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeVisaModal = function() {
+  document.getElementById('visaModal').classList.remove('show');
+  document.body.style.overflow = '';
+};
 
 window.filterVisa = function(type, btn) {
   document.querySelectorAll('.f-tab').forEach(b => b.classList.remove('active'));

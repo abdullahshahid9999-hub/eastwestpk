@@ -47,8 +47,8 @@
 .fc-bar{height:5px;border-radius:99px;background:#E8E4DA;overflow:hidden}
 .fc-bar-fill{height:100%;border-radius:99px;transition:width 0.6s ease}
 .fc-foot{padding:14px 18px;border-top:1px solid #E8E4DA}
-.fc-book-btn{width:100%;background:#C9A84C;color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s}
-.fc-book-btn:hover{background:#E8C97A;transform:translateY(-1px)}
+.fc-book-btn{width:100%;background:#25D366;color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s}
+.fc-book-btn:hover{background:#1ebe5a;transform:translateY(-1px)}
 .fc-sold-btn{width:100%;background:#F3F0EA;color:#9090AA;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif}
 
 /* PASSENGER MODAL */
@@ -180,34 +180,7 @@
 <a href="https://wa.me/923336515349?text=Asalam-o-Alaikum%2C+I%27m+interested+in+your+travel+services." class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <!-- PASSENGER MODAL -->
-<div class="pax-overlay" id="paxOverlay">
-  <div class="pax-modal">
-    <button class="pax-close" onclick="closePax()"><i class="fa fa-times"></i></button>
-    <div class="pax-head">
-      <div id="paxFlightInfo" style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:5px"></div>
-      <div class="pax-title" id="paxTitle">Book Your Seat</div>
-    </div>
-    <div class="pax-body">
-      <div class="pax-row">
-        <div class="pax-fg"><label>First Name *</label><input type="text" id="pFn" placeholder="Muhammad"></div>
-        <div class="pax-fg"><label>Last Name *</label><input type="text" id="pLn" placeholder="Ali"></div>
-      </div>
-      <div class="pax-fg"><label>WhatsApp Number *</label><input type="tel" id="pPh" placeholder="+92 3XX XXXXXXX"></div>
-      <div class="pax-fg"><label>Email</label><input type="email" id="pEm" placeholder="email@example.com"></div>
-      <div class="pax-row">
-        <div class="pax-fg"><label>Passport No *</label><input type="text" id="pPp" placeholder="AB1234567"></div>
-        <div class="pax-fg"><label>No. of Seats *</label><input type="number" id="pSt" value="1" min="1" max="50"></div>
-      </div>
-      <div class="pax-fg"><label>Class</label>
-        <select id="pCl"><option>Economy</option><option>Business</option><option>First Class</option></select>
-      </div>
-      <div class="pax-err" id="paxErr"></div>
-      <button class="pax-submit" onclick="submitPax()">
-        <i class="fab fa-whatsapp" style="font-size:17px"></i> Confirm via WhatsApp
-      </button>
-      <div class="pax-note">Your booking details will be sent to our WhatsApp team for confirmation</div>
-    </div>
-  </div>
+
 </div>
 
 <script src="assets/js/script.js"></script>
@@ -327,7 +300,7 @@ function renderFlights(flights) {
     <div class="flight-card">
       <div class="fc-head">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="fc-airline-logo"><span>${f.airline_code || f.airline?.substring(0,3).toUpperCase() || 'AIR'}</span></div>
+          <div class="fc-airline-logo" style="background:#fff;border:1px solid #E8E4DA;padding:4px"><img src="assets/images/logo.jpg" alt="East &amp; West" style="width:38px;height:38px;border-radius:50%;object-fit:contain"></div>
           <div>
             <div class="fc-airline-name">${f.airline}</div>
             <div class="fc-flight-no">Flight ${f.flight_no}</div>
@@ -386,62 +359,8 @@ window.clearCat = function() {
 };
 
 // PASSENGER MODAL
-window.openPax = function(f) {
-  curFlight = f;
-  document.getElementById('paxTitle').textContent = f.airline + ' — ' + f.flight_no;
-  document.getElementById('paxFlightInfo').textContent = f.route + '  ·  ' + f.dep_date + '  ·  ' + f.price_per_seat;
-  document.getElementById('paxErr').style.display = 'none';
-  document.getElementById('paxOverlay').classList.add('show');
-  document.body.style.overflow = 'hidden';
-};
-window.closePax = function() {
-  document.getElementById('paxOverlay').classList.remove('show');
-  document.body.style.overflow = '';
-};
-document.getElementById('paxOverlay').addEventListener('click', e => { if(e.target===document.getElementById('paxOverlay')) closePax(); });
+// removed
 
-window.submitPax = async function() {
-  const fn = document.getElementById('pFn').value.trim();
-  const ln = document.getElementById('pLn').value.trim();
-  const ph = document.getElementById('pPh').value.trim();
-  const pp = document.getElementById('pPp').value.trim();
-  const seats = parseInt(document.getElementById('pSt').value) || 1;
-  const cls  = document.getElementById('pCl').value;
-  const err  = document.getElementById('paxErr');
-
-  if (!fn||!ln||!ph||!pp) { err.textContent='Please fill all required fields.'; err.style.display='block'; return; }
-
-  // Save to DB
-  try {
-    await fetch(`${SUPA_URL}/rest/v1/group_bookings`, {
-      method:'POST',
-      headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
-      body:JSON.stringify({
-        passenger_name: fn+' '+ln, phone:ph, passport_no:pp,
-        seats_booked:seats, travel_class:cls,
-        flight_no:curFlight.flight_no, airline:curFlight.airline,
-        route:curFlight.route, dep_date:curFlight.dep_date,
-        price_per_seat:curFlight.price_per_seat, status:'pending'
-      })
-    });
-  } catch(e) {}
-
-  // WhatsApp
-  const msg = encodeURIComponent(
-    `Assalam o Alaikum! I want to book a group ticket.\n\n` +
-    `✈️ Flight: ${curFlight.airline} ${curFlight.flight_no}\n` +
-    `🗺️ Route: ${curFlight.route}\n` +
-    `📅 Date: ${curFlight.dep_date}\n` +
-    `💺 Seats: ${seats} x ${cls}\n` +
-    `💰 Price: ${curFlight.price_per_seat} per seat\n\n` +
-    `👤 Name: ${fn} ${ln}\n` +
-    `📱 Phone: ${ph}\n` +
-    `🛂 Passport: ${pp}\n\n` +
-    `Please confirm my booking. Jazak Allah!`
-  );
-  window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
-  closePax();
-};
 
 renderCats();
 </script>
