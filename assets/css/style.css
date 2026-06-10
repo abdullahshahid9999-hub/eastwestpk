@@ -371,12 +371,8 @@ option{background:#fff;color:var(--text)}
   /* Show close button */
   .nav-close{display:flex!important}
 
-  /* Hide desktop-only direct Visa/Blog links from drawer top level
-     (they show inside the mobile sub-menu instead) */
-  .nav-links > a[href="visa.html"],
-  .nav-links > a[href="../visa.html"]{display:none!important}
-  .nav-links > a[href="blog.html"],
-  .nav-links > a[href="../blog.html"]{display:none!important}
+  /* Hide desktop dropdown trigger on mobile (mob-svc-link handles service items) */
+  #mlink-svc-desk{display:none!important}
 
   /* ── DRAWER LINKS ── */
   .nav-links > a{
