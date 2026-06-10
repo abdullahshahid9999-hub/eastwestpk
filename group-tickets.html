@@ -186,12 +186,12 @@
 <script src="assets/js/script.js"></script>
 <script>
 const AIRLINE_LOGOS = {
-  PIA: 'https://upload.wikimedia.org/wikipedia/en/f/fb/PIA_logo.svg',
-  EK:  'https://upload.wikimedia.org/wikipedia/commons/d/d0/Emirates_logo.svg',
-  QR:  'https://upload.wikimedia.org/wikipedia/en/9/9b/Qatar_Airways_Logo.svg',
-  GF:  'https://upload.wikimedia.org/wikipedia/en/6/6a/Gulf_Air_Logo.svg',
-  PA:  'https://upload.wikimedia.org/wikipedia/en/8/89/AirSial_logo.svg',
-  FJ:  'https://upload.wikimedia.org/wikipedia/en/b/b8/FlyJinnah_logo.svg',
+  PIA: 'https://logos.skyscnr.com/images/airlines/favicon/PK.png',
+  EK:  'https://logos.skyscnr.com/images/airlines/favicon/EK.png',
+  QR:  'https://logos.skyscnr.com/images/airlines/favicon/QR.png',
+  GF:  'https://logos.skyscnr.com/images/airlines/favicon/GF.png',
+  PA:  'https://logos.skyscnr.com/images/airlines/favicon/ER.png',
+  FJ:  'https://logos.skyscnr.com/images/airlines/favicon/9P.png',
 };
 </script>
 <script>
@@ -312,7 +312,7 @@ function renderFlights(flights) {
     <div class="flight-card">
       <div class="fc-head">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="fc-airline-logo" style="background:#fff;border:1px solid #E8E4DA;padding:6px;overflow:hidden;border-radius:10px;width:52px;height:52px;display:flex;align-items:center;justify-content:center"><img src="${AIRLINE_LOGOS[f.airline_code] || 'assets/images/logo.jpg'}" alt="${f.airline}" style="width:40px;height:40px;object-fit:contain" onerror="this.src='assets/images/logo.jpg'"></div>
+          <div style="background:#fff;border:1.5px solid #E8E4DA;border-radius:12px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:4px"><img src="${AIRLINE_LOGOS[f.airline_code]||'assets/images/logo.jpg'}" alt="${f.airline}" style="width:50px;height:50px;object-fit:contain;border-radius:4px" onerror="this.onerror=null;this.src='assets/images/logo.jpg'"></div>
           <div>
             <div class="fc-airline-name">${f.airline}</div>
             <div class="fc-flight-no">Flight ${f.flight_no}</div>

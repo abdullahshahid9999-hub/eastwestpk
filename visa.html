@@ -241,8 +241,7 @@ function renderVisas(data) {
         <img src="${img}" alt="${v.country}" loading="lazy">
         <div class="visa-img-overlay"></div>
         <div class="visa-img-top">
-          <span class="visa-flag-badge">${flag}</span>
-          <span class="visa-type-pill">${v.type}</span>
+          <span class="visa-flag-badge" style="font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))">${flag}</span>
         </div>
         <div class="visa-img-bottom">
           <div class="visa-title">${v.title}</div>
@@ -272,7 +271,7 @@ window.openVisaModal = function(v) {
       <div class="vm-img">
         <img src="${img}" alt="${v.country}">
         <div class="vm-img-overlay"></div>
-        <span class="vm-flag">${flag}</span>
+        <span class="vm-flag" style="font-size:38px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6))">${flag}</span>
         <button class="vm-close" onclick="closeVisaModal()"><i class="fa fa-times"></i></button>
         <div class="vm-img-content">
           <div class="vm-title">${v.title}</div>
