@@ -186,12 +186,12 @@
 <script src="assets/js/script.js"></script>
 <script>
 const AIRLINE_LOGOS = {
-  PIA: 'https://content.airhex.com/content/logos/airlines_PK_100_100_s.png',
-  EK:  'https://content.airhex.com/content/logos/airlines_EK_100_100_s.png',
-  QR:  'https://content.airhex.com/content/logos/airlines_QR_100_100_s.png',
-  GF:  'https://content.airhex.com/content/logos/airlines_GF_100_100_s.png',
-  PA:  'https://content.airhex.com/content/logos/airlines_ER_100_100_s.png',
-  FJ:  'https://content.airhex.com/content/logos/airlines_9P_100_100_s.png',
+  PIA: 'https://upload.wikimedia.org/wikipedia/en/f/fb/PIA_logo.svg',
+  EK:  'https://upload.wikimedia.org/wikipedia/commons/d/d0/Emirates_logo.svg',
+  QR:  'https://upload.wikimedia.org/wikipedia/en/9/9b/Qatar_Airways_Logo.svg',
+  GF:  'https://upload.wikimedia.org/wikipedia/en/6/6a/Gulf_Air_Logo.svg',
+  PA:  'https://upload.wikimedia.org/wikipedia/en/8/89/AirSial_logo.svg',
+  FJ:  'https://upload.wikimedia.org/wikipedia/en/b/b8/FlyJinnah_logo.svg',
 };
 </script>
 <script>
@@ -312,7 +312,7 @@ function renderFlights(flights) {
     <div class="flight-card">
       <div class="fc-head">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="fc-airline-logo" style="background:#fff;border:1px solid #E8E4DA;padding:5px;overflow:hidden"><img src="${AIRLINE_LOGOS[f.airline_code] || 'assets/images/logo.jpg'}" alt="${f.airline_code}" style="width:36px;height:36px;object-fit:contain" onerror="this.src='assets/images/logo.jpg'"></div>
+          <div class="fc-airline-logo" style="background:#fff;border:1px solid #E8E4DA;padding:6px;overflow:hidden;border-radius:10px;width:52px;height:52px;display:flex;align-items:center;justify-content:center"><img src="${AIRLINE_LOGOS[f.airline_code] || 'assets/images/logo.jpg'}" alt="${f.airline}" style="width:40px;height:40px;object-fit:contain" onerror="this.src='assets/images/logo.jpg'"></div>
           <div>
             <div class="fc-airline-name">${f.airline}</div>
             <div class="fc-flight-no">Flight ${f.flight_no}</div>
