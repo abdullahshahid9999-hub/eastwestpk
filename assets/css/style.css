@@ -565,3 +565,5 @@ option{background:#fff;color:var(--text)}
 .up-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#C9A84C;background:rgba(10,22,40,0.7);border:1px solid rgba(201,168,76,0.4);padding:4px 11px;border-radius:50px;font-family:"Plus Jakarta Sans",sans-serif;backdrop-filter:blur(4px)}
 .up-featured{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#fff;background:#C9A84C;padding:4px 11px;border-radius:50px;font-family:"Plus Jakarta Sans",sans-serif;display:flex;align-items:center;gap:5px}
 @media(max-width:640px){.up-modal{max-height:96vh;border-radius:16px}.um-img{height:200px}.um-scroll{padding:16px}.um-info-grid{grid-template-columns:1fr}.um-includes{grid-template-columns:1fr}}
+
+.mob-svc-link.active{color:var(--gold)!important;border-left:3px solid var(--gold)!important;padding-left:29px!important;background:rgba(201,168,76,0.06)!important}
