@@ -572,7 +572,20 @@ tbody td strong{color:var(--text);font-weight:600}
         </div>
         <div class="fg"><label>Flight No *</label><input type="text" id="flNo" placeholder="PK-741"></div>
         <div class="fg"><label>Airline *</label><input type="text" id="flAl" placeholder="Pakistan Int'l Airlines"></div>
-        <div class="fg"><label>Airline Code</label><input type="text" id="flAlC" placeholder="PIA"></div>
+        <div class="fg"><label>Airline Code</label><input type="text" id="flAlC" placeholder="PIA — EK — QR — GF"></div>
+        <div class="fg" style="grid-column:1/-1">
+          <label>Airline Logo URL <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(paste direct image link — PNG/JPG/SVG)</span></label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="url" id="flLogo" placeholder="https://... paste image URL of airline logo" style="flex:1;background:var(--raised);border:1px solid var(--border2);border-radius:5px;padding:8px 10px;font-size:13px;color:var(--text);outline:none" oninput="previewLogo(this.value)">
+            <div id="logoPreview" style="width:48px;height:48px;background:#fff;border-radius:8px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+              <span style="font-size:10px;color:var(--dim)">Preview</span>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px">
+            💡 Right-click any airline logo online → "Copy image address" → paste here. 
+            Or search Google Images for "[Airline Name] logo PNG transparent".
+          </div>
+        </div>
         <div class="fg"><label>Route *</label><input type="text" id="flRt" placeholder="LHE → JED"></div>
         <div class="fg"><label>Departure Time</label><input type="text" id="flDt" placeholder="02:30"></div>
         <div class="fg"><label>Arrival Time</label><input type="text" id="flAt" placeholder="05:45"></div>
@@ -964,7 +977,8 @@ function filterFlights(cat){renderFlights(cat?flights.filter(f=>f.category===cat
 function openFlightModal(){
   document.getElementById('flightTitle').innerHTML='Add <em>Group Flight</em>';
   document.getElementById('flightId').value='';
-  ['flNo','flAl','flAlC','flRt','flDt','flAt','flDd','flBg','flMl','flPr'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['flNo','flAl','flAlC','flRt','flDt','flAt','flDd','flBg','flMl','flPr','flLogo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('logoPreview').innerHTML='<span style="font-size:10px;color:var(--dim)">Preview</span>';
   document.getElementById('flCat').value='umrah';
   document.getElementById('flCl').value='Economy';
   document.getElementById('flTs').value='';
@@ -980,6 +994,8 @@ function editFlight(id){
   document.getElementById('flNo').value=f.flight_no||'';
   document.getElementById('flAl').value=f.airline||'';
   document.getElementById('flAlC').value=f.airline_code||'';
+  document.getElementById('flLogo').value=f.airline_logo_url||'';
+  previewLogo(f.airline_logo_url||'');
   document.getElementById('flRt').value=f.route||'';
   document.getElementById('flDt').value=f.dep_time||'';
   document.getElementById('flAt').value=f.arr_time||'';
@@ -998,7 +1014,7 @@ async function saveFlight(){
   const al=document.getElementById('flAl').value.trim();
   if(!no||!al){toast('Flight no & airline required!',true);return;}
   const id=document.getElementById('flightId').value;
-  const d={category:document.getElementById('flCat').value,flight_no:no,airline:al,airline_code:document.getElementById('flAlC').value.trim(),route:document.getElementById('flRt').value.trim(),dep_time:document.getElementById('flDt').value.trim(),arr_time:document.getElementById('flAt').value.trim(),dep_date:document.getElementById('flDd').value.trim(),class:document.getElementById('flCl').value,baggage:document.getElementById('flBg').value.trim(),meal:document.getElementById('flMl').value.trim(),price_per_seat:document.getElementById('flPr').value.trim(),total_seats:parseInt(document.getElementById('flTs').value)||0,booked_seats:parseInt(document.getElementById('flBs').value)||0,status:document.getElementById('flSt').value,updated_at:new Date().toISOString()};
+  const d={category:document.getElementById('flCat').value,flight_no:no,airline:al,airline_code:document.getElementById('flAlC').value.trim(),airline_logo_url:document.getElementById('flLogo').value.trim()||null,route:document.getElementById('flRt').value.trim(),dep_time:document.getElementById('flDt').value.trim(),arr_time:document.getElementById('flAt').value.trim(),dep_date:document.getElementById('flDd').value.trim(),class:document.getElementById('flCl').value,baggage:document.getElementById('flBg').value.trim(),meal:document.getElementById('flMl').value.trim(),price_per_seat:document.getElementById('flPr').value.trim(),total_seats:parseInt(document.getElementById('flTs').value)||0,booked_seats:parseInt(document.getElementById('flBs').value)||0,status:document.getElementById('flSt').value,updated_at:new Date().toISOString()};
   try{
     if(id){await PATCH('group_flights',id,d);flights=flights.map(f=>f.id===id?{...f,...d,id}:f);}
     else{const r=await POST('group_flights',d);flights=[r,...flights];}
@@ -1083,6 +1099,12 @@ function toast(msg,isErr=false){
 }
 
 loadAll();
+
+function previewLogo(url) {
+  const prev = document.getElementById('logoPreview');
+  if (!url) { prev.innerHTML = '<span style="font-size:10px;color:var(--dim)">Preview</span>'; return; }
+  prev.innerHTML = `<img src="${url}" style="width:44px;height:44px;object-fit:contain" onerror="this.parentElement.innerHTML='<span style=\'font-size:10px;color:var(--red)\'>Error</span>'">`;
+}
 </script>
 </body>
 </html>

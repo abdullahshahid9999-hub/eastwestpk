@@ -185,16 +185,6 @@
 
 <script src="assets/js/script.js"></script>
 <script>
-const AIRLINE_LOGOS = {
-  PIA: 'https://logos.skyscnr.com/images/airlines/favicon/PK.png',
-  EK:  'https://logos.skyscnr.com/images/airlines/favicon/EK.png',
-  QR:  'https://logos.skyscnr.com/images/airlines/favicon/QR.png',
-  GF:  'https://logos.skyscnr.com/images/airlines/favicon/GF.png',
-  PA:  'https://logos.skyscnr.com/images/airlines/favicon/ER.png',
-  FJ:  'https://logos.skyscnr.com/images/airlines/favicon/9P.png',
-};
-</script>
-<script>
 const SUPA_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 const WA = '923336515349';
@@ -209,38 +199,7 @@ const CATS = [
 ];
 
 // ── HARDCODED FLIGHTS — Always show ──
-const FLIGHTS = {
-  umrah:[
-    {id:'f1',flight_no:'PK-741',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'LHE → JED',dep_time:'02:30',arr_time:'05:45',dep_date:'Apr 15, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 85,000',total_seats:40,booked_seats:28},
-    {id:'f2',flight_no:'PK-743',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → JED',dep_time:'08:00',arr_time:'11:15',dep_date:'Apr 22, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 88,000',total_seats:35,booked_seats:35},
-    {id:'f3',flight_no:'EK-601',airline:'Emirates',airline_code:'EK',route:'LHE → DXB → JED',dep_time:'23:45',arr_time:'07:30+1',dep_date:'May 10, 2026',class:'Economy',baggage:'35 KG',meal:'Halal Included',price_per_seat:'Rs. 1,10,000',total_seats:30,booked_seats:12},
-    {id:'f11',flight_no:'PK-745',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'KHI → JED',dep_time:'01:00',arr_time:'04:30',dep_date:'May 20, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 82,000',total_seats:45,booked_seats:10},
-  ],
-  uk:[
-    {id:'f4',flight_no:'PK-785',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → LHR',dep_time:'01:30',arr_time:'06:45',dep_date:'May 5, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 2,20,000',total_seats:25,booked_seats:18},
-    {id:'f5',flight_no:'QR-301',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH → LHR',dep_time:'03:00',arr_time:'12:30',dep_date:'May 12, 2026',class:'Business',baggage:'40 KG',meal:'Premium Included',price_per_seat:'Rs. 5,50,000',total_seats:12,booked_seats:4},
-    {id:'f12',flight_no:'EK-202',airline:'Emirates',airline_code:'EK',route:'LHE → DXB → LHR',dep_time:'22:00',arr_time:'09:15+1',dep_date:'May 18, 2026',class:'Economy',baggage:'35 KG',meal:'Included',price_per_seat:'Rs. 2,40,000',total_seats:20,booked_seats:8},
-  ],
-  qatar:[
-    {id:'f6',flight_no:'QR-601',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH',dep_time:'04:15',arr_time:'06:20',dep_date:'Apr 20, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 55,000',total_seats:45,booked_seats:20},
-    {id:'f7',flight_no:'EK-100',airline:'Emirates',airline_code:'EK',route:'LHE → DXB',dep_time:'08:30',arr_time:'10:45',dep_date:'Apr 25, 2026',class:'Economy',baggage:'35 KG',meal:'Included',price_per_seat:'Rs. 48,000',total_seats:50,booked_seats:50},
-    {id:'f13',flight_no:'GF-101',airline:'Gulf Air',airline_code:'GF',route:'ISB → BAH',dep_time:'05:00',arr_time:'07:30',dep_date:'May 8, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 52,000',total_seats:35,booked_seats:15},
-  ],
-  usa:[
-    {id:'f8',flight_no:'PK-711',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → JFK',dep_time:'02:00',arr_time:'12:30',dep_date:'Jun 1, 2026',class:'Economy',baggage:'46 KG',meal:'Included',price_per_seat:'Rs. 3,80,000',total_seats:20,booked_seats:8},
-    {id:'f14',flight_no:'QR-711',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH → YYZ',dep_time:'03:30',arr_time:'16:45',dep_date:'Jun 8, 2026',class:'Economy',baggage:'30 KG',meal:'Included',price_per_seat:'Rs. 3,60,000',total_seats:18,booked_seats:5},
-  ],
-  domestic:[
-    {id:'f9',flight_no:'PK-300',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'LHE → KHI',dep_time:'07:00',arr_time:'08:10',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'Snack',price_per_seat:'Rs. 12,000',total_seats:60,booked_seats:35},
-    {id:'f10',flight_no:'PA-200',airline:'AirSial',airline_code:'PA',route:'LYP → KHI',dep_time:'09:30',arr_time:'10:45',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'None',price_per_seat:'Rs. 9,500',total_seats:40,booked_seats:22},
-    {id:'f15',flight_no:'PK-301',airline:"Pakistan Int'l Airlines",airline_code:'PIA',route:'ISB → KHI',dep_time:'10:00',arr_time:'11:30',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'Snack',price_per_seat:'Rs. 11,000',total_seats:55,booked_seats:20},
-    {id:'f16',flight_no:'FJ-101',airline:'FlyJinnah',airline_code:'FJ',route:'LHE → ISB',dep_time:'06:00',arr_time:'07:00',dep_date:'Daily',class:'Economy',baggage:'20 KG',meal:'None',price_per_seat:'Rs. 6,500',total_seats:45,booked_seats:30},
-  ],
-  other:[
-    {id:'f17',flight_no:'EK-612',airline:'Emirates',airline_code:'EK',route:'LHE → DXB → BKK',dep_time:'23:30',arr_time:'18:40+1',dep_date:'May 5, 2026',class:'Economy',baggage:'35 KG',meal:'Halal Included',price_per_seat:'Rs. 1,25,000',total_seats:25,booked_seats:10},
-    {id:'f18',flight_no:'QR-412',airline:'Qatar Airways',airline_code:'QR',route:'KHI → DOH → KUL',dep_time:'02:00',arr_time:'15:30',dep_date:'May 12, 2026',class:'Economy',baggage:'30 KG',meal:'Halal Included',price_per_seat:'Rs. 1,10,000',total_seats:20,booked_seats:6},
-  ],
-};
+const FLIGHTS = {};
 
 let curFlight = null;
 
@@ -268,14 +227,14 @@ window.selectCat = async function(catId) {
   // Scroll to flights
   setTimeout(() => document.getElementById('flightSection').scrollIntoView({behavior:'smooth',block:'start'}), 100);
 
-  // Load from DB, fallback to hardcoded
-  let flights = FLIGHTS[catId] || [];
+  // Load from DB only
+  let flights = [];
   try {
     const r = await fetch(`${SUPA_URL}/rest/v1/group_flights?select=*&category=eq.${catId}&status=eq.active&order=dep_date.asc`, {
       headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}
     });
     const d = await r.json();
-    if (Array.isArray(d) && d.length > 0) flights = d;
+    if (Array.isArray(d)) flights = d;
   } catch(e) {}
 
   renderFlights(flights);
@@ -312,7 +271,14 @@ function renderFlights(flights) {
     <div class="flight-card">
       <div class="fc-head">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="background:#fff;border:1.5px solid #E8E4DA;border-radius:12px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:4px"><img src="${AIRLINE_LOGOS[f.airline_code]||'assets/images/logo.jpg'}" alt="${f.airline}" style="width:50px;height:50px;object-fit:contain;border-radius:4px" onerror="this.onerror=null;this.src='assets/images/logo.jpg'"></div>
+          <div style="background:#fff;border:1.5px solid #E8E4DA;border-radius:12px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:4px">
+  ${f.airline_logo_url
+    ? `<img src="${f.airline_logo_url}" alt="${f.airline}" style="width:50px;height:50px;object-fit:contain;border-radius:4px" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : ''}
+  <div style="${f.airline_logo_url?'display:none;':''}width:50px;height:50px;background:#0A1628;border-radius:8px;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#C9A84C;text-align:center;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:0.5px">
+    ${(f.airline_code||f.airline||'?').substring(0,3).toUpperCase()}
+  </div>
+</div>
           <div>
             <div class="fc-airline-name">${f.airline}</div>
             <div class="fc-flight-no">Flight ${f.flight_no}</div>
