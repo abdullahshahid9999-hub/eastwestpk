@@ -197,20 +197,7 @@ const COUNTRY_IMAGES = {
   'Egypt':        'https://images.unsplash.com/photo-1539650116574-75c0c6d73d0e?w=600&q=80',
 };
 
-// ── HARDCODED DATA (always shows even without DB) ──
-const VISAS = [
-  {id:'v1', title:'UAE Tourist Visa',       country:'UAE',          type:'tourist',  price:'Rs. 15,000', days:'30 Days', validity:'90 Days',  max_stay:'30 Days',  processing_time:'5–7 working days',  requirements:'Passport (6+ months valid), Recent photo, Bank statement (3 months), Hotel booking confirmation, Return ticket'},
-  {id:'v2', title:'Saudi Umrah Visa',        country:'Saudi Arabia', type:'umrah',    price:'Rs. 18,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days',  processing_time:'7–10 working days', requirements:'Passport, Mehram certificate (ladies), COVID vaccination card, Umrah package booking confirmation'},
-  {id:'v3', title:'Thailand Tourist Visa',   country:'Thailand',     type:'tourist',  price:'Rs. 12,000', days:'30 Days', validity:'6 Months', max_stay:'30 Days',  processing_time:'5–7 working days',  requirements:'Passport, Recent photo, Bank statement, Hotel booking, Return ticket'},
-  {id:'v4', title:'Indonesia Visa on Arrival',country:'Indonesia',   type:'tourist',  price:'Rs. 8,000',  days:'30 Days', validity:'Single',   max_stay:'30 Days',  processing_time:'3–5 working days',  requirements:'Passport (6+ months valid), Photo, Return ticket, Sufficient funds'},
-  {id:'v5', title:'Turkey e-Visa',           country:'Turkey',       type:'tourist',  price:'Rs. 14,000', days:'90 Days', validity:'6 Months', max_stay:'90 Days',  processing_time:'3–5 working days',  requirements:'Valid passport, Credit/debit card for online payment, Recent photo'},
-  {id:'v6', title:'Malaysia Tourist Visa',   country:'Malaysia',     type:'tourist',  price:'Rs. 10,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days',  processing_time:'5–7 working days',  requirements:'Passport, Photo, Bank statement, Hotel booking, Return ticket'},
-  {id:'v7', title:'Qatar Tourist Visa',      country:'Qatar',        type:'tourist',  price:'Rs. 12,000', days:'30 Days', validity:'3 Months', max_stay:'30 Days',  processing_time:'5–7 working days',  requirements:'Passport, Recent photo, Bank statement, Hotel booking confirmation'},
-  {id:'v8', title:'UK Visit Visa',           country:'UK',           type:'tourist',  price:'Rs. 45,000', days:'6 Months',validity:'6 Months', max_stay:'6 Months', processing_time:'15–20 working days', requirements:'Passport, 6-month bank statement, Employment letter, Property documents, Invitation letter (if applicable)'},
-  {id:'v9', title:'Saudi Business Visa',     country:'Saudi Arabia', type:'business', price:'Rs. 22,000', days:'90 Days', validity:'1 Year',   max_stay:'90 Days',  processing_time:'7–14 working days', requirements:'Passport, Business invitation letter from Saudi company, Company registration, Bank statement'},
-];
-
-let allVisas = [...VISAS];
+let allVisas = [];
 
 async function loadFromDB() {
   try {
@@ -221,8 +208,12 @@ async function loadFromDB() {
     if (Array.isArray(d) && d.length > 0) {
       allVisas = d;
       renderVisas(allVisas);
+    } else {
+      renderVisas([]);
     }
-  } catch(e) { /* keep hardcoded */ }
+  } catch(e) {
+    renderVisas([]);
+  }
 }
 
 
@@ -310,8 +301,7 @@ window.filterVisa = function(type, btn) {
   renderVisas(filtered);
 };
 
-// Show hardcoded data immediately, then try DB
-renderVisas(allVisas);
+// Load from DB only
 loadFromDB();
 </script>
 </body>
