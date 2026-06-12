@@ -128,239 +128,338 @@
 </section>
 
 <!-- INSURANCE CALCULATOR -->
-<section style="padding:80px 0;background:#F7F5F0">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow"><i class="fa fa-shield-alt"></i> Get Insured</div>
-      <h2>Calculate Your <em>Premium</em></h2>
-      <p>Fill in your trip details below — see plan options and WhatsApp us to purchase in minutes.</p>
+<section id="calcSection" style="background:#F4F2ED;padding:80px 0">
+<div class="container">
+
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="eyebrow"><i class="fa fa-shield-alt"></i> Instant Quote</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:42px;color:#1A1A2E;margin-bottom:10px">Find Your <em style="color:#C9A84C;font-style:italic">Best Plan</em></h2>
+    <p style="font-size:15px;color:#6B6B8A;max-width:520px;margin:0 auto;font-family:'Plus Jakarta Sans',sans-serif">Enter trip details — we show you plan options with pricing. WhatsApp us to purchase in minutes.</p>
+  </div>
+
+  <!-- TRAVELLER TYPE TABS -->
+  <div style="display:flex;justify-content:center;margin-bottom:36px">
+    <div style="background:#fff;border:1.5px solid #E8E4DA;border-radius:50px;padding:5px;display:inline-flex;gap:4px">
+      <button class="tt-btn active" id="tt-ind" onclick="setTT('individual',this)"><i class="fa fa-user"></i> Individual</button>
+      <button class="tt-btn" id="tt-fam" onclick="setTT('family',this)"><i class="fa fa-users"></i> Family</button>
+      <button class="tt-btn" id="tt-grp" onclick="setTT('group',this)"><i class="fa fa-user-friends"></i> Group</button>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div id="calcFormWrap" style="background:#fff;border-radius:20px;border:1.5px solid #E8E4DA;max-width:800px;margin:0 auto;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.06)">
+
+    <!-- Progress bar -->
+    <div style="height:3px;background:#E8E4DA">
+      <div id="calcProgress" style="height:100%;background:#C9A84C;width:0%;transition:width .4s"></div>
     </div>
 
-    <!-- STEP BAR -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:44px">
-      <div class="ci-step active" id="step1dot">
-        <div class="ci-step-num">1</div>
-        <div class="ci-step-lbl">Trip Details</div>
-      </div>
-      <div class="ci-step-line" id="line1"></div>
-      <div class="ci-step" id="step2dot">
-        <div class="ci-step-num">2</div>
-        <div class="ci-step-lbl">View Plans</div>
-      </div>
-      <div class="ci-step-line" id="line2"></div>
-      <div class="ci-step" id="step3dot">
-        <div class="ci-step-num">3</div>
-        <div class="ci-step-lbl">WhatsApp Us</div>
-      </div>
-    </div>
+    <div style="padding:36px 40px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" id="calcFields">
 
-    <!-- STEP 1: FORM -->
-    <div id="calcForm" style="background:#fff;border-radius:24px;padding:40px;max-width:780px;margin:0 auto;box-shadow:0 8px 40px rgba(0,0,0,0.07);border:1px solid #EDE9DF">
+        <!-- Destination -->
+        <div class="cff">
+          <label class="cfl"><i class="fa fa-globe" style="color:#C9A84C"></i> Where are you going?</label>
+          <div class="cf-sel-wrap">
+            <select id="ciDest" class="cfi" onchange="calcProgress()">
+              <option value="">Select destination</option>
+              <optgroup label="Middle East / Asia">
+                <option value="gulf">🇸🇦 Gulf / Middle East</option>
+                <option value="umrah">🕋 Saudi Arabia — Umrah / Hajj</option>
+                <option value="asia">🌏 Asia (Thailand, Malaysia, etc.)</option>
+                <option value="turkey">🇹🇷 Turkey</option>
+              </optgroup>
+              <optgroup label="Europe / West">
+                <option value="schengen">🇪🇺 Schengen States</option>
+                <option value="uk">🇬🇧 United Kingdom</option>
+                <option value="usa">🇺🇸 USA / Canada</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="worldwide">🌍 Worldwide</option>
+              </optgroup>
+            </select>
+            <i class="fa fa-chevron-down cf-arrow"></i>
+          </div>
+        </div>
 
-      <!-- Traveller Type Toggle -->
-      <div style="display:flex;gap:10px;margin-bottom:28px;background:#F7F5F0;padding:6px;border-radius:14px">
-        <button class="ci-type active" id="tIndividual" onclick="setType('individual')"><i class="fa fa-user"></i> Individual</button>
-        <button class="ci-type" id="tFamily" onclick="setType('family')"><i class="fa fa-users"></i> Family</button>
-        <button class="ci-type" id="tGroup" onclick="setType('group')"><i class="fa fa-user-friends"></i> Group</button>
-      </div>
+        <!-- Duration -->
+        <div class="cff">
+          <label class="cfl"><i class="fa fa-calendar-alt" style="color:#C9A84C"></i> How long is the trip?</label>
+          <div class="cf-sel-wrap">
+            <select id="ciDays" class="cfi" onchange="calcProgress()">
+              <option value="">Select duration</option>
+              <option value="7">7 Days</option>
+              <option value="10">10 Days</option>
+              <option value="14" selected>14 Days</option>
+              <option value="21">21 Days</option>
+              <option value="30">30 Days</option>
+              <option value="45">45 Days</option>
+              <option value="60">60 Days</option>
+              <option value="90">90 Days</option>
+              <option value="180">6 Months</option>
+              <option value="365">1 Year</option>
+            </select>
+            <i class="fa fa-chevron-down cf-arrow"></i>
+          </div>
+        </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-        <div class="ci-fg">
-          <label class="ci-lbl"><i class="fa fa-globe"></i> Destination</label>
-          <select id="ciDest" class="ci-inp">
-            <option value="">Select Destination</option>
-            <option value="schengen">🇪🇺 Schengen / Europe</option>
-            <option value="uk">🇬🇧 United Kingdom</option>
-            <option value="usa">🇺🇸 USA / Canada</option>
-            <option value="gulf">🇸🇦 Gulf / Middle East</option>
-            <option value="asia">🌏 Asia (Thailand, Malaysia etc)</option>
-            <option value="umrah">🕋 Saudi Arabia (Umrah / Hajj)</option>
-            <option value="worldwide">🌍 Worldwide</option>
-          </select>
+        <!-- Start Date -->
+        <div class="cff">
+          <label class="cfl"><i class="fa fa-calendar-check" style="color:#C9A84C"></i> Departure date</label>
+          <input type="date" id="ciDate" class="cfi" onchange="calcProgress()">
         </div>
-        <div class="ci-fg">
-          <label class="ci-lbl"><i class="fa fa-clock"></i> Duration (Days)</label>
-          <select id="ciDays" class="ci-inp">
-            <option value="7">7 Days</option>
-            <option value="10">10 Days</option>
-            <option value="14" selected>14 Days</option>
-            <option value="21">21 Days</option>
-            <option value="30">30 Days</option>
-            <option value="45">45 Days</option>
-            <option value="60">60 Days</option>
-            <option value="90">90 Days</option>
-          </select>
-        </div>
-        <div class="ci-fg" id="paxWrap">
-          <label class="ci-lbl"><i class="fa fa-user-plus"></i> No. of Travellers</label>
-          <input type="number" id="ciPax" class="ci-inp" min="1" max="50" value="1" placeholder="1">
-        </div>
-        <div class="ci-fg">
-          <label class="ci-lbl"><i class="fa fa-birthday-cake"></i> Age Group</label>
-          <select id="ciAge" class="ci-inp">
-            <option value="young">18 – 35 years</option>
-            <option value="adult">36 – 60 years</option>
-            <option value="senior">61+ years</option>
-          </select>
-        </div>
-        <div class="ci-fg">
-          <label class="ci-lbl"><i class="fa fa-calendar-alt"></i> Start Date</label>
-          <input type="date" id="ciDate" class="ci-inp">
-        </div>
-        <div class="ci-fg">
-          <label class="ci-lbl"><i class="fa fa-envelope"></i> Email (optional)</label>
-          <input type="email" id="ciEmail" class="ci-inp" placeholder="for quote confirmation">
-        </div>
-      </div>
 
-      <button onclick="showPlans()" style="width:100%;margin-top:24px;background:linear-gradient(135deg,#C9A84C,#b8952e);color:#fff;border:none;padding:16px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s">
+        <!-- Age group -->
+        <div class="cff">
+          <label class="cfl"><i class="fa fa-birthday-cake" style="color:#C9A84C"></i> Age of oldest traveller</label>
+          <div class="cf-sel-wrap">
+            <select id="ciAge" class="cfi" onchange="calcProgress()">
+              <option value="young">18 – 35 years</option>
+              <option value="adult">36 – 60 years</option>
+              <option value="senior">61+ years</option>
+            </select>
+            <i class="fa fa-chevron-down cf-arrow"></i>
+          </div>
+        </div>
+
+        <!-- Pax (hidden for individual) -->
+        <div class="cff" id="paxRow" style="display:none">
+          <label class="cfl"><i class="fa fa-user-plus" style="color:#C9A84C"></i> Number of travellers</label>
+          <input type="number" id="ciPax" class="cfi" min="2" max="50" value="2" placeholder="e.g. 4">
+        </div>
+
+        <!-- Email -->
+        <div class="cff" id="emailRow">
+          <label class="cfl"><i class="fa fa-envelope" style="color:#C9A84C"></i> Email <span style="color:#B0B0C3;font-weight:400">(optional)</span></label>
+          <input type="email" id="ciEmail" class="cfi" placeholder="for quote confirmation">
+        </div>
+
+      </div><!-- /grid -->
+
+      <div id="calcErr" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:12px 16px;font-size:13px;color:#DC2626;margin-top:16px;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-exclamation-circle"></i> <span id="calcErrTxt"></span></div>
+
+      <button onclick="showPlans()" id="calcBtn" style="width:100%;margin-top:24px;background:#C9A84C;color:#fff;border:none;padding:16px 24px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;letter-spacing:0.3px">
         <i class="fa fa-search"></i> View Plans &amp; Prices
       </button>
     </div>
-
-    <!-- STEP 2: PLAN CARDS (hidden initially) -->
-    <div id="planCards" style="display:none;max-width:900px;margin:32px auto 0">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-        <div id="planSummary" style="font-size:14px;color:#6B6B8A;font-family:'Plus Jakarta Sans',sans-serif"></div>
-        <button onclick="backToForm()" style="background:none;border:1.5px solid #C9A84C;color:#C9A84C;padding:8px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-arrow-left"></i> Edit Details</button>
-      </div>
-      <div id="planGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px"></div>
-    </div>
   </div>
+
+  <!-- PLAN CARDS (shown after submit) -->
+  <div id="planCards" style="display:none;max-width:960px;margin:40px auto 0">
+
+    <!-- Summary bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px">
+      <div id="planSummBar" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"></div>
+      <button onclick="backToForm()" style="background:#fff;border:1.5px solid #E8E4DA;color:#6B6B8A;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:7px;transition:all .25s">
+        <i class="fa fa-pencil-alt"></i> Edit Details
+      </button>
+    </div>
+
+    <!-- Cards grid -->
+    <div id="planGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px"></div>
+
+    <p style="text-align:center;margin-top:20px;font-size:12px;color:#A0A0B8;font-family:'Plus Jakarta Sans',sans-serif">*Estimates only. Final price confirmed on WhatsApp. Rates subject to change.</p>
+  </div>
+
+</div>
 </section>
 
 <style>
-.ci-step{display:flex;flex-direction:column;align-items:center;gap:6px}
-.ci-step-num{width:38px;height:38px;border-radius:50%;background:#E8E4DA;color:#9090AA;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;transition:all .4s}
-.ci-step.active .ci-step-num{background:#C9A84C;color:#fff;box-shadow:0 4px 16px rgba(201,168,76,0.35)}
-.ci-step.done .ci-step-num{background:#10B981;color:#fff}
-.ci-step-lbl{font-size:11px;color:#9090AA;font-weight:600;text-transform:uppercase;letter-spacing:1px;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
-.ci-step.active .ci-step-lbl{color:#C9A84C}
-.ci-step-line{width:80px;height:2px;background:#E8E4DA;margin-bottom:18px;transition:background .4s}
-.ci-step-line.done{background:#10B981}
-.ci-type{flex:1;padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#6B6B8A;font-family:'Plus Jakarta Sans',sans-serif;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:7px}
-.ci-type.active{background:#fff;color:#C9A84C;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
-.ci-fg{display:flex;flex-direction:column;gap:7px}
-.ci-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9090AA;display:flex;align-items:center;gap:6px;font-family:'Plus Jakarta Sans',sans-serif}
-.ci-lbl i{color:#C9A84C;font-size:11px}
-.ci-inp{background:#FAFAF8;border:1.5px solid #E8E4DA;border-radius:10px;padding:12px 14px;font-size:14px;color:#1A1A2E;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:all .3s;width:100%}
-.ci-inp:focus{border-color:#C9A84C;box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
-.plan-card{background:#fff;border:1.5px solid #E8E4DA;border-radius:20px;overflow:hidden;transition:all .35s;position:relative}
-.plan-card.recommended{border-color:#C9A84C;box-shadow:0 8px 32px rgba(201,168,76,0.2)}
-.plan-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:#C9A84C;color:#fff;font-size:10px;font-weight:700;padding:5px 16px;border-radius:0 0 10px 10px;font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap}
-.plan-head{padding:28px 22px 20px;border-bottom:1px solid #F0EDE6}
-.plan-icon{width:48px;height:48px;border-radius:14px;background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
-.plan-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:#1A1A2E;font-weight:700;margin-bottom:4px}
-.plan-price{font-family:'Cormorant Garamond',serif;font-size:36px;color:#C9A84C;font-weight:700;line-height:1}
-.plan-price small{display:block;font-size:11px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;margin-top:3px}
-.plan-features{padding:18px 22px;display:flex;flex-direction:column;gap:9px}
-.plan-feat{display:flex;align-items:center;gap:9px;font-size:13px;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif}
-.plan-feat i{color:#10B981;font-size:11px;flex-shrink:0}
-.plan-foot{padding:0 22px 22px}
-.plan-wa{width:100%;background:#25D366;color:#fff;border:none;padding:13px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;transition:all .25s}
-.plan-wa:hover{background:#1DA851;transform:translateY(-1px)}
-@media(max-width:860px){#planGrid{grid-template-columns:1fr!important}}
-@media(max-width:640px){.ci-fg{grid-column:1/-1} div[style*="grid-template-columns:1fr 1fr"]{display:flex!important;flex-direction:column!important}}
+.tt-btn{padding:10px 22px;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;color:#6B6B8A;background:transparent;transition:all .25s;display:flex;align-items:center;gap:7px}
+.tt-btn.active{background:#C9A84C;color:#fff;box-shadow:0 3px 12px rgba(201,168,76,0.3)}
+.cff{display:flex;flex-direction:column;gap:7px}
+.cfl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.cfi{width:100%;background:#FAFAF8;border:1.5px solid #E8E4DA;border-radius:10px;padding:12px 14px;font-size:14px;color:#1A1A2E;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .25s,box-shadow .25s;appearance:none}
+.cfi:focus{border-color:#C9A84C;box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
+.cf-sel-wrap{position:relative}
+.cf-sel-wrap .cfi{padding-right:36px}
+.cf-arrow{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:#B0B0C3;font-size:12px;pointer-events:none}
+
+/* Plan card */
+.pc{background:#fff;border:1.5px solid #E8E4DA;border-radius:20px;overflow:hidden;transition:all .3s;position:relative;display:flex;flex-direction:column}
+.pc:hover{border-color:#C9A84C;box-shadow:0 12px 40px rgba(201,168,76,0.15);transform:translateY(-4px)}
+.pc.top-pick{border-color:#C9A84C;box-shadow:0 8px 32px rgba(201,168,76,0.18)}
+.pc-ribbon{background:#C9A84C;color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:6px 0;text-align:center;font-family:'Plus Jakarta Sans',sans-serif}
+.pc-head{padding:22px 22px 16px}
+.pc-icon{font-size:26px;margin-bottom:10px}
+.pc-name{font-family:'Cormorant Garamond',serif;font-size:21px;color:#1A1A2E;font-weight:700;margin-bottom:6px;line-height:1.2}
+.pc-cover{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif}
+.pc-cover span{color:#C9A84C}
+.pc-price-wrap{padding:0 22px 16px;border-bottom:1px solid #F0EDE6}
+.pc-price{font-family:'Cormorant Garamond',serif;font-size:38px;color:#1A1A2E;font-weight:700;line-height:1}
+.pc-price-note{font-size:12px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-top:4px}
+.pc-feats{padding:16px 22px;flex:1;display:flex;flex-direction:column;gap:9px}
+.pc-feat{display:flex;align-items:center;gap:9px;font-size:13px;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.4}
+.pc-feat i.yes{color:#10B981;font-size:12px;flex-shrink:0}
+.pc-feat i.no{color:#D1D5DB;font-size:12px;flex-shrink:0}
+.pc-foot{padding:0 22px 22px;margin-top:auto}
+.pc-wa{width:100%;background:#25D366;color:#fff;border:none;padding:13px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;transition:all .25s;margin-top:4px}
+.pc-wa:hover{background:#1DA851;transform:translateY(-1px)}
+.sum-chip{background:#fff;border:1px solid #E8E4DA;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px}
+.sum-chip i{color:#C9A84C;font-size:11px}
+
+@media(max-width:860px){#planGrid{grid-template-columns:1fr 1fr!important}}
+@media(max-width:580px){
+  #planGrid{grid-template-columns:1fr!important}
+  #calcFields{grid-template-columns:1fr!important}
+  div[style*="padding:36px 40px"]{padding:24px 20px!important}
+}
 </style>
 
 <script>
-let travellerType = 'individual';
-function setType(t) {
-  travellerType = t;
-  ['individual','family','group'].forEach(x => document.getElementById('t'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active', x===t));
-  document.getElementById('paxWrap').style.display = t==='individual' ? 'none' : 'flex';
+// ── RATES (admin can change these via admin panel Insurance Calc page) ──
+// Load from localStorage if admin saved them, else use defaults
+function getRates() {
+  try { const r = localStorage.getItem('ew_ins_rates'); if(r) return JSON.parse(r); } catch(e){}
+  return {
+    planBase:   { basic:90, standard:140, comprehensive:210 },
+    destMult:   { gulf:1.0, umrah:1.2, asia:0.9, turkey:1.1, schengen:1.7, uk:1.75, usa:2.1, worldwide:2.3 },
+    ageMult:    { young:1.0, adult:1.3, senior:1.85 },
+    typeMult:   { individual:1.0, family:0.82, group:0.70 },
+  };
 }
+
+let travellerType = 'individual';
 document.getElementById('ciDate').valueAsDate = new Date();
-setType('individual');
+
+function setTT(t, btn) {
+  travellerType = t;
+  document.querySelectorAll('.tt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('paxRow').style.display = t==='individual' ? 'none' : 'flex';
+  calcProgress();
+}
+
+function calcProgress() {
+  const fields = ['ciDest','ciDays','ciDate'];
+  const filled = fields.filter(id=>document.getElementById(id).value).length;
+  document.getElementById('calcProgress').style.width = Math.round((filled/fields.length)*100)+'%';
+}
+
+function showErr(msg){ const e=document.getElementById('calcErr'); e.style.display='flex'; document.getElementById('calcErrTxt').textContent=msg; }
+function hideErr(){ document.getElementById('calcErr').style.display='none'; }
 
 function showPlans() {
   const dest  = document.getElementById('ciDest').value;
-  const days  = parseInt(document.getElementById('ciDays').value)||14;
-  const pax   = Math.max(1, parseInt(document.getElementById('ciPax').value)||1);
-  const age   = document.getElementById('ciAge').value;
+  const days  = parseInt(document.getElementById('ciDays').value)||0;
   const date  = document.getElementById('ciDate').value;
+  const age   = document.getElementById('ciAge').value;
+  const pax   = travellerType==='individual' ? 1 : Math.max(2,parseInt(document.getElementById('ciPax').value)||2);
+  hideErr();
 
-  if(!dest){ alert('Please select a destination.'); return; }
+  if (!dest) { showErr('Please select a destination.'); return; }
+  if (!days) { showErr('Please select trip duration.'); return; }
 
-  // Base rate per person per day (PKR)
-  const destRates = { gulf:110, umrah:130, asia:90, schengen:180, uk:190, usa:200, worldwide:220 };
-  const ageM      = { young:1.0, adult:1.3, senior:1.8 };
-  const typeM     = { individual:1.0, family:0.85, group:0.75 };
-  const actualPax = travellerType==='individual' ? 1 : pax;
+  const R = getRates();
+  const dm = R.destMult[dest]||1;
+  const am = R.ageMult[age]||1;
+  const tm = R.typeMult[travellerType]||1;
 
-  const base = destRates[dest] * ageM[age] * typeM[travellerType];
+  const destLabels = {gulf:'Gulf / Middle East',umrah:'Saudi Arabia (Umrah/Hajj)',asia:'Asia',turkey:'Turkey',schengen:'Schengen States',uk:'United Kingdom',usa:'USA / Canada',worldwide:'Worldwide'};
 
   const PLANS = [
-    {
-      key:'basic', name:'Basic Cover', icon:'🛡️',
-      mult:1.0, recommended:false,
-      cover:'$25,000', medical:true, baggage:true, cancel:false, repatriation:false, covid:false, adventure:false,
-      features:['Medical emergency up to $25,000','Lost baggage compensation','24/7 emergency helpline','Trip delay cover']
-    },
-    {
-      key:'standard', name:dest==='umrah'?'Umrah Cover':'Standard Cover', icon:dest==='umrah'?'🕋':'⭐',
-      mult:1.5, recommended:true,
-      cover:'$50,000', medical:true, baggage:true, cancel:true, repatriation:true, covid:false, adventure:false,
-      features:['Medical cover up to $50,000','Trip cancellation & delay','Passport loss protection','Repatriation cover','Personal accident benefit']
-    },
-    {
-      key:'comprehensive', name:'Comprehensive', icon:'🌍',
-      mult:2.2, recommended:false,
-      cover:'$100,000', medical:true, baggage:true, cancel:true, repatriation:true, covid:true, adventure:true,
-      features:['Medical cover up to $100,000','Full cancellation & interruption','Adventure sports included','COVID-19 cover included','Family & group discounts','Global 24/7 assistance']
-    }
+    { id:'basic', name:'Essential Cover', icon:'🛡️', mult:1.0, topPick:false,
+      medCover:'$25,000', desc:'Core medical and baggage protection for budget-conscious travelers.',
+      features:[
+        {y:true,  t:'Emergency medical up to $25,000'},
+        {y:true,  t:'Lost baggage — up to $500'},
+        {y:true,  t:'24/7 emergency helpline'},
+        {y:true,  t:'Flight delay cover — 12hrs+'},
+        {y:false, t:'Trip cancellation'},
+        {y:false, t:'Passport loss protection'},
+        {y:false, t:'Repatriation cover'},
+        {y:false, t:'COVID-19 included'},
+      ]},
+    { id:'standard', name:dest==='umrah'?'Umrah / Hajj Cover':'Standard Cover', icon:dest==='umrah'?'🕋':'⭐', mult:1.6, topPick:true,
+      medCover:'$50,000', desc:dest==='umrah'?'Purpose-built for pilgrims — covers the full spiritual journey.':'Full protection for most international trips.',
+      features:[
+        {y:true,  t:'Emergency medical up to $50,000'},
+        {y:true,  t:'Lost baggage — up to $1,500'},
+        {y:true,  t:'24/7 emergency helpline'},
+        {y:true,  t:'Trip cancellation & interruption'},
+        {y:true,  t:'Passport loss protection'},
+        {y:true,  t:'Repatriation cover'},
+        {y:false, t:'Adventure sports'},
+        {y:false, t:'COVID-19 included'},
+      ]},
+    { id:'comprehensive', name:'Comprehensive Cover', icon:'🌍', mult:2.4, topPick:false,
+      medCover:'$100,000', desc:'Maximum coverage — for families, groups, and long-haul travelers.',
+      features:[
+        {y:true, t:'Emergency medical up to $100,000'},
+        {y:true, t:'Lost baggage — up to $3,000'},
+        {y:true, t:'24/7 emergency helpline'},
+        {y:true, t:'Trip cancellation & interruption'},
+        {y:true, t:'Passport loss protection'},
+        {y:true, t:'Repatriation cover'},
+        {y:true, t:'Adventure sports included'},
+        {y:true, t:'COVID-19 included'},
+      ]},
   ];
 
-  const destNames = {gulf:'Gulf / Middle East',umrah:'Saudi (Umrah/Hajj)',asia:'Asia',schengen:'Schengen / Europe',uk:'United Kingdom',usa:'USA / Canada',worldwide:'Worldwide'};
+  const basePerDayPerPerson = (plan) => R.planBase[plan.id] * dm * am * tm;
+  const totalPrice = (plan) => Math.round(basePerDayPerPerson(plan) * days * pax / 100) * 100;
 
-  document.getElementById('planSummary').innerHTML =
-    `<strong>${destNames[dest]}</strong> · ${days} Days · ${actualPax} Traveller${actualPax>1?'s':''} · Starting from <strong style="color:#C9A84C">Rs. ${Math.round(base*days*actualPax/100)*100 .toLocaleString()}</strong>`;
+  // Summary chips
+  const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '';
+  document.getElementById('planSummBar').innerHTML = [
+    `<span class="sum-chip"><i class="fa fa-globe"></i>${destLabels[dest]}</span>`,
+    `<span class="sum-chip"><i class="fa fa-clock"></i>${days} Days</span>`,
+    `<span class="sum-chip"><i class="fa fa-users"></i>${pax} Traveller${pax>1?'s':''}</span>`,
+    dateStr ? `<span class="sum-chip"><i class="fa fa-calendar"></i>${dateStr}</span>` : '',
+  ].join('');
 
-  document.getElementById('planGrid').innerHTML = PLANS.map(p => {
-    const total = Math.round(base * p.mult * days * actualPax / 100) * 100;
+  document.getElementById('planGrid').innerHTML = PLANS.map(plan => {
+    const total = totalPrice(plan);
     const waMsg = encodeURIComponent(
-      'Assalam o Alaikum! I want to get travel insurance:\n'+
-      'Plan: '+p.name+'\n'+
-      'Destination: '+destNames[dest]+'\n'+
+      'Assalam o Alaikum! I have calculated my travel insurance premium:\n'+
+      'Plan: '+plan.name+'\n'+
+      'Destination: '+destLabels[dest]+'\n'+
       'Duration: '+days+' days\n'+
-      'Travellers: '+actualPax+'\n'+
-      (date?'Start: '+date+'\n':'')+
+      'Travellers: '+pax+'\n'+
+      (date?'Start Date: '+date+'\n':'')+
       'Estimated Premium: Rs. '+total.toLocaleString()+'\n'+
-      'Please confirm and share next steps.'
+      'Please confirm and share payment details.'
     );
     return `
-    <div class="plan-card${p.recommended?' recommended':''}">
-      ${p.recommended?'<div class="plan-badge">⭐ Recommended</div>':''}
-      <div class="plan-head" style="${p.recommended?'padding-top:38px':''}">
-        <div class="plan-icon">${p.icon}</div>
-        <div class="plan-name">${p.name}</div>
-        <div class="plan-price">Rs. ${total.toLocaleString()}<small>for ${actualPax} traveller${actualPax>1?'s':''} · ${days} days</small></div>
+    <div class="pc${plan.topPick?' top-pick':''}">
+      ${plan.topPick ? '<div class="pc-ribbon">⭐ Most Popular</div>' : ''}
+      <div class="pc-head">
+        <div class="pc-icon">${plan.icon}</div>
+        <div class="pc-name">${plan.name}</div>
+        <div class="pc-cover">Medical Cover: <span>Up to ${plan.medCover}</span></div>
       </div>
-      <div class="plan-features">
-        ${p.features.map(f=>`<div class="plan-feat"><i class="fa fa-check-circle"></i>${f}</div>`).join('')}
+      <div class="pc-price-wrap">
+        <div class="pc-price">Rs. ${total.toLocaleString()}</div>
+        <div class="pc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days · all taxes included</div>
       </div>
-      <div class="plan-foot">
-        <a href="https://wa.me/923336515349?text=${waMsg}" target="_blank" class="plan-wa"><i class="fab fa-whatsapp" style="font-size:16px"></i> Get This Plan on WhatsApp</a>
+      <div class="pc-feats">
+        ${plan.features.map(f=>`
+          <div class="pc-feat">
+            <i class="fa ${f.y?'fa-check-circle yes':'fa-times-circle no'}"></i>${f.t}
+          </div>`).join('')}
+      </div>
+      <div class="pc-foot">
+        <a href="https://wa.me/923336515349?text=${waMsg}" target="_blank" class="pc-wa">
+          <i class="fab fa-whatsapp" style="font-size:16px"></i> Get This Plan on WhatsApp
+        </a>
       </div>
     </div>`;
   }).join('');
 
-  document.getElementById('calcForm').style.display = 'none';
+  document.getElementById('calcFormWrap').style.display = 'none';
   document.getElementById('planCards').style.display = 'block';
+  document.querySelector('.tt-btn.active')?.closest('div')?.parentElement?.style && (document.querySelector('#calcSection > .container > div:nth-child(2)').style.display='none');
 
-  // Update steps
-  document.getElementById('step1dot').classList.remove('active'); document.getElementById('step1dot').classList.add('done');
-  document.getElementById('line1').classList.add('done');
-  document.getElementById('step2dot').classList.add('active');
+  window.scrollTo({top: document.getElementById('calcSection').offsetTop - 80, behavior:'smooth'});
 }
 
 function backToForm() {
-  document.getElementById('calcForm').style.display = 'block';
+  document.getElementById('calcFormWrap').style.display = 'block';
   document.getElementById('planCards').style.display = 'none';
-  document.getElementById('step1dot').classList.add('active'); document.getElementById('step1dot').classList.remove('done');
-  document.getElementById('line1').classList.remove('done');
-  document.getElementById('step2dot').classList.remove('active');
+  document.querySelector('#calcSection > .container > div:nth-child(2)').style.display = 'flex';
 }
+
+calcProgress();
 </script>
 
 <!-- FOOTER -->
