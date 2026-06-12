@@ -556,7 +556,7 @@ tbody td strong{color:var(--text);font-weight:600}
 <!-- ═══ FLIGHT MODAL ═══ -->
 <div class="modal-bg" id="flightModal">
   <div class="modal">
-    <div class="mh"><h3 id="flightTitle">Add <em>Group Flight</em></h3><button class="mc" onclick="closeModal('flightModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mh"><h3 id="flightTitle">Add <em>Group Flight</em></h3><div style="display:flex;align-items:center;gap:8px"><button class="mc" onclick="closeModal('flightModal')"><i class="fa fa-times"></i></button></div></div>
     <div class="mb" style="padding:16px 18px">
       <input type="hidden" id="flightId">
       <div class="fr">
@@ -573,19 +573,23 @@ tbody td strong{color:var(--text);font-weight:600}
         <div class="fg"><label>Flight No *</label><input type="text" id="flNo" placeholder="PK-741"></div>
         <div class="fg"><label>Airline *</label><input type="text" id="flAl" placeholder="Pakistan Int'l Airlines"></div>
         <div class="fg"><label>Airline Code</label><input type="text" id="flAlC" placeholder="PIA — EK — QR — GF"></div>
-        <div class="fg" style="grid-column:1/-1">
-          <label>Airline Logo URL <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(paste direct image link — PNG/JPG/SVG)</span></label>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input type="url" id="flLogo" placeholder="https://... paste image URL of airline logo" style="flex:1;background:var(--raised);border:1px solid var(--border2);border-radius:5px;padding:8px 10px;font-size:13px;color:var(--text);outline:none" oninput="previewLogo(this.value)">
-            <div id="logoPreview" style="width:48px;height:48px;background:#fff;border-radius:8px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
-              <span style="font-size:10px;color:var(--dim)">Preview</span>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-top:4px">
-            💡 Right-click any airline logo online → "Copy image address" → paste here. 
-            Or search Google Images for "[Airline Name] logo PNG transparent".
+      </div>
+      <!-- LOGO FIELD — outside 2-col grid so it spans full width -->
+      <div class="fg" style="margin-bottom:14px">
+        <label style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Airline Logo URL <span style="color:var(--dim);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0">— paste image link (PNG/JPG)</span></label>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:5px">
+          <input type="url" id="flLogo" placeholder="https://... right-click airline logo online → Copy image address → paste here" 
+            style="flex:1;background:var(--raised);border:1px solid var(--border2);border-radius:5px;padding:9px 11px;font-size:12px;color:var(--text);outline:none;transition:border-color .15s" 
+            oninput="previewLogo(this.value)">
+          <div id="logoPreview" style="width:52px;height:52px;background:#fff;border-radius:8px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:3px">
+            <span style="font-size:9px;color:var(--dim);text-align:center">Logo<br>Preview</span>
           </div>
         </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5">
+          💡 Google Images → search <strong style="color:var(--text)">"[Airline] logo PNG"</strong> → right-click image → <strong style="color:var(--text)">"Copy image address"</strong> → paste above
+        </div>
+      </div>
+      <div class="fr">
         <div class="fg"><label>Route *</label><input type="text" id="flRt" placeholder="LHE → JED"></div>
         <div class="fg"><label>Departure Time</label><input type="text" id="flDt" placeholder="02:30"></div>
         <div class="fg"><label>Arrival Time</label><input type="text" id="flAt" placeholder="05:45"></div>
@@ -1014,7 +1018,7 @@ async function saveFlight(){
   const al=document.getElementById('flAl').value.trim();
   if(!no||!al){toast('Flight no & airline required!',true);return;}
   const id=document.getElementById('flightId').value;
-  const d={category:document.getElementById('flCat').value,flight_no:no,airline:al,airline_code:document.getElementById('flAlC').value.trim(),airline_logo_url:document.getElementById('flLogo').value.trim()||null,route:document.getElementById('flRt').value.trim(),dep_time:document.getElementById('flDt').value.trim(),arr_time:document.getElementById('flAt').value.trim(),dep_date:document.getElementById('flDd').value.trim(),class:document.getElementById('flCl').value,baggage:document.getElementById('flBg').value.trim(),meal:document.getElementById('flMl').value.trim(),price_per_seat:document.getElementById('flPr').value.trim(),total_seats:parseInt(document.getElementById('flTs').value)||0,booked_seats:parseInt(document.getElementById('flBs').value)||0,status:document.getElementById('flSt').value,updated_at:new Date().toISOString()};
+  const d={category:document.getElementById('flCat').value,flight_no:no,airline:al,airline_code:document.getElementById('flAlC').value.trim(),airline_logo_url:document.getElementById('flLogo').value.trim()||null,route:document.getElementById('flRt').value.trim(),dep_time:document.getElementById('flDt').value.trim(),arr_time:document.getElementById('flAt').value.trim(),dep_date:document.getElementById('flDd').value.trim(),class:document.getElementById('flCl').value,baggage:document.getElementById('flBg').value.trim(),meal:document.getElementById('flMl').value.trim(),price_per_seat:document.getElementById('flPr').value.trim(),total_seats:parseInt(document.getElementById('flTs').value)||0,booked_seats:parseInt(document.getElementById('flBs').value)||0,status:document.getElementById('flSt').value};
   try{
     if(id){await PATCH('group_flights',id,d);flights=flights.map(f=>f.id===id?{...f,...d,id}:f);}
     else{const r=await POST('group_flights',d);flights=[r,...flights];}
