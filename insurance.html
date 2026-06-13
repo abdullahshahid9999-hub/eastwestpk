@@ -1,46 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Insurance — East & West Travel Services</title>
-  <meta name="description" content="Protect your journey with affordable travel insurance plans from East & West Travel Services, Faisalabad.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .ins-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
-    .ins-card { background: #fff; border: 1px solid var(--bdr); border-radius: 20px; padding: 36px 28px; transition: all 0.35s; position: relative; overflow: hidden; }
-    .ins-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background: var(--gold); transform: scaleX(0); transition: transform 0.35s; transform-origin: left; }
-    .ins-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(201,168,76,0.15); border-color: var(--gold-b); }
-    .ins-card:hover::before { transform: scaleX(1); }
-    .ins-icon { width: 60px; height: 60px; background: var(--gold-dim); border: 1px solid var(--gold-b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gold); margin-bottom: 22px; }
-    .ins-card h3 { font-size: 22px; color: var(--text); margin-bottom: 10px; }
-    .ins-card p { font-size: 14px; color: var(--text3); line-height: 1.8; margin-bottom: 20px; }
-    .ins-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
-    .ins-features li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text2); }
-    .ins-features li i { color: var(--gold); font-size: 11px; flex-shrink: 0; }
-    .ins-wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #25D366; color: #fff; padding: 13px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.3s; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .ins-wa-btn:hover { background: #1ebe5a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.35); }
-    @media(max-width:900px){ .ins-grid{grid-template-columns:1fr 1fr!important} }
-    @media(max-width:600px){ .ins-grid{grid-template-columns:1fr!important} }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Insurance — East & West Travel Services</title>
+<meta name="description" content="Compare and get travel insurance quotes from East & West Travel Services, Faisalabad. Umrah, Hajj, Europe, USA coverage.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* ── INSURANCE PAGE ── */
+.ins-hero{
+  background:linear-gradient(135deg,#071120 0%,#0F2244 55%,#091930 100%);
+  min-height:100vh;
+  display:flex;align-items:stretch;
+  padding-top:70px;
+  position:relative;overflow:hidden;
+}
+.ins-hero::before{
+  content:'';position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=60') center/cover no-repeat;
+  opacity:0.08;
+}
+.ins-hero-inner{
+  display:grid;grid-template-columns:1fr 480px;
+  gap:0;width:100%;position:relative;z-index:1;
+}
 
-  </style>
+/* LEFT — copy */
+.ins-hero-left{
+  padding:64px 48px 64px 5%;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.ins-hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.28);
+  padding:6px 16px;border-radius:50px;
+  font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:#D4A843;margin-bottom:24px;font-family:'Plus Jakarta Sans',sans-serif;
+  width:fit-content;
+}
+.ins-hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(38px,5vw,62px);
+  color:#fff;line-height:1.12;letter-spacing:-0.02em;
+  margin-bottom:18px;
+}
+.ins-hero-h1 em{color:#D4A843;font-style:italic}
+.ins-hero-p{
+  font-size:15px;color:rgba(255,255,255,0.55);
+  line-height:1.8;max-width:420px;
+  font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:36px;
+}
+.ins-trust{display:flex;gap:12px;flex-wrap:wrap}
+.ins-trust-item{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:10px 14px;
+}
+.ins-trust-item i{color:#D4A843;font-size:14px}
+.ins-trust-item span{font-size:12px;font-weight:600;color:rgba(255,255,255,0.65);font-family:'Plus Jakarta Sans',sans-serif}
+
+/* RIGHT — form card */
+.ins-form-card{
+  background:#fff;
+  box-shadow:-8px 0 60px rgba(0,0,0,0.25);
+  padding:40px 36px;
+  display:flex;flex-direction:column;
+  min-height:calc(100vh - 70px);
+  overflow-y:auto;
+}
+.ins-tabs{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  border:1.5px solid #E4DFD4;border-radius:12px;
+  overflow:hidden;margin-bottom:28px;
+}
+.ins-tab{
+  padding:12px 8px;text-align:center;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .2s;border:none;background:#F9F7F3;
+  color:#6B6B8A;font-family:'Plus Jakarta Sans',sans-serif;
+  border-right:1.5px solid #E4DFD4;
+}
+.ins-tab:last-child{border-right:none}
+.ins-tab.active{background:#fff;color:#14142B;box-shadow:inset 0 -2px 0 #D4A843}
+.ins-tab:hover:not(.active){background:#fff;color:#14142B}
+
+.ins-form-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;color:#14142B;margin-bottom:6px;font-weight:700;
+}
+.ins-form-sub{font-size:13px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:24px}
+
+.iff{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;position:relative}
+.iff label{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.5px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;
+}
+.iff label span{color:#D4A843}
+.ifi{
+  width:100%;border:1.5px solid #E4DFD4;border-radius:10px;
+  padding:13px 14px;font-size:14px;color:#14142B;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#FAFAF7;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  appearance:none;
+}
+.ifi:focus{border-color:#D4A843;box-shadow:0 0 0 3px rgba(212,168,67,0.1);background:#fff}
+.ifi-wrap{position:relative}
+.ifi-wrap .ifi{padding-right:36px}
+.ifi-arrow{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:#9090AA;font-size:11px;pointer-events:none;
+}
+.ifi-hint{font-size:11px;color:#B0B0C3;margin-top:4px;font-family:'Plus Jakarta Sans',sans-serif}
+
+.ins-view-btn{
+  width:100%;background:#D4A843;color:#fff;border:none;
+  padding:15px;border-radius:12px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:all .25s;margin-top:8px;letter-spacing:0.3px;
+  box-shadow:0 4px 20px rgba(212,168,67,0.3);
+}
+.ins-view-btn:hover{background:#C49830;transform:translateY(-1px);box-shadow:0 8px 28px rgba(212,168,67,0.4)}
+
+.ins-err{
+  background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;
+  padding:11px 14px;font-size:13px;color:#DC2626;
+  margin-bottom:12px;display:none;font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+/* RESULTS PANEL */
+.ins-results{display:none;background:#F4F2ED;min-height:calc(100vh - 70px);padding:40px 5%}
+
+/* Summary sidebar + results layout */
+.ins-results-inner{display:grid;grid-template-columns:220px 1fr;gap:24px;max-width:1100px;margin:0 auto}
+
+/* Left summary */
+.ins-summary-box{
+  background:#fff;border:1px solid #E4DFD4;border-radius:16px;
+  padding:24px 20px;height:fit-content;position:sticky;top:90px;
+}
+.ins-summary-box h4{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+  color:#9090AA;margin-bottom:16px;font-family:'Plus Jakarta Sans',sans-serif;
+}
+.ins-sum-row{margin-bottom:14px}
+.ins-sum-val{font-size:15px;font-weight:700;color:#14142B;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2}
+.ins-sum-lbl{font-size:10px;color:#9090AA;text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;font-family:'Plus Jakarta Sans',sans-serif}
+.ins-edit-btn{
+  width:100%;margin-top:16px;background:none;border:1.5px solid #D4A843;
+  color:#D4A843;padding:9px;border-radius:8px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;
+}
+.ins-edit-btn:hover{background:#D4A843;color:#fff}
+
+/* Plan cards */
+.ins-plan-list{display:flex;flex-direction:column;gap:16px}
+.ins-plan-card{
+  background:#fff;border:1.5px solid #E4DFD4;border-radius:16px;
+  overflow:hidden;transition:all .25s;
+}
+.ins-plan-card:hover{border-color:#D4A843;box-shadow:0 8px 32px rgba(212,168,67,0.12)}
+.ins-plan-card-inner{display:grid;grid-template-columns:160px 1fr auto;align-items:center;gap:0}
+
+/* Logo col */
+.ipc-logo{
+  padding:24px 20px;border-right:1px solid #F0EDE6;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;min-height:120px;
+}
+.ipc-logo-box{
+  width:80px;height:60px;display:flex;align-items:center;justify-content:center;
+}
+.ipc-logo-box img{max-width:80px;max-height:60px;object-fit:contain}
+.ipc-logo-name{font-size:11px;font-weight:600;color:#6B6B8A;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.3}
+.ipc-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#D4A843;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* Info col */
+.ipc-info{padding:24px 28px}
+.ipc-plan-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#14142B;margin-bottom:10px}
+.ipc-cover-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:4px}
+.ipc-cover-val{font-size:20px;font-weight:700;color:#14142B;font-family:'Plus Jakarta Sans',sans-serif}
+.ipc-feats{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ipc-feat{
+  font-size:11px;color:#4A4A6A;background:#F3F0EA;
+  border:1px solid #E8E4DA;padding:4px 10px;border-radius:50px;
+  display:flex;align-items:center;gap:5px;font-family:'Plus Jakarta Sans',sans-serif;
+}
+.ipc-feat i{font-size:10px;color:#10B981}
+
+/* Price + CTA col */
+.ipc-cta{
+  padding:24px 24px 24px 0;
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:center;
+  gap:12px;min-width:180px;
+}
+.ipc-price{text-align:right}
+.ipc-price-amt{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#D4A843;line-height:1}
+.ipc-price-note{font-size:11px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-top:3px}
+.ipc-wa-btn{
+  display:flex;align-items:center;gap:7px;
+  background:#25D366;color:#fff;border:none;
+  padding:11px 18px;border-radius:10px;font-size:12px;font-weight:700;
+  cursor:pointer;text-decoration:none;transition:all .2s;
+  font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;
+}
+.ipc-wa-btn:hover{background:#1ebe5a;transform:translateY(-1px)}
+.ipc-confused{font-size:11px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;text-align:right;line-height:1.4}
+.ipc-confused a{color:#D4A843;font-weight:600;text-decoration:none}
+
+@media(max-width:1100px){
+  .ins-hero-inner{grid-template-columns:1fr;min-height:auto}
+  .ins-form-card{min-height:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.15)}
+  .ins-hero-left{padding:48px 5% 32px}
+  .ins-results-inner{grid-template-columns:1fr}
+  .ins-summary-box{position:static}
+}
+@media(max-width:700px){
+  .ins-plan-card-inner{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+  .ipc-logo{border-right:none;border-bottom:1px solid #F0EDE6;flex-direction:row;justify-content:flex-start;gap:14px;padding:16px 20px;min-height:auto}
+  .ipc-cta{padding:0 20px 20px;align-items:flex-start}
+  .ipc-price{text-align:left}
+}
+</style>
 </head>
 <body>
 
-<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998;transition:opacity 0.3s" onclick="closeMenu()"></div>
+<div id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8998" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
   <div class="nav-links" id="navLinks">
-    <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
-    <a href="index.html" id="mlink-home">Home</a>
-    <a href="about.html" id="mlink-about">About Us</a>
-    <div class="nav-has-drop" id="mlink-svc-desk">
+    <button class="nav-close" onclick="closeMenu()"><i class="fa fa-times"></i></button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <div class="nav-has-drop">
       <a href="#">Services <i class="fa fa-chevron-down nav-chevron"></i></a>
       <div class="nav-drop svc-drop">
         <a href="umrah.html"><i class="fa fa-kaaba"></i> Umrah Packages</a>
@@ -54,423 +252,168 @@
     <a href="visa.html" class="mob-svc-link"><i class="fa fa-passport"></i> Visa Services</a>
     <a href="tours.html" class="mob-svc-link"><i class="fa fa-globe"></i> Tour Packages</a>
     <a href="group-tickets.html" class="mob-svc-link"><i class="fa fa-users"></i> Group Tickets</a>
-    <a href="insurance.html" class="mob-svc-link"><i class="fa fa-shield-alt"></i> Insurance</a>
-    <a href="blog.html" id="mlink-blog">Blog</a>
-    <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+travel+insurance.+Please+share+details." target="_blank" class="nav-cta"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+    <a href="insurance.html" class="mob-svc-link active"><i class="fa fa-shield-alt"></i> Insurance</a>
+    <a href="blog.html">Blog</a>
+    <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+help+with+travel+insurance." target="_blank" class="nav-cta"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
   </div>
-  <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
+  <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
 </nav>
 
-<!-- PAGE HERO -->
-<section class="page-hero">
-  <div class="container">
-    <div class="eyebrow"><i class="fa fa-shield-alt"></i> Travel Insurance</div>
-    <h1>Travel <em>Protected</em></h1>
-    <p>Comprehensive insurance plans so you can journey with complete peace of mind.</p>
-    <div class="breadcrumb">
-      <a href="index.html">Home</a>
-      <i class="fa fa-chevron-right"></i>
-      <span>Insurance</span>
-    </div>
-  </div>
-</section>
+<!-- ═══ HERO + FORM (side by side) ═══ -->
+<div class="ins-hero" id="insHero">
+  <div class="ins-hero-inner">
 
-<!-- INSURANCE PLANS -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="eyebrow"><i class="fa fa-shield-alt"></i> Our Plans</div>
-      <h2>Choose Your <em>Coverage</em></h2>
-      <p>WhatsApp us to get a customized quote for any plan — we'll tailor it to your destination and duration.</p>
-    </div>
-    <div class="ins-grid">
-      <div class="ins-card">
-        <div class="ins-icon"><i class="fa fa-user-shield"></i></div>
-        <h3>Basic Travel Cover</h3>
-        <p>Essential protection for short trips and budget-conscious travelers.</p>
-        <ul class="ins-features">
-          <li><i class="fa fa-check-circle"></i> Medical emergency up to $25,000</li>
-          <li><i class="fa fa-check-circle"></i> Trip cancellation cover</li>
-          <li><i class="fa fa-check-circle"></i> Lost baggage compensation</li>
-          <li><i class="fa fa-check-circle"></i> 24/7 emergency helpline</li>
-        </ul>
-        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Basic+Travel+Insurance.+Please+share+details." target="_blank" class="ins-wa-btn"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
-      </div>
-      <div class="ins-card">
-        <div class="ins-icon"><i class="fa fa-star"></i></div>
-        <h3>Umrah & Hajj Cover</h3>
-        <p>Specially designed for pilgrims — covers the full spiritual journey.</p>
-        <ul class="ins-features">
-          <li><i class="fa fa-check-circle"></i> Medical cover up to $50,000</li>
-          <li><i class="fa fa-check-circle"></i> Flight delay / cancellation</li>
-          <li><i class="fa fa-check-circle"></i> Passport loss protection</li>
-          <li><i class="fa fa-check-circle"></i> Repatriation cover</li>
-          <li><i class="fa fa-check-circle"></i> Personal accident benefit</li>
-        </ul>
-        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Umrah+%26+Hajj+Insurance.+Please+share+details." target="_blank" class="ins-wa-btn"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
-      </div>
-      <div class="ins-card">
-        <div class="ins-icon"><i class="fa fa-globe"></i></div>
-        <h3>Comprehensive World Cover</h3>
-        <p>Full protection for international tours, families, and frequent travelers.</p>
-        <ul class="ins-features">
-          <li><i class="fa fa-check-circle"></i> Medical cover up to $100,000</li>
-          <li><i class="fa fa-check-circle"></i> Full trip cancellation & interruption</li>
-          <li><i class="fa fa-check-circle"></i> Adventure sports coverage</li>
-          <li><i class="fa fa-check-circle"></i> Family & group discounts</li>
-          <li><i class="fa fa-check-circle"></i> COVID-19 coverage included</li>
-          <li><i class="fa fa-check-circle"></i> 24/7 global assistance</li>
-        </ul>
-        <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+Comprehensive+Travel+Insurance.+Please+share+details." target="_blank" class="ins-wa-btn"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
+    <!-- LEFT COPY -->
+    <div class="ins-hero-left">
+      <div class="ins-hero-eyebrow"><i class="fa fa-shield-alt"></i> Travel Insurance</div>
+      <h1 class="ins-hero-h1">Travel with <em>Complete</em><br>Peace of Mind</h1>
+      <p class="ins-hero-p">Compare insurance plans for Umrah, Hajj, Europe, USA and worldwide travel. Get your quote in seconds — purchase via WhatsApp in minutes.</p>
+      <div class="ins-trust">
+        <div class="ins-trust-item"><i class="fa fa-plane"></i><span>All Destinations</span></div>
+        <div class="ins-trust-item"><i class="fa fa-shield-alt"></i><span>Trusted Coverage</span></div>
+        <div class="ins-trust-item"><i class="fab fa-whatsapp" style="color:#25D366"></i><span>Buy on WhatsApp</span></div>
+        <div class="ins-trust-item"><i class="fa fa-clock"></i><span>Instant Quote</span></div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- INSURANCE CALCULATOR -->
-<section id="calcSection" style="background:#F4F2ED;padding:80px 0">
-<div class="container">
+    <!-- RIGHT FORM CARD -->
+    <div class="ins-form-card" id="insFormCard">
+      <!-- Traveller type tabs -->
+      <div class="ins-tabs">
+        <button class="ins-tab active" id="tab-ind" onclick="setInsTab('individual',this)">Individual</button>
+        <button class="ins-tab" id="tab-fam" onclick="setInsTab('family',this)">Family</button>
+        <button class="ins-tab" id="tab-grp" onclick="setInsTab('group',this)">Group</button>
+      </div>
 
-  <div style="text-align:center;margin-bottom:48px">
-    <div class="eyebrow"><i class="fa fa-shield-alt"></i> Instant Quote</div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:42px;color:#1A1A2E;margin-bottom:10px">Find Your <em style="color:#C9A84C;font-style:italic">Best Plan</em></h2>
-    <p style="font-size:15px;color:#6B6B8A;max-width:520px;margin:0 auto;font-family:'Plus Jakarta Sans',sans-serif">Enter trip details — we show you plan options with pricing. WhatsApp us to purchase in minutes.</p>
-  </div>
+      <div class="ins-form-title">Get Your Quote</div>
+      <div class="ins-form-sub">Fill in your trip details to compare plans</div>
 
-  <!-- TRAVELLER TYPE TABS -->
-  <div style="display:flex;justify-content:center;margin-bottom:36px">
-    <div style="background:#fff;border:1.5px solid #E8E4DA;border-radius:50px;padding:5px;display:inline-flex;gap:4px">
-      <button class="tt-btn active" id="tt-ind" onclick="setTT('individual',this)"><i class="fa fa-user"></i> Individual</button>
-      <button class="tt-btn" id="tt-fam" onclick="setTT('family',this)"><i class="fa fa-users"></i> Family</button>
-      <button class="tt-btn" id="tt-grp" onclick="setTT('group',this)"><i class="fa fa-user-friends"></i> Group</button>
-    </div>
-  </div>
+      <div class="ins-err" id="insErr"></div>
 
-  <!-- FORM CARD -->
-  <div id="calcFormWrap" style="background:#fff;border-radius:20px;border:1.5px solid #E8E4DA;max-width:800px;margin:0 auto;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,0.06)">
-
-    <!-- Progress bar -->
-    <div style="height:3px;background:#E8E4DA">
-      <div id="calcProgress" style="height:100%;background:#C9A84C;width:0%;transition:width .4s"></div>
-    </div>
-
-    <div style="padding:36px 40px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" id="calcFields">
-
-        <!-- Destination -->
-        <div class="cff">
-          <label class="cfl"><i class="fa fa-globe" style="color:#C9A84C"></i> Where are you going?</label>
-          <div class="cf-sel-wrap">
-            <select id="ciDest" class="cfi" onchange="calcProgress()">
-              <option value="">Select destination</option>
-              <optgroup label="Middle East / Asia">
-                <option value="gulf">🇸🇦 Gulf / Middle East</option>
-                <option value="umrah">🕋 Saudi Arabia — Umrah / Hajj</option>
-                <option value="asia">🌏 Asia (Thailand, Malaysia, etc.)</option>
-                <option value="turkey">🇹🇷 Turkey</option>
-              </optgroup>
-              <optgroup label="Europe / West">
-                <option value="schengen">🇪🇺 Schengen States</option>
-                <option value="uk">🇬🇧 United Kingdom</option>
-                <option value="usa">🇺🇸 USA / Canada</option>
-              </optgroup>
-              <optgroup label="Other">
-                <option value="worldwide">🌍 Worldwide</option>
-              </optgroup>
-            </select>
-            <i class="fa fa-chevron-down cf-arrow"></i>
-          </div>
+      <!-- Destination -->
+      <div class="iff">
+        <label>Select Destination <span>*</span></label>
+        <div class="ifi-wrap">
+          <select id="insDest" class="ifi">
+            <option value="">— Choose country / region —</option>
+            <optgroup label="Middle East">
+              <option value="gulf">Gulf States (UAE, Kuwait, Bahrain, Oman)</option>
+              <option value="umrah">Saudi Arabia — Umrah / Hajj</option>
+              <option value="qatar">Qatar</option>
+            </optgroup>
+            <optgroup label="Asia">
+              <option value="asia">Asia (Thailand, Malaysia, Indonesia)</option>
+              <option value="turkey">Turkey</option>
+            </optgroup>
+            <optgroup label="Europe / West">
+              <option value="schengen">Schengen States (26 countries)</option>
+              <option value="uk">United Kingdom</option>
+              <option value="usa">USA / Canada / Australia</option>
+            </optgroup>
+            <option value="worldwide">Worldwide (All countries)</option>
+          </select>
+          <i class="fa fa-chevron-down ifi-arrow"></i>
         </div>
+        <div class="ifi-hint">Country or region of visit</div>
+      </div>
 
-        <!-- Duration -->
-        <div class="cff">
-          <label class="cfl"><i class="fa fa-calendar-alt" style="color:#C9A84C"></i> How long is the trip?</label>
-          <div class="cf-sel-wrap">
-            <select id="ciDays" class="cfi" onchange="calcProgress()">
-              <option value="">Select duration</option>
-              <option value="7">7 Days</option>
-              <option value="10">10 Days</option>
-              <option value="14" selected>14 Days</option>
-              <option value="21">21 Days</option>
-              <option value="30">30 Days</option>
-              <option value="45">45 Days</option>
-              <option value="60">60 Days</option>
-              <option value="90">90 Days</option>
-              <option value="180">6 Months</option>
-              <option value="365">1 Year</option>
-            </select>
-            <i class="fa fa-chevron-down cf-arrow"></i>
-          </div>
+      <!-- Duration -->
+      <div class="iff">
+        <label>Travel Duration <span>*</span></label>
+        <div class="ifi-wrap">
+          <select id="insDuration" class="ifi">
+            <option value="">— Select duration —</option>
+            <option value="7">7 Days</option>
+            <option value="10">10 Days</option>
+            <option value="14">14 Days</option>
+            <option value="21">21 Days</option>
+            <option value="30">30 Days</option>
+            <option value="45">45 Days</option>
+            <option value="60">60 Days</option>
+            <option value="90">90 Days</option>
+            <option value="180">6 Months</option>
+            <option value="365">1 Year (Multi-trip)</option>
+          </select>
+          <i class="fa fa-chevron-down ifi-arrow"></i>
         </div>
+        <div class="ifi-hint">How long is your trip?</div>
+      </div>
 
-        <!-- Start Date -->
-        <div class="cff">
-          <label class="cfl"><i class="fa fa-calendar-check" style="color:#C9A84C"></i> Departure date</label>
-          <input type="date" id="ciDate" class="cfi" onchange="calcProgress()">
+      <!-- Pax (hidden for individual) -->
+      <div class="iff" id="paxField" style="display:none">
+        <label>Number of Travellers <span>*</span></label>
+        <input type="number" id="insPax" class="ifi" min="2" max="50" value="2" placeholder="e.g. 4">
+        <div class="ifi-hint">Total travellers including children</div>
+      </div>
+
+      <!-- Age -->
+      <div class="iff">
+        <label>Age of Oldest Traveller <span>*</span></label>
+        <div class="ifi-wrap">
+          <select id="insAge" class="ifi">
+            <option value="young">18 – 35 years</option>
+            <option value="adult">36 – 60 years</option>
+            <option value="senior">61+ years</option>
+          </select>
+          <i class="fa fa-chevron-down ifi-arrow"></i>
         </div>
+      </div>
 
-        <!-- Age group -->
-        <div class="cff">
-          <label class="cfl"><i class="fa fa-birthday-cake" style="color:#C9A84C"></i> Age of oldest traveller</label>
-          <div class="cf-sel-wrap">
-            <select id="ciAge" class="cfi" onchange="calcProgress()">
-              <option value="young">18 – 35 years</option>
-              <option value="adult">36 – 60 years</option>
-              <option value="senior">61+ years</option>
-            </select>
-            <i class="fa fa-chevron-down cf-arrow"></i>
-          </div>
-        </div>
+      <!-- Departure Date -->
+      <div class="iff">
+        <label>Departure Date</label>
+        <input type="date" id="insDate" class="ifi">
+      </div>
 
-        <!-- Pax (hidden for individual) -->
-        <div class="cff" id="paxRow" style="display:none">
-          <label class="cfl"><i class="fa fa-user-plus" style="color:#C9A84C"></i> Number of travellers</label>
-          <input type="number" id="ciPax" class="cfi" min="2" max="50" value="2" placeholder="e.g. 4">
-        </div>
+      <!-- Email -->
+      <div class="iff">
+        <label>Email <span style="color:#B0B0C3;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="email" id="insEmail" class="ifi" placeholder="Helps us send your quote">
+        <div class="ifi-hint">We'll send the quote summary to your email</div>
+      </div>
 
-        <!-- Email -->
-        <div class="cff" id="emailRow">
-          <label class="cfl"><i class="fa fa-envelope" style="color:#C9A84C"></i> Email <span style="color:#B0B0C3;font-weight:400">(optional)</span></label>
-          <input type="email" id="ciEmail" class="cfi" placeholder="for quote confirmation">
-        </div>
-
-      </div><!-- /grid -->
-
-      <div id="calcErr" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:12px 16px;font-size:13px;color:#DC2626;margin-top:16px;font-family:'Plus Jakarta Sans',sans-serif"><i class="fa fa-exclamation-circle"></i> <span id="calcErrTxt"></span></div>
-
-      <button onclick="showPlans()" id="calcBtn" style="width:100%;margin-top:24px;background:#C9A84C;color:#fff;border:none;padding:16px 24px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;letter-spacing:0.3px">
-        <i class="fa fa-search"></i> View Plans &amp; Prices
+      <button class="ins-view-btn" onclick="viewInsPlans()">
+        <i class="fa fa-search"></i> VIEW PLANS
       </button>
+
+      <div style="text-align:center;margin-top:16px;font-size:12px;color:#B0B0C3;font-family:'Plus Jakarta Sans',sans-serif">
+        <i class="fa fa-lock" style="color:#D4A843"></i> Your info is secure and never shared
+      </div>
     </div>
+
   </div>
+</div>
 
-  <!-- PLAN CARDS (shown after submit) -->
-  <div id="planCards" style="display:none;max-width:960px;margin:40px auto 0">
+<!-- ═══ RESULTS ═══ -->
+<div class="ins-results" id="insResults">
+  <div class="ins-results-inner">
 
-    <!-- Summary bar -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px">
-      <div id="planSummBar" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"></div>
-      <button onclick="backToForm()" style="background:#fff;border:1.5px solid #E8E4DA;color:#6B6B8A;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:7px;transition:all .25s">
+    <!-- Summary sidebar -->
+    <div class="ins-summary-box">
+      <h4>Your Details</h4>
+      <div id="sumRows"></div>
+      <button class="ins-edit-btn" onclick="editInsForm()">
         <i class="fa fa-pencil-alt"></i> Edit Details
       </button>
     </div>
 
-    <!-- Cards grid -->
-    <div id="planGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px"></div>
-
-    <p style="text-align:center;margin-top:20px;font-size:12px;color:#A0A0B8;font-family:'Plus Jakarta Sans',sans-serif">*Estimates only. Final price confirmed on WhatsApp. Rates subject to change.</p>
+    <!-- Plan cards -->
+    <div>
+      <div style="margin-bottom:20px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#14142B;font-weight:700">Available Plans</div>
+        <div style="font-size:13px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-top:4px" id="resultsSubtitle"></div>
+      </div>
+      <div class="ins-plan-list" id="planList"></div>
+      <div style="margin-top:24px;padding:16px 20px;background:#fff;border-radius:12px;border:1px solid #E4DFD4;font-size:12px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.6">
+        <i class="fa fa-info-circle" style="color:#D4A843;margin-right:6px"></i>
+        Prices are estimates. Final premium confirmed on WhatsApp. Coverage terms apply. East &amp; West Travel Services acts as an agent.
+      </div>
+    </div>
   </div>
-
 </div>
-</section>
 
-<style>
-.tt-btn{padding:10px 22px;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;color:#6B6B8A;background:transparent;transition:all .25s;display:flex;align-items:center;gap:7px}
-.tt-btn.active{background:#C9A84C;color:#fff;box-shadow:0 3px 12px rgba(201,168,76,0.3)}
-.cff{display:flex;flex-direction:column;gap:7px}
-.cfl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px}
-.cfi{width:100%;background:#FAFAF8;border:1.5px solid #E8E4DA;border-radius:10px;padding:12px 14px;font-size:14px;color:#1A1A2E;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .25s,box-shadow .25s;appearance:none}
-.cfi:focus{border-color:#C9A84C;box-shadow:0 0 0 3px rgba(201,168,76,0.1)}
-.cf-sel-wrap{position:relative}
-.cf-sel-wrap .cfi{padding-right:36px}
-.cf-arrow{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:#B0B0C3;font-size:12px;pointer-events:none}
-
-/* Plan card */
-.pc{background:#fff;border:1.5px solid #E8E4DA;border-radius:20px;overflow:hidden;transition:all .3s;position:relative;display:flex;flex-direction:column}
-.pc:hover{border-color:#C9A84C;box-shadow:0 12px 40px rgba(201,168,76,0.15);transform:translateY(-4px)}
-.pc.top-pick{border-color:#C9A84C;box-shadow:0 8px 32px rgba(201,168,76,0.18)}
-.pc-ribbon{background:#C9A84C;color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:6px 0;text-align:center;font-family:'Plus Jakarta Sans',sans-serif}
-.pc-head{padding:22px 22px 16px}
-.pc-icon{font-size:26px;margin-bottom:10px}
-.pc-name{font-family:'Cormorant Garamond',serif;font-size:21px;color:#1A1A2E;font-weight:700;margin-bottom:6px;line-height:1.2}
-.pc-cover{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif}
-.pc-cover span{color:#C9A84C}
-.pc-price-wrap{padding:0 22px 16px;border-bottom:1px solid #F0EDE6}
-.pc-price{font-family:'Cormorant Garamond',serif;font-size:38px;color:#1A1A2E;font-weight:700;line-height:1}
-.pc-price-note{font-size:12px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-top:4px}
-.pc-feats{padding:16px 22px;flex:1;display:flex;flex-direction:column;gap:9px}
-.pc-feat{display:flex;align-items:center;gap:9px;font-size:13px;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.4}
-.pc-feat i.yes{color:#10B981;font-size:12px;flex-shrink:0}
-.pc-feat i.no{color:#D1D5DB;font-size:12px;flex-shrink:0}
-.pc-foot{padding:0 22px 22px;margin-top:auto}
-.pc-wa{width:100%;background:#25D366;color:#fff;border:none;padding:13px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:none;transition:all .25s;margin-top:4px}
-.pc-wa:hover{background:#1DA851;transform:translateY(-1px)}
-.sum-chip{background:#fff;border:1px solid #E8E4DA;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;color:#4A4A6A;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px}
-.sum-chip i{color:#C9A84C;font-size:11px}
-
-@media(max-width:860px){#planGrid{grid-template-columns:1fr 1fr!important}}
-@media(max-width:580px){
-  #planGrid{grid-template-columns:1fr!important}
-  #calcFields{grid-template-columns:1fr!important}
-  div[style*="padding:36px 40px"]{padding:24px 20px!important}
-}
-</style>
-
-<script>
-// ── RATES (admin can change these via admin panel Insurance Calc page) ──
-// Load from localStorage if admin saved them, else use defaults
-function getRates() {
-  try { const r = localStorage.getItem('ew_ins_rates'); if(r) return JSON.parse(r); } catch(e){}
-  return {
-    planBase:   { basic:90, standard:140, comprehensive:210 },
-    destMult:   { gulf:1.0, umrah:1.2, asia:0.9, turkey:1.1, schengen:1.7, uk:1.75, usa:2.1, worldwide:2.3 },
-    ageMult:    { young:1.0, adult:1.3, senior:1.85 },
-    typeMult:   { individual:1.0, family:0.82, group:0.70 },
-  };
-}
-
-let travellerType = 'individual';
-document.getElementById('ciDate').valueAsDate = new Date();
-
-function setTT(t, btn) {
-  travellerType = t;
-  document.querySelectorAll('.tt-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('paxRow').style.display = t==='individual' ? 'none' : 'flex';
-  calcProgress();
-}
-
-function calcProgress() {
-  const fields = ['ciDest','ciDays','ciDate'];
-  const filled = fields.filter(id=>document.getElementById(id).value).length;
-  document.getElementById('calcProgress').style.width = Math.round((filled/fields.length)*100)+'%';
-}
-
-function showErr(msg){ const e=document.getElementById('calcErr'); e.style.display='flex'; document.getElementById('calcErrTxt').textContent=msg; }
-function hideErr(){ document.getElementById('calcErr').style.display='none'; }
-
-function showPlans() {
-  const dest  = document.getElementById('ciDest').value;
-  const days  = parseInt(document.getElementById('ciDays').value)||0;
-  const date  = document.getElementById('ciDate').value;
-  const age   = document.getElementById('ciAge').value;
-  const pax   = travellerType==='individual' ? 1 : Math.max(2,parseInt(document.getElementById('ciPax').value)||2);
-  hideErr();
-
-  if (!dest) { showErr('Please select a destination.'); return; }
-  if (!days) { showErr('Please select trip duration.'); return; }
-
-  const R = getRates();
-  const dm = R.destMult[dest]||1;
-  const am = R.ageMult[age]||1;
-  const tm = R.typeMult[travellerType]||1;
-
-  const destLabels = {gulf:'Gulf / Middle East',umrah:'Saudi Arabia (Umrah/Hajj)',asia:'Asia',turkey:'Turkey',schengen:'Schengen States',uk:'United Kingdom',usa:'USA / Canada',worldwide:'Worldwide'};
-
-  const PLANS = [
-    { id:'basic', name:'Essential Cover', icon:'🛡️', mult:1.0, topPick:false,
-      medCover:'$25,000', desc:'Core medical and baggage protection for budget-conscious travelers.',
-      features:[
-        {y:true,  t:'Emergency medical up to $25,000'},
-        {y:true,  t:'Lost baggage — up to $500'},
-        {y:true,  t:'24/7 emergency helpline'},
-        {y:true,  t:'Flight delay cover — 12hrs+'},
-        {y:false, t:'Trip cancellation'},
-        {y:false, t:'Passport loss protection'},
-        {y:false, t:'Repatriation cover'},
-        {y:false, t:'COVID-19 included'},
-      ]},
-    { id:'standard', name:dest==='umrah'?'Umrah / Hajj Cover':'Standard Cover', icon:dest==='umrah'?'🕋':'⭐', mult:1.6, topPick:true,
-      medCover:'$50,000', desc:dest==='umrah'?'Purpose-built for pilgrims — covers the full spiritual journey.':'Full protection for most international trips.',
-      features:[
-        {y:true,  t:'Emergency medical up to $50,000'},
-        {y:true,  t:'Lost baggage — up to $1,500'},
-        {y:true,  t:'24/7 emergency helpline'},
-        {y:true,  t:'Trip cancellation & interruption'},
-        {y:true,  t:'Passport loss protection'},
-        {y:true,  t:'Repatriation cover'},
-        {y:false, t:'Adventure sports'},
-        {y:false, t:'COVID-19 included'},
-      ]},
-    { id:'comprehensive', name:'Comprehensive Cover', icon:'🌍', mult:2.4, topPick:false,
-      medCover:'$100,000', desc:'Maximum coverage — for families, groups, and long-haul travelers.',
-      features:[
-        {y:true, t:'Emergency medical up to $100,000'},
-        {y:true, t:'Lost baggage — up to $3,000'},
-        {y:true, t:'24/7 emergency helpline'},
-        {y:true, t:'Trip cancellation & interruption'},
-        {y:true, t:'Passport loss protection'},
-        {y:true, t:'Repatriation cover'},
-        {y:true, t:'Adventure sports included'},
-        {y:true, t:'COVID-19 included'},
-      ]},
-  ];
-
-  const basePerDayPerPerson = (plan) => R.planBase[plan.id] * dm * am * tm;
-  const totalPrice = (plan) => Math.round(basePerDayPerPerson(plan) * days * pax / 100) * 100;
-
-  // Summary chips
-  const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '';
-  document.getElementById('planSummBar').innerHTML = [
-    `<span class="sum-chip"><i class="fa fa-globe"></i>${destLabels[dest]}</span>`,
-    `<span class="sum-chip"><i class="fa fa-clock"></i>${days} Days</span>`,
-    `<span class="sum-chip"><i class="fa fa-users"></i>${pax} Traveller${pax>1?'s':''}</span>`,
-    dateStr ? `<span class="sum-chip"><i class="fa fa-calendar"></i>${dateStr}</span>` : '',
-  ].join('');
-
-  document.getElementById('planGrid').innerHTML = PLANS.map(plan => {
-    const total = totalPrice(plan);
-    const waMsg = encodeURIComponent(
-      'Assalam o Alaikum! I have calculated my travel insurance premium:\n'+
-      'Plan: '+plan.name+'\n'+
-      'Destination: '+destLabels[dest]+'\n'+
-      'Duration: '+days+' days\n'+
-      'Travellers: '+pax+'\n'+
-      (date?'Start Date: '+date+'\n':'')+
-      'Estimated Premium: Rs. '+total.toLocaleString()+'\n'+
-      'Please confirm and share payment details.'
-    );
-    return `
-    <div class="pc${plan.topPick?' top-pick':''}">
-      ${plan.topPick ? '<div class="pc-ribbon">⭐ Most Popular</div>' : ''}
-      <div class="pc-head">
-        <div class="pc-icon">${plan.icon}</div>
-        <div class="pc-name">${plan.name}</div>
-        <div class="pc-cover">Medical Cover: <span>Up to ${plan.medCover}</span></div>
-      </div>
-      <div class="pc-price-wrap">
-        <div class="pc-price">Rs. ${total.toLocaleString()}</div>
-        <div class="pc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days · all taxes included</div>
-      </div>
-      <div class="pc-feats">
-        ${plan.features.map(f=>`
-          <div class="pc-feat">
-            <i class="fa ${f.y?'fa-check-circle yes':'fa-times-circle no'}"></i>${f.t}
-          </div>`).join('')}
-      </div>
-      <div class="pc-foot">
-        <a href="https://wa.me/923336515349?text=${waMsg}" target="_blank" class="pc-wa">
-          <i class="fab fa-whatsapp" style="font-size:16px"></i> Get This Plan on WhatsApp
-        </a>
-      </div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('calcFormWrap').style.display = 'none';
-  document.getElementById('planCards').style.display = 'block';
-  document.querySelector('.tt-btn.active')?.closest('div')?.parentElement?.style && (document.querySelector('#calcSection > .container > div:nth-child(2)').style.display='none');
-
-  window.scrollTo({top: document.getElementById('calcSection').offsetTop - 80, behavior:'smooth'});
-}
-
-function backToForm() {
-  document.getElementById('calcFormWrap').style.display = 'block';
-  document.getElementById('planCards').style.display = 'none';
-  document.querySelector('#calcSection > .container > div:nth-child(2)').style.display = 'flex';
-}
-
-calcProgress();
-</script>
-
-<!-- FOOTER -->
-
-
-
-
-<script src="assets/js/script.js"></script>
 <!-- FOOTER -->
 <footer class="footer">
-
   <div class="footer-wa-strip">
     <div class="container">
       <div class="footer-wa-inner">
@@ -482,130 +425,212 @@ calcProgress();
       </div>
     </div>
   </div>
-
   <div class="footer-top">
     <div class="container">
       <div class="footer-grid">
-
         <div class="footer-brand">
           <a href="index.html" style="display:flex;align-items:center;gap:11px;text-decoration:none;margin-bottom:16px">
-            <img src="assets/images/logo.jpg" alt="East &amp; West Travels" style="width:46px;height:46px;border-radius:50%;border:2px solid rgba(212,168,67,0.5);padding:2px;object-fit:contain;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.3)">
+            <img src="assets/images/logo.jpg" alt="East &amp; West" style="width:46px;height:46px;border-radius:50%;border:2px solid rgba(212,168,67,0.5);padding:2px;object-fit:contain;background:#fff">
             <div>
-              <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-0.01em">East &amp; <span style="color:#D4A843">West</span></div>
-              <div style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:3px;font-family:'Plus Jakarta Sans',sans-serif">Travel Services</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff">East &amp; <span style="color:#D4A843">West</span></div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);font-family:'Plus Jakarta Sans',sans-serif">Travel Services</div>
             </div>
           </a>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.75;font-family:'Plus Jakarta Sans',sans-serif;max-width:230px">Faisalabad&rsquo;s trusted travel partner since 2003 &mdash; serving Pakistan with Umrah, Hajj, visas &amp; tours.</p>
-
-          <div class="footer-social" style="margin-top:20px">
-            <a href="https://www.facebook.com/p/East-West-Travel-Services-100063816463202/" target="_blank" title="Facebook" class="fsoc-fb">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
-            </a>
-            <a href="https://wa.me/923336515349" target="_blank" title="WhatsApp" class="fsoc-wa">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
-            </a>
-            <a href="mailto:eastwestpk@hotmail.com" title="Email" class="fsoc-em">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            </a>
+          <p style="font-size:13.5px;color:rgba(255,255,255,0.45);line-height:1.75;font-family:'Plus Jakarta Sans',sans-serif;max-width:230px">Faisalabad's trusted travel partner since 2003.</p>
+        </div>
+        <div class="footer-links"><h4>Our Services</h4><ul>
+          <li><a href="umrah.html"><span class="fli">›</span> Umrah &amp; Hajj</a></li>
+          <li><a href="visa.html"><span class="fli">›</span> Visa Services</a></li>
+          <li><a href="tours.html"><span class="fli">›</span> Tour Packages</a></li>
+          <li><a href="group-tickets.html"><span class="fli">›</span> Group Tickets</a></li>
+          <li><a href="insurance.html"><span class="fli">›</span> Travel Insurance</a></li>
+        </ul></div>
+        <div class="footer-links"><h4>Quick Links</h4><ul>
+          <li><a href="index.html"><span class="fli">›</span> Home</a></li>
+          <li><a href="about.html"><span class="fli">›</span> About Us</a></li>
+          <li><a href="blog.html"><span class="fli">›</span> Travel Blog</a></li>
+          <li><a href="contact.html"><span class="fli">›</span> Contact</a></li>
+        </ul></div>
+        <div><h4>Get In Touch</h4>
+          <div class="footer-contact-item">
+            <div class="footer-contact-ico"><i class="fa fa-map-marker-alt"></i></div>
+            <div class="footer-contact-txt"><div class="footer-contact-lbl">Office</div>G-07, Chaudhry Arcade, New Civil Lines, Faisalabad</div>
           </div>
-
-          <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:6px 11px">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A843" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span style="font-size:10px;color:rgba(255,255,255,0.45);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;letter-spacing:0.5px">IATA Member</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:6px 11px">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A843" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-              <span style="font-size:10px;color:rgba(255,255,255,0.45);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;letter-spacing:0.5px">Est. 2003</span>
-            </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-ico" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.2);color:#25D366"><i class="fab fa-whatsapp"></i></div>
+            <div class="footer-contact-txt"><div class="footer-contact-lbl">WhatsApp</div><a href="https://wa.me/923336515349">+92 333 651 5349</a></div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-ico"><i class="fa fa-envelope"></i></div>
+            <div class="footer-contact-txt"><div class="footer-contact-lbl">Email</div><a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a></div>
           </div>
         </div>
-
-        <div class="footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="umrah.html"><span class="fli">&#8250;</span> Umrah &amp; Hajj</a></li>
-            <li><a href="visa.html"><span class="fli">&#8250;</span> Visa Services</a></li>
-            <li><a href="tours.html"><span class="fli">&#8250;</span> Tour Packages</a></li>
-            <li><a href="group-tickets.html"><span class="fli">&#8250;</span> Group Tickets</a></li>
-            <li><a href="insurance.html"><span class="fli">&#8250;</span> Travel Insurance</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="index.html"><span class="fli">&#8250;</span> Home</a></li>
-            <li><a href="about.html"><span class="fli">&#8250;</span> About Us</a></li>
-            <li><a href="blog.html"><span class="fli">&#8250;</span> Travel Blog</a></li>
-            <li><a href="contact.html"><span class="fli">&#8250;</span> Contact</a></li>
-            <li><a href="insurance.html#calcSection"><span class="fli">&#8250;</span> Insurance Quote</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>Get In Touch</h4>
-
-          <div class="footer-contact-item">
-            <div class="footer-contact-ico">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <div class="footer-contact-txt">
-              <div class="footer-contact-lbl">Office</div>
-              G-07, Chaudhry Arcade, New Civil Lines, Faisalabad
-            </div>
-          </div>
-
-          <div class="footer-contact-item">
-            <div class="footer-contact-ico" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.2);color:#25D366">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
-            </div>
-            <div class="footer-contact-txt">
-              <div class="footer-contact-lbl">WhatsApp</div>
-              <a href="https://wa.me/923336515349">+92 333 651 5349</a>
-            </div>
-          </div>
-
-          <div class="footer-contact-item">
-            <div class="footer-contact-ico">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            </div>
-            <div class="footer-contact-txt">
-              <div class="footer-contact-lbl">Email</div>
-              <a href="mailto:eastwestpk@hotmail.com">eastwestpk@hotmail.com</a>
-            </div>
-          </div>
-
-          <div class="footer-contact-item">
-            <div class="footer-contact-ico">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            </div>
-            <div class="footer-contact-txt">
-              <div class="footer-contact-lbl">Hours</div>
-              Mon &ndash; Sat &nbsp; 9:00 AM &ndash; 8:00 PM
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
-
   <div class="container">
     <div class="footer-bottom">
       <p>&copy; 2026 East &amp; West Travel Services. All rights reserved.</p>
-      <div class="footer-bottom-links">
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="insurance.html">Insurance</a>
-      </div>
+      <div class="footer-bottom-links"><a href="about.html">About</a><a href="contact.html">Contact</a></div>
     </div>
   </div>
-
 </footer>
 
-<a href="https://wa.me/923336515349" class="wa-float" target="_blank" aria-label="WhatsApp">
+<a href="https://wa.me/923336515349" class="wa-float" target="_blank">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
 </a>
+
+<script src="assets/js/script.js"></script>
+<script>
+const WA = '923336515349';
+let insType = 'individual';
+
+document.getElementById('insDate').valueAsDate = new Date();
+
+function setInsTab(type, btn) {
+  insType = type;
+  document.querySelectorAll('.ins-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('paxField').style.display = type === 'individual' ? 'none' : 'flex';
+}
+
+function getRates() {
+  try { const r = localStorage.getItem('ew_ins_rates'); if(r) return JSON.parse(r); } catch(e){}
+  return {
+    planBase: { basic:90, standard:140, comprehensive:210 },
+    destMult: { gulf:1.0, umrah:1.2, qatar:1.05, asia:0.9, turkey:1.1, schengen:1.7, uk:1.75, usa:2.1, worldwide:2.3 },
+    ageMult:  { young:1.0, adult:1.3, senior:1.85 },
+    typeMult: { individual:1.0, family:0.82, group:0.70 },
+  };
+}
+
+// Insurance company logos (reliable URLs)
+const INS_COMPANIES = [
+  { name:'Adamjee Insurance', type:'Conventional', logo:'https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Adamjee_Insurance_Logo.png/200px-Adamjee_Insurance_Logo.png' },
+  { name:'EFU General Insurance', type:'Conventional', logo:'https://upload.wikimedia.org/wikipedia/en/thumb/8/82/EFU_General_Insurance_logo.png/200px-EFU_General_Insurance_logo.png' },
+  { name:'TPL Insurance', type:'Conventional', logo:'' },
+  { name:'Allianz EFU Health', type:'Conventional', logo:'' },
+];
+
+const PLANS = [
+  { id:'basic', name:'Essential Care', mult:1.0,
+    cover:'$25,000', medAmt:'$25,000',
+    features:['Emergency Medical','Lost Baggage','24/7 Helpline','Flight Delay'],
+    excl:['Trip Cancellation','Repatriation','COVID-19'] },
+  { id:'standard', name:'Standard Cover', mult:1.6,
+    cover:'$50,000', medAmt:'$50,000',
+    features:['Emergency Medical','Lost Baggage','24/7 Helpline','Trip Cancellation','Passport Loss','Repatriation'],
+    excl:['Adventure Sports','COVID-19'] },
+  { id:'comprehensive', name:'Comprehensive Plus', mult:2.4,
+    cover:'$100,000', medAmt:'$100,000',
+    features:['Emergency Medical','Lost Baggage','24/7 Helpline','Trip Cancellation','Passport Loss','Repatriation','COVID-19 Included','Adventure Sports'],
+    excl:[] },
+];
+
+const DEST_LABELS = {
+  gulf:'Gulf States', umrah:'Saudi Arabia (Umrah/Hajj)', qatar:'Qatar',
+  asia:'Asia', turkey:'Turkey', schengen:'Schengen States',
+  uk:'United Kingdom', usa:'USA / Canada / Australia', worldwide:'Worldwide'
+};
+
+function viewInsPlans() {
+  const dest  = document.getElementById('insDest').value;
+  const days  = parseInt(document.getElementById('insDuration').value)||0;
+  const age   = document.getElementById('insAge').value;
+  const date  = document.getElementById('insDate').value;
+  const pax   = insType === 'individual' ? 1 : Math.max(2, parseInt(document.getElementById('insPax').value)||2);
+
+  const errEl = document.getElementById('insErr');
+  errEl.style.display = 'none';
+  if (!dest) { errEl.textContent='Please select a destination.'; errEl.style.display='block'; return; }
+  if (!days) { errEl.textContent='Please select trip duration.'; errEl.style.display='block'; return; }
+
+  const R = getRates();
+  const dm = R.destMult[dest]||1;
+  const am = R.ageMult[age]||1;
+  const tm = R.typeMult[insType]||1;
+
+  // Summary sidebar
+  const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '—';
+  const typeLabel = insType.charAt(0).toUpperCase()+insType.slice(1);
+  document.getElementById('sumRows').innerHTML = [
+    ['Plan Type', typeLabel],
+    ['Destination', DEST_LABELS[dest]||dest],
+    ['Duration', days+' Days'],
+    ['Travellers', pax+(pax>1?' persons':' person')],
+    ['Departure', dateStr],
+    ['Age Group', age==='young'?'18–35':age==='adult'?'36–60':'61+'],
+  ].map(([l,v])=>`
+    <div class="ins-sum-row">
+      <div class="ins-sum-val">${v}</div>
+      <div class="ins-sum-lbl">${l}</div>
+    </div>`).join('');
+
+  document.getElementById('resultsSubtitle').textContent =
+    `${PLANS.length * INS_COMPANIES.slice(0,2).length} plans available for ${DEST_LABELS[dest]} · ${days} days`;
+
+  // Build plan cards — one per plan (3 cards)
+  document.getElementById('planList').innerHTML = PLANS.map((plan, pi) => {
+    const total = Math.round(R.planBase[plan.id] * dm * am * tm * days * pax / 100) * 100;
+    const company = INS_COMPANIES[pi % INS_COMPANIES.length];
+    const waMsg = encodeURIComponent(
+      'Assalam o Alaikum! I want to purchase travel insurance:\n'+
+      'Plan: '+plan.name+'\n'+
+      'Destination: '+(DEST_LABELS[dest]||dest)+'\n'+
+      'Duration: '+days+' days\n'+
+      'Travellers: '+pax+'\n'+
+      (date?'Departure: '+date+'\n':'')+
+      'Estimated Premium: Rs. '+total.toLocaleString()+'\n'+
+      'Please confirm and share payment details.'
+    );
+    const logoHtml = company.logo
+      ? `<img src="${company.logo}" onerror="this.style.display='none'">`
+      : `<div style="width:70px;height:50px;background:#F3F0EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#9090AA;text-align:center;font-family:'Plus Jakarta Sans',sans-serif">${company.name.split(' ').map(w=>w[0]).join('')}</div>`;
+
+    return `
+    <div class="ins-plan-card">
+      <div class="ins-plan-card-inner">
+        <div class="ipc-logo">
+          <div class="ipc-logo-box">${logoHtml}</div>
+          <div>
+            <div class="ipc-type">${company.type}</div>
+            <div class="ipc-logo-name">${company.name}</div>
+          </div>
+        </div>
+        <div class="ipc-info">
+          <div class="ipc-plan-name">${plan.name}</div>
+          <div class="ipc-cover-label">Medical Cover</div>
+          <div class="ipc-cover-val">${plan.medAmt}</div>
+          <div class="ipc-feats">
+            ${plan.features.map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}
+          </div>
+        </div>
+        <div class="ipc-cta">
+          <div class="ipc-price">
+            <div class="ipc-price-amt">Rs. ${total.toLocaleString()}</div>
+            <div class="ipc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days</div>
+          </div>
+          <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
+            Buy on WhatsApp
+          </a>
+          <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">Get in touch!</a></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Show results, hide hero form
+  document.getElementById('insHero').style.display = 'none';
+  document.getElementById('insResults').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function editInsForm() {
+  document.getElementById('insHero').style.display = 'flex';
+  document.getElementById('insResults').style.display = 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
 </body>
 </html>
