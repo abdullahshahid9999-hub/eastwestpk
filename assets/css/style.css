@@ -662,3 +662,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
     font-size:14px !important;
   }
 }
+
+.fsoc-fb{color:rgba(255,255,255,0.4)!important}
+.fsoc-fb:hover{border-color:#1877F2!important;color:#1877F2!important;background:rgba(24,119,242,0.08)!important}
+.fsoc-wa{color:rgba(255,255,255,0.4)!important}
+.fsoc-wa:hover{border-color:#25D366!important;color:#25D366!important;background:rgba(37,211,102,0.08)!important}
+.fsoc-em{color:rgba(255,255,255,0.4)!important}
+.fsoc-em:hover{border-color:#D4A843!important;color:#D4A843!important;background:rgba(212,168,67,0.08)!important}
