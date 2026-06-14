@@ -149,11 +149,11 @@ tbody td strong{color:var(--text);font-weight:600}
     <button class="sbn" onclick="showPage('tours',this)"><i class="fa fa-globe"></i> World Tours</button>
     <button class="sbn" onclick="showPage('visa',this)"><i class="fa fa-passport"></i> Visa Services</button>
     <button class="sbn" onclick="showPage('group',this)"><i class="fa fa-plane"></i> Group Tickets</button>
+    <button class="sbn" onclick="showPage('insurance',this);loadInsPlansPage()"><i class="fa fa-shield-alt"></i> Insurance Plans</button>
     <div class="sb-lbl">Content</div>
     <button class="sbn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-lbl">System</div>
     <button class="sbn" onclick="showPage('settings',this)"><i class="fa fa-cog"></i> Settings</button>
-    <button class="sbn" onclick="showPage('insurance',this)"><i class="fa fa-shield-alt"></i> Insurance Plans</button>
     <button class="sbn" onclick="showPage('inscalc',this)"><i class="fa fa-calculator"></i> Insurance Rates</button>
     <a class="sbn" href="../index.html" target="_blank"><i class="fa fa-external-link-alt"></i> View Website</a>
   </div>
@@ -433,12 +433,7 @@ function saveInsPlan() {
   toast('Plan saved — insurance page updated');
 }
 
-// Auto-load when page shown
-const _origShowPage = window.showPage;
-window.showPage = function(id, btn) {
-  _origShowPage(id, btn);
-  if (id === 'insurance') loadInsPlansPage();
-};
+// loadInsPlansPage called directly from sidebar button onclick
 </script>
 
 <div class="page" id="pg-inscalc">
