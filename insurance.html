@@ -494,44 +494,21 @@ function setInsTab(type, btn) {
   document.getElementById('paxField').style.display = type === 'individual' ? 'none' : 'flex';
 }
 
-function getRates() {
-  try { const r = localStorage.getItem('ew_ins_rates'); if(r) return JSON.parse(r); } catch(e){}
-  return {
-    planBase: { basic:90, standard:140, comprehensive:210 },
-    destMult: { gulf:1.0, umrah:1.2, qatar:1.05, asia:0.9, turkey:1.1, schengen:1.7, uk:1.75, usa:2.1, worldwide:2.3 },
-    ageMult:  { young:1.0, adult:1.3, senior:1.85 },
-    typeMult: { individual:1.0, family:0.82, group:0.70 },
-  };
-}
-
-// Insurance company logos (reliable URLs)
-const INS_COMPANIES = [
-  { name:'Adamjee Insurance', type:'Conventional', logo:'https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Adamjee_Insurance_Logo.png/200px-Adamjee_Insurance_Logo.png' },
-  { name:'EFU General Insurance', type:'Conventional', logo:'https://upload.wikimedia.org/wikipedia/en/thumb/8/82/EFU_General_Insurance_logo.png/200px-EFU_General_Insurance_logo.png' },
-  { name:'TPL Insurance', type:'Conventional', logo:'' },
-  { name:'Allianz EFU Health', type:'Conventional', logo:'' },
-];
-
-// Load plans from admin localStorage (set by admin Insurance Plans page)
+// Plans loaded from admin localStorage or defaults
 function getPublicPlans() {
   try {
     const d = localStorage.getItem('ew_ins_plans');
-    if (d) {
-      const plans = JSON.parse(d);
-      if (plans && plans.length) return plans.sort((a,b)=>a.sort-b.sort);
-    }
+    if (d) { const p = JSON.parse(d); if (p && p.length) return p.sort((a,b)=>a.sort-b.sort); }
   } catch(e){}
-  // Default fallback
   return [
-    { id:'basic', name:'Essential Care', type:'basic', cover:'$25,000', rate:90, recommended:false,
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Flight Delay' },
-    { id:'standard', name:'Standard Cover', type:'standard', cover:'$50,000', rate:140, recommended:true,
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation' },
-    { id:'comprehensive', name:'Comprehensive Plus', type:'comprehensive', cover:'$100,000', rate:210, recommended:false,
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation,COVID-19 Included,Adventure Sports' },
+    { id:'basic', name:'Essential Care', type:'basic', cover:'$25,000',
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Flight Delay', recommended:false },
+    { id:'standard', name:'Standard Cover', type:'standard', cover:'$50,000',
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation', recommended:true },
+    { id:'comprehensive', name:'Comprehensive Plus', type:'comprehensive', cover:'$100,000',
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation,COVID-19 Included,Adventure Sports', recommended:false },
   ];
 }
-const PLANS = getPublicPlans();
 
 const DEST_LABELS = {
   gulf:'Gulf States', umrah:'Saudi Arabia (Umrah/Hajj)', qatar:'Qatar',
@@ -539,10 +516,15 @@ const DEST_LABELS = {
   uk:'United Kingdom', usa:'USA / Canada / Australia', worldwide:'Worldwide'
 };
 
+const INS_COMPANIES = [
+  { name:'Adamjee Insurance', type:'Conventional' },
+  { name:'EFU General Insurance', type:'Conventional' },
+  { name:'TPL Insurance', type:'Conventional' },
+];
+
 function viewInsPlans() {
   const dest  = document.getElementById('insDest').value;
   const days  = parseInt(document.getElementById('insDuration').value)||0;
-  const age   = document.getElementById('insAge').value;
   const date  = document.getElementById('insDate').value;
   const pax   = insType === 'individual' ? 1 : Math.max(2, parseInt(document.getElementById('insPax').value)||2);
 
@@ -551,91 +533,82 @@ function viewInsPlans() {
   if (!dest) { errEl.textContent='Please select a destination.'; errEl.style.display='block'; return; }
   if (!days) { errEl.textContent='Please select trip duration.'; errEl.style.display='block'; return; }
 
-  const R = getRates();
-  const dm = R.destMult[dest]||1;
-  const am = R.ageMult[age]||1;
-  const tm = R.typeMult[insType]||1;
+  const PLANS = getPublicPlans();
+  const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '';
 
-  // Summary sidebar
-  const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '—';
-  const typeLabel = insType.charAt(0).toUpperCase()+insType.slice(1);
+  // Summary
   document.getElementById('sumRows').innerHTML = [
-    ['Plan Type', typeLabel],
+    ['Plan Type',   insType.charAt(0).toUpperCase()+insType.slice(1)],
     ['Destination', DEST_LABELS[dest]||dest],
-    ['Duration', days+' Days'],
-    ['Travellers', pax+(pax>1?' persons':' person')],
-    ['Departure', dateStr],
-    ['Age Group', age==='young'?'18–35':age==='adult'?'36–60':'61+'],
-  ].map(([l,v])=>`
-    <div class="ins-sum-row">
-      <div class="ins-sum-val">${v}</div>
-      <div class="ins-sum-lbl">${l}</div>
-    </div>`).join('');
+    ['Duration',    days+' Days'],
+    ['Travellers',  pax+(pax>1?' persons':' person')],
+    ['Departure',   dateStr||'—'],
+  ].map(([l,v])=>`<div class="ins-sum-row"><div class="ins-sum-val">${v}</div><div class="ins-sum-lbl">${l}</div></div>`).join('');
 
   document.getElementById('resultsSubtitle').textContent =
-    `${PLANS.length * INS_COMPANIES.slice(0,2).length} plans available for ${DEST_LABELS[dest]} · ${days} days`;
+    `${PLANS.length} plans available — WhatsApp us to confirm pricing for ${DEST_LABELS[dest]}`;
 
-  // Build plan cards — one per plan (3 cards)
-  const LIVE_PLANS = getPublicPlans();
-  document.getElementById('planList').innerHTML = LIVE_PLANS.map((plan, pi) => {
-    const rateKey = plan.type || plan.id;
-    const baseRate = plan.rate || R.planBase[rateKey] || R.planBase[plan.id] || 90;
-    const total = Math.round(baseRate * dm * am * tm * days * pax / 100) * 100;
+  document.getElementById('planList').innerHTML = PLANS.map((plan, pi) => {
     const company = INS_COMPANIES[pi % INS_COMPANIES.length];
+    const feats = (Array.isArray(plan.features) ? plan.features : String(plan.features||'').split(',')).map(f=>f.trim()).filter(Boolean);
     const waMsg = encodeURIComponent(
-      'Assalam o Alaikum! I want to purchase travel insurance:\n'+
-      'Plan: '+plan.name+'\n'+
-      'Destination: '+(DEST_LABELS[dest]||dest)+'\n'+
-      'Duration: '+days+' days\n'+
-      'Travellers: '+pax+'\n'+
-      (date?'Departure: '+date+'\n':'')+
-      'Estimated Premium: Rs. '+total.toLocaleString()+'\n'+
-      'Please confirm and share payment details.'
+      'Assalam o Alaikum! I am interested in travel insurance:
+'+
+      'Plan: '+plan.name+'
+'+
+      'Medical Cover: '+plan.cover+'
+'+
+      'Destination: '+(DEST_LABELS[dest]||dest)+'
+'+
+      'Duration: '+days+' days
+'+
+      'Travellers: '+pax+'
+'+
+      (date?'Departure: '+date+'
+':'')+
+      'Please share pricing and next steps.'
     );
-    const logoHtml = company.logo
-      ? `<img src="${company.logo}" onerror="this.style.display='none'">`
-      : `<div style="width:70px;height:50px;background:#F3F0EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#9090AA;text-align:center;font-family:'Plus Jakarta Sans',sans-serif">${company.name.split(' ').map(w=>w[0]).join('')}</div>`;
-
     return `
     <div class="ins-plan-card">
       <div class="ins-plan-card-inner">
         <div class="ipc-logo">
-          <div class="ipc-logo-box">${logoHtml}</div>
+          <div class="ipc-logo-box">
+            <div style="width:70px;height:50px;background:#F3F0EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#6B6B8A;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;padding:6px">${company.name.split(' ').slice(0,2).join('<br>')}</div>
+          </div>
           <div>
             <div class="ipc-type">${company.type}</div>
             <div class="ipc-logo-name">${company.name}</div>
           </div>
         </div>
         <div class="ipc-info">
-          <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:8px;font-family:Plus Jakarta Sans,sans-serif">★ Recommended</span>':''}</div>
+          <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:10px">★ Recommended</span>':''}</div>
           <div class="ipc-cover-label">Medical Cover</div>
-          <div class="ipc-cover-val">${plan.cover||plan.medAmt||'See Details'}</div>
+          <div class="ipc-cover-val">${plan.cover||'—'}</div>
           <div class="ipc-feats">
-            ${(Array.isArray(plan.features)?plan.features:String(plan.features||'').split(',')).map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f.trim()}</span>`).join('')}
+            ${feats.map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}
           </div>
         </div>
         <div class="ipc-cta">
           <div class="ipc-price">
-            <div class="ipc-price-amt">Rs. ${total.toLocaleString()}</div>
-            <div class="ipc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days</div>
+            <div style="font-size:13px;font-weight:600;color:#14142B;font-family:'Plus Jakarta Sans',sans-serif">Get a Quote</div>
+            <div style="font-size:11px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-top:3px">Pricing via WhatsApp</div>
           </div>
           <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
-            Buy on WhatsApp
+            Get Quote on WhatsApp
           </a>
-          <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">Get in touch!</a></div>
+          <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">We'll help you choose!</a></div>
         </div>
       </div>
     </div>`;
   }).join('');
 
-  // Show results, hide hero form
   document.getElementById('insHero').style.display = 'none';
   document.getElementById('insResults').style.display = 'block';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function editInsForm() {
+function function editInsForm() {
   document.getElementById('insHero').style.display = 'flex';
   document.getElementById('insResults').style.display = 'none';
   window.scrollTo({top:0,behavior:'smooth'});

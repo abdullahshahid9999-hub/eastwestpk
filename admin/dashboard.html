@@ -154,7 +154,6 @@ tbody td strong{color:var(--text);font-weight:600}
     <button class="sbn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-lbl">System</div>
     <button class="sbn" onclick="showPage('settings',this)"><i class="fa fa-cog"></i> Settings</button>
-    <button class="sbn" onclick="showPage('inscalc',this)"><i class="fa fa-calculator"></i> Insurance Rates</button>
     <a class="sbn" href="../index.html" target="_blank"><i class="fa fa-external-link-alt"></i> View Website</a>
   </div>
   <div class="sb-footer">
@@ -261,10 +260,18 @@ tbody td strong{color:var(--text);font-weight:600}
 
 <!-- SETTINGS -->
 <div class="page" id="pg-settings">
-  <div class="ph"><div><h2>Admin <em>Settings</em></h2><p>Site configuration</p></div></div>
-  <div class="card">
-    <div class="ch"><h3>General</h3></div>
-    <div style="padding:20px;color:var(--muted);font-size:13px">Settings panel — coming soon.</div>
+  <div class="ph"><div><h2>Admin <em>Settings</em></h2><p>Change password and site preferences</p></div></div>
+  <div class="card" style="max-width:460px">
+    <div class="ch"><h3>Change Password</h3></div>
+    <div style="padding:16px 18px">
+      <div class="fg"><label>Current Password</label><input type="password" id="cp1" class="mfi" placeholder="Current password"></div>
+      <div class="fg"><label>New Password</label><input type="password" id="cp2" class="mfi" placeholder="New (min 8 characters)"></div>
+      <div class="fg"><label>Confirm New Password</label><input type="password" id="cp3" class="mfi" placeholder="Repeat new password"></div>
+      <p id="cpMsg" style="display:none;font-size:13px;margin-bottom:12px;font-family:DM Sans,sans-serif"></p>
+      <div class="mf" style="margin-top:14px">
+        <button class="mf-save" onclick="changePwd()"><i class="fa fa-save"></i> Update Password</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -620,18 +627,6 @@ function saveInsPlan() {
 
   setTimeout(() => { loadInsRates(); insPreview(); }, 200);
   </script>
-</div>
-</div>
-  <div class="card" style="max-width:460px">
-    <div class="ch"><h3>Change Password</h3></div>
-    <div class="mb" style="padding:16px 18px">
-      <div class="fg"><label>Current Password</label><input type="password" id="cp1" placeholder="Current"></div>
-      <div class="fg"><label>New Password</label><input type="password" id="cp2" placeholder="New (min 8)"></div>
-      <div class="fg"><label>Confirm</label><input type="password" id="cp3" placeholder="Repeat"></div>
-      <p id="cpMsg" style="display:none;font-size:13px;margin-bottom:12px"></p>
-      <button class="btn btn-t" onclick="changePwd()"><i class="fa fa-save"></i> Update</button>
-    </div>
-  </div>
 </div>
 
 </main>
