@@ -660,3 +660,5 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
 .fsoc-wa:hover{border-color:#25D366!important;color:#25D366!important;background:rgba(37,211,102,0.08)!important}
 .fsoc-em{color:rgba(255,255,255,0.4)!important}
 .fsoc-em:hover{border-color:#D4A843!important;color:#D4A843!important;background:rgba(212,168,67,0.08)!important}
+
+#page-fade{position:fixed;inset:0;background:var(--bg);z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.35s ease}
