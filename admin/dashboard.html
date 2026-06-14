@@ -153,7 +153,8 @@ tbody td strong{color:var(--text);font-weight:600}
     <button class="sbn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-lbl">System</div>
     <button class="sbn" onclick="showPage('settings',this)"><i class="fa fa-cog"></i> Settings</button>
-    <button class="sbn" onclick="showPage('inscalc',this)"><i class="fa fa-calculator"></i> Insurance Calc</button>
+    <button class="sbn" onclick="showPage('insurance',this)"><i class="fa fa-shield-alt"></i> Insurance Plans</button>
+    <button class="sbn" onclick="showPage('inscalc',this)"><i class="fa fa-calculator"></i> Insurance Rates</button>
     <a class="sbn" href="../index.html" target="_blank"><i class="fa fa-external-link-alt"></i> View Website</a>
   </div>
   <div class="sb-footer">
@@ -261,6 +262,185 @@ tbody td strong{color:var(--text);font-weight:600}
 <!-- SETTINGS -->
 <div class="page" id="pg-settings">
   <div class="ph"><div><h2>Admin <em>Settings</em></h2></div>
+<div class="page" id="pg-insurance">
+  <div class="ph">
+    <div><h2>Insurance <em>Plans</em></h2><p>Manage plans shown on the insurance page</p></div>
+    <button class="btn btn-g" onclick="openInsModal()"><i class="fa fa-plus"></i> Add Plan</button>
+  </div>
+
+  <div class="card">
+    <div class="ch">
+      <h3>Active Plans</h3>
+      <span id="insPlansCount" style="font-size:11px;color:var(--muted)">Loading…</span>
+    </div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan Name</th>
+            <th>Type</th>
+            <th>Medical Cover</th>
+            <th>Base Rate (Rs/person/day)</th>
+            <th>Recommended</th>
+            <th>Features</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="insPlansBody">
+          <tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i> Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Insurance Plan Modal -->
+<div class="modal-bg" id="insModal">
+  <div class="modal" style="max-width:520px">
+    <div class="mh">
+      <h3 id="insModalTitle">Add <em>Insurance Plan</em></h3>
+      <button class="mc" onclick="closeModal('insModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="mb">
+      <input type="hidden" id="insPlanId">
+      <div class="fr">
+        <div class="fg"><label>Plan Name *</label><input type="text" id="insPName" placeholder="e.g. Essential Care" class="mfi"></div>
+        <div class="fg"><label>Plan Type</label>
+          <select id="insPType" class="mfi">
+            <option value="basic">Basic</option>
+            <option value="standard">Standard</option>
+            <option value="comprehensive">Comprehensive</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Medical Cover</label><input type="text" id="insPCover" placeholder="e.g. $50,000" class="mfi"></div>
+        <div class="fg"><label>Base Rate (Rs/person/day)</label><input type="number" id="insPRate" placeholder="e.g. 140" class="mfi"></div>
+      </div>
+      <div class="fg"><label>Features (comma separated)</label>
+        <textarea id="insPFeats" class="mfi" rows="3" placeholder="Emergency Medical, Lost Baggage, 24/7 Helpline, Trip Cancellation"></textarea>
+      </div>
+      <div class="fr">
+        <div class="fg" style="flex-direction:row;align-items:center;gap:10px;padding-top:8px">
+          <input type="checkbox" id="insPRecommended" style="width:16px;height:16px;accent-color:var(--gold)">
+          <label style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--text)">Mark as Recommended</label>
+        </div>
+        <div class="fg"><label>Sort Order</label><input type="number" id="insPSort" class="mfi" value="0" min="0"></div>
+      </div>
+      <div class="mf">
+        <button class="mf-save" onclick="saveInsPlan()"><i class="fa fa-save"></i> Save Plan</button>
+        <button class="btn btn-t" onclick="closeModal('insModal')" style="flex-shrink:0">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── INSURANCE PLANS (stored in localStorage, used by insurance.html) ──
+const INS_PLANS_KEY = 'ew_ins_plans';
+
+function getInsPlans() {
+  try {
+    const d = localStorage.getItem(INS_PLANS_KEY);
+    if (d) return JSON.parse(d);
+  } catch(e){}
+  // Default plans
+  return [
+    { id:'basic', name:'Essential Care', type:'basic', cover:'$25,000', rate:90, recommended:false, sort:0,
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Flight Delay' },
+    { id:'standard', name:'Standard Cover', type:'standard', cover:'$50,000', rate:140, recommended:true, sort:1,
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation' },
+    { id:'comprehensive', name:'Comprehensive Plus', type:'comprehensive', cover:'$100,000', rate:210, recommended:false, sort:2,
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation,COVID-19 Included,Adventure Sports' },
+  ];
+}
+
+function saveInsPlans(plans) {
+  localStorage.setItem(INS_PLANS_KEY, JSON.stringify(plans));
+}
+
+function loadInsPlansPage() {
+  const plans = getInsPlans().sort((a,b)=>a.sort-b.sort);
+  document.getElementById('insPlansCount').textContent = plans.length + ' plans';
+  document.getElementById('insPlansBody').innerHTML = plans.length ? plans.map(p => `
+    <tr>
+      <td><strong>${p.name}</strong></td>
+      <td><span class="pill p-act">${p.type}</span></td>
+      <td style="color:var(--gold);font-weight:700">${p.cover}</td>
+      <td>Rs. ${p.rate}/person/day</td>
+      <td>${p.recommended ? '<span class="pill p-pend">⭐ Yes</span>' : '<span style="color:var(--muted)">—</span>'}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:200px;line-height:1.5">${(p.features||'').split(',').slice(0,3).join(', ')}${p.features&&p.features.split(',').length>3?'…':''}</td>
+      <td>
+        <button class="btn-s" onclick="editInsPlan('${p.id}')"><i class="fa fa-pen"></i> Edit</button>
+        <button class="btn-r" onclick="deleteInsPlan('${p.id}')" style="margin-left:4px"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="7" class="etd">No plans. Add one above.</td></tr>';
+}
+
+function openInsModal(plan) {
+  document.getElementById('insModalTitle').innerHTML = plan ? 'Edit <em>Insurance Plan</em>' : 'Add <em>Insurance Plan</em>';
+  document.getElementById('insPlanId').value    = plan?.id || '';
+  document.getElementById('insPName').value     = plan?.name || '';
+  document.getElementById('insPType').value     = plan?.type || 'basic';
+  document.getElementById('insPCover').value    = plan?.cover || '';
+  document.getElementById('insPRate').value     = plan?.rate || '';
+  document.getElementById('insPFeats').value    = plan?.features || '';
+  document.getElementById('insPRecommended').checked = plan?.recommended || false;
+  document.getElementById('insPSort').value     = plan?.sort ?? 0;
+  document.getElementById('insModal').classList.add('open');
+}
+
+function editInsPlan(id) {
+  const plan = getInsPlans().find(p=>p.id===id);
+  if (plan) openInsModal(plan);
+}
+
+function deleteInsPlan(id) {
+  if (!confirm('Delete this plan?')) return;
+  const plans = getInsPlans().filter(p=>p.id!==id);
+  saveInsPlans(plans);
+  loadInsPlansPage();
+  toast('Plan deleted');
+}
+
+function saveInsPlan() {
+  const name = document.getElementById('insPName').value.trim();
+  if (!name) { toast('Plan name required', true); return; }
+  const id  = document.getElementById('insPlanId').value || name.toLowerCase().replace(/\s+/g,'-');
+  const plan = {
+    id,
+    name,
+    type:        document.getElementById('insPType').value,
+    cover:       document.getElementById('insPCover').value.trim(),
+    rate:        parseFloat(document.getElementById('insPRate').value)||90,
+    features:    document.getElementById('insPFeats').value.trim(),
+    recommended: document.getElementById('insPRecommended').checked,
+    sort:        parseInt(document.getElementById('insPSort').value)||0,
+  };
+  const plans = getInsPlans().filter(p=>p.id!==id);
+  plans.push(plan);
+  plans.sort((a,b)=>a.sort-b.sort);
+  saveInsPlans(plans);
+  // Also update the rate in ew_ins_rates
+  try {
+    const rates = JSON.parse(localStorage.getItem('ew_ins_rates')||'{}');
+    if (!rates.planBase) rates.planBase = {};
+    rates.planBase[plan.type] = plan.rate;
+    localStorage.setItem('ew_ins_rates', JSON.stringify(rates));
+  } catch(e){}
+  closeModal('insModal');
+  loadInsPlansPage();
+  toast('Plan saved — insurance page updated');
+}
+
+// Auto-load when page shown
+const _origShowPage = window.showPage;
+window.showPage = function(id, btn) {
+  _origShowPage(id, btn);
+  if (id === 'insurance') loadInsPlansPage();
+};
+</script>
+
 <div class="page" id="pg-inscalc">
   <div class="ph">
     <div><h2>Insurance <em>Calculator</em></h2><p>Set rates — auto-synced to the insurance page calculator</p></div>

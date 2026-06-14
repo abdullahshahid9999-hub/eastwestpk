@@ -512,20 +512,26 @@ const INS_COMPANIES = [
   { name:'Allianz EFU Health', type:'Conventional', logo:'' },
 ];
 
-const PLANS = [
-  { id:'basic', name:'Essential Care', mult:1.0,
-    cover:'$25,000', medAmt:'$25,000',
-    features:['Emergency Medical','Lost Baggage','24/7 Helpline','Flight Delay'],
-    excl:['Trip Cancellation','Repatriation','COVID-19'] },
-  { id:'standard', name:'Standard Cover', mult:1.6,
-    cover:'$50,000', medAmt:'$50,000',
-    features:['Emergency Medical','Lost Baggage','24/7 Helpline','Trip Cancellation','Passport Loss','Repatriation'],
-    excl:['Adventure Sports','COVID-19'] },
-  { id:'comprehensive', name:'Comprehensive Plus', mult:2.4,
-    cover:'$100,000', medAmt:'$100,000',
-    features:['Emergency Medical','Lost Baggage','24/7 Helpline','Trip Cancellation','Passport Loss','Repatriation','COVID-19 Included','Adventure Sports'],
-    excl:[] },
-];
+// Load plans from admin localStorage (set by admin Insurance Plans page)
+function getPublicPlans() {
+  try {
+    const d = localStorage.getItem('ew_ins_plans');
+    if (d) {
+      const plans = JSON.parse(d);
+      if (plans && plans.length) return plans.sort((a,b)=>a.sort-b.sort);
+    }
+  } catch(e){}
+  // Default fallback
+  return [
+    { id:'basic', name:'Essential Care', type:'basic', cover:'$25,000', rate:90, recommended:false,
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Flight Delay' },
+    { id:'standard', name:'Standard Cover', type:'standard', cover:'$50,000', rate:140, recommended:true,
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation' },
+    { id:'comprehensive', name:'Comprehensive Plus', type:'comprehensive', cover:'$100,000', rate:210, recommended:false,
+      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation,COVID-19 Included,Adventure Sports' },
+  ];
+}
+const PLANS = getPublicPlans();
 
 const DEST_LABELS = {
   gulf:'Gulf States', umrah:'Saudi Arabia (Umrah/Hajj)', qatar:'Qatar',
@@ -570,8 +576,11 @@ function viewInsPlans() {
     `${PLANS.length * INS_COMPANIES.slice(0,2).length} plans available for ${DEST_LABELS[dest]} · ${days} days`;
 
   // Build plan cards — one per plan (3 cards)
-  document.getElementById('planList').innerHTML = PLANS.map((plan, pi) => {
-    const total = Math.round(R.planBase[plan.id] * dm * am * tm * days * pax / 100) * 100;
+  const LIVE_PLANS = getPublicPlans();
+  document.getElementById('planList').innerHTML = LIVE_PLANS.map((plan, pi) => {
+    const rateKey = plan.type || plan.id;
+    const baseRate = plan.rate || R.planBase[rateKey] || R.planBase[plan.id] || 90;
+    const total = Math.round(baseRate * dm * am * tm * days * pax / 100) * 100;
     const company = INS_COMPANIES[pi % INS_COMPANIES.length];
     const waMsg = encodeURIComponent(
       'Assalam o Alaikum! I want to purchase travel insurance:\n'+
@@ -598,11 +607,11 @@ function viewInsPlans() {
           </div>
         </div>
         <div class="ipc-info">
-          <div class="ipc-plan-name">${plan.name}</div>
+          <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:8px;font-family:Plus Jakarta Sans,sans-serif">★ Recommended</span>':''}</div>
           <div class="ipc-cover-label">Medical Cover</div>
-          <div class="ipc-cover-val">${plan.medAmt}</div>
+          <div class="ipc-cover-val">${plan.cover||plan.medAmt||'See Details'}</div>
           <div class="ipc-feats">
-            ${plan.features.map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}
+            ${(Array.isArray(plan.features)?plan.features:String(plan.features||'').split(',')).map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f.trim()}</span>`).join('')}
           </div>
         </div>
         <div class="ipc-cta">
