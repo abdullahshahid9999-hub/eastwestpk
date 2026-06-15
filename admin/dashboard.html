@@ -149,7 +149,7 @@ tbody td strong{color:var(--text);font-weight:600}
     <button class="sbn" onclick="showPage('tours',this)"><i class="fa fa-globe"></i> World Tours</button>
     <button class="sbn" onclick="showPage('visa',this)"><i class="fa fa-passport"></i> Visa Services</button>
     <button class="sbn" onclick="showPage('group',this)"><i class="fa fa-plane"></i> Group Tickets</button>
-    <button class="sbn" onclick="showPage('insurance',this);loadInsPlansPage()"><i class="fa fa-shield-alt"></i> Insurance Plans</button>
+    <button class="sbn" onclick="showPage('insurance',this);insTab('co')"><i class="fa fa-shield-alt"></i> Insurance Plans</button>
     <div class="sb-lbl">Content</div>
     <button class="sbn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-lbl">System</div>
@@ -277,176 +277,468 @@ tbody td strong{color:var(--text);font-weight:600}
 
 <div class="page" id="pg-insurance">
   <div class="ph">
-    <div><h2>Insurance <em>Plans</em></h2><p>Manage plans shown on the insurance page</p></div>
-    <button class="btn btn-g" onclick="openInsModal()"><i class="fa fa-plus"></i> Add Plan</button>
+    <div><h2>Insurance <em>Portal</em></h2><p>Manage companies, plans and rates</p></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-t" id="ins-tab-co"  onclick="insTab('co')" >Companies</button>
+      <button class="btn btn-g" id="ins-tab-pl"  onclick="insTab('pl')" >Plans</button>
+      <button class="btn btn-t" id="ins-tab-rt"  onclick="insTab('rt')" >Rates</button>
+    </div>
   </div>
 
-  <div class="card">
-    <div class="ch">
-      <h3>Active Plans</h3>
-      <span id="insPlansCount" style="font-size:11px;color:var(--muted)">Loading…</span>
+  <!-- ── COMPANIES ── -->
+  <div id="ins-co">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+      <button class="btn btn-g" onclick="openCoModal()"><i class="fa fa-plus"></i> Add Company</button>
     </div>
-    <div class="tw">
-      <table>
-        <thead>
-          <tr>
-            <th>Plan Name</th>
-            <th>Type</th>
-            <th>Medical Cover</th>
-            <th>Base Rate (Rs/person/day)</th>
-            <th>Recommended</th>
-            <th>Features</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="insPlansBody">
-          <tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i> Loading…</td></tr>
-        </tbody>
-      </table>
+    <div class="card"><div class="tw"><table>
+      <thead><tr><th>Company</th><th>Type</th><th>Logo</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="co-body"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- ── PLANS ── -->
+  <div id="ins-pl" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;flex-wrap:wrap">
+      <select id="pl-co-filter" class="ss" onchange="loadPlans()" style="min-width:200px">
+        <option value="">All Companies</option>
+      </select>
+      <button class="btn btn-g" onclick="openPlModal()"><i class="fa fa-plus"></i> Add Plan</button>
+    </div>
+    <div class="card"><div class="tw"><table>
+      <thead><tr><th>Plan</th><th>Company</th><th>Type</th><th>Medical Cover</th><th>Key Coverage</th><th>Recommended</th><th>Actions</th></tr></thead>
+      <tbody id="pl-body"><tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- ── RATES ── -->
+  <div id="ins-rt" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <select id="rt-pl-filter" class="ss" onchange="loadRates()" style="min-width:200px">
+          <option value="">All Plans</option>
+        </select>
+        <select id="rt-dest-filter" class="ss" onchange="loadRates()">
+          <option value="">All Destinations</option>
+          <option value="gulf">Gulf / Middle East</option>
+          <option value="umrah">Saudi (Umrah/Hajj)</option>
+          <option value="asia">Asia</option>
+          <option value="turkey">Turkey</option>
+          <option value="schengen">Schengen</option>
+          <option value="uk">United Kingdom</option>
+          <option value="usa">USA / Canada</option>
+          <option value="worldwide">Worldwide</option>
+        </select>
+      </div>
+      <button class="btn btn-g" onclick="openRtModal()"><i class="fa fa-plus"></i> Add Rate</button>
+    </div>
+    <div class="card"><div class="tw"><table>
+      <thead><tr><th>Plan</th><th>Company</th><th>Destination</th><th>Traveller</th><th>Days</th><th>Price (PKR)</th><th>Actions</th></tr></thead>
+      <tbody id="rt-body"><tr><td colspan="7" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+</div>
+
+<!-- ── COMPANY MODAL ── -->
+<div class="modal-bg" id="coModal">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3 id="coMTitle">Add <em>Company</em></h3><button class="mc" onclick="closeModal('coModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="coId">
+      <div class="fr">
+        <div class="fg"><label>Company Name *</label><input id="coName" class="mfi" placeholder="e.g. Adamjee Insurance"></div>
+        <div class="fg"><label>Short Name</label><input id="coShort" class="mfi" placeholder="e.g. Adamjee"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Type</label>
+          <select id="coType" class="mfi">
+            <option value="Conventional">Conventional</option>
+            <option value="Islamic">Islamic</option>
+            <option value="Takaful">Takaful</option>
+          </select>
+        </div>
+        <div class="fg"><label>Sort Order</label><input id="coSort" class="mfi" type="number" value="0"></div>
+      </div>
+      <div class="fg"><label>Logo URL</label><input id="coLogo" class="mfi" placeholder="https://... paste image URL" oninput="prevCoLogo(this.value)"></div>
+      <div id="coLogoPreview" style="margin-top:8px;display:none"><img id="coLogoImg" style="max-height:50px;max-width:120px;object-fit:contain;background:#fff;border-radius:6px;padding:4px;border:1px solid var(--border2)"></div>
+      <div class="fg"><label>Description</label><textarea id="coDesc" class="mfi" rows="2" placeholder="Brief description of company"></textarea></div>
+      <div class="mf">
+        <button class="mf-save" onclick="saveCo()"><i class="fa fa-save"></i> Save Company</button>
+        <button class="btn btn-t" onclick="closeModal('coModal')" style="flex-shrink:0">Cancel</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Insurance Plan Modal -->
-<div class="modal-bg" id="insModal">
-  <div class="modal" style="max-width:520px">
-    <div class="mh">
-      <h3 id="insModalTitle">Add <em>Insurance Plan</em></h3>
-      <button class="mc" onclick="closeModal('insModal')"><i class="fa fa-times"></i></button>
-    </div>
+<!-- ── PLAN MODAL ── -->
+<div class="modal-bg" id="plModal">
+  <div class="modal" style="max-width:580px">
+    <div class="mh"><h3 id="plMTitle">Add <em>Plan</em></h3><button class="mc" onclick="closeModal('plModal')"><i class="fa fa-times"></i></button></div>
     <div class="mb">
-      <input type="hidden" id="insPlanId">
+      <input type="hidden" id="plId">
       <div class="fr">
-        <div class="fg"><label>Plan Name *</label><input type="text" id="insPName" placeholder="e.g. Essential Care" class="mfi"></div>
+        <div class="fg"><label>Company *</label>
+          <select id="plCo" class="mfi"><option value="">Select company</option></select>
+        </div>
         <div class="fg"><label>Plan Type</label>
-          <select id="insPType" class="mfi">
-            <option value="basic">Basic</option>
-            <option value="standard">Standard</option>
-            <option value="comprehensive">Comprehensive</option>
+          <select id="plType" class="mfi">
+            <option value="travel">Travel</option>
+            <option value="umrah">Umrah</option>
+            <option value="hajj">Hajj</option>
+            <option value="student">Student</option>
+            <option value="family">Family</option>
           </select>
         </div>
       </div>
       <div class="fr">
-        <div class="fg"><label>Medical Cover</label><input type="text" id="insPCover" placeholder="e.g. $50,000" class="mfi"></div>
-        <div class="fg"><label>Base Rate (Rs/person/day)</label><input type="number" id="insPRate" placeholder="e.g. 140" class="mfi"></div>
-      </div>
-      <div class="fg"><label>Features (comma separated)</label>
-        <textarea id="insPFeats" class="mfi" rows="3" placeholder="Emergency Medical, Lost Baggage, 24/7 Helpline, Trip Cancellation"></textarea>
+        <div class="fg"><label>Plan Name *</label><input id="plName" class="mfi" placeholder="e.g. Care Plan, Basic Cover"></div>
+        <div class="fg"><label>Medical Cover</label><input id="plMed" class="mfi" placeholder="e.g. $25,000"></div>
       </div>
       <div class="fr">
-        <div class="fg" style="flex-direction:row;align-items:center;gap:10px;padding-top:8px">
-          <input type="checkbox" id="insPRecommended" style="width:16px;height:16px;accent-color:var(--gold)">
-          <label style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--text)">Mark as Recommended</label>
+        <div class="fg"><label>Baggage Cover</label><input id="plBag" class="mfi" placeholder="e.g. $500"></div>
+        <div class="fg"><label>Sort Order</label><input id="plSort" class="mfi" type="number" value="0"></div>
+      </div>
+      <!-- Coverage checkboxes -->
+      <div style="margin-bottom:12px">
+        <label style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:8px">Coverage Included</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer"><input type="checkbox" id="plTC" style="accent-color:var(--gold)"> Trip Cancellation</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer"><input type="checkbox" id="plRep" style="accent-color:var(--gold)"> Repatriation</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer"><input type="checkbox" id="plCov" style="accent-color:var(--gold)"> COVID-19</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer"><input type="checkbox" id="plAdv" style="accent-color:var(--gold)"> Adventure Sports</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer"><input type="checkbox" id="plAcc" style="accent-color:var(--gold)"> Personal Accident</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer"><input type="checkbox" id="plPP" style="accent-color:var(--gold)"> Passport Loss</label>
         </div>
-        <div class="fg"><label>Sort Order</label><input type="number" id="insPSort" class="mfi" value="0" min="0"></div>
+      </div>
+      <div class="fg"><label>Extra Features <span style="color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">(comma separated)</span></label>
+        <textarea id="plFeat" class="mfi" rows="2" placeholder="e.g. 24/7 Helpline, Flight Delay, Hijacking Cover"></textarea>
+      </div>
+      <div class="fg"><label>Exclusions <span style="color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">(comma separated)</span></label>
+        <textarea id="plExcl" class="mfi" rows="2" placeholder="e.g. Pre-existing conditions, War, Self-injury"></textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <input type="checkbox" id="plRec" style="accent-color:var(--gold);width:15px;height:15px">
+        <label style="font-size:13px;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer" for="plRec">Mark as ⭐ Recommended</label>
       </div>
       <div class="mf">
-        <button class="mf-save" onclick="saveInsPlan()"><i class="fa fa-save"></i> Save Plan</button>
-        <button class="btn btn-t" onclick="closeModal('insModal')" style="flex-shrink:0">Cancel</button>
+        <button class="mf-save" onclick="savePl()"><i class="fa fa-save"></i> Save Plan</button>
+        <button class="btn btn-t" onclick="closeModal('plModal')" style="flex-shrink:0">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RATE MODAL ── -->
+<div class="modal-bg" id="rtModal">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3 id="rtMTitle">Add <em>Rate</em></h3><button class="mc" onclick="closeModal('rtModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb">
+      <input type="hidden" id="rtId">
+      <div class="fg"><label>Plan *</label>
+        <select id="rtPl" class="mfi"><option value="">Select plan</option></select>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Destination *</label>
+          <select id="rtDest" class="mfi">
+            <option value="gulf">Gulf / Middle East</option>
+            <option value="umrah">Saudi Arabia (Umrah/Hajj)</option>
+            <option value="asia">Asia (Thailand, Malaysia etc)</option>
+            <option value="turkey">Turkey</option>
+            <option value="schengen">Schengen States</option>
+            <option value="uk">United Kingdom</option>
+            <option value="usa">USA / Canada / Australia</option>
+            <option value="worldwide">Worldwide</option>
+          </select>
+        </div>
+        <div class="fg"><label>Traveller Type</label>
+          <select id="rtTrav" class="mfi">
+            <option value="individual">Individual</option>
+            <option value="family">Family</option>
+            <option value="group">Group</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Min Days *</label><input id="rtMin" class="mfi" type="number" min="1" value="1" placeholder="e.g. 1"></div>
+        <div class="fg"><label>Max Days *</label><input id="rtMax" class="mfi" type="number" min="1" value="7" placeholder="e.g. 7"></div>
+      </div>
+      <div class="fg"><label>Price (PKR) *</label><input id="rtPrice" class="mfi" type="number" min="0" placeholder="e.g. 1800"></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:-6px;margin-bottom:12px">
+        Example: Min=1 Max=7 means this rate applies for trips of 1–7 days. Add another row for 8–14 days etc.
+      </div>
+      <div class="mf">
+        <button class="mf-save" onclick="saveRt()"><i class="fa fa-save"></i> Save Rate</button>
+        <button class="btn btn-t" onclick="closeModal('rtModal')" style="flex-shrink:0">Cancel</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ── INSURANCE PLANS (stored in localStorage, used by insurance.html) ──
-const INS_PLANS_KEY = 'ew_ins_plans';
+/* ══════════════════════════════════════
+   INSURANCE PORTAL — Admin JS
+   ══════════════════════════════════════ */
+const INS_SUPA = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const INS_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+const INS_H    = { 'apikey':INS_KEY,'Authorization':'Bearer '+INS_KEY,'Content-Type':'application/json','Prefer':'return=representation' };
 
-function getInsPlans() {
-  try {
-    const d = localStorage.getItem(INS_PLANS_KEY);
-    if (d) return JSON.parse(d);
-  } catch(e){}
-  // Default plans
-  return [
-    { id:'basic', name:'Essential Care', type:'basic', cover:'$25,000', rate:90, recommended:false, sort:0,
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Flight Delay' },
-    { id:'standard', name:'Standard Cover', type:'standard', cover:'$50,000', rate:140, recommended:true, sort:1,
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation' },
-    { id:'comprehensive', name:'Comprehensive Plus', type:'comprehensive', cover:'$100,000', rate:210, recommended:false, sort:2,
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation,COVID-19 Included,Adventure Sports' },
-  ];
+const DEST_NAMES = {gulf:'Gulf',umrah:'Saudi (Umrah/Hajj)',asia:'Asia',turkey:'Turkey',schengen:'Schengen',uk:'United Kingdom',usa:'USA/Canada',worldwide:'Worldwide'};
+
+let allCos=[], allPls=[], allRts=[];
+
+async function supaGet(table, qs='') {
+  const r = await fetch(`${INS_SUPA}/rest/v1/${table}?${qs}&order=sort_order.asc,created_at.asc`, {headers:INS_H});
+  return r.json();
+}
+async function supaPost(table, data) {
+  const r = await fetch(`${INS_SUPA}/rest/v1/${table}`, {method:'POST',headers:INS_H,body:JSON.stringify(data)});
+  return r.json();
+}
+async function supaPatch(table, id, data) {
+  const r = await fetch(`${INS_SUPA}/rest/v1/${table}?id=eq.${id}`, {method:'PATCH',headers:INS_H,body:JSON.stringify(data)});
+  return r.json();
+}
+async function supaDelete(table, id) {
+  await fetch(`${INS_SUPA}/rest/v1/${table}?id=eq.${id}`, {method:'DELETE',headers:INS_H});
 }
 
-function saveInsPlans(plans) {
-  localStorage.setItem(INS_PLANS_KEY, JSON.stringify(plans));
+/* ── TAB SWITCHING ── */
+function insTab(tab) {
+  ['co','pl','rt'].forEach(t => {
+    document.getElementById('ins-'+t).style.display = t===tab ? 'block' : 'none';
+    document.getElementById('ins-tab-'+t).className = t===tab ? 'btn btn-g' : 'btn btn-t';
+  });
+  if (tab==='co') loadCos();
+  if (tab==='pl') { loadCos(); loadPlans(); }
+  if (tab==='rt') { loadCos(); loadPlans(); loadRates(); }
 }
 
-function loadInsPlansPage() {
-  const plans = getInsPlans().sort((a,b)=>a.sort-b.sort);
-  document.getElementById('insPlansCount').textContent = plans.length + ' plans';
-  document.getElementById('insPlansBody').innerHTML = plans.length ? plans.map(p => `
-    <tr>
-      <td><strong>${p.name}</strong></td>
-      <td><span class="pill p-act">${p.type}</span></td>
-      <td style="color:var(--gold);font-weight:700">${p.cover}</td>
-      <td>Rs. ${p.rate}/person/day</td>
-      <td>${p.recommended ? '<span class="pill p-pend">⭐ Yes</span>' : '<span style="color:var(--muted)">—</span>'}</td>
-      <td style="font-size:11px;color:var(--muted);max-width:200px;line-height:1.5">${(p.features||'').split(',').slice(0,3).join(', ')}${p.features&&p.features.split(',').length>3?'…':''}</td>
-      <td>
-        <button class="btn-s" onclick="editInsPlan('${p.id}')"><i class="fa fa-pen"></i> Edit</button>
-        <button class="btn-r" onclick="deleteInsPlan('${p.id}')" style="margin-left:4px"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="7" class="etd">No plans. Add one above.</td></tr>';
+/* ══ COMPANIES ══ */
+async function loadCos() {
+  allCos = await supaGet('ins_companies','active=eq.true');
+  if (!Array.isArray(allCos)) { allCos=[]; }
+
+  // Render table
+  document.getElementById('co-body').innerHTML = allCos.length
+    ? allCos.map(co=>`<tr>
+        <td><strong>${co.name}</strong>${co.description?`<br><span style="font-size:11px;color:var(--muted)">${co.description}</span>`:''}</td>
+        <td><span class="pill p-pend">${co.type||'Conventional'}</span></td>
+        <td>${co.logo_url?`<img src="${co.logo_url}" style="max-height:32px;max-width:80px;object-fit:contain;background:#fff;border-radius:4px;padding:2px">`:'<span style="color:var(--dim)">—</span>'}</td>
+        <td><span class="pill ${co.active?'p-act':'p-canc'}">${co.active?'Active':'Inactive'}</span></td>
+        <td>
+          <button class="btn-s" onclick='editCo(${JSON.stringify(co)})'><i class="fa fa-pen"></i> Edit</button>
+          <button class="btn-r" onclick="deleteCo('${co.id}')" style="margin-left:4px"><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" class="etd">No companies yet. Add one.</td></tr>';
+
+  // Populate plan filter dropdown
+  const coSel = document.getElementById('pl-co-filter');
+  if (coSel) {
+    const cur = coSel.value;
+    coSel.innerHTML = '<option value="">All Companies</option>'+allCos.map(co=>`<option value="${co.id}" ${co.id===cur?'selected':''}>${co.name}</option>`).join('');
+  }
 }
 
-function openInsModal(plan) {
-  document.getElementById('insModalTitle').innerHTML = plan ? 'Edit <em>Insurance Plan</em>' : 'Add <em>Insurance Plan</em>';
-  document.getElementById('insPlanId').value    = plan?.id || '';
-  document.getElementById('insPName').value     = plan?.name || '';
-  document.getElementById('insPType').value     = plan?.type || 'basic';
-  document.getElementById('insPCover').value    = plan?.cover || '';
-  document.getElementById('insPRate').value     = plan?.rate || '';
-  document.getElementById('insPFeats').value    = plan?.features || '';
-  document.getElementById('insPRecommended').checked = plan?.recommended || false;
-  document.getElementById('insPSort').value     = plan?.sort ?? 0;
-  document.getElementById('insModal').classList.add('open');
+function openCoModal(co) {
+  document.getElementById('coMTitle').innerHTML = co ? 'Edit <em>Company</em>' : 'Add <em>Company</em>';
+  document.getElementById('coId').value    = co?.id||'';
+  document.getElementById('coName').value  = co?.name||'';
+  document.getElementById('coShort').value = co?.short_name||'';
+  document.getElementById('coType').value  = co?.type||'Conventional';
+  document.getElementById('coSort').value  = co?.sort_order??0;
+  document.getElementById('coLogo').value  = co?.logo_url||'';
+  document.getElementById('coDesc').value  = co?.description||'';
+  prevCoLogo(co?.logo_url||'');
+  document.getElementById('coModal').classList.add('open');
 }
-
-function editInsPlan(id) {
-  const plan = getInsPlans().find(p=>p.id===id);
-  if (plan) openInsModal(plan);
+function editCo(co) { openCoModal(co); }
+function prevCoLogo(url) {
+  const p=document.getElementById('coLogoPreview'), img=document.getElementById('coLogoImg');
+  if (url) { img.src=url; p.style.display='block'; } else { p.style.display='none'; }
 }
-
-function deleteInsPlan(id) {
-  if (!confirm('Delete this plan?')) return;
-  const plans = getInsPlans().filter(p=>p.id!==id);
-  saveInsPlans(plans);
-  loadInsPlansPage();
-  toast('Plan deleted');
-}
-
-function saveInsPlan() {
-  const name = document.getElementById('insPName').value.trim();
-  if (!name) { toast('Plan name required', true); return; }
-  const id  = document.getElementById('insPlanId').value || name.toLowerCase().replace(/\s+/g,'-');
-  const plan = {
-    id,
-    name,
-    type:        document.getElementById('insPType').value,
-    cover:       document.getElementById('insPCover').value.trim(),
-    rate:        parseFloat(document.getElementById('insPRate').value)||90,
-    features:    document.getElementById('insPFeats').value.trim(),
-    recommended: document.getElementById('insPRecommended').checked,
-    sort:        parseInt(document.getElementById('insPSort').value)||0,
+async function saveCo() {
+  const name = document.getElementById('coName').value.trim();
+  if (!name) { toast('Company name required',true); return; }
+  const data = {
+    name, short_name:document.getElementById('coShort').value.trim(),
+    type:document.getElementById('coType').value,
+    logo_url:document.getElementById('coLogo').value.trim()||null,
+    description:document.getElementById('coDesc').value.trim()||null,
+    sort_order:parseInt(document.getElementById('coSort').value)||0,
+    active:true
   };
-  const plans = getInsPlans().filter(p=>p.id!==id);
-  plans.push(plan);
-  plans.sort((a,b)=>a.sort-b.sort);
-  saveInsPlans(plans);
-  // Also update the rate in ew_ins_rates
-  try {
-    const rates = JSON.parse(localStorage.getItem('ew_ins_rates')||'{}');
-    if (!rates.planBase) rates.planBase = {};
-    rates.planBase[plan.type] = plan.rate;
-    localStorage.setItem('ew_ins_rates', JSON.stringify(rates));
-  } catch(e){}
-  closeModal('insModal');
-  loadInsPlansPage();
-  toast('Plan saved — insurance page updated');
+  const id = document.getElementById('coId').value;
+  if (id) await supaPatch('ins_companies',id,data);
+  else await supaPost('ins_companies',data);
+  closeModal('coModal'); loadCos(); toast('Company saved');
+}
+async function deleteCo(id) {
+  if (!confirm('Delete company? This will also delete its plans and rates.')) return;
+  await supaDelete('ins_companies',id); loadCos(); toast('Deleted');
 }
 
-// loadInsPlansPage called directly from sidebar button onclick
+/* ══ PLANS ══ */
+async function loadPlans() {
+  const coId = document.getElementById('pl-co-filter')?.value||'';
+  const qs = coId ? `company_id=eq.${coId}` : '';
+  allPls = await supaGet('ins_plans', qs);
+  if (!Array.isArray(allPls)) allPls=[];
+
+  // Populate plan selects
+  ['rtPl'].forEach(selId => {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">All Plans</option>'+allPls.map(p=>`<option value="${p.id}" ${p.id===cur?'selected':''}>${p.name}</option>`).join('');
+  });
+  const rtFilter = document.getElementById('rt-pl-filter');
+  if (rtFilter) { const cur=rtFilter.value; rtFilter.innerHTML='<option value="">All Plans</option>'+allPls.map(p=>`<option value="${p.id}" ${p.id===cur?'selected':''}>${p.name}</option>`).join(''); }
+
+  document.getElementById('pl-body').innerHTML = allPls.length
+    ? allPls.map(p=>{
+        const co = allCos.find(c=>c.id===p.company_id);
+        const covers = [
+          p.trip_cancel&&'Trip Cancel', p.repatriation&&'Repatriation',
+          p.covid_cover&&'COVID-19', p.adventure&&'Adventure', p.personal_acc&&'Personal Acc', p.passport_loss&&'Passport'
+        ].filter(Boolean);
+        return `<tr>
+          <td><strong>${p.name}</strong></td>
+          <td>${co?co.name:'—'}</td>
+          <td><span class="pill p-act">${p.plan_type||'travel'}</span></td>
+          <td style="color:var(--gold);font-weight:700">${p.medical_cover||'—'}</td>
+          <td style="font-size:11px;color:var(--muted)">${covers.join(', ')||'—'}</td>
+          <td>${p.recommended?'<span class="pill p-pend">⭐ Yes</span>':'<span style="color:var(--muted)">—</span>'}</td>
+          <td>
+            <button class="btn-s" onclick='editPl(${JSON.stringify(p)})'><i class="fa fa-pen"></i> Edit</button>
+            <button class="btn-r" onclick="deletePl('${p.id}')" style="margin-left:4px"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="7" class="etd">No plans yet. Add companies first, then add plans.</td></tr>';
+}
+
+function openPlModal(pl) {
+  // Populate company dropdown
+  const coSel = document.getElementById('plCo');
+  coSel.innerHTML = '<option value="">Select company</option>'+allCos.map(co=>`<option value="${co.id}" ${co.id===pl?.company_id?'selected':''}>${co.name}</option>`).join('');
+
+  document.getElementById('plMTitle').innerHTML = pl ? 'Edit <em>Plan</em>' : 'Add <em>Plan</em>';
+  document.getElementById('plId').value   = pl?.id||'';
+  document.getElementById('plName').value = pl?.name||'';
+  document.getElementById('plType').value = pl?.plan_type||'travel';
+  document.getElementById('plMed').value  = pl?.medical_cover||'';
+  document.getElementById('plBag').value  = pl?.baggage_cover||'';
+  document.getElementById('plSort').value = pl?.sort_order??0;
+  document.getElementById('plTC').checked  = pl?.trip_cancel||false;
+  document.getElementById('plRep').checked = pl?.repatriation||false;
+  document.getElementById('plCov').checked = pl?.covid_cover||false;
+  document.getElementById('plAdv').checked = pl?.adventure||false;
+  document.getElementById('plAcc').checked = pl?.personal_acc||false;
+  document.getElementById('plPP').checked  = pl?.passport_loss||false;
+  document.getElementById('plFeat').value  = pl?.features||'';
+  document.getElementById('plExcl').value  = pl?.exclusions||'';
+  document.getElementById('plRec').checked = pl?.recommended||false;
+  document.getElementById('plModal').classList.add('open');
+}
+function editPl(pl) { openPlModal(pl); }
+async function savePl() {
+  const name = document.getElementById('plName').value.trim();
+  const coId = document.getElementById('plCo').value;
+  if (!name||!coId) { toast('Company and plan name required',true); return; }
+  const data = {
+    company_id:coId, name, plan_type:document.getElementById('plType').value,
+    medical_cover:document.getElementById('plMed').value.trim()||null,
+    baggage_cover:document.getElementById('plBag').value.trim()||null,
+    trip_cancel:document.getElementById('plTC').checked,
+    repatriation:document.getElementById('plRep').checked,
+    covid_cover:document.getElementById('plCov').checked,
+    adventure:document.getElementById('plAdv').checked,
+    personal_acc:document.getElementById('plAcc').checked,
+    passport_loss:document.getElementById('plPP').checked,
+    features:document.getElementById('plFeat').value.trim()||null,
+    exclusions:document.getElementById('plExcl').value.trim()||null,
+    recommended:document.getElementById('plRec').checked,
+    sort_order:parseInt(document.getElementById('plSort').value)||0,
+    active:true
+  };
+  const id = document.getElementById('plId').value;
+  if (id) await supaPatch('ins_plans',id,data);
+  else await supaPost('ins_plans',data);
+  closeModal('plModal'); loadPlans(); toast('Plan saved');
+}
+async function deletePl(id) {
+  if (!confirm('Delete plan? Its rates will also be deleted.')) return;
+  await supaDelete('ins_plans',id); loadPlans(); toast('Deleted');
+}
+
+/* ══ RATES ══ */
+async function loadRates() {
+  const plId   = document.getElementById('rt-pl-filter')?.value||'';
+  const dest   = document.getElementById('rt-dest-filter')?.value||'';
+  let qs = [];
+  if (plId) qs.push(`plan_id=eq.${plId}`);
+  if (dest) qs.push(`destination=eq.${dest}`);
+  allRts = await supaGet('ins_rates', qs.join('&'));
+  if (!Array.isArray(allRts)) allRts=[];
+
+  document.getElementById('rt-body').innerHTML = allRts.length
+    ? allRts.map(r=>{
+        const pl = allPls.find(p=>p.id===r.plan_id);
+        const co = pl ? allCos.find(c=>c.id===pl.company_id) : null;
+        return `<tr>
+          <td><strong>${pl?.name||'—'}</strong></td>
+          <td>${co?.name||'—'}</td>
+          <td>${DEST_NAMES[r.destination]||r.destination}</td>
+          <td><span class="pill p-act">${r.traveller_type}</span></td>
+          <td>${r.days_min}–${r.days_max} days</td>
+          <td style="color:var(--gold);font-weight:700">Rs. ${Number(r.price_pkr).toLocaleString()}</td>
+          <td>
+            <button class="btn-s" onclick='editRt(${JSON.stringify(r)})'><i class="fa fa-pen"></i> Edit</button>
+            <button class="btn-r" onclick="deleteRt('${r.id}')" style="margin-left:4px"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="7" class="etd">No rates yet. Add plans first, then set rates.</td></tr>';
+}
+
+function openRtModal(rt) {
+  const plSel = document.getElementById('rtPl');
+  plSel.innerHTML = '<option value="">Select plan</option>'+allPls.map(p=>{
+    const co=allCos.find(c=>c.id===p.company_id);
+    return `<option value="${p.id}" ${p.id===rt?.plan_id?'selected':''}>${co?co.name+' — ':''} ${p.name}</option>`;
+  }).join('');
+
+  document.getElementById('rtMTitle').innerHTML = rt ? 'Edit <em>Rate</em>' : 'Add <em>Rate</em>';
+  document.getElementById('rtId').value     = rt?.id||'';
+  document.getElementById('rtDest').value   = rt?.destination||'gulf';
+  document.getElementById('rtTrav').value   = rt?.traveller_type||'individual';
+  document.getElementById('rtMin').value    = rt?.days_min||1;
+  document.getElementById('rtMax').value    = rt?.days_max||7;
+  document.getElementById('rtPrice').value  = rt?.price_pkr||'';
+  document.getElementById('rtModal').classList.add('open');
+}
+function editRt(rt) { openRtModal(rt); }
+async function saveRt() {
+  const plId  = document.getElementById('rtPl').value;
+  const price = parseInt(document.getElementById('rtPrice').value);
+  const min   = parseInt(document.getElementById('rtMin').value);
+  const max   = parseInt(document.getElementById('rtMax').value);
+  if (!plId||!price||!min||!max) { toast('All fields required',true); return; }
+  if (min>max) { toast('Min days must be ≤ max days',true); return; }
+  const data = {
+    plan_id:plId, destination:document.getElementById('rtDest').value,
+    traveller_type:document.getElementById('rtTrav').value,
+    days_min:min, days_max:max, price_pkr:price
+  };
+  const id = document.getElementById('rtId').value;
+  if (id) await supaPatch('ins_rates',id,data);
+  else await supaPost('ins_rates',data);
+  closeModal('rtModal'); loadRates(); toast('Rate saved');
+}
+async function deleteRt(id) {
+  if (!confirm('Delete this rate?')) return;
+  await supaDelete('ins_rates',id); loadRates(); toast('Deleted');
+}
 </script>
 
 <div class="page" id="pg-inscalc">
