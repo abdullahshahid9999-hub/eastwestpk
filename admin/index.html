@@ -175,7 +175,7 @@
     setTimeout(() => {
       if (user === ADMIN_USER && pwd === ADMIN_PASS) {
         sessionStorage.setItem('ew_admin', JSON.stringify({ email: 'admin@eastwestpk.com', name: 'Admin', role: 'admin' }));
-        window.location.href = 'dashboard.html';
+        window.location.href = '/admin/dashboard';
       } else {
         btn.disabled = false;
         document.getElementById('loginTxt').textContent = 'Login to Admin Panel';
