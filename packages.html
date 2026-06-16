@@ -186,7 +186,7 @@
 
 <div class="nav-overlay" id="navOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s" onclick="closeMenu()"></div>
 <nav class="navbar" id="navbar">
-  <a href="/" class="nav-logo">
+  <a href="index.html" class="nav-logo">
     <img src="assets/images/logo.jpg" alt="East &amp; West" onerror="this.style.display='none'">
     <span class="nav-logo-text">East &amp; <span>West</span> Travels</span>
   </a>
@@ -195,20 +195,20 @@
     <button class="nav-close" onclick="closeMenu()" aria-label="Close"><i class="fa fa-times"></i></button>
 
     <!-- Home -->
-    <a href="/" id="mlink-home">Home</a>
+    <a href="index.html" id="mlink-home">Home</a>
 
     <!-- Desktop: Packages dropdown -->
     <div class="nav-has-drop" id="mlink-svc-desk">
       <a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+am+interested+in+your+travel+services.+Please+share+details." target="_blank" class="active">Packages <i class="fa fa-chevron-down nav-chevron"></i></a>
       <div class="nav-drop">
-        <a href="umrah"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
-        <a href="tours"><i class="fa fa-globe"></i> World Tours</a>
+        <a href="umrah.html"><i class="fa fa-star-and-crescent"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html"><i class="fa fa-globe"></i> World Tours</a>
       </div>
     </div>
 
     <!-- Desktop: Direct links -->
-    <a href="visa"><i class="fa fa-passport" style="font-size:11px"></i> Visa</a>
-    <a href="blog"><i class="fa fa-pen-nib" style="font-size:11px"></i> Blog</a>
+    <a href="visa.html"><i class="fa fa-passport" style="font-size:11px"></i> Visa</a>
+    <a href="blog.html"><i class="fa fa-pen-nib" style="font-size:11px"></i> Blog</a>
 
     <!-- Mobile only: expandable packages -->
     <div id="mlink-svc-mob" style="display:none;border-bottom:1px solid rgba(0,0,0,0.04)">
@@ -218,16 +218,16 @@
         <i class="fa fa-chevron-down" style="font-size:11px;color:#9090AA;transition:transform 0.25s" id="mobSvcArrow"></i>
       </div>
       <div id="mobSvcSub" style="display:none;background:#F9F7F2">
-        <a href="umrah" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px;text-align:center"></i> Umrah &amp; Hajj</a>
-        <a href="tours" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px;text-align:center"></i> World Tours</a>
-        <a href="visa" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px;text-align:center"></i> Visa Services</a>
-        <a href="blog" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px;text-align:center"></i> Blog</a>
+        <a href="umrah.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-star-and-crescent" style="color:#C9A84C;width:16px;text-align:center"></i> Umrah &amp; Hajj</a>
+        <a href="tours.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-globe" style="color:#C9A84C;width:16px;text-align:center"></i> World Tours</a>
+        <a href="visa.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-passport" style="color:#C9A84C;width:16px;text-align:center"></i> Visa Services</a>
+        <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px 32px;font-size:13px;color:#6B6B8A;border-bottom:1px solid rgba(0,0,0,0.03);text-decoration:none"><i class="fa fa-pen-nib" style="color:#C9A84C;width:16px;text-align:center"></i> Blog</a>
       </div>
     </div>
 
     <!-- Account + CTA -->
     
-    <a href="visa" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
+    <a href="visa.html" class="nav-cta"><i class="fa fa-compass"></i> Book Now</a>
   </div>
 
   <button id="menuBtn" onclick="openMenu()"><i class="fa fa-bars"></i></button>
@@ -236,7 +236,7 @@
 <div class="page-header">
   <div class="ph-bg" style="background-image:url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80')"></div>
   <div class="container">
-    <div class="breadcrumb"><a href="/">Home</a><i class="fa fa-chevron-right" style="font-size:9px"></i><span>Packages</span></div>
+    <div class="breadcrumb"><a href="index.html">Home</a><i class="fa fa-chevron-right" style="font-size:9px"></i><span>Packages</span></div>
     <h1>Our Travel <em>Packages</em></h1>
     <p>Umrah, Dubai, Thailand, Family tours — all under one roof</p>
   </div>
@@ -521,7 +521,7 @@
           <div class="pkg-title">Visa Assistance Service</div>
           <div class="pkg-meta"><span><i class="fa fa-clock"></i> 7–15 Working Days</span><span><i class="fa fa-check-circle" style="color:#10B981"></i> 95% Success</span></div>
           <div class="pkg-chips"><span class="pkg-chip">🇦🇪 UAE</span><span class="pkg-chip">🇹🇭 Thailand</span><span class="pkg-chip">🇮🇩 Bali</span><span class="pkg-chip">🇸🇦 Saudi</span></div>
-          <div class="pkg-footer"><div class="pkg-price"><span>Rs. 12,000</span><small>starting from</small></div><a href="contact" class="btn-enquire" onclick="event.stopPropagation()"><i class="fa fa-headset"></i> Enquire</a></div>
+          <div class="pkg-footer"><div class="pkg-price"><span>Rs. 12,000</span><small>starting from</small></div><a href="contact.html" class="btn-enquire" onclick="event.stopPropagation()"><i class="fa fa-headset"></i> Enquire</a></div>
         </div>
       </div>
 
@@ -532,7 +532,7 @@
           <div class="pkg-title">Air Ticket Booking</div>
           <div class="pkg-meta"><span><i class="fa fa-bolt"></i> Instant Confirmation</span><span><i class="fa fa-tag"></i> Best Price</span></div>
           <div class="pkg-chips"><span class="pkg-chip">🌍 All Airlines</span><span class="pkg-chip">💺 Economy/Business</span><span class="pkg-chip">🔄 Return Tickets</span></div>
-          <div class="pkg-footer"><div class="pkg-price"><span>Best Rate</span><small>guaranteed</small></div><a href="contact" class="btn-enquire" onclick="event.stopPropagation()"><i class="fa fa-headset"></i> Get Quote</a></div>
+          <div class="pkg-footer"><div class="pkg-price"><span>Best Rate</span><small>guaranteed</small></div><a href="contact.html" class="btn-enquire" onclick="event.stopPropagation()"><i class="fa fa-headset"></i> Get Quote</a></div>
         </div>
       </div>
 
@@ -543,7 +543,7 @@
           <div class="pkg-title">Hotel Booking Service</div>
           <div class="pkg-meta"><span><i class="fa fa-star" style="color:var(--gold)"></i> 3★ to 5★</span><span><i class="fa fa-check"></i> Best Rates</span></div>
           <div class="pkg-chips"><span class="pkg-chip">🕌 Haram Hotels</span><span class="pkg-chip">🌍 Worldwide</span><span class="pkg-chip">📞 24/7 Support</span></div>
-          <div class="pkg-footer"><div class="pkg-price"><span>Rs. 5,000</span><small>starting per night</small></div><a href="contact" class="btn-enquire" onclick="event.stopPropagation()"><i class="fa fa-headset"></i> Book Hotel</a></div>
+          <div class="pkg-footer"><div class="pkg-price"><span>Rs. 5,000</span><small>starting per night</small></div><a href="contact.html" class="btn-enquire" onclick="event.stopPropagation()"><i class="fa fa-headset"></i> Book Hotel</a></div>
         </div>
       </div>
 
@@ -622,7 +622,7 @@
 
         <!-- Brand -->
         <div class="footer-brand">
-          <a href="/" class="nav-logo" style="margin-bottom:6px">
+          <a href="index.html" class="nav-logo" style="margin-bottom:6px">
             <img src="assets/images/logo.jpg" alt="East &amp; West" style="width:42px;height:42px;border-radius:50%;border:2px solid rgba(201,168,76,0.4);padding:2px;object-fit:contain;background:#fff">
             <span class="nav-logo-text" style="color:#fff;font-size:19px">East &amp; <span style="color:var(--gold)">West</span></span>
           </a>
@@ -638,11 +638,11 @@
         <div class="footer-links">
           <h4>Services</h4>
           <ul>
-            <li><a href="umrah"><i class="fa fa-chevron-right"></i> Umrah &amp; Hajj</a></li>
-            <li><a href="visa"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
-            <li><a href="tours"><i class="fa fa-chevron-right"></i> Tour Packages</a></li>
-            <li><a href="group-tickets"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
-            <li><a href="insurance"><i class="fa fa-chevron-right"></i> Travel Insurance</a></li>
+            <li><a href="umrah.html"><i class="fa fa-chevron-right"></i> Umrah &amp; Hajj</a></li>
+            <li><a href="visa.html"><i class="fa fa-chevron-right"></i> Visa Services</a></li>
+            <li><a href="tours.html"><i class="fa fa-chevron-right"></i> Tour Packages</a></li>
+            <li><a href="group-tickets.html"><i class="fa fa-chevron-right"></i> Group Tickets</a></li>
+            <li><a href="insurance.html"><i class="fa fa-chevron-right"></i> Travel Insurance</a></li>
           </ul>
         </div>
 
@@ -650,11 +650,11 @@
         <div class="footer-links">
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="/"><i class="fa fa-chevron-right"></i> Home</a></li>
-            <li><a href="about"><i class="fa fa-chevron-right"></i> About Us</a></li>
-            <li><a href="blog"><i class="fa fa-chevron-right"></i> Blog</a></li>
-            <li><a href="contact"><i class="fa fa-chevron-right"></i> Contact</a></li>
-            <li><a href="insurance#calcSection"><i class="fa fa-chevron-right"></i> Insurance Quote</a></li>
+            <li><a href="index.html"><i class="fa fa-chevron-right"></i> Home</a></li>
+            <li><a href="about.html"><i class="fa fa-chevron-right"></i> About Us</a></li>
+            <li><a href="blog.html"><i class="fa fa-chevron-right"></i> Blog</a></li>
+            <li><a href="contact.html"><i class="fa fa-chevron-right"></i> Contact</a></li>
+            <li><a href="insurance.html#calcSection"><i class="fa fa-chevron-right"></i> Insurance Quote</a></li>
           </ul>
         </div>
 
@@ -700,9 +700,9 @@
     <div class="footer-bottom">
       <p>© 2026 East &amp; West Travel Services. All rights reserved.</p>
       <div class="footer-bottom-links">
-        <a href="about">About</a>
-        <a href="contact">Contact</a>
-        <a href="insurance">Insurance</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="insurance.html">Insurance</a>
       </div>
     </div>
   </div>
