@@ -273,7 +273,9 @@
     /* RESPONSIVE */
     @media(max-width:1100px) { .team-grid{grid-template-columns:repeat(2,1fr);} .cert-grid{grid-template-columns:repeat(2,1fr);} }
     @media(max-width:900px) { .intro-grid{grid-template-columns:1fr;gap:40px;} .what-grid,.svc-grid{grid-template-columns:repeat(2,1fr);} .award-grid{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:640px) { .what-grid,.svc-grid,.award-grid{grid-template-columns:1fr;} .team-grid{grid-template-columns:repeat(2,1fr);} .cert-grid{grid-template-columns:repeat(2,1fr);} .h-sep{display:none;} .h-stat{padding:0 14px;} }
+    @media(max-width:640px) { .what-grid,.svc-grid,.award-grid{grid-template-columns:1fr;} .team-grid{grid-template-columns:repeat(2,1fr);} .cert-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:768px) { .hero-stats-grid{grid-template-columns:repeat(2,1fr);} .partners-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:480px) { .hero-stats-grid{grid-template-columns:1fr;} .partners-grid{grid-template-columns:repeat(2,1fr);} .hero-body h1{font-size:52px;letter-spacing:-1px;} }
   </style>
 </head>
 <body>
@@ -314,21 +316,79 @@
 <section class="about-hero">
   <div class="hero-bg"></div>
   <div class="hero-veil"></div>
-  <div class="hero-body container">
-    <div class="hero-tag">Est. 2004 — Faisalabad, Pakistan</div>
-    <h1>Pakistan's Trusted<br><em>Travel</em> Partner.</h1>
-    <p class="hero-slogan">"Our Services in Your Hands, Where Ever You Are"</p>
-    <div class="hero-stats">
-      <div class="h-stat"><div class="h-stat-n">20+</div><div class="h-stat-l">Years of Trust</div></div>
-      <div class="h-sep"></div>
-      <div class="h-stat"><div class="h-stat-n">5,000+</div><div class="h-stat-l">Happy Travelers</div></div>
-      <div class="h-sep"></div>
-      <div class="h-stat"><div class="h-stat-n">15+</div><div class="h-stat-l">Destinations</div></div>
-      <div class="h-sep"></div>
-      <div class="h-stat"><div class="h-stat-n">500+</div><div class="h-stat-l">Clients per Year</div></div>
+  <div class="hero-body">
+    <span class="hero-eyebrow">Step Foot With A Sincere Heart With</span>
+    <h1>EAST &amp; WEST</h1>
+    <div class="hero-btns">
+      <a href="https://wa.me/923336515349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20travel%20services." class="hero-btn hero-btn-light" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i> Contact Us
+      </a>
+      <a href="#about-intro" class="hero-btn hero-btn-outline">
+        Explore &nbsp;<i class="fa fa-chevron-right"></i>
+      </a>
     </div>
   </div>
   <div class="hero-scroll"><i class="fa fa-chevron-down"></i> Scroll</div>
+</section>
+
+<!-- ══ STAT CARDS ══ -->
+<div class="hero-stats-grid">
+  <div class="hsg-card">
+    <div class="hsg-num">20+</div>
+    <div class="hsg-label">Years of Experience</div>
+    <div class="hsg-desc">For more than two decades, we have been accompanying travellers with trust, care, and devotion — every trip is a calling.</div>
+  </div>
+  <div class="hsg-card">
+    <div class="hsg-num">5,000+</div>
+    <div class="hsg-label">Happy Travellers</div>
+    <div class="hsg-desc">Thousands of pilgrims and tourists have attested to the ease and quality of our services. Now it's your turn.</div>
+  </div>
+  <div class="hsg-card">
+    <div class="hsg-num">100%</div>
+    <div class="hsg-label">On-Time Departures</div>
+    <div class="hsg-desc">No doubts, no delays. We make sure every traveller departs on schedule — because your trust is an act of worship we honour.</div>
+  </div>
+  <div class="hsg-card">
+    <div class="hsg-num">4.8 ★</div>
+    <div class="hsg-label">Client Rating</div>
+    <div class="hsg-desc">A reflection of satisfied hearts, genuine smiles, and prayers of gratitude from every pilgrim who returns home in peace.</div>
+  </div>
+</div>
+
+<!-- ══ PARTNERS ══ -->
+<section class="partners-sec">
+  <div class="container">
+    <div class="partners-head">
+      <h2>Our Travel Partners</h2>
+      <p>Together with the best partners, we present a more comfortable and reliable travel experience.</p>
+    </div>
+    <div class="partners-grid">
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/320px-Emirates_logo.svg.png" alt="Emirates">
+      </div>
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Saudi_Arabian_Airlines_logo.svg/320px-Saudi_Arabian_Airlines_logo.svg.png" alt="Saudia">
+      </div>
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/PIA_logo.svg/320px-PIA_logo.svg.png" alt="PIA">
+      </div>
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Air_Arabia_logo.svg/320px-Air_Arabia_logo.svg.png" alt="Air Arabia">
+      </div>
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Qatar_Airways_Logo.svg/320px-Qatar_Airways_Logo.svg.png" alt="Qatar Airways">
+      </div>
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flydubai-logo.svg/320px-Flydubai-logo.svg.png" alt="flydubai">
+      </div>
+      <div class="partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Oman_Air_Logo.svg/320px-Oman_Air_Logo.svg.png" alt="Oman Air">
+      </div>
+      <div class="partner-card">
+        <span>Pullman Hotels &amp; Resorts</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ══ INTRO ══ -->
