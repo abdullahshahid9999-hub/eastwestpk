@@ -11,7 +11,6 @@
     :root{
       --navy:#0A1628;--navy-mid:#0F2040;--navy-light:#162847;
       --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.12);--gold-b:rgba(201,168,76,0.3);
-      --teal:#0EA5E9;--teal-glow:rgba(14,165,233,0.12);
       --white:#fff;--text:#E8EDF2;--dim:#8899AA;
       --border:rgba(255,255,255,0.08);--red:#EF4444;--green:#10B981;
     }
@@ -19,7 +18,6 @@
     h1,h2,h3{font-family:'Playfair Display',serif}
     em{color:var(--gold);font-style:italic}
 
-    /* BG */
     .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
     .orb{position:absolute;border-radius:50%;filter:blur(90px);animation:float 12s ease-in-out infinite}
     .orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,0.13),transparent 70%);top:-200px;left:-100px}
@@ -27,10 +25,8 @@
     .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);background-size:60px 60px}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-40px)}}
 
-    /* LAYOUT */
     .wrap{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 
-    /* CARD */
     .card{
       background:rgba(15,32,64,0.85);
       border:1px solid var(--border);
@@ -42,7 +38,6 @@
     }
     @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-    /* BRAND */
     .brand{display:flex;align-items:center;gap:14px;margin-bottom:32px;justify-content:center}
     .brand img{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);padding:2px;object-fit:contain;background:#fff;box-shadow:0 0 20px rgba(201,168,76,0.3)}
     .brand-text{font-size:20px;color:var(--white)}
@@ -52,12 +47,11 @@
     .card-sub{font-size:13px;color:var(--dim);text-align:center;margin-bottom:32px}
     .card-sub i{color:var(--gold);margin-right:5px}
 
-    /* FORM */
     .fg{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
     label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim)}
     .inp-wrap{position:relative}
     .inp-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;pointer-events:none}
-    input[type=text],input[type=password]{
+    input[type=text],input[type=email],input[type=password]{
       width:100%;background:rgba(255,255,255,0.05);
       border:1.5px solid var(--border);border-radius:12px;
       padding:13px 14px 13px 42px;
@@ -68,11 +62,11 @@
     .toggle-pwd{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px;padding:4px;transition:color .2s}
     .toggle-pwd:hover{color:var(--gold)}
 
-    /* ERROR */
-    .err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:12px 14px;font-size:13px;color:#FCA5A5;display:none;margin-bottom:16px;align-items:center;gap:10px}
-    .err.show{display:flex}
+    .alert{border-radius:10px;padding:12px 14px;font-size:13px;display:none;margin-bottom:16px;align-items:center;gap:10px}
+    .alert.show{display:flex}
+    .alert-err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5}
+    .alert-ok{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#6EE7B7}
 
-    /* BTN */
     .login-btn{
       width:100%;background:linear-gradient(135deg,var(--gold),#b8952e);
       color:#fff;border:none;padding:14px;border-radius:12px;
@@ -85,9 +79,16 @@
     .login-btn:active{transform:translateY(0)}
     .login-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
 
+    .forgot-link{text-align:right;margin-top:-10px;margin-bottom:18px}
+    .forgot-link a{font-size:12px;color:rgba(201,168,76,0.7);cursor:pointer;transition:color .2s;text-decoration:none}
+    .forgot-link a:hover{color:var(--gold)}
+
     .back-link{text-align:center;margin-top:20px;font-size:12.5px;color:var(--dim)}
     .back-link a{color:rgba(201,168,76,0.7);transition:color .2s}
     .back-link a:hover{color:var(--gold)}
+
+    .screen{display:none}
+    .screen.active{display:block}
 
     @media(max-width:480px){.card{padding:32px 24px}}
   </style>
@@ -108,46 +109,108 @@
       <span class="brand-text">East &amp; <span>West</span> Travels</span>
     </div>
 
-    <h2 class="card-title">Admin <em>Login</em></h2>
-    <p class="card-sub"><i class="fa fa-shield-alt"></i> Restricted — Authorized Personnel Only</p>
+    <!-- ── LOGIN SCREEN ── -->
+    <div class="screen active" id="screenLogin">
+      <h2 class="card-title">Admin <em>Login</em></h2>
+      <p class="card-sub"><i class="fa fa-shield-alt"></i> Restricted — Authorized Personnel Only</p>
 
-    <div class="err" id="errBox">
-      <i class="fa fa-exclamation-circle"></i>
-      <span id="errTxt"></span>
-    </div>
+      <div class="alert alert-err" id="loginErr">
+        <i class="fa fa-exclamation-circle"></i>
+        <span id="loginErrTxt"></span>
+      </div>
 
-    <div class="fg">
-      <label>Username</label>
-      <div class="inp-wrap">
-        <i class="fa fa-user inp-ico"></i>
-        <input type="text" id="adminUser" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')doAdminLogin()">
+      <div class="fg">
+        <label>Email</label>
+        <div class="inp-wrap">
+          <i class="fa fa-envelope inp-ico"></i>
+          <input type="email" id="adminEmail" placeholder="admin@eastwestpk.com" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Password</label>
+        <div class="inp-wrap">
+          <i class="fa fa-lock inp-ico"></i>
+          <input type="password" id="adminPwd" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+          <button class="toggle-pwd" onclick="togglePwd()" type="button"><i class="fa fa-eye" id="eyeIco"></i></button>
+        </div>
+      </div>
+
+      <div class="forgot-link">
+        <a onclick="showScreen('screenForgot')"><i class="fa fa-key" style="font-size:10px"></i> Forgot Password?</a>
+      </div>
+
+      <button class="login-btn" id="loginBtn" onclick="doLogin()">
+        <i class="fa fa-sign-in-alt"></i>
+        <span id="loginTxt">Login to Admin Panel</span>
+      </button>
+
+      <div class="back-link">
+        <a href="../index.html"><i class="fa fa-arrow-left" style="font-size:10px"></i> Back to Website</a>
       </div>
     </div>
 
-    <div class="fg">
-      <label>Password</label>
-      <div class="inp-wrap">
-        <i class="fa fa-lock inp-ico"></i>
-        <input type="password" id="adminPwd" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
-        <button class="toggle-pwd" onclick="togglePwd()" type="button"><i class="fa fa-eye" id="eyeIco"></i></button>
+    <!-- ── FORGOT PASSWORD SCREEN ── -->
+    <div class="screen" id="screenForgot">
+      <h2 class="card-title">Reset <em>Password</em></h2>
+      <p class="card-sub"><i class="fa fa-envelope"></i> Enter your email — we'll send a reset link</p>
+
+      <div class="alert alert-err" id="forgotErr">
+        <i class="fa fa-exclamation-circle"></i>
+        <span id="forgotErrTxt"></span>
+      </div>
+      <div class="alert alert-ok" id="forgotOk">
+        <i class="fa fa-check-circle"></i>
+        <span id="forgotOkTxt"></span>
+      </div>
+
+      <div class="fg">
+        <label>Email</label>
+        <div class="inp-wrap">
+          <i class="fa fa-envelope inp-ico"></i>
+          <input type="email" id="resetEmail" placeholder="admin@eastwestpk.com" autocomplete="email" onkeydown="if(event.key==='Enter')doForgot()">
+        </div>
+      </div>
+
+      <button class="login-btn" id="forgotBtn" onclick="doForgot()">
+        <i class="fa fa-paper-plane"></i>
+        <span id="forgotTxt">Send Reset Link</span>
+      </button>
+
+      <div class="back-link" style="margin-top:16px">
+        <a onclick="showScreen('screenLogin')" style="cursor:pointer"><i class="fa fa-arrow-left" style="font-size:10px"></i> Back to Login</a>
       </div>
     </div>
 
-    <button class="login-btn" id="loginBtn" onclick="doAdminLogin()">
-      <i class="fa fa-sign-in-alt" id="loginIco"></i>
-      <span id="loginTxt">Login to Admin Panel</span>
-    </button>
-
-    <div class="back-link">
-      <a href="../index.html"><i class="fa fa-arrow-left" style="font-size:10px"></i> Back to Website</a>
-    </div>
   </div>
 </div>
 
 <script>
-  // ── CREDENTIALS (change here anytime) ──
-  const ADMIN_USER = 'ewadmin';
-  const ADMIN_PASS = 'EW#Travel$786';
+  const SUPA_URL  = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+  const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    hideAlerts();
+  }
+
+  function hideAlerts() {
+    ['loginErr','forgotErr','forgotOk'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    });
+  }
+
+  function showErr(boxId, txtId, msg) {
+    document.getElementById(txtId).textContent = msg;
+    document.getElementById(boxId).classList.add('show');
+  }
+
+  function showOk(boxId, txtId, msg) {
+    document.getElementById(txtId).textContent = msg;
+    document.getElementById(boxId).classList.add('show');
+  }
 
   function togglePwd() {
     const inp = document.getElementById('adminPwd');
@@ -156,32 +219,84 @@
     else { inp.type = 'password'; ico.className = 'fa fa-eye'; }
   }
 
-  function showErr(msg) {
-    document.getElementById('errTxt').textContent = msg;
-    document.getElementById('errBox').classList.add('show');
-  }
-
-  function doAdminLogin() {
-    const user = document.getElementById('adminUser').value.trim();
-    const pwd  = document.getElementById('adminPwd').value;
-    document.getElementById('errBox').classList.remove('show');
-
-    if (!user || !pwd) { showErr('Please enter username and password.'); return; }
+  async function doLogin() {
+    hideAlerts();
+    const email = document.getElementById('adminEmail').value.trim();
+    const pwd   = document.getElementById('adminPwd').value;
+    if (!email || !pwd) { showErr('loginErr','loginErrTxt','Please enter email and password.'); return; }
 
     const btn = document.getElementById('loginBtn');
     btn.disabled = true;
     document.getElementById('loginTxt').textContent = 'Verifying…';
 
-    setTimeout(() => {
-      if (user === ADMIN_USER && pwd === ADMIN_PASS) {
-        sessionStorage.setItem('ew_admin', JSON.stringify({ email: 'admin@eastwestpk.com', name: 'Admin', role: 'admin' }));
-        window.location.href = '/admin/dashboard';
-      } else {
-        btn.disabled = false;
-        document.getElementById('loginTxt').textContent = 'Login to Admin Panel';
-        showErr('Incorrect username or password.');
+    try {
+      const res = await fetch(`${SUPA_URL}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_ANON
+        },
+        body: JSON.stringify({ email, password: pwd })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.access_token) {
+        throw new Error(data.error_description || data.msg || 'Invalid email or password.');
       }
-    }, 600);
+
+      // Save session
+      sessionStorage.setItem('ew_admin', JSON.stringify({
+        email: data.user.email,
+        name: data.user.user_metadata?.name || 'Admin',
+        role: 'admin',
+        token: data.access_token
+      }));
+
+      window.location.href = '/admin/dashboard';
+
+    } catch (err) {
+      btn.disabled = false;
+      document.getElementById('loginTxt').textContent = 'Login to Admin Panel';
+      showErr('loginErr','loginErrTxt', err.message || 'Login failed. Try again.');
+    }
+  }
+
+  async function doForgot() {
+    hideAlerts();
+    const email = document.getElementById('resetEmail').value.trim();
+    if (!email) { showErr('forgotErr','forgotErrTxt','Please enter your email.'); return; }
+
+    const btn = document.getElementById('forgotBtn');
+    btn.disabled = true;
+    document.getElementById('forgotTxt').textContent = 'Sending…';
+
+    try {
+      const res = await fetch(`${SUPA_URL}/auth/v1/recover`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_ANON
+        },
+        body: JSON.stringify({
+          email,
+          gotrue_meta_security: {}
+        })
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error_description || data.msg || 'Could not send reset email.');
+      }
+
+      showOk('forgotOk','forgotOkTxt', `Reset link sent to ${email}. Check your inbox.`);
+      document.getElementById('resetEmail').value = '';
+
+    } catch (err) {
+      showErr('forgotErr','forgotErrTxt', err.message || 'Failed to send reset link.');
+    } finally {
+      btn.disabled = false;
+      document.getElementById('forgotTxt').textContent = 'Send Reset Link';
+    }
   }
 </script>
 
