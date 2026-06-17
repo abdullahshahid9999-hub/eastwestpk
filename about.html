@@ -14,141 +14,160 @@
     body { background: #FAFAF8; color: #1A1A2E; font-family: 'Plus Jakarta Sans', sans-serif; }
     h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; }
 
-    /* ══ CINEMATIC HERO ══ */
-    .about-hero {
-      position: relative !important;
-      height: 100vh !important;
-      min-height: 640px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      overflow: hidden !important;
-      text-align: center !important;
+    /* ══ HARAMAIN HERO ══ */
+    .hm-hero {
+      position: relative;
+      height: 100vh; min-height: 680px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden; text-align: center;
     }
-    .about-hero .hero-bg {
+    .hm-bg {
       position: absolute; inset: 0;
-      background: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=85&w=2400') center/cover no-repeat;
-      z-index: 0;
+      background: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&q=90&w=2400') center 30%/cover no-repeat;
     }
-    .about-hero .hero-veil {
-      position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(to bottom, rgba(10,18,40,0.45) 0%, rgba(10,18,40,0.2) 40%, rgba(10,18,40,0.55) 100%);
+    /* Bright sky top, dark vignette edges, clean center */
+    .hm-veil {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(200,220,240,0.35) 0%, transparent 38%, transparent 62%, rgba(5,10,20,0.55) 100%),
+        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,10,20,0.28) 100%);
     }
-    .about-hero .ahero-body {
-      position: relative; z-index: 2;
-      width: 100%; padding: 0 24px;
-      text-align: center;
-    }
-    .ahero-eyebrow {
-      display: block;
+    .hm-content { position: relative; z-index: 2; padding: 0 20px; }
+    .hm-eyebrow {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(11px,1.3vw,14px); font-weight: 600;
-      letter-spacing: 5px; text-transform: uppercase;
-      color: rgba(255,255,255,0.88); margin-bottom: 14px;
+      font-size: clamp(10px, 1.4vw, 13px); font-weight: 600; letter-spacing: 5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.92); margin-bottom: 10px;
+      display: block; text-shadow: 0 1px 8px rgba(0,0,0,0.4);
     }
-    .ahero-title {
-      font-family: 'Plus Jakarta Sans', sans-serif !important;
-      font-size: clamp(60px, 13vw, 148px) !important;
-      color: #fff !important;
-      line-height: 0.88 !important;
-      font-weight: 800 !important;
-      margin: 0 auto 40px !important;
-      letter-spacing: -3px !important;
-      text-transform: uppercase !important;
-    }
-    .ahero-btns {
-      display: flex; align-items: center; justify-content: center;
-      gap: 14px; flex-wrap: wrap;
-    }
-    .ahero-btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 14px 32px; border-radius: 50px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 14px; font-weight: 600;
-      text-decoration: none; cursor: pointer; transition: all 0.25s;
-    }
-    .ahero-btn-glass {
-      background: rgba(255,255,255,0.18); backdrop-filter: blur(10px);
-      border: 1.5px solid rgba(255,255,255,0.5); color: #fff;
-    }
-    .ahero-btn-glass:hover { background: rgba(255,255,255,0.28); color: #fff; }
-    .ahero-btn-ghost {
-      background: transparent;
-      border: 1.5px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.85);
-    }
-    .ahero-btn-ghost:hover { border-color: #fff; color: #fff; }
-    .ahero-scroll {
-      position: absolute; right: 48px; bottom: 48px; z-index: 2;
-      color: rgba(255,255,255,0.35); font-size: 9px; letter-spacing: 3px;
-      text-transform: uppercase; writing-mode: vertical-rl;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      animation: bob 2.5s ease-in-out infinite;
-    }
-    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
-
-    /* ── STAT CARDS ── */
-    .ahero-stats {
-      display: grid; grid-template-columns: repeat(4,1fr);
-    }
-    .ahero-stat {
-      background: #F5EED8; padding: 36px 28px;
-      border-right: 1px solid rgba(0,0,0,0.08);
-    }
-    .ahero-stat:last-child { border-right: none; }
-    .ahero-stat-num {
+    .hm-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(38px,4.5vw,60px); font-weight: 700;
+      font-size: clamp(72px, 13vw, 160px);
+      font-weight: 700; line-height: 0.88;
+      color: #fff; letter-spacing: -2px;
+      text-shadow: 0 4px 32px rgba(0,0,0,0.3);
+      margin-bottom: 0;
+    }
+    /* Crescent moon icon inside the title */
+    .hm-moon {
+      display: inline-block;
+      font-size: 0.28em; vertical-align: super;
+      margin: 0 4px; color: #C9A84C;
+      filter: drop-shadow(0 0 10px rgba(201,168,76,0.6));
+      animation: moonGlow 3s ease-in-out infinite;
+    }
+    @keyframes moonGlow { 0%,100%{opacity:1;} 50%{opacity:0.7;} }
+    .hm-btns {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin-top: 52px; flex-wrap: wrap;
+    }
+    .hm-btn-light {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 36px; background: rgba(255,255,255,0.95);
+      color: #1A1A2E; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; font-weight: 700; text-decoration: none;
+      border-radius: 40px; transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .hm-btn-light:hover { background: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(-2px); }
+    .hm-btn-light .hm-wa-ico {
+      width: 26px; height: 26px; border-radius: 50%; background: #25D366;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14px;
+    }
+    .hm-btn-outline {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 36px; background: transparent;
+      color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; font-weight: 700; text-decoration: none;
+      border-radius: 40px; border: 1.5px solid rgba(255,255,255,0.55);
+      transition: all 0.3s;
+    }
+    .hm-btn-outline:hover { background: rgba(255,255,255,0.12); border-color: #fff; transform: translateY(-2px); }
+    .hm-btn-outline .hm-arr {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.55);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; transition: all 0.3s;
+    }
+    .hm-btn-outline:hover .hm-arr { background: rgba(255,255,255,0.15); border-color: #fff; }
+
+    /* ══ STAT CARDS (below hero) ══ */
+    .hm-stats {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; background: #fff;
+      box-shadow: 0 -4px 40px rgba(0,0,0,0.06);
+    }
+    .hm-stat {
+      padding: 40px 32px 36px;
+      border-right: 1px solid #F0EDE8;
+      position: relative; transition: background 0.3s;
+    }
+    .hm-stat:last-child { border-right: none; }
+    .hm-stat:hover { background: #FDFAF5; }
+    .hm-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 52px); font-weight: 700;
       color: #1A1A2E; line-height: 1; margin-bottom: 8px;
+      display: block;
     }
-    .ahero-stat-lbl {
+    .hm-stat-label {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px; font-weight: 700; color: #1A1A2E; margin-bottom: 10px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #1A1A2E; margin-bottom: 12px;
+      display: block;
     }
-    .ahero-stat-desc {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px; color: #6B6B8A; line-height: 1.65;
+    .hm-stat-desc {
+      font-size: 13px; color: #6B6B8A; line-height: 1.75;
+    }
+    /* Gold left border on hover */
+    .hm-stat::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: #C9A84C; transform: scaleY(0);
+      transition: transform 0.3s; transform-origin: bottom;
+    }
+    .hm-stat:hover::before { transform: scaleY(1); }
+
+    /* ══ PARTNERS SECTION ══ */
+    .hm-partners { padding: 72px 0 80px; background: #FAFAF8; }
+    .hm-partners-head { text-align: center; margin-bottom: 48px; }
+    .hm-partners-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px,3.5vw,42px); color: #1A1A2E; margin-bottom: 12px;
+    }
+    .hm-partners-head p { font-size: 14px; color: #6B6B8A; max-width: 480px; margin: 0 auto; line-height: 1.75; }
+    .hm-partner-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: #E8E4DA;
+      border: 1px solid #E8E4DA; border-radius: 8px; overflow: hidden;
+    }
+    .hm-partner-card {
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      padding: 28px 24px; height: 96px; transition: background 0.25s;
+    }
+    .hm-partner-card:hover { background: #FDFAF5; }
+    .hm-partner-card img {
+      max-width: 120px; max-height: 44px; width: auto; height: auto;
+      object-fit: contain; filter: grayscale(1); opacity: 0.6;
+      transition: all 0.3s;
+    }
+    .hm-partner-card:hover img { filter: grayscale(0); opacity: 1; }
+    .hm-partner-card span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; color: #8B8B9A; font-weight: 600; text-align: center;
     }
 
-    /* ── PARTNERS ── */
-    .partners-sec {
-      padding: 72px 0; background: #F9F9F7;
-      border-top: 1px solid #E8E3D8;
-    }
-    .partners-sec .p-head { text-align: center; margin-bottom: 44px; }
-    .partners-sec .p-head h2 {
+    .hero-scroll {
+      position: absolute; right: 48px; bottom: 48px;
+      color: rgba(255,255,255,0.35); font-size: 9px; letter-spacing: 3px;
+      text-transform: uppercase; writing-mode: vertical-rl; z-index: 2;
+      animation: bob 2.5s ease-in-out infinite;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(20px,2.2vw,30px); font-weight: 700;
-      color: #1A1A2E; margin-bottom: 10px;
     }
-    .partners-sec .p-head p {
-      font-size: 14px; color: #6B6B8A;
-      max-width: 400px; margin: 0 auto; line-height: 1.65;
-    }
-    .partners-grid {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
-    }
-    .partner-card {
-      background: #fff; border: 1.5px solid #E8E3D8; border-radius: 10px;
-      padding: 24px 16px; display: flex; align-items: center; justify-content: center;
-      min-height: 92px; transition: box-shadow 0.2s;
-    }
-    .partner-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
-    .partner-card img { max-width: 110px; max-height: 44px; object-fit: contain; }
-    .partner-card span {
-      font-family: 'Plus Jakarta Sans',sans-serif;
-      font-size: 12px; font-weight: 700; color: #4A4A6A; text-align: center;
-    }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
 
-    @media(max-width:768px) {
-      .ahero-stats { grid-template-columns: repeat(2,1fr); }
-      .partners-grid { grid-template-columns: repeat(2,1fr); }
-    }
-    @media(max-width:480px) {
-      .ahero-stats { grid-template-columns: 1fr; }
-      .ahero-title { letter-spacing: -1px !important; }
-    }
-
-        /* ══ SECTIONS ══ */
+    /* ══ SECTIONS ══ */
     .w-sec     { padding: 96px 0; background: #FAFAF8; }
     .w-sec-alt { padding: 96px 0; background: #F3F0EA; }
     .w-sec-dark{ padding: 96px 0; background: #0A1628; }
@@ -358,8 +377,9 @@
     @media(max-width:1100px) { .team-grid{grid-template-columns:repeat(2,1fr);} .cert-grid{grid-template-columns:repeat(2,1fr);} }
     @media(max-width:900px) { .intro-grid{grid-template-columns:1fr;gap:40px;} .what-grid,.svc-grid{grid-template-columns:repeat(2,1fr);} .award-grid{grid-template-columns:repeat(2,1fr);} }
     @media(max-width:640px) { .what-grid,.svc-grid,.award-grid{grid-template-columns:1fr;} .team-grid{grid-template-columns:repeat(2,1fr);} .cert-grid{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:768px) { .hero-stats-grid{grid-template-columns:repeat(2,1fr);} .partners-grid{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:480px) { .hero-stats-grid{grid-template-columns:1fr;} .partners-grid{grid-template-columns:repeat(2,1fr);} .hero-body h1{font-size:52px;letter-spacing:-1px;} }
+    @media(max-width:900px) { .hm-stats{grid-template-columns:repeat(2,1fr);} .hm-partner-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:640px) { .hm-stats{grid-template-columns:repeat(2,1fr);} .hm-partner-grid{grid-template-columns:repeat(2,1fr);} .hm-title{letter-spacing:-1px;} .hm-stat{padding:28px 20px 24px;} }
+    @media(max-width:420px) { .hm-stats{grid-template-columns:1fr;} .hm-partner-grid{grid-template-columns:repeat(2,1fr);} }
   </style>
 </head>
 <body>
@@ -396,80 +416,87 @@
   <button id="menuBtn" onclick="openMenu()" aria-label="Menu"><i class="fa fa-bars"></i></button>
 </nav>
 
-<!-- ══ HERO ══ -->
-<section class="about-hero">
-  <div class="hero-bg"></div>
-  <div class="hero-veil"></div>
-  <div class="ahero-body">
-    <span class="ahero-eyebrow">Step Foot With A Sincere Heart With</span>
-    <h1 class="ahero-title">EAST &amp; WEST</h1>
-    <div class="ahero-btns">
-      <a href="https://wa.me/923336515349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20travel%20services." class="ahero-btn ahero-btn-glass" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i> Contact Us
+<!-- ══ HARAMAIN HERO ══ -->
+<section class="hm-hero">
+  <div class="hm-bg"></div>
+  <div class="hm-veil"></div>
+  <div class="hm-content">
+    <span class="hm-eyebrow">Pakistan's Trusted Travel Partner Since 2004</span>
+    <h1 class="hm-title">EAST &amp; WEST</h1>
+    <div class="hm-btns">
+      <a href="https://wa.me/923336515349?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20travel%20services." class="hm-btn-light" target="_blank">
+        <span class="hm-wa-ico"><i class="fa-brands fa-whatsapp"></i></span>
+        Contact Us
       </a>
-      <a href="#about-intro" class="ahero-btn ahero-btn-ghost">
-        Explore &nbsp;<i class="fa fa-chevron-right"></i>
+      <a href="#about-intro" class="hm-btn-outline">
+        Explore
+        <span class="hm-arr"><i class="fa fa-chevron-right"></i></span>
       </a>
     </div>
   </div>
-  <div class="ahero-scroll"><i class="fa fa-chevron-down"></i> Scroll</div>
+  <div class="hero-scroll"><i class="fa fa-chevron-down"></i> Scroll</div>
 </section>
 
 <!-- ══ STAT CARDS ══ -->
-<div class="ahero-stats">
-  <div class="ahero-stat">
-    <div class="ahero-stat-num">20+</div>
-    <div class="ahero-stat-lbl">Years of Experience</div>
-    <div class="ahero-stat-desc">For more than two decades, we have been accompanying travellers with trust, care, and devotion — every trip is a calling.</div>
+<div class="hm-stats">
+  <div class="hm-stat">
+    <span class="hm-stat-num">20+</span>
+    <span class="hm-stat-label">Years of Experience</span>
+    <p class="hm-stat-desc">For more than a decade, we have been accompanying Allah&#39;s guests. Every trip we organise with love, because we know it&#39;s not just a trip — it&#39;s a calling.</p>
   </div>
-  <div class="ahero-stat">
-    <div class="ahero-stat-num">5,000+</div>
-    <div class="ahero-stat-lbl">Happy Travellers</div>
-    <div class="ahero-stat-desc">Thousands of pilgrims and tourists have attested to the ease and quality of our services. Now it's your turn.</div>
+  <div class="hm-stat">
+    <span class="hm-stat-num">5,000+</span>
+    <span class="hm-stat-label">Happy Travellers</span>
+    <p class="hm-stat-desc">Thousands of pilgrims have attested to the ease and convenience of our services. Now it&#39;s your turn to experience an unforgettable spiritual journey with us.</p>
   </div>
-  <div class="ahero-stat">
-    <div class="ahero-stat-num">100%</div>
-    <div class="ahero-stat-lbl">On-Time Departures</div>
-    <div class="ahero-stat-desc">No doubts, no delays. We make sure every traveller departs on schedule — because your trust is an act of worship we honour.</div>
+  <div class="hm-stat">
+    <span class="hm-stat-num">100%</span>
+    <span class="hm-stat-label">Depart</span>
+    <p class="hm-stat-desc">No doubts, no delays. We make sure every pilgrim departs on schedule, because your trust is an act of worship that we take care of with all our souls.</p>
   </div>
-  <div class="ahero-stat">
-    <div class="ahero-stat-num">4.8 ★</div>
-    <div class="ahero-stat-lbl">Client Rating</div>
-    <div class="ahero-stat-desc">A reflection of satisfied hearts, genuine smiles, and prayers of gratitude from every pilgrim who returns home in peace.</div>
+  <div class="hm-stat">
+    <span class="hm-stat-num">4.8 &#9733;</span>
+    <span class="hm-stat-label">Rating</span>
+    <p class="hm-stat-desc">This high score is not just a number — it&#39;s a reflection of the satisfied hearts, genuine smiles, and prayers of gratitude we receive from every pilgrim who returns home in peace.</p>
   </div>
 </div>
 
 <!-- ══ PARTNERS ══ -->
-<section class="partners-sec">
+<section class="hm-partners">
   <div class="container">
-    <div class="p-head">
-      <h2>Our Travel Partners</h2>
-      <p>Together with the best partners, we present a more comfortable and reliable travel experience.</p>
+    <div class="hm-partners-head">
+      <h2>Our Travel Partner</h2>
+      <p>Together with the best partners, we present a more comfortable and reliable worship experience.</p>
     </div>
-    <div class="partners-grid">
-      <div class="partner-card">
+    <div class="hm-partner-grid">
+      <div class="hm-partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Pullman_Hotels_logo.svg/320px-Pullman_Hotels_logo.svg.png" alt="Pullman Hotels &amp; Resorts" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Pullman Hotels &amp; Resorts</span>
+      </div>
+      <div class="hm-partner-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/320px-Emirates_logo.svg.png" alt="Emirates">
       </div>
-      <div class="partner-card">
+      <div class="hm-partner-card">
         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Saudi_Arabian_Airlines_logo.svg/320px-Saudi_Arabian_Airlines_logo.svg.png" alt="Saudia">
       </div>
-      <div class="partner-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/PIA_logo.svg/320px-PIA_logo.svg.png" alt="PIA">
+      <div class="hm-partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Haramain_High_Speed_Railway_logo.svg/320px-Haramain_High_Speed_Railway_logo.svg.png" alt="Haramain High Speed Rail" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Haramain High Speed Rail</span>
       </div>
-      <div class="partner-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Air_Arabia_logo.svg/320px-Air_Arabia_logo.svg.png" alt="Air Arabia">
+      <div class="hm-partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Al_Massa_Hotel_logo.svg/320px-Al_Massa_Hotel_logo.svg.png" alt="Al Massa" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Al Massa</span>
       </div>
-      <div class="partner-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Qatar_Airways_Logo.svg/320px-Qatar_Airways_Logo.svg.png" alt="Qatar Airways">
+      <div class="hm-partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Scoot_airlines_logo.svg/320px-Scoot_airlines_logo.svg.png" alt="Scoot" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Scoot</span>
       </div>
-      <div class="partner-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flydubai-logo.svg/320px-Flydubai-logo.svg.png" alt="flydubai">
+      <div class="hm-partner-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Garuda_Indonesia_logo.svg/320px-Garuda_Indonesia_logo.svg.png" alt="Garuda Indonesia" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none">Garuda Indonesia</span>
       </div>
-      <div class="partner-card">
+      <div class="hm-partner-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Oman_Air_Logo.svg/320px-Oman_Air_Logo.svg.png" alt="Oman Air">
-      </div>
-      <div class="partner-card">
-        <span>Pullman Hotels &amp; Resorts</span>
       </div>
     </div>
   </div>
