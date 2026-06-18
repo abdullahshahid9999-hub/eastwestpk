@@ -481,6 +481,7 @@
 </a>
 
 <script src="assets/js/script.js"></script>
+
 <script>
 const WA = '923336515349';
 const INS_SUPA = 'https://bciqlmvheqlsmogpnmal.supabase.co';
@@ -494,24 +495,21 @@ function setInsTab(type, btn) {
   insType = type;
   document.querySelectorAll('.ins-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('paxField').style.display = type === 'individual' ? 'none' : 'flex';
+  document.getElementById('paxField').style.display = (type === 'individual') ? 'none' : 'flex';
 }
 
-// Plans loaded from admin localStorage or defaults
-function getPublicPlans() {
-  try {
-    const d = localStorage.getItem('ew_ins_plans');
-    if (d) { const p = JSON.parse(d); if (p && p.length) return p.sort((a,b)=>a.sort-b.sort); }
-  } catch(e){}
-  return [
-    { id:'basic', name:'Essential Care', type:'basic', cover:'$25,000',
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Flight Delay', recommended:false },
-    { id:'standard', name:'Standard Cover', type:'standard', cover:'$50,000',
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation', recommended:true },
-    { id:'comprehensive', name:'Comprehensive Plus', type:'comprehensive', cover:'$100,000',
-      features:'Emergency Medical,Lost Baggage,24/7 Helpline,Trip Cancellation,Passport Loss,Repatriation,COVID-19 Included,Adventure Sports', recommended:false },
-  ];
-}
+// Maps frontend destination value → Supabase destination value
+const DEST_MAP = {
+  gulf:      'excl_usa_uk_canada_schengen',
+  umrah:     'excl_usa_uk_canada_schengen',
+  qatar:     'excl_usa_uk_canada_schengen',
+  asia:      'excl_usa_uk_canada_schengen',
+  turkey:    'excl_schengen',
+  schengen:  'schengen',
+  uk:        'excl_usa_uk_canada',
+  usa:       'worldwide',
+  worldwide: 'worldwide'
+};
 
 const DEST_LABELS = {
   gulf:'Gulf States', umrah:'Saudi Arabia (Umrah/Hajj)', qatar:'Qatar',
@@ -519,134 +517,43 @@ const DEST_LABELS = {
   uk:'United Kingdom', usa:'USA / Canada / Australia', worldwide:'Worldwide'
 };
 
-const INS_COMPANIES = [
-  { name:'Adamjee Insurance', type:'Conventional' },
-  { name:'EFU General Insurance', type:'Conventional' },
-  { name:'TPL Insurance', type:'Conventional' },
-];
-
 async function viewInsPlans() {
-  const dest  = document.getElementById('insDest').value;
-  const days  = parseInt(document.getElementById('insDuration').value)||0;
-  const date  = document.getElementById('insDate').value;
-  const pax   = insType === 'individual' ? 1 : Math.max(2, parseInt(document.getElementById('insPax').value)||2);
-
-  const errEl = document.getElementById('insErr');
+  const dest     = document.getElementById('insDest').value;
+  const days     = parseInt(document.getElementById('insDuration').value) || 0;
+  const date     = document.getElementById('insDate').value;
+  const pax      = insType === 'individual' ? 1 : Math.max(2, parseInt(document.getElementById('insPax').value)||2);
+  const errEl    = document.getElementById('insErr');
   errEl.style.display = 'none';
-  if (!dest) { errEl.textContent='Please select a destination.'; errEl.style.display='block'; return; }
-  if (!days) { errEl.textContent='Please select trip duration.'; errEl.style.display='block'; return; }
 
-  // Load from Supabase
+  if (!dest) { errEl.textContent = 'Please select a destination.'; errEl.style.display='block'; return; }
+  if (!days) { errEl.textContent = 'Please select trip duration.';  errEl.style.display='block'; return; }
+
+  // Map to Supabase destination
+  const supaDest = DEST_MAP[dest] || 'worldwide';
+
+  // Show loading
+  const btn = document.querySelector('.ins-view-btn');
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Searching Plans...';
+  btn.disabled = true;
+
   let companies=[], plans=[], rates=[];
   try {
-    const [cr,pr,rr] = await Promise.all([
-      fetch(`${INS_SUPA}/rest/v1/ins_companies?active=eq.true&order=sort_order.asc`,{headers:INS_H}).then(r=>r.json()),
-      fetch(`${INS_SUPA}/rest/v1/ins_plans?active=eq.true&order=sort_order.asc`,{headers:INS_H}).then(r=>r.json()),
-      fetch(`${INS_SUPA}/rest/v1/ins_rates?destination=eq.${dest}&traveller_type=eq.${insType}&days_min=lte.${days}&days_max=gte.${days}&order=price_pkr.asc`,{headers:INS_H}).then(r=>r.json()),
+    const [cr, pr, rr] = await Promise.all([
+      fetch(`${INS_SUPA}/rest/v1/ins_companies?active=eq.true&order=sort_order.asc`, {headers:INS_H}).then(r=>r.json()),
+      fetch(`${INS_SUPA}/rest/v1/ins_plans?active=eq.true&order=sort_order.asc`,     {headers:INS_H}).then(r=>r.json()),
+      fetch(`${INS_SUPA}/rest/v1/ins_rates?destination=eq.${supaDest}&traveller_type=eq.${insType}&days_min=lte.${days}&days_max=gte.${days}&order=price_pkr.asc`, {headers:INS_H}).then(r=>r.json()),
     ]);
-    if(Array.isArray(cr)) companies=cr;
-    if(Array.isArray(pr)) plans=pr;
-    if(Array.isArray(rr)) rates=rr;
-  } catch(e){ console.error(e); }
+    if (Array.isArray(cr)) companies = cr;
+    if (Array.isArray(pr)) plans     = pr;
+    if (Array.isArray(rr)) rates     = rr;
+  } catch(e) { console.error('Supabase error:', e); }
 
-  // If no Supabase data, fallback to localStorage plans
-  if (!rates.length && !plans.length) {
-    const fallback = getPublicPlans();
-    document.getElementById('planList').innerHTML = fallback.map((plan,pi)=>{
-      const feats = (Array.isArray(plan.features)?plan.features:String(plan.features||'').split(',')).map(f=>f.trim()).filter(Boolean);
-      const waMsg = encodeURIComponent('Assalam o Alaikum! I need travel insurance:\nPlan: '+plan.name+'\nDestination: '+(DEST_LABELS[dest]||dest)+'\nDuration: '+days+' days\nTravellers: '+pax+'\nPlease share pricing.');
-      return `<div class="ins-plan-card"><div class="ins-plan-card-inner">
-        <div class="ipc-logo"><div class="ipc-logo-box"><div style="width:70px;height:50px;background:#F3F0EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#6B6B8A;text-align:center;font-family:Plus Jakarta Sans,sans-serif">East &amp;<br>West</div></div></div>
-        <div class="ipc-info">
-          <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;color:#D4A843;margin-left:8px">★ Recommended</span>':''}</div>
-          <div class="ipc-cover-label">Medical Cover</div><div class="ipc-cover-val">${plan.cover||'—'}</div>
-          <div class="ipc-feats">${feats.map(f=>'<span class="ipc-feat"><i class="fa fa-check-circle"></i>'+f+'</span>').join('')}</div>
-        </div>
-        <div class="ipc-cta">
-          <div class="ipc-price"><div style="font-size:13px;font-weight:600;color:#14142B;font-family:Plus Jakarta Sans,sans-serif">Get a Quote</div><div style="font-size:11px;color:#9090AA;font-family:Plus Jakarta Sans,sans-serif;margin-top:3px">Pricing via WhatsApp</div></div>
-          <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg> Get Quote on WhatsApp</a>
-        </div>
-      </div></div>`;
-    }).join('') || '<div style="text-align:center;padding:40px;color:#9090AA">No plans configured yet. Add plans in the admin panel.</div>';
+  btn.innerHTML = '<i class="fa fa-search"></i> VIEW PLANS';
+  btn.disabled  = false;
 
-    document.getElementById('insHero').style.display='none';
-    document.getElementById('insResults').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
-    return;
-  }
-
-  // Build results from Supabase — one card per matching rate
-  const DEST_LABELS_L = {gulf:'Gulf / Middle East',umrah:'Saudi Arabia (Umrah/Hajj)',asia:'Asia',turkey:'Turkey',schengen:'Schengen States',uk:'United Kingdom',usa:'USA / Canada / Australia',worldwide:'Worldwide'};
-
-  document.getElementById('resultsSubtitle').textContent =
-    `${rates.length} plan${rates.length===1?'':'s'} available for ${DEST_LABELS_L[dest]} · ${days} days · ${insType}`;
-
-  document.getElementById('planList').innerHTML = rates.length
-    ? rates.map(rate => {
-        const plan = plans.find(p=>p.id===rate.plan_id);
-        if (!plan) return '';
-        const co = companies.find(c=>c.id===plan.company_id);
-        const feats = [
-          plan.trip_cancel&&'Trip Cancellation',
-          plan.repatriation&&'Repatriation',
-          plan.covid_cover&&'COVID-19',
-          plan.adventure&&'Adventure Sports',
-          plan.personal_acc&&'Personal Accident',
-          plan.passport_loss&&'Passport Loss',
-        ].filter(Boolean).concat((plan.features||'').split(',').map(f=>f.trim()).filter(Boolean));
-
-        const waMsg = encodeURIComponent(
-          'Assalam o Alaikum! I am interested in travel insurance:\n'+
-          'Company: '+(co?.name||'')+'\n'+
-          'Plan: '+plan.name+'\n'+
-          'Medical Cover: '+(plan.medical_cover||'')+'\n'+
-          'Destination: '+(DEST_LABELS_L[dest]||dest)+'\n'+
-          'Duration: '+days+' days\n'+
-          'Travellers: '+pax+' ('+insType+')\n'+
-          'Price: Rs. '+Number(rate.price_pkr).toLocaleString()+'\n'+
-          (date?'Departure: '+date+'\n':'')+
-          'Please confirm and share next steps.'
-        );
-
-        const logoHtml = co?.logo_url
-          ? `<img src="${co.logo_url}" style="max-width:80px;max-height:55px;object-fit:contain" onerror="this.style.display='none'">`
-          : `<div style="width:70px;height:48px;background:#F3F0EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#6B6B8A;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;padding:4px">${(co?.short_name||co?.name||'').split(' ').map(w=>w[0]).join('').substring(0,3)}</div>`;
-
-        return `<div class="ins-plan-card">
-          <div class="ins-plan-card-inner">
-            <div class="ipc-logo">
-              <div class="ipc-logo-box">${logoHtml}</div>
-              <div>
-                <div class="ipc-type">${co?.type||'Conventional'}</div>
-                <div class="ipc-logo-name">${co?.name||'—'}</div>
-              </div>
-            </div>
-            <div class="ipc-info">
-              <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:10px">★ Recommended</span>':''}</div>
-              <div class="ipc-cover-label">Medical Cover</div>
-              <div class="ipc-cover-val">${plan.medical_cover||'—'}</div>
-              <div class="ipc-feats">${feats.slice(0,6).map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}</div>
-            </div>
-            <div class="ipc-cta">
-              <div class="ipc-price">
-                <div class="ipc-price-amt">Rs. ${Number(rate.price_pkr).toLocaleString()}</div>
-                <div class="ipc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days</div>
-              </div>
-              <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
-                Buy on WhatsApp
-              </a>
-              <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">We'll help!</a></div>
-            </div>
-          </div>
-        </div>`;
-      }).filter(Boolean).join('')
-    : '<div style="text-align:center;padding:40px;color:#9090AA;font-family:Plus Jakarta Sans,sans-serif"><i class="fa fa-search" style="font-size:28px;color:#D4A843;display:block;margin-bottom:12px"></i>No plans found for this destination &amp; duration.<br><br><a href="https://wa.me/923336515349?text=Assalam+o+Alaikum!+I+need+travel+insurance+for+'+encodeURIComponent(dest)+'+for+'+days+'+days.+Please+help." target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none;margin-top:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg> Ask on WhatsApp</a></div>';
-
-  const PLANS = null; // prevent old code from running
   const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '';
 
-  // Summary
+  // Summary box
   document.getElementById('sumRows').innerHTML = [
     ['Plan Type',   insType.charAt(0).toUpperCase()+insType.slice(1)],
     ['Destination', DEST_LABELS[dest]||dest],
@@ -656,73 +563,92 @@ async function viewInsPlans() {
   ].map(([l,v])=>`<div class="ins-sum-row"><div class="ins-sum-val">${v}</div><div class="ins-sum-lbl">${l}</div></div>`).join('');
 
   document.getElementById('resultsSubtitle').textContent =
-    `${PLANS.length} plans available — WhatsApp us to confirm pricing for ${DEST_LABELS[dest]}`;
+    `${rates.length} plan${rates.length!==1?'s':''} found for ${DEST_LABELS[dest]||dest} · ${days} days · ${insType}`;
 
-  document.getElementById('planList').innerHTML = PLANS.map((plan, pi) => {
-    const company = INS_COMPANIES[pi % INS_COMPANIES.length];
-    const feats = (Array.isArray(plan.features) ? plan.features : String(plan.features||'').split(',')).map(f=>f.trim()).filter(Boolean);
-    const waMsg = encodeURIComponent(
-      'Assalam o Alaikum! I am interested in travel insurance:
+  const WA_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>`;
+
+  if (rates.length === 0) {
+    document.getElementById('planList').innerHTML = `
+      <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:16px;border:1.5px solid #E4DFD4">
+        <i class="fa fa-search" style="font-size:32px;color:#D4A843;display:block;margin-bottom:16px"></i>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#14142B;margin-bottom:8px">No plans found</div>
+        <div style="font-size:13px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:24px">We couldn't find matching plans for this selection. WhatsApp us — we'll find you the best option!</div>
+        <a href="https://wa.me/${WA}?text=${encodeURIComponent('Assalam o Alaikum! I need travel insurance for '+DEST_LABELS[dest]+' for '+days+' days ('+insType+'). Please help.')}" target="_blank" class="ipc-wa-btn" style="display:inline-flex;padding:13px 24px">${WA_SVG} Ask on WhatsApp</a>
+      </div>`;
+  } else {
+    document.getElementById('planList').innerHTML = rates.map(rate => {
+      const plan = plans.find(p => p.id === rate.plan_id);
+      if (!plan) return '';
+      const co = companies.find(c => c.id === plan.company_id);
+
+      // Parse features
+      let feats = [];
+      try { feats = JSON.parse(plan.features||'[]'); } catch(e) { feats = String(plan.features||'').split(',').map(f=>f.trim()).filter(Boolean); }
+      feats = feats.slice(0,6);
+
+      const waMsg = encodeURIComponent(
+        'Assalam o Alaikum! I want to buy travel insurance:
 '+
-      'Plan: '+plan.name+'
+        'Company: '+(co?.name||'Adam Jee Insurance')+'
 '+
-      'Medical Cover: '+plan.cover+'
+        'Plan: '+plan.name+'
 '+
-      'Destination: '+(DEST_LABELS[dest]||dest)+'
+        'Medical Cover: '+(plan.medical_cover||'')+'
 '+
-      'Duration: '+days+' days
+        'Destination: '+(DEST_LABELS[dest]||dest)+'
 '+
-      'Travellers: '+pax+'
+        'Duration: '+days+' days
 '+
-      (date?'Departure: '+date+'
+        'Travellers: '+pax+' ('+insType+')
+'+
+        'Price: Rs. '+Number(rate.price_pkr).toLocaleString()+'
+'+
+        (date?'Departure: '+date+'
 ':'')+
-      'Please share pricing and next steps.'
-    );
-    return `
-    <div class="ins-plan-card">
-      <div class="ins-plan-card-inner">
-        <div class="ipc-logo">
-          <div class="ipc-logo-box">
-            <div style="width:70px;height:50px;background:#F3F0EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#6B6B8A;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;padding:6px">${company.name.split(' ').slice(0,2).join('<br>')}</div>
-          </div>
-          <div>
-            <div class="ipc-type">${company.type}</div>
-            <div class="ipc-logo-name">${company.name}</div>
-          </div>
-        </div>
-        <div class="ipc-info">
-          <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:10px">★ Recommended</span>':''}</div>
-          <div class="ipc-cover-label">Medical Cover</div>
-          <div class="ipc-cover-val">${plan.cover||'—'}</div>
-          <div class="ipc-feats">
-            ${feats.map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}
-          </div>
-        </div>
-        <div class="ipc-cta">
-          <div class="ipc-price">
-            <div style="font-size:13px;font-weight:600;color:#14142B;font-family:'Plus Jakarta Sans',sans-serif">Get a Quote</div>
-            <div style="font-size:11px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-top:3px">Pricing via WhatsApp</div>
-          </div>
-          <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>
-            Get Quote on WhatsApp
-          </a>
-          <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">We'll help you choose!</a></div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+        'Please confirm and guide me on next steps.'
+      );
 
-  document.getElementById('insHero').style.display = 'none';
+      const logoHtml = co?.logo_url
+        ? `<img src="${co.logo_url}" style="max-width:80px;max-height:52px;object-fit:contain" onerror="this.parentElement.innerHTML='<span style=\'font-size:11px;font-weight:700;color:#6B6B8A\'>'+(co?.short_name||'INS')+'</span>'">`
+        : `<span style="font-size:12px;font-weight:700;color:#6B6B8A;font-family:Plus Jakarta Sans,sans-serif">${(co?.short_name||co?.name||'INS')}</span>`;
+
+      return `<div class="ins-plan-card">
+        <div class="ins-plan-card-inner">
+          <div class="ipc-logo">
+            <div class="ipc-logo-box">${logoHtml}</div>
+            <div class="ipc-type">${co?.type||'Insurance'}</div>
+            <div class="ipc-logo-name">${co?.name||''}</div>
+          </div>
+          <div class="ipc-info">
+            <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:10px">&#9733; Recommended</span>':''}</div>
+            <div class="ipc-cover-label">Medical Cover</div>
+            <div class="ipc-cover-val">${plan.medical_cover||'—'}</div>
+            <div class="ipc-feats">${feats.map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}</div>
+          </div>
+          <div class="ipc-cta">
+            <div class="ipc-price">
+              <div class="ipc-price-amt">Rs. ${Number(rate.price_pkr).toLocaleString()}</div>
+              <div class="ipc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days</div>
+            </div>
+            <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn">${WA_SVG} Buy on WhatsApp</a>
+            <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">We'll help!</a></div>
+          </div>
+        </div>
+      </div>`;
+    }).filter(Boolean).join('');
+  }
+
+  document.getElementById('insHero').style.display    = 'none';
   document.getElementById('insResults').style.display = 'block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function function editInsForm() {
-  document.getElementById('insHero').style.display = 'flex';
+function editInsForm() {
+  document.getElementById('insHero').style.display    = 'flex';
   document.getElementById('insResults').style.display = 'none';
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 </script>
+
 </body>
 </html>
