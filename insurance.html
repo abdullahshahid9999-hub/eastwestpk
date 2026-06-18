@@ -493,6 +493,7 @@ document.getElementById('insDate').valueAsDate = new Date();
 
 function setInsTab(type, btn) {
   insType = type;
+  console.log('setInsTab called, type=', type);
   document.querySelectorAll('.ins-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('paxField').style.display = (type === 'individual') ? 'none' : 'flex';
@@ -519,6 +520,7 @@ const DEST_LABELS = {
 
 async function viewInsPlans() {
   const dest     = document.getElementById('insDest').value;
+  console.log('viewInsPlans called, dest=', dest, 'insType=', insType);
   const days     = parseInt(document.getElementById('insDuration').value) || 0;
   const date     = document.getElementById('insDate').value;
   const pax      = insType === 'individual' ? 1 : Math.max(2, parseInt(document.getElementById('insPax').value)||2);
@@ -546,7 +548,14 @@ async function viewInsPlans() {
     if (Array.isArray(cr)) companies = cr;
     if (Array.isArray(pr)) plans     = pr;
     if (Array.isArray(rr)) rates     = rr;
-  } catch(e) { console.error('Supabase error:', e); }
+  } catch(e) {
+    console.error('Supabase error:', e);
+    errEl.textContent = 'Connection error: ' + e.message;
+    errEl.style.display = 'block';
+    btn.innerHTML = '<i class="fa fa-search"></i> VIEW PLANS';
+    btn.disabled = false;
+    return;
+  }
 
   btn.innerHTML = '<i class="fa fa-search"></i> VIEW PLANS';
   btn.disabled  = false;
