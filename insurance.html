@@ -493,14 +493,13 @@ document.getElementById('insDate').valueAsDate = new Date();
 
 function setInsTab(type, btn) {
   insType = type;
-  console.log('setInsTab called, type=', type);
-  document.querySelectorAll('.ins-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ins-tab').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
-  document.getElementById('paxField').style.display = (type === 'individual') ? 'none' : 'flex';
+  var pf = document.getElementById('paxField');
+  if (pf) pf.style.display = (type === 'individual') ? 'none' : 'flex';
 }
 
-// Maps frontend destination value → Supabase destination value
-const DEST_MAP = {
+var DEST_MAP = {
   gulf:      'excl_usa_uk_canada_schengen',
   umrah:     'excl_usa_uk_canada_schengen',
   qatar:     'excl_usa_uk_canada_schengen',
@@ -512,45 +511,44 @@ const DEST_MAP = {
   worldwide: 'worldwide'
 };
 
-const DEST_LABELS = {
+var DEST_LABELS = {
   gulf:'Gulf States', umrah:'Saudi Arabia (Umrah/Hajj)', qatar:'Qatar',
   asia:'Asia', turkey:'Turkey', schengen:'Schengen States',
   uk:'United Kingdom', usa:'USA / Canada / Australia', worldwide:'Worldwide'
 };
 
 async function viewInsPlans() {
-  const dest     = document.getElementById('insDest').value;
-  console.log('viewInsPlans called, dest=', dest, 'insType=', insType);
-  const days     = parseInt(document.getElementById('insDuration').value) || 0;
-  const date     = document.getElementById('insDate').value;
-  const pax      = insType === 'individual' ? 1 : Math.max(2, parseInt(document.getElementById('insPax').value)||2);
-  const errEl    = document.getElementById('insErr');
+  var dest  = document.getElementById('insDest').value;
+  var days  = parseInt(document.getElementById('insDuration').value) || 0;
+  var date  = document.getElementById('insDate').value;
+  var paxEl = document.getElementById('insPax');
+  var pax   = (insType === 'individual') ? 1 : Math.max(2, parseInt((paxEl && paxEl.value) || 2));
+  var errEl = document.getElementById('insErr');
   errEl.style.display = 'none';
 
   if (!dest) { errEl.textContent = 'Please select a destination.'; errEl.style.display='block'; return; }
   if (!days) { errEl.textContent = 'Please select trip duration.';  errEl.style.display='block'; return; }
 
-  // Map to Supabase destination
-  const supaDest = DEST_MAP[dest] || 'worldwide';
+  var supaDest = DEST_MAP[dest] || 'worldwide';
+  var travellerType = (insType === 'group') ? 'family' : insType;
 
-  // Show loading
-  const btn = document.querySelector('.ins-view-btn');
-  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Searching Plans...';
+  var btn = document.querySelector('.ins-view-btn');
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Searching...';
   btn.disabled = true;
 
-  let companies=[], plans=[], rates=[];
+  var companies = [], plans = [], rates = [];
   try {
-    const [cr, pr, rr] = await Promise.all([
-      fetch(`${INS_SUPA}/rest/v1/ins_companies?active=eq.true&order=sort_order.asc`, {headers:INS_H}).then(r=>r.json()),
-      fetch(`${INS_SUPA}/rest/v1/ins_plans?active=eq.true&order=sort_order.asc`,     {headers:INS_H}).then(r=>r.json()),
-      fetch(`${INS_SUPA}/rest/v1/ins_rates?destination=eq.${supaDest}&traveller_type=eq.${insType}&days_min=lte.${days}&days_max=gte.${days}&order=price_pkr.asc`, {headers:INS_H}).then(r=>r.json()),
-    ]);
-    if (Array.isArray(cr)) companies = cr;
-    if (Array.isArray(pr)) plans     = pr;
-    if (Array.isArray(rr)) rates     = rr;
+    var r1 = await fetch(INS_SUPA+'/rest/v1/ins_companies?active=eq.true&order=sort_order.asc', {headers:INS_H});
+    var r2 = await fetch(INS_SUPA+'/rest/v1/ins_plans?active=eq.true&order=sort_order.asc', {headers:INS_H});
+    var r3 = await fetch(INS_SUPA+'/rest/v1/ins_rates?destination=eq.'+supaDest+'&traveller_type=eq.'+travellerType+'&days_min=lte.'+days+'&days_max=gte.'+days+'&order=price_pkr.asc', {headers:INS_H});
+    var d1 = await r1.json();
+    var d2 = await r2.json();
+    var d3 = await r3.json();
+    if (Array.isArray(d1)) companies = d1;
+    if (Array.isArray(d2)) plans = d2;
+    if (Array.isArray(d3)) rates = d3;
   } catch(e) {
-    console.error('Supabase error:', e);
-    errEl.textContent = 'Connection error: ' + e.message;
+    errEl.textContent = 'Connection error. Please try again.';
     errEl.style.display = 'block';
     btn.innerHTML = '<i class="fa fa-search"></i> VIEW PLANS';
     btn.disabled = false;
@@ -558,93 +556,69 @@ async function viewInsPlans() {
   }
 
   btn.innerHTML = '<i class="fa fa-search"></i> VIEW PLANS';
-  btn.disabled  = false;
+  btn.disabled = false;
 
-  const dateStr = date ? new Date(date).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}) : '';
+  var dateStr = '';
+  if (date) {
+    var d = new Date(date);
+    dateStr = d.toLocaleDateString('en-PK', {day:'numeric', month:'short', year:'numeric'});
+  }
 
-  // Summary box
-  document.getElementById('sumRows').innerHTML = [
+  var sumRowsHtml = [
     ['Plan Type',   insType.charAt(0).toUpperCase()+insType.slice(1)],
     ['Destination', DEST_LABELS[dest]||dest],
     ['Duration',    days+' Days'],
     ['Travellers',  pax+(pax>1?' persons':' person')],
-    ['Departure',   dateStr||'—'],
-  ].map(([l,v])=>`<div class="ins-sum-row"><div class="ins-sum-val">${v}</div><div class="ins-sum-lbl">${l}</div></div>`).join('');
+    ['Departure',   dateStr||'—']
+  ].map(function(x){ return '<div class="ins-sum-row"><div class="ins-sum-val">'+x[1]+'</div><div class="ins-sum-lbl">'+x[0]+'</div></div>'; }).join('');
+  document.getElementById('sumRows').innerHTML = sumRowsHtml;
 
   document.getElementById('resultsSubtitle').textContent =
-    `${rates.length} plan${rates.length!==1?'s':''} found for ${DEST_LABELS[dest]||dest} · ${days} days · ${insType}`;
+    rates.length+' plan'+(rates.length!==1?'s':'')+' found for '+( DEST_LABELS[dest]||dest)+' · '+days+' days · '+insType;
 
-  const WA_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>`;
+  var WA_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.554 4.1 1.52 5.823L.057 23.571a.5.5 0 00.611.611l5.748-1.463A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.87 9.87 0 01-5.031-1.378l-.36-.214-3.732.949.966-3.636-.235-.374A9.869 9.869 0 012.118 12C2.118 6.533 6.533 2.118 12 2.118S21.882 6.533 21.882 12 17.467 21.882 12 21.882z"/></svg>';
 
   if (rates.length === 0) {
-    document.getElementById('planList').innerHTML = `
-      <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:16px;border:1.5px solid #E4DFD4">
-        <i class="fa fa-search" style="font-size:32px;color:#D4A843;display:block;margin-bottom:16px"></i>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#14142B;margin-bottom:8px">No plans found</div>
-        <div style="font-size:13px;color:#9090AA;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:24px">We couldn't find matching plans for this selection. WhatsApp us — we'll find you the best option!</div>
-        <a href="https://wa.me/${WA}?text=${encodeURIComponent('Assalam o Alaikum! I need travel insurance for '+DEST_LABELS[dest]+' for '+days+' days ('+insType+'). Please help.')}" target="_blank" class="ipc-wa-btn" style="display:inline-flex;padding:13px 24px">${WA_SVG} Ask on WhatsApp</a>
-      </div>`;
+    document.getElementById('planList').innerHTML = '<div style="text-align:center;padding:60px 20px;background:#fff;border-radius:16px;border:1.5px solid #E4DFD4"><i class="fa fa-search" style="font-size:32px;color:#D4A843;display:block;margin-bottom:16px"></i><div style="font-family:Cormorant Garamond,serif;font-size:22px;color:#14142B;margin-bottom:8px">No plans found</div><div style="font-size:13px;color:#9090AA;font-family:Plus Jakarta Sans,sans-serif;margin-bottom:24px">Try a different destination or duration. Or WhatsApp us!</div><a href="https://wa.me/'+WA+'?text='+encodeURIComponent('Assalam o Alaikum! I need travel insurance for '+( DEST_LABELS[dest]||dest)+' for '+days+' days ('+insType+'). Please help.')+'" target="_blank" class="ipc-wa-btn" style="display:inline-flex;padding:13px 24px">'+WA_SVG+' Ask on WhatsApp</a></div>';
   } else {
-    document.getElementById('planList').innerHTML = rates.map(rate => {
-      const plan = plans.find(p => p.id === rate.plan_id);
-      if (!plan) return '';
-      const co = companies.find(c => c.id === plan.company_id);
+    var html = '';
+    for (var i=0; i<rates.length; i++) {
+      var rate = rates[i];
+      var plan = null;
+      for (var j=0; j<plans.length; j++) { if (plans[j].id === rate.plan_id) { plan = plans[j]; break; } }
+      if (!plan) continue;
+      var co = null;
+      for (var k=0; k<companies.length; k++) { if (companies[k].id === plan.company_id) { co = companies[k]; break; } }
 
-      // Parse features
-      let feats = [];
-      try { feats = JSON.parse(plan.features||'[]'); } catch(e) { feats = String(plan.features||'').split(',').map(f=>f.trim()).filter(Boolean); }
+      var feats = [];
+      try { feats = JSON.parse(plan.features||'[]'); } catch(e2) { feats = []; }
       feats = feats.slice(0,6);
+      var featsHtml = feats.map(function(f){ return '<span class="ipc-feat"><i class="fa fa-check-circle"></i>'+f+'</span>'; }).join('');
 
-      const waMsg = encodeURIComponent(
-        'Assalam o Alaikum! I want to buy travel insurance:
-'+
-        'Company: '+(co?.name||'Adam Jee Insurance')+'
-'+
-        'Plan: '+plan.name+'
-'+
-        'Medical Cover: '+(plan.medical_cover||'')+'
-'+
-        'Destination: '+(DEST_LABELS[dest]||dest)+'
-'+
-        'Duration: '+days+' days
-'+
-        'Travellers: '+pax+' ('+insType+')
-'+
-        'Price: Rs. '+Number(rate.price_pkr).toLocaleString()+'
-'+
-        (date?'Departure: '+date+'
-':'')+
-        'Please confirm and guide me on next steps.'
-      );
+      var waText = 'Assalam o Alaikum! I want to buy travel insurance.\\n' + 'Company: '+(co ? co.name : 'Adam Jee Insurance')+'\\n' + 'Plan: '+plan.name+'\\n' + 'Medical Cover: '+(plan.medical_cover||'')+'\\n' + 'Destination: '+(DEST_LABELS[dest]||dest)+'\\n' + 'Duration: '+days+' days\\n' + 'Travellers: '+pax+' ('+insType+')\\n' + 'Price: Rs. '+Number(rate.price_pkr).toLocaleString()+'\\n' + (date ? 'Departure: '+date+'\\n' : '') + 'Please confirm and guide me on next steps.';
 
-      const logoHtml = co?.logo_url
-        ? `<img src="${co.logo_url}" style="max-width:80px;max-height:52px;object-fit:contain" onerror="this.parentElement.innerHTML='<span style=\'font-size:11px;font-weight:700;color:#6B6B8A\'>'+(co?.short_name||'INS')+'</span>'">`
-        : `<span style="font-size:12px;font-weight:700;color:#6B6B8A;font-family:Plus Jakarta Sans,sans-serif">${(co?.short_name||co?.name||'INS')}</span>`;
+      var logoHtml = (co && co.logo_url)
+        ? '<img src="'+co.logo_url+'" style="max-width:80px;max-height:52px;object-fit:contain" alt="'+(co.short_name||'')+'">'
+        : '<span style="font-size:12px;font-weight:700;color:#6B6B8A">'+(co ? (co.short_name||co.name) : 'INS')+'</span>';
 
-      return `<div class="ins-plan-card">
-        <div class="ins-plan-card-inner">
-          <div class="ipc-logo">
-            <div class="ipc-logo-box">${logoHtml}</div>
-            <div class="ipc-type">${co?.type||'Insurance'}</div>
-            <div class="ipc-logo-name">${co?.name||''}</div>
-          </div>
-          <div class="ipc-info">
-            <div class="ipc-plan-name">${plan.name}${plan.recommended?'<span style="font-size:11px;font-weight:700;color:#D4A843;margin-left:10px">&#9733; Recommended</span>':''}</div>
-            <div class="ipc-cover-label">Medical Cover</div>
-            <div class="ipc-cover-val">${plan.medical_cover||'—'}</div>
-            <div class="ipc-feats">${feats.map(f=>`<span class="ipc-feat"><i class="fa fa-check-circle"></i>${f}</span>`).join('')}</div>
-          </div>
-          <div class="ipc-cta">
-            <div class="ipc-price">
-              <div class="ipc-price-amt">Rs. ${Number(rate.price_pkr).toLocaleString()}</div>
-              <div class="ipc-price-note">for ${pax} person${pax>1?'s':''} · ${days} days</div>
-            </div>
-            <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" class="ipc-wa-btn">${WA_SVG} Buy on WhatsApp</a>
-            <div class="ipc-confused">Confused? <a href="https://wa.me/${WA}?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">We'll help!</a></div>
-          </div>
-        </div>
-      </div>`;
-    }).filter(Boolean).join('');
+      html += '<div class="ins-plan-card">'
+        + '<div class="ins-plan-card-inner">'
+        + '<div class="ipc-logo"><div class="ipc-logo-box">'+logoHtml+'</div>'
+        + '<div class="ipc-logo-name">'+(co ? co.name : '')+'</div></div>'
+        + '<div class="ipc-info">'
+        + '<div class="ipc-plan-name">'+plan.name+(plan.recommended ? ' <span style="font-size:11px;font-weight:700;color:#D4A843">&#9733; Recommended</span>' : '')+'</div>'
+        + '<div class="ipc-cover-label">Medical Cover</div>'
+        + '<div class="ipc-cover-val">'+(plan.medical_cover||'—')+'</div>'
+        + '<div class="ipc-feats">'+featsHtml+'</div>'
+        + '</div>'
+        + '<div class="ipc-cta">'
+        + '<div class="ipc-price"><div class="ipc-price-amt">Rs. '+Number(rate.price_pkr).toLocaleString()+'</div>'
+        + '<div class="ipc-price-note">for '+pax+' person'+(pax>1?'s':'')+' · '+days+' days</div></div>'
+        + '<a href="https://wa.me/'+WA+'?text='+encodeURIComponent(waText)+'" target="_blank" class="ipc-wa-btn">'+WA_SVG+' Buy on WhatsApp</a>'
+        + '<div class="ipc-confused">Confused? <a href="https://wa.me/'+WA+'?text=Assalam+o+Alaikum!+I+need+help+choosing+an+insurance+plan." target="_blank">We will help!</a></div>'
+        + '</div></div></div>';
+    }
+    document.getElementById('planList').innerHTML = html;
   }
 
   document.getElementById('insHero').style.display    = 'none';
@@ -658,6 +632,5 @@ function editInsForm() {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 </script>
-
 </body>
 </html>
