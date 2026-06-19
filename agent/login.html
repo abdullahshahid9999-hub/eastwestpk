@@ -229,6 +229,25 @@ async function sbPost(table, data, token) {
   return r.json();
 }
 
+async function sendOtpEmail(email, otp, purpose, agentName) {
+  try {
+    const r = await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp, purpose, agentName })
+    });
+    if (!r.ok) {
+      const err = await r.json();
+      console.error('OTP email failed:', err);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('OTP email error:', e);
+    return false;
+  }
+}
+
 // ── LOGIN ──
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
@@ -286,10 +305,14 @@ async function verifyIdentity() {
     const exp = new Date(Date.now() + 10 * 60 * 1000).toISOString();
     await sbPost('agent_otps', { agent_id: agent.id, otp_code: otp, purpose: 'password_reset', expires_at: exp });
 
-    // In production: send otp via email. For now show in alert (replace with email API)
-    // TODO: integrate email service (e.g. Resend.com) to send OTP
-    console.log('OTP:', otp); // dev only — remove in production
-    showAlert(`OTP sent to ${email}. (Dev: check console)`, false);
+    const sent = await sendOtpEmail(email, otp, 'password_reset', null);
+    if (sent) {
+      showAlert(`OTP sent to ${email}. Check your inbox.`, false);
+    } else {
+      showAlert(`Could not send email. Contact East & West for help.`, true);
+      setLoading('resetVerifyBtn', false);
+      return;
+    }
 
     resetStep(2);
     startOtpTimer();

@@ -723,6 +723,25 @@ async function POST(table, data) {
   return r.json();
 }
 
+async function sendOtpEmail(email, otp, purpose, agentName) {
+  try {
+    const r = await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp, purpose, agentName })
+    });
+    if (!r.ok) {
+      const err = await r.json();
+      console.error('OTP email failed:', err);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('OTP email error:', e);
+    return false;
+  }
+}
+
 // ── HOME ──
 async function loadHome() {
   // bookings summary
@@ -1059,8 +1078,14 @@ async function sendBookingOTP() {
   try {
     const r = await POST('agent_otps',{agent_id:agent.id,otp_code:otp,purpose:'booking_confirm',expires_at:exp});
     if(Array.isArray(r)&&r[0]) pendingOtpId = r[0].id;
-    console.log('Booking OTP:', otp); // dev — replace with email send
-    toast('OTP sent to your email.');
+
+    const sent = await sendOtpEmail(agent.email, otp, 'booking_confirm', agent.full_name);
+    if (sent) {
+      toast('OTP sent to your email.');
+    } else {
+      toast('Could not send OTP email. Contact East & West.', true);
+      return;
+    }
     // clear otp boxes
     document.querySelectorAll('#otpModal .otp-box').forEach(b=>b.value='');
     openModal('otpModal');
