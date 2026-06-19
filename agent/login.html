@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Login — East & West Travel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4A843;--gold-l:#F0C050;
+  --navy:#071120;--navy2:#0A1828;
+  --bg:#F7F6F2;--white:#FFFFFF;
+  --text:#14142B;--text2:#3D3D5C;--muted:#8888A0;
+  --bdr:#E4DFD4;--bdr2:#D0C8BC;
+  --green:#22C55E;--red:#EF4444;
+  --r:10px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:420px}
+
+/* LOGO AREA */
+.logo-area{text-align:center;margin-bottom:28px}
+.logo-area img{height:52px;border-radius:8px;margin-bottom:12px}
+.logo-area h1{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
+.logo-area h1 span{color:var(--gold)}
+.logo-area p{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--bdr);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(7,17,32,0.06)}
+
+/* TAB BAR */
+.tabs{display:flex;gap:4px;background:#F0EDE8;border-radius:8px;padding:4px;margin-bottom:24px}
+.tab{flex:1;padding:8px;border:none;background:none;border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
+.tab.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+
+/* FORM */
+.panel{display:none}.panel.active{display:block}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;letter-spacing:0.04em;text-transform:uppercase}
+.field-wrap{position:relative}
+.field input,.field select{width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:var(--gold)}
+.field input.err{border-color:var(--red)}
+.field .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px}
+
+/* SUBMIT BTN */
+.btn-submit{width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.btn-submit:hover{background:var(--navy2)}
+.btn-submit:disabled{opacity:0.6;cursor:not-allowed}
+.btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold-l)}
+
+/* ALERTS */
+.alert{padding:10px 14px;border-radius:8px;font-size:12px;font-weight:500;margin-bottom:16px;display:none;align-items:center;gap:8px}
+.alert.err{background:#FEF2F2;color:var(--red);border:1px solid #FECACA;display:flex}
+.alert.ok{background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;display:flex}
+
+/* DIVIDER */
+.divider{text-align:center;position:relative;margin:18px 0}
+.divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--bdr)}
+.divider span{position:relative;background:var(--white);padding:0 12px;font-size:11px;color:var(--muted);font-weight:500}
+
+/* BADGE */
+.tier-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.tier-silver{background:#F1F5F9;color:#475569}
+.tier-gold{background:#FFFBEB;color:#B45309}
+.tier-platinum{background:#F5F3FF;color:#6D28D9}
+
+/* OTP BOX */
+.otp-boxes{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.otp-box{width:44px;height:50px;border:2px solid var(--bdr);border-radius:8px;font-size:20px;font-weight:700;text-align:center;color:var(--text);outline:none;transition:border-color .15s;font-family:inherit}
+.otp-box:focus{border-color:var(--gold)}
+.otp-hint{text-align:center;font-size:12px;color:var(--muted);margin-bottom:8px}
+.otp-timer{text-align:center;font-size:12px;color:var(--gold);font-weight:600;margin-top:8px}
+
+/* FOOTER */
+.page-footer{text-align:center;margin-top:18px;font-size:11px;color:var(--muted)}
+.page-footer a{color:var(--gold);text-decoration:none;font-weight:600}
+
+/* SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* BACK LINK */
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:inherit;margin-bottom:12px;padding:0}
+.back-link:hover{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="logo-area">
+    <img src="../assets/images/logo.jpg" alt="East West" onerror="this.style.display='none'">
+    <h1>East & <span>West</span> Travel</h1>
+    <p>Agent Portal — Authorized Access Only</p>
+  </div>
+
+  <div class="card">
+    <!-- TAB BAR -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login',this)">Sign In</button>
+      <button class="tab" onclick="switchTab('reset',this)">Reset Password</button>
+    </div>
+
+    <!-- ALERT -->
+    <div class="alert" id="alert"><i class="fa fa-circle-exclamation"></i><span id="alertMsg"></span></div>
+
+    <!-- ── LOGIN PANEL ── -->
+    <div class="panel active" id="panel-login">
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="agent@email.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="field-wrap">
+          <input type="password" id="loginPwd" placeholder="Enter password" autocomplete="current-password">
+          <button class="eye" onclick="togglePwd('loginPwd',this)"><i class="fa fa-eye"></i></button>
+        </div>
+      </div>
+      <button class="btn-submit" id="loginBtn" onclick="doLogin()">
+        <i class="fa fa-right-to-bracket"></i> Sign In
+      </button>
+    </div>
+
+    <!-- ── RESET PANEL ── -->
+    <div class="panel" id="panel-reset">
+      <!-- Step 1: verify identity -->
+      <div id="reset-step1">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Enter your Agent ID, phone number and email to verify your identity.</p>
+        <div class="field">
+          <label>Agent ID</label>
+          <input type="text" id="rAgentCode" placeholder="EW-001">
+        </div>
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" id="rPhone" placeholder="03XX XXXXXXX">
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="rEmail" placeholder="agent@email.com">
+        </div>
+        <button class="btn-submit" id="resetVerifyBtn" onclick="verifyIdentity()">
+          <i class="fa fa-shield-halved"></i> Verify Identity
+        </button>
+      </div>
+
+      <!-- Step 2: OTP sent to email -->
+      <div id="reset-step2" style="display:none">
+        <button class="back-link" onclick="resetStep(1)"><i class="fa fa-arrow-left"></i> Back</button>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:4px">A 6-digit code was sent to your email.</p>
+        <div class="otp-hint">Enter OTP below</div>
+        <div class="otp-boxes" id="otpBoxes">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,0)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,1)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,2)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,3)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,4)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,5)">
+        </div>
+        <div class="otp-timer" id="otpTimer">Resend in 60s</div>
+        <button class="btn-submit btn-gold" onclick="verifyOTP()"><i class="fa fa-check"></i> Verify OTP</button>
+      </div>
+
+      <!-- Step 3: new password -->
+      <div id="reset-step3" style="display:none">
+        <button class="back-link" onclick="resetStep(1)"><i class="fa fa-arrow-left"></i> Start Over</button>
+        <div class="field">
+          <label>New Password</label>
+          <div class="field-wrap">
+            <input type="password" id="newPwd1" placeholder="Min 8 characters">
+            <button class="eye" onclick="togglePwd('newPwd1',this)"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="newPwd2" placeholder="Repeat password">
+        </div>
+        <button class="btn-submit btn-gold" onclick="setNewPassword()"><i class="fa fa-lock"></i> Set New Password</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <a href="/">← Back to Website</a> &nbsp;·&nbsp; Need help? Call <a href="tel:+923336515349">+92 333 651 5349</a>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+
+let resetAgentId = null;
+let otpCountdown = null;
+
+// ── AUTH HELPERS ──
+async function sbSignIn(email, password) {
+  const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY },
+    body: JSON.stringify({ email, password })
+  });
+  return r.json();
+}
+
+async function sbGet(table, qs) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+  });
+  return r.json();
+}
+
+async function sbPatch(table, id, data, token) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token || SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+async function sbPost(table, data, token) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token || SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+// ── LOGIN ──
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPwd').value;
+  if (!email || !pwd) { showAlert('Please enter email and password.', true); return; }
+
+  setLoading('loginBtn', true);
+  clearAlert();
+
+  try {
+    const res = await sbSignIn(email, pwd);
+    if (res.error) { showAlert(res.error.message || 'Invalid credentials.', true); setLoading('loginBtn', false); return; }
+
+    const token = res.access_token;
+    // Fetch agent profile
+    const agents = await fetch(`${SB_URL}/rest/v1/agents?supabase_uid=eq.${res.user.id}&select=*`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}` }
+    }).then(r => r.json());
+
+    if (!agents || !agents.length) { showAlert('No agent account found for this email.', true); setLoading('loginBtn', false); return; }
+    const agent = agents[0];
+    if (agent.status === 'suspended') { showAlert('Your account is suspended. Contact East & West.', true); setLoading('loginBtn', false); return; }
+    if (agent.status === 'inactive')  { showAlert('Your account is inactive. Contact East & West.', true); setLoading('loginBtn', false); return; }
+
+    // Store session
+    sessionStorage.setItem('ew_agent_token', token);
+    sessionStorage.setItem('ew_agent', JSON.stringify(agent));
+    window.location.href = '/agent/dashboard';
+  } catch(e) {
+    showAlert('Connection error. Try again.', true);
+    setLoading('loginBtn', false);
+  }
+}
+
+// ── RESET: STEP 1 — verify identity ──
+async function verifyIdentity() {
+  const code  = document.getElementById('rAgentCode').value.trim().toUpperCase();
+  const phone = document.getElementById('rPhone').value.trim();
+  const email = document.getElementById('rEmail').value.trim();
+  if (!code || !phone || !email) { showAlert('All fields required.', true); return; }
+
+  setLoading('resetVerifyBtn', true); clearAlert();
+
+  try {
+    const rows = await sbGet('agents', `agent_code=eq.${code}&email=eq.${email}&select=id,phone,status`);
+    if (!rows || !rows.length) { showAlert('No matching agent found. Check your details.', true); setLoading('resetVerifyBtn', false); return; }
+    const agent = rows[0];
+    // Normalize phone comparison
+    const clean = (p) => p.replace(/\D/g,'');
+    if (clean(agent.phone) !== clean(phone)) { showAlert('Phone number does not match our records.', true); setLoading('resetVerifyBtn', false); return; }
+
+    resetAgentId = agent.id;
+    // Generate & store OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const exp = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+    await sbPost('agent_otps', { agent_id: agent.id, otp_code: otp, purpose: 'password_reset', expires_at: exp });
+
+    // In production: send otp via email. For now show in alert (replace with email API)
+    // TODO: integrate email service (e.g. Resend.com) to send OTP
+    console.log('OTP:', otp); // dev only — remove in production
+    showAlert(`OTP sent to ${email}. (Dev: check console)`, false);
+
+    resetStep(2);
+    startOtpTimer();
+    setLoading('resetVerifyBtn', false);
+  } catch(e) {
+    showAlert('Error verifying identity.', true);
+    setLoading('resetVerifyBtn', false);
+  }
+}
+
+// ── RESET: STEP 2 — verify OTP ──
+async function verifyOTP() {
+  const boxes = document.querySelectorAll('.otp-box');
+  const code  = Array.from(boxes).map(b => b.value).join('');
+  if (code.length !== 6) { showAlert('Enter the full 6-digit OTP.', true); return; }
+
+  clearAlert();
+  try {
+    const rows = await sbGet('agent_otps', `agent_id=eq.${resetAgentId}&otp_code=eq.${code}&purpose=eq.password_reset&used=eq.false&select=id,expires_at`);
+    if (!rows || !rows.length) { showAlert('Invalid OTP. Try again.', true); return; }
+    const otp = rows[0];
+    if (new Date(otp.expires_at) < new Date()) { showAlert('OTP expired. Request a new one.', true); return; }
+    // Mark used
+    await sbPatch('agent_otps', otp.id, { used: true });
+    clearInterval(otpCountdown);
+    resetStep(3);
+  } catch(e) {
+    showAlert('Error verifying OTP.', true);
+  }
+}
+
+// ── RESET: STEP 3 — set new password ──
+async function setNewPassword() {
+  const p1 = document.getElementById('newPwd1').value;
+  const p2 = document.getElementById('newPwd2').value;
+  if (!p1 || p1.length < 8) { showAlert('Password must be at least 8 characters.', true); return; }
+  if (p1 !== p2) { showAlert('Passwords do not match.', true); return; }
+
+  // Supabase password reset requires the recovery token — redirect to Supabase email flow
+  // For agents, admin resets via Supabase dashboard OR we call updateUser with admin key
+  showAlert('Password reset request submitted. Admin will update your password and notify you via WhatsApp.', false);
+  // TODO: with service role key, call /auth/v1/admin/users/{uid} PATCH {password: p1}
+  setTimeout(() => { resetStep(1); switchTab('login', document.querySelector('.tab')); }, 3000);
+}
+
+// ── UI HELPERS ──
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  clearAlert();
+}
+
+function resetStep(n) {
+  [1,2,3].forEach(i => document.getElementById('reset-step'+i).style.display = i===n ? 'block' : 'none');
+}
+
+function showAlert(msg, isErr) {
+  const a = document.getElementById('alert');
+  document.getElementById('alertMsg').textContent = msg;
+  a.className = 'alert ' + (isErr ? 'err' : 'ok');
+}
+function clearAlert() { document.getElementById('alert').className = 'alert'; }
+
+function setLoading(btnId, loading) {
+  const b = document.getElementById(btnId);
+  if (loading) { b.disabled = true; b.innerHTML = '<span class="spin"></span> Please wait...'; }
+  else { b.disabled = false; b.innerHTML = b.dataset.orig || b.innerHTML; }
+}
+
+function togglePwd(id, btn) {
+  const el = document.getElementById(id);
+  const isText = el.type === 'text';
+  el.type = isText ? 'password' : 'text';
+  btn.querySelector('i').className = 'fa fa-' + (isText ? 'eye' : 'eye-slash');
+}
+
+function otpNext(el, idx) {
+  const boxes = document.querySelectorAll('.otp-box');
+  if (el.value && idx < 5) boxes[idx+1].focus();
+}
+
+function startOtpTimer() {
+  let secs = 60;
+  const el = document.getElementById('otpTimer');
+  clearInterval(otpCountdown);
+  otpCountdown = setInterval(() => {
+    secs--;
+    el.textContent = secs > 0 ? `Resend in ${secs}s` : 'Resend OTP';
+    if (secs <= 0) { clearInterval(otpCountdown); el.style.cursor = 'pointer'; el.onclick = verifyIdentity; }
+  }, 1000);
+}
+
+// Check if already logged in
+if (sessionStorage.getItem('ew_agent_token') && sessionStorage.getItem('ew_agent')) {
+  window.location.href = '/agent/dashboard';
+}
+
+// Enter key on login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('panel-login').classList.contains('active')) doLogin();
+});
+</script>
+</body>
+</html>

@@ -150,6 +150,12 @@ tbody td strong{color:var(--text);font-weight:600}
     <button class="sbn" onclick="showPage('visa',this)"><i class="fa fa-passport"></i> Visa Services</button>
     <button class="sbn" onclick="showPage('group',this)"><i class="fa fa-plane"></i> Group Tickets</button>
     <button class="sbn" onclick="showPage('insurance',this);insTab('co')"><i class="fa fa-shield-alt"></i> Insurance Plans</button>
+    <div class="sb-lbl">Agent Network</div>
+    <button class="sbn" onclick="showPage('agents',this)"><i class="fa fa-user-tie"></i> Agents <span class="sbn-badge" id="agentBadge" style="display:none">0</span></button>
+    <button class="sbn" onclick="showPage('agent-bookings',this)"><i class="fa fa-list-check"></i> Agent Bookings</button>
+    <button class="sbn" onclick="showPage('slips',this)"><i class="fa fa-money-bill-transfer"></i> Payment Slips <span class="sbn-badge" id="slipBadge" style="display:none">0</span></button>
+    <div class="sb-lbl">Finance</div>
+    <button class="sbn" onclick="showPage('finance',this)"><i class="fa fa-chart-line"></i> P&amp;L Report</button>
     <div class="sb-lbl">Content</div>
     <button class="sbn" onclick="showPage('blogs',this)"><i class="fa fa-blog"></i> Blog Posts</button>
     <div class="sb-lbl">System</div>
@@ -255,6 +261,116 @@ tbody td strong{color:var(--text);font-weight:600}
   <div class="ph"><div><h2>Blog <em>Posts</em></h2></div><button class="btn btn-g" onclick="openBlogModal()"><i class="fa fa-plus"></i> New Post</button></div>
   <div class="card">
     <div class="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="bl-tb"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══ AGENTS ═══ -->
+<div class="page" id="pg-agents">
+  <div class="ph">
+    <div><h2>Agent <em>Network</em></h2><p>Manage agent accounts, tiers, credit limits and commissions</p></div>
+    <button class="btn btn-g" onclick="openAgentModal()"><i class="fa fa-plus"></i> Add Agent</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <select class="ss" onchange="filterAgents(this.value)" style="padding:8px 12px">
+      <option value="">All Tiers</option>
+      <option value="silver">Silver</option>
+      <option value="gold">Gold</option>
+      <option value="platinum">Platinum</option>
+    </select>
+    <select class="ss" onchange="filterAgentStatus(this.value)" style="padding:8px 12px">
+      <option value="">All Status</option>
+      <option value="active">Active</option>
+      <option value="suspended">Suspended</option>
+      <option value="inactive">Inactive</option>
+    </select>
+    <input class="si" style="width:220px" placeholder="Search name, code, email..." oninput="searchAgents(this.value)">
+  </div>
+  <div class="card">
+    <div class="tw"><table>
+      <thead><tr><th>Agent Code</th><th>Name / Company</th><th>Tier</th><th>Balance</th><th>Credit Limit</th><th>Commission</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="ag-tb"><tr><td colspan="8" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ═══ AGENT BOOKINGS ═══ -->
+<div class="page" id="pg-agent-bookings">
+  <div class="ph"><div><h2>Agent <em>Bookings</em></h2><p>All bookings submitted by agents — confirm, issue or cancel</p></div></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <select class="ss" onchange="filterAgentBk(this.value)" style="padding:8px 12px">
+      <option value="">All Status</option>
+      <option value="pending">Pending</option>
+      <option value="confirmed">Confirmed</option>
+      <option value="issued">Issued</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+    <select class="ss" onchange="filterAgentBkType(this.value)" style="padding:8px 12px">
+      <option value="">All Services</option>
+      <option value="group_ticket">Group Tickets</option>
+      <option value="umrah">Umrah</option>
+      <option value="insurance">Insurance</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="tw"><table>
+      <thead><tr><th>Ref</th><th>Agent</th><th>Service</th><th>Pax</th><th>Sell Price</th><th>Commission</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody id="agbk-tb"><tr><td colspan="9" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ═══ PAYMENT SLIPS ═══ -->
+<div class="page" id="pg-slips">
+  <div class="ph"><div><h2>Payment <em>Slips</em></h2><p>Approve or reject agent payment submissions</p></div></div>
+  <div class="card">
+    <div class="tw"><table>
+      <thead><tr><th>Date</th><th>Agent</th><th>Amount</th><th>Bank</th><th>Ref No.</th><th>Slip</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="sl-tb"><tr><td colspan="8" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ═══ FINANCE / P&L ═══ -->
+<div class="page" id="pg-finance">
+  <div class="ph">
+    <div><h2>Finance <em>P&amp;L</em></h2><p>Profit & Loss — cost vs sell price per booking</p></div>
+    <div style="display:flex;gap:6px">
+      <select id="fn-days" onchange="loadFinance()" class="ss" style="padding:8px 12px">
+        <option value="7">Last 7 Days</option>
+        <option value="30" selected>Last 30 Days</option>
+        <option value="90">Last 3 Months</option>
+        <option value="180">Last 6 Months</option>
+        <option value="365">Last Year</option>
+      </select>
+      <select id="fn-svc" onchange="loadFinance()" class="ss" style="padding:8px 12px">
+        <option value="">All Services</option>
+        <option value="group_ticket">Group Tickets</option>
+        <option value="umrah">Umrah</option>
+        <option value="insurance">Insurance</option>
+      </select>
+    </div>
+  </div>
+  <div class="sg" style="grid-template-columns:repeat(4,1fr)">
+    <div class="sc"><div class="sc-ico" style="background:var(--green-bg)"><i class="fa fa-arrow-trend-up" style="color:var(--green)"></i></div><div class="sc-n" id="fn-rev">—</div><div class="sc-l">Total Revenue</div></div>
+    <div class="sc"><div class="sc-ico" style="background:rgba(239,68,68,0.08)"><i class="fa fa-arrow-trend-down" style="color:var(--red)"></i></div><div class="sc-n" id="fn-cost">—</div><div class="sc-l">Total Cost</div></div>
+    <div class="sc"><div class="sc-ico" style="background:var(--gold-bg)"><i class="fa fa-coins" style="color:var(--gold)"></i></div><div class="sc-n" id="fn-margin">—</div><div class="sc-l">Gross Profit</div></div>
+    <div class="sc"><div class="sc-ico" style="background:rgba(96,165,250,0.1)"><i class="fa fa-wallet" style="color:var(--blue)"></i></div><div class="sc-n" id="fn-outstanding">—</div><div class="sc-l">Agent Receivables</div></div>
+  </div>
+  <!-- Agent balance summary -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="ch"><h3>Agent Balance Summary</h3></div>
+    <div class="tw"><table>
+      <thead><tr><th>Agent</th><th>Tier</th><th>Credit Limit</th><th>Balance</th><th>Available Credit</th><th>Overdue</th></tr></thead>
+      <tbody id="fn-agents-tb"><tr><td colspan="6" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div>
+  </div>
+  <!-- P&L per booking -->
+  <div class="card">
+    <div class="ch"><h3>Booking P&amp;L Details</h3></div>
+    <div class="tw"><table>
+      <thead><tr><th>Ref</th><th>Agent</th><th>Service</th><th>Pax</th><th>Cost</th><th>Sell</th><th>Margin</th><th>Commission</th><th>Net Profit</th><th>Status</th></tr></thead>
+      <tbody id="fn-tb"><tr><td colspan="10" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div>
   </div>
 </div>
 
@@ -1081,6 +1197,121 @@ async function deleteRt(id) {
   </div>
 </div>
 
+<!-- ═══ AGENT MODAL ═══ -->
+<div class="modal-bg" id="agentModal">
+  <div class="modal" style="max-width:640px">
+    <div class="mh"><h3 id="agentTitle">Add <em>Agent</em></h3><button class="mc" onclick="closeModal('agentModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb" style="padding:16px 18px">
+      <input type="hidden" id="agentId">
+      <div class="fr">
+        <div class="fg"><label>Agent Code *</label><input type="text" id="agCode" placeholder="EW-001"></div>
+        <div class="fg"><label>Tier *</label>
+          <select id="agTier" onchange="applyTierDefaults()">
+            <option value="silver">Silver</option>
+            <option value="gold">Gold</option>
+            <option value="platinum">Platinum</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Full Name *</label><input type="text" id="agName" placeholder="Muhammad Ali"></div>
+        <div class="fg"><label>Company Name</label><input type="text" id="agCompany" placeholder="Ali Travels"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Email *</label><input type="email" id="agEmail" placeholder="agent@email.com"></div>
+        <div class="fg"><label>Phone *</label><input type="tel" id="agPhone" placeholder="03XX XXXXXXX"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>City</label><input type="text" id="agCity" placeholder="Lahore"></div>
+        <div class="fg"><label>Status</label>
+          <select id="agStatus"><option value="active">Active</option><option value="suspended">Suspended</option><option value="inactive">Inactive</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Address</label><input type="text" id="agAddress" placeholder="Office address"></div>
+      <div class="ins-section-title">Credit & Commission</div>
+      <div class="fr">
+        <div class="fg"><label>Credit Limit (PKR)</label><input type="number" id="agLimit" placeholder="100000"></div>
+        <div class="fg"><label>Current Balance (PKR)</label><input type="number" id="agBalance" placeholder="0" value="0"></div>
+      </div>
+      <div class="fr" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="fg"><label>Commission — Tickets %</label><input type="number" step="0.1" id="agCommTk" placeholder="3"></div>
+        <div class="fg"><label>Commission — Umrah %</label><input type="number" step="0.1" id="agCommUm" placeholder="4"></div>
+        <div class="fg"><label>Commission — Insurance %</label><input type="number" step="0.1" id="agCommIn" placeholder="6"></div>
+      </div>
+      <div class="fg"><label>Notes</label><textarea id="agNotes" placeholder="Internal notes about this agent..."></textarea></div>
+      <div style="background:var(--raised);border:1px solid var(--border2);border-radius:6px;padding:10px 12px;font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+        <i class="fa fa-circle-info" style="color:var(--gold)"></i> New agents must also be created in <strong style="color:var(--text)">Supabase → Authentication → Users</strong> with the same email, then paste their <strong style="color:var(--text)">User UID</strong> below to link login access.
+      </div>
+      <div class="fg"><label>Supabase Auth User UID (for login)</label><input type="text" id="agUid" placeholder="paste UUID from Supabase Auth"></div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="saveAgent()"><i class="fa fa-save"></i> Save Agent</button>
+        <button class="btn btn-gh" onclick="closeModal('agentModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BALANCE ADJUST MODAL ═══ -->
+<div class="modal-bg" id="balModal">
+  <div class="modal" style="max-width:420px">
+    <div class="mh"><h3>Adjust <em>Balance</em></h3><button class="mc" onclick="closeModal('balModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb" style="padding:16px 18px">
+      <input type="hidden" id="balAgentId">
+      <p id="balAgentInfo" style="font-size:12px;color:var(--muted);margin-bottom:14px"></p>
+      <div class="fg"><label>Adjustment Type</label>
+        <select id="balType"><option value="credit">Add Credit (+)</option><option value="debit">Deduct (-)</option></select>
+      </div>
+      <div class="fg"><label>Amount (PKR) *</label><input type="number" id="balAmount" placeholder="50000"></div>
+      <div class="fg"><label>Reason / Description *</label><input type="text" id="balReason" placeholder="e.g. Cash payment received"></div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="saveBalanceAdjustment()"><i class="fa fa-check"></i> Apply Adjustment</button>
+        <button class="btn btn-gh" onclick="closeModal('balModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AGENT BOOKING REVIEW MODAL ═══ -->
+<div class="modal-bg" id="agbkModal">
+  <div class="modal" style="max-width:560px">
+    <div class="mh"><h3>Booking <em>Details</em></h3><button class="mc" onclick="closeModal('agbkModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb" style="padding:16px 18px">
+      <input type="hidden" id="agbkId">
+      <div id="agbkDetail" style="font-size:12px;color:var(--text);line-height:1.8;margin-bottom:14px"></div>
+      <div class="fg"><label>Admin Notes</label><textarea id="agbkNotes" placeholder="Internal notes / issue details..."></textarea></div>
+      <div class="fg"><label>Update Status</label>
+        <select id="agbkStatus">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="issued">Issued</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="saveAgentBookingStatus()"><i class="fa fa-save"></i> Update Booking</button>
+        <button class="btn btn-gh" onclick="closeModal('agbkModal')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIP REVIEW MODAL ═══ -->
+<div class="modal-bg" id="slipModal">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3>Review <em>Payment Slip</em></h3><button class="mc" onclick="closeModal('slipModal')"><i class="fa fa-times"></i></button></div>
+    <div class="mb" style="padding:16px 18px">
+      <input type="hidden" id="slipId">
+      <div id="slipDetail" style="font-size:12px;color:var(--text);line-height:1.8;margin-bottom:12px"></div>
+      <div id="slipImgWrap" style="margin-bottom:14px"></div>
+      <div class="fg"><label>Admin Notes</label><textarea id="slipNotesInput" placeholder="Notes about this approval/rejection..."></textarea></div>
+      <div class="mf">
+        <button class="btn btn-g" onclick="approveSlip()"><i class="fa fa-check"></i> Approve & Credit</button>
+        <button class="btn btn-r" onclick="rejectSlip()"><i class="fa fa-times"></i> Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ BLOG MODAL ═══ -->
 <div class="modal-bg" id="blogModal">
   <div class="modal" style="max-width:700px">
@@ -1126,6 +1357,7 @@ async function DEL(t,id){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{me
 
 /* State */
 let bks=[],cus=[],trs=[],umrahPkgs=[],tourPkgs=[],visas=[],flights=[],blogs=[];
+let agents=[],agentBookings=[],agentTx=[],paymentSlips=[],commRules=[];
 
 /* Load all */
 async function loadAll(){
@@ -1146,6 +1378,31 @@ async function loadAll(){
     renderDash();renderBk(bks);renderCu(cus);renderTr(trs);
     renderUmrah();renderTours();renderVisa();renderFlights(flights);renderBlog();
   }catch(e){toast('Load error: '+e.message,true);}
+  loadAgentData();
+}
+
+/* Load agent system data separately so a failure here doesn't break core admin */
+async function loadAgentData(){
+  try{
+    const [ag,agbk,tx,sl,cr]=await Promise.all([
+      GET('agents','order=created_at.desc').catch(()=>[]),
+      GET('agent_bookings','order=created_at.desc').catch(()=>[]),
+      GET('agent_transactions','order=created_at.desc&limit=200').catch(()=>[]),
+      GET('payment_slips','order=created_at.desc').catch(()=>[]),
+      GET('commission_rules','order=tier.asc').catch(()=>[]),
+    ]);
+    agents=ag;agentBookings=agbk;agentTx=tx;paymentSlips=sl;commRules=cr;
+    renderAgents(agents);
+    renderAgentBookings(agentBookings);
+    renderSlips(paymentSlips);
+    const pendingSlips=paymentSlips.filter(s=>s.status==='pending').length;
+    const badge=document.getElementById('slipBadge');
+    if(pendingSlips>0){badge.style.display='inline';badge.textContent=pendingSlips;}else{badge.style.display='none';}
+    const pendingAg=agentBookings.filter(b=>b.status==='pending').length;
+    const abadge=document.getElementById('agentBadge');
+    if(pendingAg>0){abadge.style.display='inline';abadge.textContent=pendingAg;}else{abadge.style.display='none';}
+    loadFinance();
+  }catch(e){console.error('Agent data load error:',e);}
 }
 
 /* ─── DASHBOARD ─── */
@@ -1545,6 +1802,328 @@ async function saveBlog(){
   }catch(e){toast('Error: '+e.message,true);}
 }
 async function delBlog(id){if(!confirm('Delete?'))return;try{await DEL('blogs',id);blogs=blogs.filter(b=>b.id!==id);renderBlog();toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
+
+/* ─── AGENTS ─── */
+function tierBadge(t){const m={silver:'#94A3B8',gold:'#C9A84C',platinum:'#A78BFA'};return `<span style="padding:2px 8px;border-radius:10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;background:${m[t]||'#666'}22;color:${m[t]||'#666'}">${(t||'—').toUpperCase()}</span>`;}
+function renderAgents(data){
+  const tb=document.getElementById('ag-tb');
+  if(!tb)return;
+  if(!data.length){tb.innerHTML='<tr><td colspan="8" class="etd">No agents yet. <button class="btn-s" onclick="openAgentModal()">Add first agent</button></td></tr>';return;}
+  tb.innerHTML=data.map(a=>{
+    const bal=parseFloat(a.balance||0);
+    const avgComm=((parseFloat(a.commission_ticket||0)+parseFloat(a.commission_umrah||0)+parseFloat(a.commission_ins||0))/3).toFixed(1);
+    return `<tr>
+      <td style="font-family:monospace;font-weight:700;color:var(--teal)">${a.agent_code||'—'}</td>
+      <td><strong>${a.full_name||'—'}</strong><div style="font-size:11px;color:var(--muted)">${a.company_name||a.email||''}</div></td>
+      <td>${tierBadge(a.tier)}</td>
+      <td style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:700">${bal<0?'-':''}Rs. ${Math.abs(bal).toLocaleString()}</td>
+      <td>Rs. ${parseFloat(a.credit_limit||0).toLocaleString()}</td>
+      <td>${avgComm}% avg</td>
+      <td><span class="pill ${a.status==='active'?'p-act':a.status==='suspended'?'p-canc':'p-inact'}">${a.status}</span></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn-s" onclick="editAgent('${a.id}')" title="Edit"><i class="fa fa-edit"></i></button>
+        <button class="btn-s" onclick="openBalModal('${a.id}')" title="Adjust Balance"><i class="fa fa-wallet"></i></button>
+        <button class="btn-r" onclick="delAgent('${a.id}')" title="Delete"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function filterAgents(tier){renderAgents(tier?agents.filter(a=>a.tier===tier):agents);}
+function filterAgentStatus(st){renderAgents(st?agents.filter(a=>a.status===st):agents);}
+function searchAgents(q){
+  q=q.toLowerCase();
+  renderAgents(agents.filter(a=>(a.full_name||'').toLowerCase().includes(q)||(a.agent_code||'').toLowerCase().includes(q)||(a.email||'').toLowerCase().includes(q)));
+}
+const tierDefaults={
+  silver:{tk:2,um:3,in:5,limit:50000},
+  gold:{tk:3,um:4,in:6,limit:150000},
+  platinum:{tk:5,um:6,in:8,limit:500000}
+};
+function applyTierDefaults(){
+  const t=document.getElementById('agTier').value;
+  const d=tierDefaults[t];
+  if(!d)return;
+  if(!document.getElementById('agentId').value){ // only auto-fill for new agents
+    document.getElementById('agCommTk').value=d.tk;
+    document.getElementById('agCommUm').value=d.um;
+    document.getElementById('agCommIn').value=d.in;
+    document.getElementById('agLimit').value=d.limit;
+  }
+}
+function openAgentModal(){
+  document.getElementById('agentTitle').innerHTML='Add <em>Agent</em>';
+  document.getElementById('agentId').value='';
+  ['agCode','agName','agCompany','agEmail','agPhone','agCity','agAddress','agNotes','agUid'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('agTier').value='silver';
+  document.getElementById('agStatus').value='active';
+  document.getElementById('agBalance').value='0';
+  applyTierDefaults();
+  openModal('agentModal');
+}
+function editAgent(id){
+  const a=agents.find(x=>x.id===id);if(!a)return;
+  document.getElementById('agentTitle').innerHTML='Edit <em>Agent</em>';
+  document.getElementById('agentId').value=a.id;
+  document.getElementById('agCode').value=a.agent_code||'';
+  document.getElementById('agTier').value=a.tier||'silver';
+  document.getElementById('agName').value=a.full_name||'';
+  document.getElementById('agCompany').value=a.company_name||'';
+  document.getElementById('agEmail').value=a.email||'';
+  document.getElementById('agPhone').value=a.phone||'';
+  document.getElementById('agCity').value=a.city||'';
+  document.getElementById('agAddress').value=a.address||'';
+  document.getElementById('agStatus').value=a.status||'active';
+  document.getElementById('agLimit').value=a.credit_limit||0;
+  document.getElementById('agBalance').value=a.balance||0;
+  document.getElementById('agCommTk').value=a.commission_ticket||0;
+  document.getElementById('agCommUm').value=a.commission_umrah||0;
+  document.getElementById('agCommIn').value=a.commission_ins||0;
+  document.getElementById('agNotes').value=a.notes||'';
+  document.getElementById('agUid').value=a.supabase_uid||'';
+  openModal('agentModal');
+}
+async function saveAgent(){
+  const code=document.getElementById('agCode').value.trim();
+  const name=document.getElementById('agName').value.trim();
+  const email=document.getElementById('agEmail').value.trim();
+  const phone=document.getElementById('agPhone').value.trim();
+  if(!code||!name||!email||!phone){toast('Code, name, email & phone required!',true);return;}
+  const id=document.getElementById('agentId').value;
+  const d={
+    agent_code:code,full_name:name,company_name:document.getElementById('agCompany').value.trim(),
+    email,phone,city:document.getElementById('agCity').value.trim(),address:document.getElementById('agAddress').value.trim(),
+    tier:document.getElementById('agTier').value,status:document.getElementById('agStatus').value,
+    credit_limit:parseFloat(document.getElementById('agLimit').value)||0,
+    balance:parseFloat(document.getElementById('agBalance').value)||0,
+    commission_ticket:parseFloat(document.getElementById('agCommTk').value)||0,
+    commission_umrah:parseFloat(document.getElementById('agCommUm').value)||0,
+    commission_ins:parseFloat(document.getElementById('agCommIn').value)||0,
+    notes:document.getElementById('agNotes').value.trim(),
+    supabase_uid:document.getElementById('agUid').value.trim()||null,
+    updated_at:new Date().toISOString()
+  };
+  try{
+    if(id){await PATCH('agents',id,d);agents=agents.map(a=>a.id===id?{...a,...d,id}:a);}
+    else{const r=await POST('agents',d);agents=[r,...agents];}
+    closeModal('agentModal');renderAgents(agents);toast(id?'Agent updated!':'Agent added!');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+async function delAgent(id){
+  if(!confirm('Delete this agent? This cannot be undone.'))return;
+  try{await DEL('agents',id);agents=agents.filter(a=>a.id!==id);renderAgents(agents);toast('Agent deleted.');}
+  catch(e){toast('Error: '+e.message,true);}
+}
+
+/* ─── BALANCE ADJUSTMENT ─── */
+function openBalModal(agentId){
+  const a=agents.find(x=>x.id===agentId);if(!a)return;
+  document.getElementById('balAgentId').value=agentId;
+  document.getElementById('balAgentInfo').innerHTML=`<strong style="color:var(--text)">${a.full_name}</strong> (${a.agent_code}) — Current balance: <strong style="color:${a.balance<0?'var(--red)':'var(--green)'}">Rs. ${parseFloat(a.balance||0).toLocaleString()}</strong>`;
+  document.getElementById('balAmount').value='';
+  document.getElementById('balReason').value='';
+  document.getElementById('balType').value='credit';
+  openModal('balModal');
+}
+async function saveBalanceAdjustment(){
+  const agentId=document.getElementById('balAgentId').value;
+  const type=document.getElementById('balType').value;
+  const amt=parseFloat(document.getElementById('balAmount').value);
+  const reason=document.getElementById('balReason').value.trim();
+  if(!amt||amt<=0){toast('Enter a valid amount.',true);return;}
+  if(!reason){toast('Reason is required.',true);return;}
+  const a=agents.find(x=>x.id===agentId);if(!a)return;
+  const newBal=type==='credit'?parseFloat(a.balance||0)+amt:parseFloat(a.balance||0)-amt;
+  try{
+    await PATCH('agents',agentId,{balance:newBal,updated_at:new Date().toISOString()});
+    await POST('agent_transactions',{agent_id:agentId,type:type==='credit'?'credit':'debit',amount:amt,balance_after:newBal,description:reason,created_by:'admin'});
+    agents=agents.map(x=>x.id===agentId?{...x,balance:newBal}:x);
+    renderAgents(agents);closeModal('balModal');toast('Balance adjusted successfully!');
+    loadFinance();
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+/* ─── AGENT BOOKINGS ─── */
+function agentName(id){const a=agents.find(x=>x.id===id);return a?`${a.full_name} (${a.agent_code})`:'—';}
+function renderAgentBookings(data){
+  const tb=document.getElementById('agbk-tb');
+  if(!tb)return;
+  if(!data.length){tb.innerHTML='<tr><td colspan="9" class="etd">No agent bookings yet.</td></tr>';return;}
+  tb.innerHTML=data.map(b=>{
+    const svcLbl={group_ticket:'✈ Ticket',umrah:'🕌 Umrah',insurance:'🛡 Insurance'}[b.service_type]||b.service_type;
+    return `<tr>
+      <td style="font-family:monospace;font-size:11px;color:var(--teal)">${b.booking_ref}</td>
+      <td style="font-size:12px">${agentName(b.agent_id)}</td>
+      <td>${svcLbl}<div style="font-size:10px;color:var(--muted)">${b.service_name||''}</div></td>
+      <td>${b.pax_count||1}</td>
+      <td style="font-weight:700">Rs. ${parseFloat(b.sell_price||0).toLocaleString()}</td>
+      <td style="color:var(--gold)">Rs. ${parseFloat(b.commission_amt||0).toLocaleString()}</td>
+      <td><span class="pill ${b.status==='confirmed'?'p-conf':b.status==='issued'?'p-conf':b.status==='cancelled'?'p-canc':'p-pend'}">${b.status}</span></td>
+      <td style="font-size:11px">${b.created_at?new Date(b.created_at).toLocaleDateString('en-GB'):'—'}</td>
+      <td><button class="btn-s" onclick="openAgbkModal('${b.id}')"><i class="fa fa-eye"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+function filterAgentBk(status){renderAgentBookings(status?agentBookings.filter(b=>b.status===status):agentBookings);}
+function filterAgentBkType(type){renderAgentBookings(type?agentBookings.filter(b=>b.service_type===type):agentBookings);}
+function openAgbkModal(id){
+  const b=agentBookings.find(x=>x.id===id);if(!b)return;
+  document.getElementById('agbkId').value=id;
+  const pax=Array.isArray(b.passengers)?b.passengers:[];
+  document.getElementById('agbkDetail').innerHTML=`
+    <strong>Ref:</strong> ${b.booking_ref}<br>
+    <strong>Agent:</strong> ${agentName(b.agent_id)}<br>
+    <strong>Service:</strong> ${b.service_name||'—'}<br>
+    <strong>Passengers:</strong> ${pax.map(p=>p.name).filter(Boolean).join(', ')||'—'}<br>
+    <strong>Travel Date:</strong> ${b.travel_date||'—'}<br>
+    <strong>Cost Price:</strong> Rs. ${parseFloat(b.cost_price||0).toLocaleString()}<br>
+    <strong>Sell Price:</strong> Rs. ${parseFloat(b.sell_price||0).toLocaleString()}<br>
+    <strong>Commission:</strong> Rs. ${parseFloat(b.commission_amt||0).toLocaleString()}<br>
+    <strong>Agent Notes:</strong> ${b.agent_notes||'—'}
+  `;
+  document.getElementById('agbkNotes').value=b.admin_notes||'';
+  document.getElementById('agbkStatus').value=b.status||'pending';
+  openModal('agbkModal');
+}
+async function saveAgentBookingStatus(){
+  const id=document.getElementById('agbkId').value;
+  const status=document.getElementById('agbkStatus').value;
+  const notes=document.getElementById('agbkNotes').value.trim();
+  try{
+    await PATCH('agent_bookings',id,{status,admin_notes:notes,updated_at:new Date().toISOString()});
+    agentBookings=agentBookings.map(b=>b.id===id?{...b,status,admin_notes:notes}:b);
+    renderAgentBookings(agentBookings);closeModal('agbkModal');toast('Booking updated!');
+    loadFinance();
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+/* ─── PAYMENT SLIPS ─── */
+function renderSlips(data){
+  const tb=document.getElementById('sl-tb');
+  if(!tb)return;
+  if(!data.length){tb.innerHTML='<tr><td colspan="8" class="etd">No payment slips submitted yet.</td></tr>';return;}
+  tb.innerHTML=data.map(s=>`<tr>
+    <td style="font-size:11px">${s.created_at?new Date(s.created_at).toLocaleDateString('en-GB'):'—'}</td>
+    <td style="font-size:12px">${agentName(s.agent_id)}</td>
+    <td style="font-weight:700">Rs. ${parseFloat(s.amount||0).toLocaleString()}</td>
+    <td>${s.bank_name||'—'}</td>
+    <td style="font-family:monospace;font-size:11px">${s.reference_no||'—'}</td>
+    <td>${s.slip_image?'<i class="fa fa-image" style="color:var(--teal)"></i> Yes':'—'}</td>
+    <td><span class="pill ${s.status==='approved'?'p-conf':s.status==='rejected'?'p-canc':'p-pend'}">${s.status}</span></td>
+    <td><button class="btn-s" onclick="openSlipModal('${s.id}')"><i class="fa fa-eye"></i></button></td>
+  </tr>`).join('');
+}
+function openSlipModal(id){
+  const s=paymentSlips.find(x=>x.id===id);if(!s)return;
+  document.getElementById('slipId').value=id;
+  document.getElementById('slipDetail').innerHTML=`
+    <strong>Agent:</strong> ${agentName(s.agent_id)}<br>
+    <strong>Amount:</strong> Rs. ${parseFloat(s.amount||0).toLocaleString()}<br>
+    <strong>Bank:</strong> ${s.bank_name||'—'}<br>
+    <strong>Reference:</strong> ${s.reference_no||'—'}<br>
+    <strong>Status:</strong> ${s.status}
+  `;
+  document.getElementById('slipImgWrap').innerHTML=s.slip_image?`<img src="${s.slip_image}" style="max-width:100%;border-radius:8px;border:1px solid var(--border2)">`:'<p style="font-size:11px;color:var(--muted)">No image attached.</p>';
+  document.getElementById('slipNotesInput').value=s.admin_notes||'';
+  openModal('slipModal');
+}
+async function approveSlip(){
+  const id=document.getElementById('slipId').value;
+  const s=paymentSlips.find(x=>x.id===id);if(!s)return;
+  if(s.status!=='pending'){toast('This slip is already reviewed.',true);return;}
+  const notes=document.getElementById('slipNotesInput').value.trim();
+  const a=agents.find(x=>x.id===s.agent_id);
+  try{
+    const newBal=a?parseFloat(a.balance||0)+parseFloat(s.amount||0):null;
+    if(a&&newBal!==null){
+      await PATCH('agents',a.id,{balance:newBal});
+      await POST('agent_transactions',{agent_id:a.id,type:'credit',amount:s.amount,balance_after:newBal,description:`Payment slip approved — ${s.bank_name||''} ${s.reference_no||''}`,created_by:'admin'});
+      agents=agents.map(x=>x.id===a.id?{...x,balance:newBal}:x);
+      renderAgents(agents);
+    }
+    await PATCH('payment_slips',id,{status:'approved',admin_notes:notes,reviewed_at:new Date().toISOString()});
+    paymentSlips=paymentSlips.map(x=>x.id===id?{...x,status:'approved',admin_notes:notes}:x);
+    renderSlips(paymentSlips);closeModal('slipModal');toast('Slip approved & balance credited!');
+    loadFinance();
+  }catch(e){toast('Error: '+e.message,true);}
+}
+async function rejectSlip(){
+  const id=document.getElementById('slipId').value;
+  const notes=document.getElementById('slipNotesInput').value.trim();
+  if(!notes){toast('Please provide a reason for rejection.',true);return;}
+  try{
+    await PATCH('payment_slips',id,{status:'rejected',admin_notes:notes,reviewed_at:new Date().toISOString()});
+    paymentSlips=paymentSlips.map(x=>x.id===id?{...x,status:'rejected',admin_notes:notes}:x);
+    renderSlips(paymentSlips);closeModal('slipModal');toast('Slip rejected.');
+  }catch(e){toast('Error: '+e.message,true);}
+}
+
+/* ─── FINANCE / P&L ─── */
+function loadFinance(){
+  const days=parseInt(document.getElementById('fn-days')?.value||30);
+  const svcFilter=document.getElementById('fn-svc')?.value||'';
+  const since=new Date(Date.now()-days*24*60*60*1000);
+  let data=agentBookings.filter(b=>new Date(b.created_at)>=since && b.status!=='cancelled');
+  if(svcFilter)data=data.filter(b=>b.service_type===svcFilter);
+
+  const totalRev=data.reduce((s,b)=>s+parseFloat(b.sell_price||0),0);
+  const totalCost=data.reduce((s,b)=>s+parseFloat(b.cost_price||0),0);
+  const totalComm=data.reduce((s,b)=>s+parseFloat(b.commission_amt||0),0);
+  const margin=totalRev-totalCost-totalComm;
+  const outstanding=agents.filter(a=>parseFloat(a.balance||0)<0).reduce((s,a)=>s+Math.abs(parseFloat(a.balance||0)),0);
+
+  document.getElementById('fn-rev').textContent='Rs. '+totalRev.toLocaleString();
+  document.getElementById('fn-cost').textContent='Rs. '+totalCost.toLocaleString();
+  document.getElementById('fn-margin').textContent='Rs. '+margin.toLocaleString();
+  document.getElementById('fn-outstanding').textContent='Rs. '+outstanding.toLocaleString();
+
+  // Agent balance summary table
+  const atb=document.getElementById('fn-agents-tb');
+  if(atb){
+    if(!agents.length){atb.innerHTML='<tr><td colspan="6" class="etd">No agents yet.</td></tr>';}
+    else{
+      atb.innerHTML=agents.map(a=>{
+        const bal=parseFloat(a.balance||0);
+        const limit=parseFloat(a.credit_limit||0);
+        const avail=limit+bal; // bal can be negative
+        const overdue=bal<0?Math.abs(bal):0;
+        return `<tr>
+          <td><strong>${a.full_name}</strong><div style="font-size:10px;color:var(--muted)">${a.agent_code}</div></td>
+          <td>${tierBadge(a.tier)}</td>
+          <td>Rs. ${limit.toLocaleString()}</td>
+          <td style="color:${bal<0?'var(--red)':'var(--green)'};font-weight:700">${bal<0?'-':''}Rs. ${Math.abs(bal).toLocaleString()}</td>
+          <td>Rs. ${Math.max(0,avail).toLocaleString()}</td>
+          <td>${overdue>0?`<span class="pill p-canc">Rs. ${overdue.toLocaleString()}</span>`:'<span class="pill p-conf">Clear</span>'}</td>
+        </tr>`;
+      }).join('');
+    }
+  }
+
+  // P&L per booking table
+  const ftb=document.getElementById('fn-tb');
+  if(ftb){
+    if(!data.length){ftb.innerHTML='<tr><td colspan="10" class="etd">No bookings in this period.</td></tr>';}
+    else{
+      ftb.innerHTML=data.map(b=>{
+        const cost=parseFloat(b.cost_price||0),sell=parseFloat(b.sell_price||0),comm=parseFloat(b.commission_amt||0);
+        const grossMargin=sell-cost;
+        const netProfit=grossMargin-comm;
+        const svcLbl={group_ticket:'✈ Ticket',umrah:'🕌 Umrah',insurance:'🛡 Insurance'}[b.service_type]||b.service_type;
+        return `<tr>
+          <td style="font-family:monospace;font-size:11px;color:var(--teal)">${b.booking_ref}</td>
+          <td style="font-size:12px">${agentName(b.agent_id)}</td>
+          <td>${svcLbl}</td>
+          <td>${b.pax_count||1}</td>
+          <td>Rs. ${cost.toLocaleString()}</td>
+          <td>Rs. ${sell.toLocaleString()}</td>
+          <td style="color:${grossMargin>=0?'var(--green)':'var(--red)'}">Rs. ${grossMargin.toLocaleString()}</td>
+          <td style="color:var(--gold)">Rs. ${comm.toLocaleString()}</td>
+          <td style="font-weight:700;color:${netProfit>=0?'var(--green)':'var(--red)'}">Rs. ${netProfit.toLocaleString()}</td>
+          <td><span class="pill ${b.status==='issued'||b.status==='confirmed'?'p-conf':'p-pend'}">${b.status}</span></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+}
 
 /* ─── SETTINGS ─── */
 async function changePwd(){

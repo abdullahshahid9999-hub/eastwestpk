@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Portal — East & West Travel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4A843;--gold-l:#F0C050;--gold-bg:rgba(212,168,67,0.08);--gold-bd:rgba(212,168,67,0.2);
+  --navy:#071120;--navy2:#0D1E35;
+  --bg:#F4F3EF;--white:#FFFFFF;--surface:#FAFAF7;
+  --text:#14142B;--text2:#3D3D5C;--muted:#7A7A95;--dim:#B0AFBF;
+  --bdr:#E4DFD4;--bdr2:#D0C8BC;
+  --green:#16A34A;--green-bg:#F0FDF4;--green-bd:#BBF7D0;
+  --red:#DC2626;--red-bg:#FEF2F2;--red-bd:#FECACA;
+  --blue:#2563EB;--blue-bg:#EFF6FF;
+  --r:10px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:13px}
+h1,h2,h3,h4{letter-spacing:-0.02em}
+a{text-decoration:none;color:inherit}
+input,select,textarea,button{font-family:inherit}
+
+/* ── SIDEBAR ── */
+.sb{width:220px;background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;transition:transform .25s}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:10px}
+.sb-brand img{width:30px;height:30px;border-radius:6px;object-fit:contain;background:#fff;padding:2px;flex-shrink:0}
+.sb-brand-txt{font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.sb-brand-txt span{color:var(--gold)}
+.sb-agent{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sb-agent-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.sb-agent-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sb-agent-code{font-size:10px;color:rgba(255,255,255,0.45);font-family:monospace}
+.tier-pill{padding:2px 7px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em}
+.tier-silver{background:rgba(148,163,184,0.2);color:#94A3B8}
+.tier-gold{background:rgba(212,168,67,0.2);color:var(--gold)}
+.tier-platinum{background:rgba(167,139,250,0.2);color:#A78BFA}
+.sb-balance{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sb-bal-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:4px}
+.sb-bal-amount{font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1}
+.sb-bal-amount.neg{color:#F87171}
+.sb-bal-limit{font-size:10px;color:rgba(255,255,255,0.35);margin-top:3px}
+.sb-lbl{padding:14px 16px 4px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.sb-nav{padding:4px 8px;flex:1}
+.sbn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);transition:all .15s;margin-bottom:2px;cursor:pointer;border:none;background:none;width:100%;text-align:left}
+.sbn:hover{color:#fff;background:rgba(255,255,255,0.06)}
+.sbn.active{color:var(--gold);background:rgba(212,168,67,0.12);font-weight:600}
+.sbn i{width:14px;text-align:center;font-size:11px}
+.sb-footer{padding:10px 8px;border-top:1px solid rgba(255,255,255,0.07)}
+.sb-out{width:100%;background:none;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:8px 10px;border-radius:7px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.sb-out:hover{border-color:#F87171;color:#F87171}
+
+/* ── MAIN ── */
+.main{margin-left:220px;flex:1;padding:24px 28px;min-height:100vh;overflow-x:hidden}
+.page{display:none}.page.active{display:block}
+
+/* PAGE HEADER */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;padding-bottom:16px;border-bottom:1.5px solid var(--bdr);flex-wrap:wrap;gap:10px}
+.ph h2{font-size:22px;font-weight:800;color:var(--text)}
+.ph h2 span{color:var(--gold)}
+.ph p{font-size:12px;color:var(--muted);margin-top:3px}
+
+/* STAT GRID */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sc{background:var(--white);border:1.5px solid var(--bdr);border-radius:12px;padding:16px 18px}
+.sc-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:10px}
+.sc-n{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-0.03em;line-height:1}
+.sc-l{font-size:11px;color:var(--muted);margin-top:5px}
+.sc-sub{font-size:10px;color:var(--dim);margin-top:2px}
+
+/* CARD */
+.card{background:var(--white);border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.ch{padding:14px 18px;border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ch h3{font-size:13px;font-weight:700;color:var(--text)}
+.ch p{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* TABLE */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 14px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);text-align:left;background:var(--surface);border-bottom:1.5px solid var(--bdr);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bdr);transition:background .1s}
+tbody tr:hover{background:var(--surface)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:11px 14px;font-size:12px;color:var(--text2);vertical-align:middle}
+tbody td strong{color:var(--text);font-weight:700}
+.etd{text-align:center;padding:40px;color:var(--dim);font-size:13px}
+
+/* PILLS */
+.pill{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;white-space:nowrap}
+.p-pend{background:#FFFBEB;color:#B45309;border:1px solid #FDE68A}
+.p-conf{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.p-canc{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.p-issued{background:var(--blue-bg);color:var(--blue);border:1px solid #BFDBFE}
+.p-debit{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.p-credit{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.p-comm{background:var(--gold-bg);color:#92601A;border:1px solid var(--gold-bd)}
+
+/* BUTTONS */
+.btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;border:none;letter-spacing:0.01em}
+.btn-primary{background:var(--navy);color:#fff}.btn-primary:hover{background:var(--navy2)}
+.btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold-l)}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:6px}
+.btn-ghost{background:none;border:1.5px solid var(--bdr);color:var(--text2)}.btn-ghost:hover{border-color:var(--bdr2)}
+.btn-green{background:var(--green);color:#fff}
+
+/* FORM */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:5px;letter-spacing:0.04em;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;padding:9px 13px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s;font-family:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:80px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(7,17,32,0.6);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;margin:auto}
+.modal-lg{max-width:720px}
+.mh{padding:20px 24px;border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.mh h3{font-size:16px;font-weight:800;color:var(--text)}
+.mh h3 span{color:var(--gold)}
+.mc{padding:24px}
+.mf{padding:16px 24px;border-top:1.5px solid var(--bdr);display:flex;gap:8px;justify-content:flex-end}
+.m-close{background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;padding:4px}
+
+/* OTP MODAL */
+.otp-wrap{text-align:center;padding:8px 0}
+.otp-info{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.otp-boxes{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.otp-box{width:48px;height:56px;border:2px solid var(--bdr);border-radius:10px;font-size:22px;font-weight:800;text-align:center;color:var(--text);outline:none;transition:border-color .15s}
+.otp-box:focus{border-color:var(--gold)}
+.otp-timer{font-size:12px;color:var(--gold);font-weight:600;margin-top:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:9999;transform:translateY(80px);opacity:0;transition:all .25s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{background:#15803D}.toast.err{background:#DC2626}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--bdr);margin-bottom:20px}
+.tab-btn{padding:10px 18px;background:none;border:none;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;position:relative;transition:color .15s;font-family:inherit}
+.tab-btn.active{color:var(--gold)}
+.tab-btn.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--gold)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* CHART FILTER */
+.chart-filters{display:flex;gap:4px}
+.cf-btn{padding:5px 12px;border:1.5px solid var(--bdr);border-radius:6px;background:none;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
+.cf-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* FLIGHT CARD */
+.flight-card{border:1.5px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .15s;background:var(--white)}
+.flight-card:hover{border-color:var(--gold);box-shadow:0 4px 12px var(--gold-bg)}
+.flight-card.selected{border-color:var(--gold);background:var(--gold-bg)}
+.fc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.fc-airline{display:flex;align-items:center;gap:8px}
+.fc-airline img{width:28px;height:28px;object-fit:contain;border-radius:4px}
+.fc-airline-name{font-size:12px;font-weight:700;color:var(--text)}
+.fc-no{font-size:10px;color:var(--muted);font-family:monospace}
+.fc-price{font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-0.02em}
+.fc-price small{font-size:10px;font-weight:500;color:var(--muted)}
+.fc-route{display:flex;align-items:center;gap:10px;font-size:13px}
+.fc-city{font-weight:700;color:var(--text);font-size:15px}
+.fc-time{font-size:11px;color:var(--muted)}
+.fc-arrow{color:var(--gold);font-size:16px}
+.fc-meta{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.fc-tag{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.fc-tag i{color:var(--gold)}
+.fc-avail{font-size:10px;font-weight:700;color:var(--green)}
+.fc-sold{color:var(--red)}
+
+/* PAX ROW */
+.pax-row{border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:10px}
+.pax-row-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pax-row-hd span{font-size:12px;font-weight:700;color:var(--text)}
+
+/* SLIP UPLOAD */
+.slip-drop{border:2px dashed var(--bdr2);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:border-color .15s}
+.slip-drop:hover{border-color:var(--gold)}
+.slip-drop i{font-size:24px;color:var(--muted);margin-bottom:8px}
+.slip-drop p{font-size:12px;color:var(--muted)}
+.slip-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:12px}
+
+/* BALANCE BAR */
+.bal-bar{height:6px;background:var(--bdr);border-radius:3px;margin-top:8px;overflow:hidden}
+.bal-bar-fill{height:100%;border-radius:3px;background:var(--green);transition:width .3s}
+.bal-bar-fill.warn{background:#F59E0B}
+.bal-bar-fill.danger{background:var(--red)}
+
+/* GRID 2 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MOBILE */
+@media(max-width:900px){
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0;padding:16px}
+  .sg{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb" id="sidebar">
+  <div class="sb-brand">
+    <img src="../assets/images/logo.jpg" alt="EW" onerror="this.style.display='none'">
+    <div class="sb-brand-txt">East & <span>West</span></div>
+  </div>
+  <div class="sb-agent">
+    <div class="sb-agent-name" id="sb-name">Loading...</div>
+    <div class="sb-agent-meta">
+      <span class="sb-agent-code" id="sb-code">—</span>
+      <span class="tier-pill" id="sb-tier">—</span>
+    </div>
+  </div>
+  <div class="sb-balance">
+    <div class="sb-bal-label">Account Balance</div>
+    <div class="sb-bal-amount" id="sb-balance">—</div>
+    <div class="sb-bal-limit" id="sb-limit">—</div>
+    <div class="bal-bar"><div class="bal-bar-fill" id="sb-bar" style="width:0%"></div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-lbl">Main</div>
+    <button class="sbn active" onclick="showPage('home',this)"><i class="fa fa-house"></i> Dashboard</button>
+    <button class="sbn" onclick="showPage('tickets',this)"><i class="fa fa-plane"></i> Group Tickets</button>
+    <button class="sbn" onclick="showPage('umrah',this)"><i class="fa fa-moon"></i> Umrah Packages</button>
+    <button class="sbn" onclick="showPage('insurance',this)"><i class="fa fa-shield-halved"></i> Insurance</button>
+    <div class="sb-lbl">Finance</div>
+    <button class="sbn" onclick="showPage('bookings',this)"><i class="fa fa-list-check"></i> My Bookings</button>
+    <button class="sbn" onclick="showPage('finance',this)"><i class="fa fa-chart-line"></i> Sales & Finance</button>
+    <button class="sbn" onclick="showPage('payments',this)"><i class="fa fa-money-bill-transfer"></i> Payments</button>
+    <div class="sb-lbl">Account</div>
+    <button class="sbn" onclick="showPage('profile',this)"><i class="fa fa-user"></i> My Profile</button>
+  </div>
+  <div class="sb-footer">
+    <button class="sb-out" onclick="doLogout()"><i class="fa fa-right-from-bracket"></i> Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ── HOME PAGE ── -->
+<div class="page active" id="pg-home">
+  <div class="ph">
+    <div>
+      <h2>Welcome back, <span id="ph-name">Agent</span></h2>
+      <p id="ph-date">Loading...</p>
+    </div>
+    <a href="https://wa.me/923336515349" target="_blank" class="btn btn-green"><i class="fa-brands fa-whatsapp"></i> Contact East & West</a>
+  </div>
+  <div class="sg">
+    <div class="sc">
+      <div class="sc-ico" style="background:#EFF6FF"><i class="fa fa-wallet" style="color:#2563EB"></i></div>
+      <div class="sc-n" id="hm-balance">—</div>
+      <div class="sc-l">Current Balance</div>
+      <div class="sc-sub" id="hm-limit">—</div>
+    </div>
+    <div class="sc">
+      <div class="sc-ico" style="background:var(--gold-bg)"><i class="fa fa-coins" style="color:var(--gold)"></i></div>
+      <div class="sc-n" id="hm-commission">—</div>
+      <div class="sc-l">Commission Earned</div>
+      <div class="sc-sub">This month</div>
+    </div>
+    <div class="sc">
+      <div class="sc-ico" style="background:var(--green-bg)"><i class="fa fa-list-check" style="color:var(--green)"></i></div>
+      <div class="sc-n" id="hm-bookings">—</div>
+      <div class="sc-l">Total Bookings</div>
+      <div class="sc-sub">All time</div>
+    </div>
+    <div class="sc">
+      <div class="sc-ico" style="background:#FEF3C7"><i class="fa fa-clock" style="color:#D97706"></i></div>
+      <div class="sc-n" id="hm-pending">—</div>
+      <div class="sc-l">Pending</div>
+      <div class="sc-sub">Awaiting confirmation</div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="ch"><div><h3>Recent Bookings</h3><p>Latest 5 transactions</p></div></div>
+      <div class="tw"><table><thead><tr><th>Ref</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="hm-bk-tb"><tr><td colspan="5" class="etd">Loading...</td></tr></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><h3>Quick Actions</h3></div></div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showPage('tickets',document.querySelectorAll('.sbn')[1])"><i class="fa fa-plane"></i> Book Group Ticket</button>
+        <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="showPage('umrah',document.querySelectorAll('.sbn')[2])"><i class="fa fa-moon"></i> Book Umrah Package</button>
+        <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="showPage('insurance',document.querySelectorAll('.sbn')[3])"><i class="fa fa-shield-halved"></i> Get Insurance</button>
+        <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="showPage('payments',document.querySelectorAll('.sbn')[7])"><i class="fa fa-money-bill-transfer"></i> Submit Payment Slip</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GROUP TICKETS ── -->
+<div class="page" id="pg-tickets">
+  <div class="ph"><div><h2>Group <span>Tickets</span></h2><p>Select a flight and book seats for your client</p></div></div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch">
+      <div><h3>Available Flights</h3></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <select id="flt-cat" onchange="filterFlights()" style="padding:6px 10px;border:1.5px solid var(--bdr);border-radius:7px;font-size:12px;font-family:inherit;color:var(--text);outline:none">
+          <option value="">All Categories</option>
+          <option value="umrah">Umrah</option>
+          <option value="hajj">Hajj</option>
+          <option value="international">International</option>
+          <option value="domestic">Domestic</option>
+        </select>
+      </div>
+    </div>
+    <div style="padding:16px" id="flights-list"><div class="etd">Loading flights...</div></div>
+  </div>
+</div>
+
+<!-- ── UMRAH PACKAGES ── -->
+<div class="page" id="pg-umrah">
+  <div class="ph"><div><h2>Umrah <span>Packages</span></h2><p>Book Umrah packages for your pilgrims</p></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="umrah-list">
+    <div class="etd" style="grid-column:1/-1">Loading packages...</div>
+  </div>
+</div>
+
+<!-- ── INSURANCE ── -->
+<div class="page" id="pg-insurance">
+  <div class="ph"><div><h2>Travel <span>Insurance</span></h2><p>Select and book insurance for your client</p></div></div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><h3>Find a Plan</h3></div>
+    <div style="padding:16px">
+      <div class="field-row" style="margin-bottom:0">
+        <div class="field" style="margin-bottom:0">
+          <label>Destination</label>
+          <select id="ins-dest">
+            <option value="excl_usa_uk_canada_schengen">Gulf / Umrah / Asia</option>
+            <option value="schengen">Schengen</option>
+            <option value="excl_usa_uk_canada">UK</option>
+            <option value="worldwide">USA / Worldwide</option>
+            <option value="excl_schengen">Turkey / Other</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Duration (Days)</label>
+          <select id="ins-days">
+            <option value="7">Up to 7 days</option>
+            <option value="10">Up to 10 days</option>
+            <option value="15">Up to 15 days</option>
+            <option value="21">Up to 21 days</option>
+            <option value="30">Up to 30 days</option>
+            <option value="45">Up to 45 days</option>
+            <option value="60">Up to 60 days</option>
+            <option value="90">Up to 90 days</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Traveller Type</label>
+          <select id="ins-type">
+            <option value="individual">Individual</option>
+            <option value="family">Family</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="searchInsurance()"><i class="fa fa-search"></i> Search Plans</button>
+    </div>
+  </div>
+  <div id="ins-results"></div>
+</div>
+
+<!-- ── BOOKINGS ── -->
+<div class="page" id="pg-bookings">
+  <div class="ph"><div><h2>My <span>Bookings</span></h2><p>All your booking history</p></div></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="filterBookings('all',this)">All</button>
+    <button class="tab-btn" onclick="filterBookings('pending',this)">Pending</button>
+    <button class="tab-btn" onclick="filterBookings('confirmed',this)">Confirmed</button>
+    <button class="tab-btn" onclick="filterBookings('issued',this)">Issued</button>
+    <button class="tab-btn" onclick="filterBookings('cancelled',this)">Cancelled</button>
+  </div>
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr><th>Booking Ref</th><th>Service</th><th>Passengers</th><th>Sell Price</th><th>Commission</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="bk-tb"><tr><td colspan="8" class="etd">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── FINANCE / SALES ── -->
+<div class="page" id="pg-finance">
+  <div class="ph">
+    <div><h2>Sales & <span>Finance</span></h2><p>Your earnings, commission, and transaction history</p></div>
+    <div class="chart-filters">
+      <button class="cf-btn active" onclick="loadChart('7',this)">7 Days</button>
+      <button class="cf-btn" onclick="loadChart('30',this)">30 Days</button>
+      <button class="cf-btn" onclick="loadChart('90',this)">3 Months</button>
+      <button class="cf-btn" onclick="loadChart('180',this)">6 Months</button>
+    </div>
+  </div>
+  <div class="sg">
+    <div class="sc">
+      <div class="sc-ico" style="background:var(--green-bg)"><i class="fa fa-arrow-trend-up" style="color:var(--green)"></i></div>
+      <div class="sc-n" id="fn-sales">—</div>
+      <div class="sc-l">Total Sales</div>
+      <div class="sc-sub" id="fn-sales-period">Selected period</div>
+    </div>
+    <div class="sc">
+      <div class="sc-ico" style="background:var(--gold-bg)"><i class="fa fa-coins" style="color:var(--gold)"></i></div>
+      <div class="sc-n" id="fn-comm">—</div>
+      <div class="sc-l">Commission Earned</div>
+      <div class="sc-sub" id="fn-comm-period">Selected period</div>
+    </div>
+    <div class="sc">
+      <div class="sc-ico" style="background:var(--blue-bg)"><i class="fa fa-receipt" style="color:var(--blue)"></i></div>
+      <div class="sc-n" id="fn-count">—</div>
+      <div class="sc-l">Bookings</div>
+      <div class="sc-sub" id="fn-count-period">Selected period</div>
+    </div>
+    <div class="sc">
+      <div class="sc-ico" style="background:var(--red-bg)"><i class="fa fa-wallet" style="color:var(--red)"></i></div>
+      <div class="sc-n" id="fn-balance">—</div>
+      <div class="sc-l">Current Balance</div>
+      <div class="sc-sub" id="fn-limit">Credit limit</div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="ch"><h3>Sales Chart</h3></div>
+      <div style="padding:16px"><canvas id="salesChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ch"><h3>Commission by Service</h3></div>
+      <div style="padding:16px"><canvas id="commChart" height="220"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><h3>Transaction Ledger</h3></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Amount</th><th>Balance After</th></tr></thead>
+        <tbody id="tx-tb"><tr><td colspan="5" class="etd">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── PAYMENTS ── -->
+<div class="page" id="pg-payments">
+  <div class="ph"><div><h2>Payment <span>Slips</span></h2><p>Submit a payment receipt — admin will credit your account</p></div></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="ch"><h3>Submit New Payment</h3></div>
+      <div style="padding:20px">
+        <div class="field">
+          <label>Amount (PKR)</label>
+          <input type="number" id="slip-amt" placeholder="e.g. 50000">
+        </div>
+        <div class="field">
+          <label>Bank Name</label>
+          <input type="text" id="slip-bank" placeholder="e.g. Meezan Bank">
+        </div>
+        <div class="field">
+          <label>Transaction / Reference No.</label>
+          <input type="text" id="slip-ref" placeholder="e.g. TXN123456789">
+        </div>
+        <div class="field">
+          <label>Payment Slip / Screenshot</label>
+          <div class="slip-drop" onclick="document.getElementById('slip-file').click()">
+            <i class="fa fa-cloud-arrow-up"></i>
+            <p>Click to upload slip image</p>
+            <p style="font-size:10px;margin-top:4px">JPG, PNG — max 2MB</p>
+          </div>
+          <input type="file" id="slip-file" accept="image/*" style="display:none" onchange="previewSlip(this)">
+          <img id="slip-img-preview" style="display:none" class="slip-preview">
+          <div id="slip-img-b64" style="display:none"></div>
+        </div>
+        <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="submitSlip()"><i class="fa fa-paper-plane"></i> Submit for Approval</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><h3>Submission History</h3></div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Date</th><th>Amount</th><th>Bank</th><th>Ref</th><th>Status</th></tr></thead>
+          <tbody id="slip-tb"><tr><td colspan="5" class="etd">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROFILE ── -->
+<div class="page" id="pg-profile">
+  <div class="ph"><div><h2>My <span>Profile</span></h2><p>Your account details and commission rates</p></div></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="ch"><h3>Account Information</h3></div>
+      <div style="padding:20px">
+        <div id="profile-info" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><h3>Commission Rates</h3></div>
+      <div style="padding:20px">
+        <div id="comm-rates" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ── BOOKING MODAL: TICKET ── -->
+<div class="overlay" id="ticketModal">
+  <div class="modal modal-lg">
+    <div class="mh">
+      <h3>Book <span>Group Ticket</span></h3>
+      <button class="m-close" onclick="closeModal('ticketModal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="mc">
+      <div id="ticket-flight-summary" style="background:var(--surface);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:16px"></div>
+      <div class="field-row">
+        <div class="field">
+          <label>Number of Seats</label>
+          <select id="tk-seats" onchange="updateTicketTotal()">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Travel Date</label>
+          <input type="date" id="tk-date">
+        </div>
+      </div>
+      <div id="pax-fields" style="margin-bottom:12px"></div>
+      <button class="btn btn-ghost btn-sm" onclick="addPaxRow()"><i class="fa fa-plus"></i> Passenger is already filled per seat count</button>
+      <div class="field" style="margin-top:12px">
+        <label>Notes for Admin</label>
+        <textarea id="tk-notes" placeholder="Any special requirements..."></textarea>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-top:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--muted)">Selling Price (with your margin)</span>
+          <strong id="tk-total" style="font-size:18px;color:var(--navy)">—</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          <span style="font-size:11px;color:var(--muted)">Your Commission</span>
+          <span id="tk-comm" style="font-size:12px;color:var(--green);font-weight:700">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span style="font-size:11px;color:var(--muted)">Available Balance</span>
+          <span id="tk-bal" style="font-size:12px;font-weight:700">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-ghost" onclick="closeModal('ticketModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="requestTicketBooking()"><i class="fa fa-lock"></i> Confirm & Send OTP</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BOOKING MODAL: UMRAH ── -->
+<div class="overlay" id="umrahModal">
+  <div class="modal modal-lg">
+    <div class="mh">
+      <h3>Book <span>Umrah Package</span></h3>
+      <button class="m-close" onclick="closeModal('umrahModal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="mc">
+      <div id="umrah-pkg-summary" style="background:var(--surface);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:16px"></div>
+      <div class="field-row">
+        <div class="field">
+          <label>Number of Pilgrims</label>
+          <select id="um-pax" onchange="updateUmrahTotal()">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Room Type</label>
+          <select id="um-room">
+            <option value="quad">Quad Sharing</option>
+            <option value="triple">Triple Sharing</option>
+            <option value="double">Double Room</option>
+            <option value="single">Single Room</option>
+          </select>
+        </div>
+      </div>
+      <div id="umrah-pax-fields" style="margin-bottom:12px"></div>
+      <div class="field">
+        <label>Notes for Admin</label>
+        <textarea id="um-notes" placeholder="Special requirements, accessibility needs..."></textarea>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-top:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--muted)">Total Package Price</span>
+          <strong id="um-total" style="font-size:18px;color:var(--navy)">—</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          <span style="font-size:11px;color:var(--muted)">Your Commission</span>
+          <span id="um-comm" style="font-size:12px;color:var(--green);font-weight:700">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-ghost" onclick="closeModal('umrahModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="requestUmrahBooking()"><i class="fa fa-lock"></i> Confirm & Send OTP</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── OTP MODAL ── -->
+<div class="overlay" id="otpModal">
+  <div class="modal" style="max-width:420px">
+    <div class="mh">
+      <h3>Booking <span>Confirmation</span></h3>
+      <button class="m-close" onclick="closeModal('otpModal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="mc">
+      <div class="otp-wrap">
+        <i class="fa fa-envelope-open-text" style="font-size:36px;color:var(--gold);margin-bottom:12px"></i>
+        <div class="otp-info">A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this booking.</div>
+        <div class="otp-boxes">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,0)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,1)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,2)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,3)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,4)">
+          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,5)">
+        </div>
+        <div class="otp-timer" id="bk-otp-timer">Resend in 60s</div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-ghost" onclick="closeModal('otpModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="confirmBookingOTP()"><i class="fa fa-check"></i> Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"><i class="fa fa-check-circle" id="tIco"></i><span id="tTxt"></span></div>
+
+<script>
+const SB_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
+
+let agent = null, token = null;
+let flights = [], packages = [], bookings = [], transactions = [];
+let selectedFlight = null, selectedPkg = null, selectedIns = null;
+let pendingBookingData = null, pendingOtpId = null;
+let salesChart = null, commChart = null;
+let tTimer;
+
+// ── INIT ──
+function init() {
+  token = sessionStorage.getItem('ew_agent_token');
+  const raw = sessionStorage.getItem('ew_agent');
+  if (!token || !raw) { window.location.href = '/agent/login'; return; }
+  agent = JSON.parse(raw);
+  renderAgentInfo();
+  loadHome();
+  loadFlights();
+  loadPackages();
+  loadSlips();
+  loadTransactions();
+  loadBookings();
+  loadChart('7', document.querySelector('.cf-btn'));
+  renderProfile();
+  document.getElementById('ph-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+
+function renderAgentInfo() {
+  document.getElementById('sb-name').textContent = agent.full_name || 'Agent';
+  document.getElementById('sb-code').textContent = agent.agent_code || '—';
+  document.getElementById('ph-name').textContent = agent.full_name?.split(' ')[0] || 'Agent';
+  const tier = agent.tier || 'silver';
+  const tierEl = document.getElementById('sb-tier');
+  tierEl.textContent = tier.charAt(0).toUpperCase()+tier.slice(1);
+  tierEl.className = 'tier-pill tier-'+tier;
+
+  const bal = parseFloat(agent.balance || 0);
+  const lim = parseFloat(agent.credit_limit || 0);
+  const balEl = document.getElementById('sb-balance');
+  balEl.textContent = 'PKR ' + fmt(Math.abs(bal));
+  balEl.className = 'sb-bal-amount' + (bal < 0 ? ' neg' : '');
+  document.getElementById('sb-limit').textContent = 'Credit limit: PKR ' + fmt(lim);
+  document.getElementById('hm-balance').textContent = (bal < 0 ? '-' : '') + 'PKR ' + fmt(Math.abs(bal));
+  document.getElementById('hm-limit').textContent = 'Limit: PKR ' + fmt(lim);
+
+  // bar
+  if (lim > 0) {
+    const used = Math.max(0, -bal);
+    const pct = Math.min(100, (used / lim) * 100);
+    const bar = document.getElementById('sb-bar');
+    bar.style.width = pct + '%';
+    bar.className = 'bal-bar-fill' + (pct > 80 ? ' danger' : pct > 50 ? ' warn' : '');
+  }
+}
+
+// ── API ──
+async function GET(table, qs) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}` }
+  });
+  return r.json();
+}
+async function POST(table, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+// ── HOME ──
+async function loadHome() {
+  // bookings summary
+  const bks = await GET('agent_bookings', `agent_id=eq.${agent.id}&select=id,booking_ref,service_type,service_name,sell_price,commission_amt,status,created_at&order=created_at.desc`);
+  if (Array.isArray(bks)) {
+    bookings = bks;
+    document.getElementById('hm-bookings').textContent = bks.length;
+    document.getElementById('hm-pending').textContent = bks.filter(b=>b.status==='pending').length;
+    // commission this month
+    const now = new Date(); const m = now.getMonth(); const y = now.getFullYear();
+    const monthComm = bks.filter(b=>{ const d=new Date(b.created_at); return d.getMonth()===m&&d.getFullYear()===y; })
+      .reduce((s,b)=>s+parseFloat(b.commission_amt||0),0);
+    document.getElementById('hm-commission').textContent = 'PKR '+fmt(monthComm);
+    renderHomeBk(bks.slice(0,5));
+  }
+}
+
+function renderHomeBk(bks) {
+  const tb = document.getElementById('hm-bk-tb');
+  if (!bks.length) { tb.innerHTML = '<tr><td colspan="5" class="etd">No bookings yet.</td></tr>'; return; }
+  tb.innerHTML = bks.map(b=>`<tr>
+    <td><strong style="font-family:monospace;font-size:11px">${b.booking_ref}</strong></td>
+    <td>${svcLabel(b.service_type)} <span style="font-size:11px;color:var(--muted)">${b.service_name||''}</span></td>
+    <td>PKR ${fmt(b.sell_price)}</td>
+    <td><span class="pill p-${b.status}">${b.status}</span></td>
+    <td style="font-size:11px">${fmtDate(b.created_at)}</td>
+  </tr>`).join('');
+}
+
+// ── FLIGHTS ──
+async function loadFlights() {
+  const data = await GET('group_flights', 'status=eq.active&order=dep_date.asc');
+  if (Array.isArray(data)) { flights = data; renderFlights(data); }
+}
+
+function filterFlights() {
+  const cat = document.getElementById('flt-cat').value;
+  renderFlights(cat ? flights.filter(f=>f.category===cat) : flights);
+}
+
+function renderFlights(data) {
+  const el = document.getElementById('flights-list');
+  if (!data.length) { el.innerHTML = '<div class="etd">No flights available.</div>'; return; }
+  el.innerHTML = data.map(f => {
+    const avail = Math.max(0,(f.total_seats||0)-(f.booked_seats||0));
+    const sold = avail <= 0;
+    const [from,to] = (f.route||'—').split('-');
+    return `<div class="flight-card ${sold?'':''}${sold?'':'cursor-pointer'}" onclick="${sold?'':'openTicketModal(\''+f.id+'\')'}">
+      <div class="fc-top">
+        <div class="fc-airline">
+          ${f.airline_logo_url?`<img src="${f.airline_logo_url}" alt="${f.airline}">`:
+            `<div style="width:28px;height:28px;background:var(--gold-bg);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--gold)">${(f.airline||'?')[0]}</div>`}
+          <div>
+            <div class="fc-airline-name">${f.airline||'—'}</div>
+            <div class="fc-no">${f.flight_no||'—'}</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="fc-price">PKR ${fmt(f.price_per_seat)} <small>/seat</small></div>
+          <div class="${sold?'fc-sold':'fc-avail'}" style="margin-top:2px">${sold?'SOLD OUT':avail+' seats left'}</div>
+        </div>
+      </div>
+      <div class="fc-route">
+        <div><div class="fc-city">${from||'—'}</div><div class="fc-time">${f.dep_time||''}</div></div>
+        <div style="flex:1;text-align:center"><i class="fa fa-arrow-right fc-arrow"></i><div style="font-size:10px;color:var(--muted)">${f.dep_date||''}</div></div>
+        <div style="text-align:right"><div class="fc-city">${to||'—'}</div><div class="fc-time">${f.arr_time||''}</div></div>
+      </div>
+      <div class="fc-meta">
+        <span class="fc-tag"><i class="fa fa-tag"></i>${f.category||'—'}</span>
+        <span class="fc-tag"><i class="fa fa-chair"></i>${f.class||'Economy'}</span>
+        ${f.baggage?`<span class="fc-tag"><i class="fa fa-suitcase"></i>${f.baggage}</span>`:''}
+        ${f.meal?`<span class="fc-tag"><i class="fa fa-utensils"></i>${f.meal}</span>`:''}
+        ${!sold?`<button class="btn btn-gold btn-sm" style="margin-left:auto" onclick="event.stopPropagation();openTicketModal('${f.id}')"><i class="fa fa-plus"></i> Book</button>`:'<span class="pill p-canc" style="margin-left:auto">Sold Out</span>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openTicketModal(id) {
+  selectedFlight = flights.find(f=>f.id===id);
+  if (!selectedFlight) return;
+  const f = selectedFlight;
+  const [from,to] = (f.route||'—').split('-');
+  document.getElementById('ticket-flight-summary').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div><strong style="font-size:15px">${from} → ${to}</strong><div style="font-size:11px;color:var(--muted);margin-top:2px">${f.airline} · ${f.flight_no} · ${f.dep_date}</div></div>
+      <div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--navy)">PKR ${fmt(f.price_per_seat)}</div><div style="font-size:10px;color:var(--muted)">per seat</div></div>
+    </div>`;
+  document.getElementById('tk-date').value = f.dep_date || '';
+  buildPaxFields('pax-fields', 1);
+  updateTicketTotal();
+  openModal('ticketModal');
+}
+
+function updateTicketTotal() {
+  if (!selectedFlight) return;
+  const seats = parseInt(document.getElementById('tk-seats').value) || 1;
+  buildPaxFields('pax-fields', seats);
+  const base = parseFloat(selectedFlight.price_per_seat) * seats;
+  const commPct = parseFloat(agent.commission_ticket || 0);
+  const comm = base * commPct / 100;
+  const bal = parseFloat(agent.balance || 0);
+  document.getElementById('tk-total').textContent = 'PKR ' + fmt(base);
+  document.getElementById('tk-comm').textContent = 'PKR ' + fmt(comm) + ' (' + commPct + '%)';
+  const balEl = document.getElementById('tk-bal');
+  balEl.textContent = (bal < 0 ? '-' : '') + 'PKR ' + fmt(Math.abs(bal));
+  balEl.style.color = bal < 0 ? 'var(--red)' : 'var(--green)';
+}
+
+// ── PACKAGES ──
+async function loadPackages() {
+  const data = await GET('packages', "status=eq.active&order=dep_date.asc");
+  if (Array.isArray(data)) { packages = data; renderPackages(data); }
+}
+
+function renderPackages(data) {
+  const el = document.getElementById('umrah-list');
+  const umrahPkgs = data.filter(p=>p.type==='Umrah'||p.type==='Hajj'||p.category==='umrah');
+  if (!umrahPkgs.length) { el.innerHTML = '<div class="etd" style="grid-column:1/-1">No Umrah packages available.</div>'; return; }
+  el.innerHTML = umrahPkgs.map(p=>`
+    <div class="card" style="margin-bottom:0;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+      ${p.image_url?`<img src="${p.image_url}" style="width:100%;height:160px;object-fit:cover" alt="${p.name}">`:
+        `<div style="height:100px;background:linear-gradient(135deg,#071120,#1a3a6b);display:flex;align-items:center;justify-content:center;font-size:32px">🕌</div>`}
+      <div style="padding:16px">
+        <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px">${p.name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">${p.duration||''} ${p.dep_date?'· Departs '+p.dep_date:''} ${p.airline?'· '+p.airline:''}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:18px;font-weight:800;color:var(--navy)">PKR ${fmt(p.price)}</div><div style="font-size:10px;color:var(--muted)">${p.price_note||'per person'}</div></div>
+          <button class="btn btn-gold btn-sm" onclick="openUmrahModal('${p.id}')"><i class="fa fa-moon"></i> Book</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function openUmrahModal(id) {
+  selectedPkg = packages.find(p=>p.id===id);
+  if (!selectedPkg) return;
+  const p = selectedPkg;
+  document.getElementById('umrah-pkg-summary').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div><strong style="font-size:15px">${p.name}</strong><div style="font-size:11px;color:var(--muted);margin-top:2px">${p.duration||''} ${p.dep_date?'· '+p.dep_date:''}</div></div>
+      <div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--navy)">PKR ${fmt(p.price)}</div><div style="font-size:10px;color:var(--muted)">${p.price_note||'per person'}</div></div>
+    </div>`;
+  buildPaxFields('umrah-pax-fields', 1, true);
+  updateUmrahTotal();
+  openModal('umrahModal');
+}
+
+function updateUmrahTotal() {
+  if (!selectedPkg) return;
+  const pax = parseInt(document.getElementById('um-pax').value)||1;
+  buildPaxFields('umrah-pax-fields', pax, true);
+  const base = parseFloat(selectedPkg.price||0) * pax;
+  const commPct = parseFloat(agent.commission_umrah||0);
+  const comm = base * commPct/100;
+  document.getElementById('um-total').textContent = 'PKR '+fmt(base);
+  document.getElementById('um-comm').textContent = 'PKR '+fmt(comm)+' ('+commPct+'%)';
+}
+
+// ── INSURANCE ──
+async function searchInsurance() {
+  const dest = document.getElementById('ins-dest').value;
+  const days = parseInt(document.getElementById('ins-days').value);
+  const type = document.getElementById('ins-type').value;
+  document.getElementById('ins-results').innerHTML = '<div class="etd">Searching plans...</div>';
+
+  const rates = await GET('ins_rates', `destination=eq.${dest}&days_max=gte.${days}&days_min=lte.${days}&traveller_type=eq.${type}&select=*,ins_plans(name,medical_cover,trip_cancel,repatriation,covid_cover,features,ins_companies(name,logo_url))&order=price_pkr.asc`);
+  if (!Array.isArray(rates)||!rates.length) { document.getElementById('ins-results').innerHTML = '<div class="etd">No plans found for this combination.</div>'; return; }
+
+  document.getElementById('ins-results').innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">` +
+    rates.map(r=>{
+      const plan = r.ins_plans||{}; const co = plan.ins_companies||{};
+      const commPct = parseFloat(agent.commission_ins||0);
+      const agentPrice = parseFloat(r.price_pkr||0);
+      return `<div class="card" style="margin-bottom:0">
+        <div style="padding:14px;border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;gap:10px">
+          ${co.logo_url?`<img src="${co.logo_url}" style="height:28px;object-fit:contain">`:
+            `<div style="font-size:11px;font-weight:800;color:var(--gold)">${co.name||'—'}</div>`}
+          <div><div style="font-size:13px;font-weight:700">${plan.name||'—'}</div><div style="font-size:10px;color:var(--muted)">Medical: ${plan.medical_cover||'—'}</div></div>
+        </div>
+        <div style="padding:14px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+            ${plan.trip_cancel?'<span class="pill p-conf">Trip Cancel</span>':''}
+            ${plan.covid_cover?'<span class="pill p-conf">COVID</span>':''}
+            ${plan.repatriation?'<span class="pill p-conf">Repatriation</span>':''}
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:20px;font-weight:800;color:var(--navy)">PKR ${fmt(agentPrice)}</div><div style="font-size:10px;color:var(--green)">Comm: PKR ${fmt(agentPrice*commPct/100)}</div></div>
+            <button class="btn btn-gold btn-sm" onclick="openInsModal('${r.id}',${agentPrice},'${plan.name||''}','${co.name||''}')"><i class="fa fa-plus"></i> Book</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+function openInsModal(rateId, price, planName, coName) {
+  selectedIns = { rateId, price, planName, coName };
+  // quick inline booking for insurance — just pax details
+  const html = `<div class="overlay open" id="insModal">
+    <div class="modal">
+      <div class="mh"><h3>Book <span>Insurance</span></h3><button class="m-close" onclick="document.getElementById('insModal').remove()"><i class="fa fa-xmark"></i></button></div>
+      <div class="mc">
+        <div style="background:var(--surface);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:16px">
+          <strong>${planName}</strong> — ${coName}<br><span style="font-size:12px;color:var(--muted)">PKR ${fmt(price)} per person</span>
+        </div>
+        <div class="field"><label>Insured Name</label><input type="text" id="ins-pname" placeholder="Full name as on passport"></div>
+        <div class="field"><label>Passport No.</label><input type="text" id="ins-pno" placeholder="AA1234567"></div>
+        <div class="field-row">
+          <div class="field"><label>Date of Birth</label><input type="date" id="ins-dob"></div>
+          <div class="field"><label>Travel Date</label><input type="date" id="ins-tdate"></div>
+        </div>
+        <div class="field"><label>Notes</label><textarea id="ins-notes" placeholder="Any details..."></textarea></div>
+      </div>
+      <div class="mf">
+        <button class="btn btn-ghost" onclick="document.getElementById('insModal').remove()">Cancel</button>
+        <button class="btn btn-gold" onclick="requestInsBooking()"><i class="fa fa-lock"></i> Confirm & Send OTP</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+// ── PAX BUILDER ──
+function buildPaxFields(containerId, count, isUmrah=false) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = Array.from({length:count},(_,i)=>`
+    <div class="pax-row">
+      <div class="pax-row-hd"><span>Passenger ${i+1}</span></div>
+      <div class="field-row">
+        <div class="field" style="margin-bottom:0"><label>Full Name</label><input type="text" id="pax-name-${i}" placeholder="As on passport"></div>
+        <div class="field" style="margin-bottom:0"><label>Passport No.</label><input type="text" id="pax-pass-${i}" placeholder="AA1234567"></div>
+      </div>
+      <div class="field-row" style="margin-top:10px">
+        <div class="field" style="margin-bottom:0"><label>Date of Birth</label><input type="date" id="pax-dob-${i}"></div>
+        <div class="field" style="margin-bottom:0"><label>Nationality</label><input type="text" id="pax-nat-${i}" placeholder="Pakistani"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ── BOOKING REQUESTS ──
+async function requestTicketBooking() {
+  const seats = parseInt(document.getElementById('tk-seats').value)||1;
+  const pax = [];
+  for(let i=0;i<seats;i++){
+    pax.push({
+      name: document.getElementById('pax-name-'+i)?.value||'',
+      passport: document.getElementById('pax-pass-'+i)?.value||'',
+      dob: document.getElementById('pax-dob-'+i)?.value||'',
+      nationality: document.getElementById('pax-nat-'+i)?.value||'Pakistani'
+    });
+  }
+  if(!pax[0].name){toast('Enter at least passenger 1 name.',true);return;}
+  const f = selectedFlight;
+  const base = parseFloat(f.price_per_seat)*seats;
+  const comm = base*parseFloat(agent.commission_ticket||0)/100;
+  pendingBookingData = {
+    agent_id: agent.id,
+    booking_ref: genRef('AT'),
+    service_type: 'group_ticket',
+    service_id: f.id,
+    service_name: f.route + ' · ' + f.flight_no,
+    passengers: pax,
+    cost_price: base,
+    sell_price: base,
+    commission_amt: comm,
+    pax_count: seats,
+    travel_date: document.getElementById('tk-date').value||null,
+    agent_notes: document.getElementById('tk-notes').value
+  };
+  closeModal('ticketModal');
+  await sendBookingOTP();
+}
+
+async function requestUmrahBooking() {
+  const pax_cnt = parseInt(document.getElementById('um-pax').value)||1;
+  const pax = [];
+  for(let i=0;i<pax_cnt;i++){
+    pax.push({
+      name: document.getElementById('pax-name-'+i)?.value||'',
+      passport: document.getElementById('pax-pass-'+i)?.value||'',
+      dob: document.getElementById('pax-dob-'+i)?.value||''
+    });
+  }
+  if(!pax[0].name){toast('Enter pilgrim 1 name.',true);return;}
+  const p = selectedPkg;
+  const base = parseFloat(p.price||0)*pax_cnt;
+  const comm = base*parseFloat(agent.commission_umrah||0)/100;
+  pendingBookingData = {
+    agent_id: agent.id,
+    booking_ref: genRef('AU'),
+    service_type: 'umrah',
+    service_id: p.id,
+    service_name: p.name,
+    passengers: pax,
+    cost_price: base,
+    sell_price: base,
+    commission_amt: comm,
+    pax_count: pax_cnt,
+    travel_date: p.dep_date||null,
+    agent_notes: document.getElementById('um-notes').value
+  };
+  closeModal('umrahModal');
+  await sendBookingOTP();
+}
+
+async function requestInsBooking() {
+  const name = document.getElementById('ins-pname')?.value;
+  if(!name){toast('Enter insured name.',true);return;}
+  const pax = [{name,passport:document.getElementById('ins-pno')?.value,dob:document.getElementById('ins-dob')?.value}];
+  const price = selectedIns.price;
+  const comm = price*parseFloat(agent.commission_ins||0)/100;
+  pendingBookingData = {
+    agent_id: agent.id,
+    booking_ref: genRef('AI'),
+    service_type: 'insurance',
+    service_id: selectedIns.rateId,
+    service_name: selectedIns.planName + ' — ' + selectedIns.coName,
+    passengers: pax,
+    cost_price: price,
+    sell_price: price,
+    commission_amt: comm,
+    pax_count: 1,
+    travel_date: document.getElementById('ins-tdate')?.value||null,
+    agent_notes: document.getElementById('ins-notes')?.value
+  };
+  document.getElementById('insModal')?.remove();
+  await sendBookingOTP();
+}
+
+async function sendBookingOTP() {
+  // Generate OTP
+  const otp = Math.floor(100000+Math.random()*900000).toString();
+  const exp = new Date(Date.now()+10*60*1000).toISOString();
+  try {
+    const r = await POST('agent_otps',{agent_id:agent.id,otp_code:otp,purpose:'booking_confirm',expires_at:exp});
+    if(Array.isArray(r)&&r[0]) pendingOtpId = r[0].id;
+    console.log('Booking OTP:', otp); // dev — replace with email send
+    toast('OTP sent to your email.');
+    // clear otp boxes
+    document.querySelectorAll('#otpModal .otp-box').forEach(b=>b.value='');
+    openModal('otpModal');
+    startBkOtpTimer();
+  } catch(e){ toast('Error sending OTP.',true); }
+}
+
+async function confirmBookingOTP() {
+  const boxes = document.querySelectorAll('#otpModal .otp-box');
+  const code = Array.from(boxes).map(b=>b.value).join('');
+  if(code.length!==6){toast('Enter full 6-digit OTP.',true);return;}
+
+  try {
+    const rows = await GET('agent_otps',`id=eq.${pendingOtpId}&otp_code=eq.${code}&used=eq.false`);
+    if(!rows||!rows.length){toast('Invalid OTP.',true);return;}
+    const otpRow = rows[0];
+    if(new Date(otpRow.expires_at)<new Date()){toast('OTP expired.',true);return;}
+
+    // Mark OTP used
+    await fetch(`${SB_URL}/rest/v1/agent_otps?id=eq.${pendingOtpId}`,{
+      method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({used:true})
+    });
+
+    // Create booking
+    const bk = await POST('agent_bookings',{...pendingBookingData,otp_verified:true});
+    if(Array.isArray(bk)&&bk[0]){
+      // Create debit transaction
+      const newBal = parseFloat(agent.balance||0) - parseFloat(pendingBookingData.sell_price||0);
+      await POST('agent_transactions',{
+        agent_id:agent.id,type:'debit',amount:pendingBookingData.sell_price,
+        balance_after:newBal,description:`Booking ${pendingBookingData.booking_ref}`,
+        booking_id:bk[0].id,created_by:'agent'
+      });
+      // Update local balance
+      agent.balance = newBal;
+      sessionStorage.setItem('ew_agent',JSON.stringify(agent));
+      renderAgentInfo();
+      closeModal('otpModal');
+      toast(`Booking ${pendingBookingData.booking_ref} submitted! Admin will confirm shortly.`);
+      loadHome(); loadBookings();
+    } else { toast('Booking error. Contact support.',true); }
+  } catch(e){ toast('Error confirming booking.',true); }
+}
+
+// ── BOOKINGS PAGE ──
+async function loadBookings() {
+  const data = await GET('agent_bookings',`agent_id=eq.${agent.id}&select=*&order=created_at.desc`);
+  if(Array.isArray(data)){ bookings=data; renderBookings(data); }
+}
+
+function filterBookings(status, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBookings(status==='all'?bookings:bookings.filter(b=>b.status===status));
+}
+
+function renderBookings(data) {
+  const tb = document.getElementById('bk-tb');
+  if(!data.length){tb.innerHTML='<tr><td colspan="8" class="etd">No bookings found.</td></tr>';return;}
+  tb.innerHTML = data.map(b=>`<tr>
+    <td><strong style="font-family:monospace;font-size:11px">${b.booking_ref}</strong></td>
+    <td>${svcLabel(b.service_type)}<div style="font-size:10px;color:var(--muted)">${b.service_name||''}</div></td>
+    <td>${b.pax_count||1} pax</td>
+    <td style="font-weight:700">PKR ${fmt(b.sell_price)}</td>
+    <td style="color:var(--green);font-weight:600">PKR ${fmt(b.commission_amt)}</td>
+    <td><span class="pill p-${b.status}">${b.status}</span></td>
+    <td style="font-size:11px">${fmtDate(b.created_at)}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="viewBookingDetail('${b.id}')"><i class="fa fa-eye"></i></button></td>
+  </tr>`).join('');
+}
+
+function viewBookingDetail(id) {
+  const b = bookings.find(x=>x.id===id); if(!b) return;
+  const pax = Array.isArray(b.passengers)?b.passengers:[];
+  alert(`Booking: ${b.booking_ref}\nService: ${b.service_name}\nStatus: ${b.status}\nPax: ${pax.map(p=>p.name).join(', ')}\nAmount: PKR ${fmt(b.sell_price)}\nAdmin Notes: ${b.admin_notes||'—'}`);
+}
+
+// ── FINANCE ──
+async function loadTransactions() {
+  const data = await GET('agent_transactions',`agent_id=eq.${agent.id}&order=created_at.desc&limit=50`);
+  if(Array.isArray(data)){ transactions=data; renderTxTable(data); }
+}
+
+function renderTxTable(data) {
+  const tb = document.getElementById('tx-tb');
+  if(!data.length){tb.innerHTML='<tr><td colspan="5" class="etd">No transactions yet.</td></tr>';return;}
+  tb.innerHTML = data.map(t=>`<tr>
+    <td style="font-size:11px">${fmtDate(t.created_at)}</td>
+    <td><span class="pill p-${t.type==='credit'||t.type==='commission'?'credit':'debit'}">${t.type}</span></td>
+    <td style="font-size:12px">${t.description||'—'}</td>
+    <td style="font-weight:700;color:${t.type==='debit'?'var(--red)':'var(--green)'}">
+      ${t.type==='debit'?'-':'+'} PKR ${fmt(t.amount)}
+    </td>
+    <td style="font-family:monospace;font-size:11px;color:${parseFloat(t.balance_after)<0?'var(--red)':'var(--text)'}">
+      PKR ${fmt(t.balance_after)}
+    </td>
+  </tr>`).join('');
+}
+
+async function loadChart(days, btn) {
+  document.querySelectorAll('.cf-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+
+  const since = new Date(Date.now()-parseInt(days)*24*60*60*1000).toISOString();
+  const data = await GET('agent_bookings',`agent_id=eq.${agent.id}&created_at=gte.${since}&select=sell_price,commission_amt,service_type,created_at,status`);
+  if(!Array.isArray(data)) return;
+
+  const totalSales = data.reduce((s,b)=>s+parseFloat(b.sell_price||0),0);
+  const totalComm  = data.reduce((s,b)=>s+parseFloat(b.commission_amt||0),0);
+  document.getElementById('fn-sales').textContent = 'PKR '+fmt(totalSales);
+  document.getElementById('fn-comm').textContent  = 'PKR '+fmt(totalComm);
+  document.getElementById('fn-count').textContent = data.length;
+  document.getElementById('fn-balance').textContent = (parseFloat(agent.balance||0)<0?'-':'')+'PKR '+fmt(Math.abs(agent.balance||0));
+  document.getElementById('fn-limit').textContent  = 'Limit: PKR '+fmt(agent.credit_limit||0);
+
+  // Group by date
+  const dateMap = {};
+  data.forEach(b=>{
+    const d = b.created_at.slice(0,10);
+    if(!dateMap[d]) dateMap[d]={sales:0,comm:0};
+    dateMap[d].sales += parseFloat(b.sell_price||0);
+    dateMap[d].comm  += parseFloat(b.commission_amt||0);
+  });
+  const labels = Object.keys(dateMap).sort();
+  const salesData = labels.map(d=>dateMap[d].sales);
+  const commData  = labels.map(d=>dateMap[d].comm);
+
+  if(salesChart) salesChart.destroy();
+  salesChart = new Chart(document.getElementById('salesChart'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Sales (PKR)',data:salesData,backgroundColor:'rgba(7,17,32,0.7)',borderRadius:4},
+      {label:'Commission (PKR)',data:commData,backgroundColor:'rgba(212,168,67,0.7)',borderRadius:4}
+    ]},
+    options:{responsive:true,plugins:{legend:{display:true,labels:{font:{size:11}}}},scales:{y:{ticks:{callback:v=>'PKR '+fmt(v),font:{size:10}}}}}
+  });
+
+  // donut by service type
+  const svcMap={group_ticket:0,umrah:0,insurance:0};
+  data.forEach(b=>{ if(svcMap[b.service_type]!==undefined) svcMap[b.service_type]+=parseFloat(b.commission_amt||0); });
+  if(commChart) commChart.destroy();
+  commChart = new Chart(document.getElementById('commChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Group Tickets','Umrah','Insurance'],
+      datasets:[{data:[svcMap.group_ticket,svcMap.umrah,svcMap.insurance],backgroundColor:['#071120','#D4A843','#16A34A'],borderWidth:0}]
+    },
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12}}}}
+  });
+}
+
+// ── PAYMENTS ──
+function previewSlip(input) {
+  const file = input.files[0]; if(!file) return;
+  if(file.size > 2*1024*1024){toast('File too large. Max 2MB.',true);return;}
+  const reader = new FileReader();
+  reader.onload = e=>{
+    document.getElementById('slip-img-preview').src = e.target.result;
+    document.getElementById('slip-img-preview').style.display = 'block';
+    document.getElementById('slip-img-b64').textContent = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function submitSlip() {
+  const amt = document.getElementById('slip-amt').value;
+  const bank = document.getElementById('slip-bank').value.trim();
+  const ref = document.getElementById('slip-ref').value.trim();
+  const img = document.getElementById('slip-img-b64').textContent;
+  if(!amt||!bank){toast('Amount and bank name required.',true);return;}
+  try {
+    await POST('payment_slips',{agent_id:agent.id,amount:parseFloat(amt),bank_name:bank,reference_no:ref,slip_image:img||null});
+    toast('Payment slip submitted. Admin will review shortly.');
+    loadSlips();
+    document.getElementById('slip-amt').value='';
+    document.getElementById('slip-bank').value='';
+    document.getElementById('slip-ref').value='';
+    document.getElementById('slip-img-preview').style.display='none';
+  }catch(e){toast('Error submitting slip.',true);}
+}
+
+async function loadSlips() {
+  const data = await GET('payment_slips',`agent_id=eq.${agent.id}&order=created_at.desc`);
+  const tb = document.getElementById('slip-tb');
+  if(!Array.isArray(data)||!data.length){tb.innerHTML='<tr><td colspan="5" class="etd">No submissions yet.</td></tr>';return;}
+  tb.innerHTML = data.map(s=>`<tr>
+    <td style="font-size:11px">${fmtDate(s.created_at)}</td>
+    <td style="font-weight:700">PKR ${fmt(s.amount)}</td>
+    <td>${s.bank_name||'—'}</td>
+    <td style="font-family:monospace;font-size:11px">${s.reference_no||'—'}</td>
+    <td><span class="pill p-${s.status==='approved'?'conf':s.status==='rejected'?'canc':'pend'}">${s.status}</span></td>
+  </tr>`).join('');
+}
+
+// ── PROFILE ──
+function renderProfile() {
+  document.getElementById('profile-info').innerHTML = [
+    ['Agent ID', agent.agent_code],
+    ['Full Name', agent.full_name],
+    ['Company', agent.company_name||'—'],
+    ['Email', agent.email],
+    ['Phone', agent.phone],
+    ['City', agent.city||'—'],
+    ['Tier', `<span class="tier-pill tier-${agent.tier}">${(agent.tier||'').toUpperCase()}</span>`],
+    ['Status', `<span class="pill p-${agent.status==='active'?'conf':'canc'}">${agent.status}</span>`],
+    ['Credit Limit', 'PKR '+fmt(agent.credit_limit||0)],
+    ['Current Balance', `<span style="color:${agent.balance<0?'var(--red)':'var(--green)'};font-weight:700">${agent.balance<0?'-':''}PKR ${fmt(Math.abs(agent.balance||0))}</span>`]
+  ].map(([k,v])=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em">${k}</span><span style="font-size:13px;font-weight:600">${v||'—'}</span></div>`).join('');
+
+  document.getElementById('comm-rates').innerHTML = [
+    ['Group Tickets', agent.commission_ticket||0],
+    ['Umrah Packages', agent.commission_umrah||0],
+    ['Insurance', agent.commission_ins||0]
+  ].map(([k,v])=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)">
+    <span style="font-size:12px;color:var(--text2);font-weight:600">${k}</span>
+    <span style="font-size:18px;font-weight:800;color:var(--gold)">${v}%</span>
+  </div>`).join('');
+}
+
+// ── HELPERS ──
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sbn').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('pg-'+name);
+  if(pg)pg.classList.add('active');
+  if(btn)btn.classList.add('active');
+  // load data on demand
+  if(name==='finance') loadTransactions();
+  if(name==='bookings') loadBookings();
+}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function doLogout(){sessionStorage.removeItem('ew_agent_token');sessionStorage.removeItem('ew_agent');window.location.href='/agent/login';}
+function fmt(n){return parseFloat(n||0).toLocaleString('en-PK',{maximumFractionDigits:0})}
+function fmtDate(d){return d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}
+function svcLabel(t){const m={group_ticket:'✈ Ticket',umrah:'🕌 Umrah',insurance:'🛡 Insurance'};return m[t]||t}
+function genRef(prefix){return prefix+'-'+Date.now().toString(36).toUpperCase().slice(-6)}
+function toast(msg,isErr=false){
+  const t=document.getElementById('toast'),i=document.getElementById('tIco');
+  document.getElementById('tTxt').textContent=msg;
+  t.className='toast show '+(isErr?'err':'ok');
+  i.className='fa '+(isErr?'fa-exclamation-circle':'fa-check-circle');
+  clearTimeout(tTimer);tTimer=setTimeout(()=>t.classList.remove('show'),4000);
+}
+function otpNext2(el,idx){
+  const boxes=document.querySelectorAll('#otpModal .otp-box');
+  if(el.value&&idx<5)boxes[idx+1].focus();
+}
+function startBkOtpTimer(){
+  let s=60; const el=document.getElementById('bk-otp-timer');
+  const iv=setInterval(()=>{s--;el.textContent=s>0?`Resend in ${s}s`:'Request new OTP';if(s<=0)clearInterval(iv);},1000);
+}
+
+init();
+</script>
+</body>
+</html>
