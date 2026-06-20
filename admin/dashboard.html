@@ -1245,6 +1245,13 @@ async function deleteRt(id) {
         </div>
       </div>
       <div class="fg"><label>Address</label><input type="text" id="agAddress" placeholder="Office address"></div>
+      <div class="fg">
+        <label>Logo</label>
+        <div style="display:flex;align-items:center;gap:14px">
+          <img id="agLogoPreview" src="" style="width:48px;height:48px;border-radius:6px;border:1.5px solid var(--border2);object-fit:contain;background:#fff;display:none">
+          <input type="file" id="agLogoFile" accept="image/png,image/jpeg,image/webp" onchange="handleAgLogoSelect(event)">
+        </div>
+      </div>
       <div class="ins-section-title">Credit & Commission</div>
       <div class="fr">
         <div class="fg"><label>Credit Limit (PKR)</label><input type="number" id="agLimit" placeholder="100000"></div>
@@ -1374,6 +1381,20 @@ async function POST(t,b){const r=await fetch(URL0+'/rest/v1/'+t,{method:'POST',h
 async function PATCH(t,id,b){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{method:'PATCH',headers:{...H,Prefer:'return=representation'},body:JSON.stringify(b)});const d=await r.json();if(r.ok)return Array.isArray(d)?d[0]:d;throw new Error(JSON.stringify(d));}
 async function DEL(t,id){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{method:'DELETE',headers:H});if(!r.ok){const d=await r.json();throw new Error(JSON.stringify(d));}}
 
+/* Secure agents-table writes — balances, credit limits, tiers, create/delete.
+   Routed through /api/admin-agents using the real admin session token, since
+   the agents table itself rejects these writes from any client-side key. */
+async function agentsWrite(action,id,data){
+  const r=await fetch('/api/admin-agents',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+(admin&&admin.token||'')},
+    body:JSON.stringify({action,id,data})
+  });
+  const d=await r.json();
+  if(!r.ok)throw new Error(d.error||JSON.stringify(d));
+  return d;
+}
+
 /* State */
 let bks=[],cus=[],trs=[],umrahPkgs=[],tourPkgs=[],visas=[],flights=[],blogs=[];
 let agents=[],agentBookings=[],agentTx=[],paymentSlips=[],commRules=[];
@@ -1404,7 +1425,7 @@ async function loadAll(){
 async function loadAgentData(){
   try{
     const [ag,agbk,tx,sl,cr]=await Promise.all([
-      GET('agents','order=created_at.desc').catch(()=>[]),
+      agentsWrite('list',null,null).catch(()=>[]),
       GET('agent_bookings','order=created_at.desc').catch(()=>[]),
       GET('agent_transactions','order=created_at.desc&limit=200').catch(()=>[]),
       GET('payment_slips','order=created_at.desc').catch(()=>[]),
@@ -1909,8 +1930,23 @@ function openAgentModal(){
   document.getElementById('agTier').value='silver';
   document.getElementById('agStatus').value='active';
   document.getElementById('agBalance').value='0';
+  pendingAgLogo=null;
+  document.getElementById('agLogoPreview').style.display='none';
+  document.getElementById('agLogoFile').value='';
   applyTierDefaults();
   openModal('agentModal');
+}
+let pendingAgLogo=null;
+function handleAgLogoSelect(e){
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>1024*1024){toast('Logo must be under 1MB.',true);e.target.value='';return;}
+  const reader=new FileReader();
+  reader.onload=()=>{
+    pendingAgLogo=reader.result;
+    const preview=document.getElementById('agLogoPreview');
+    preview.src=pendingAgLogo;preview.style.display='inline-block';
+  };
+  reader.readAsDataURL(file);
 }
 function editAgent(id){
   const a=agents.find(x=>x.id===id);if(!a)return;
@@ -1924,6 +1960,10 @@ function editAgent(id){
   document.getElementById('agPhone').value=a.phone||'';
   document.getElementById('agCity').value=a.city||'';
   document.getElementById('agAddress').value=a.address||'';
+  pendingAgLogo=null;
+  document.getElementById('agLogoFile').value='';
+  const lp=document.getElementById('agLogoPreview');
+  if(a.logo_url){lp.src=a.logo_url;lp.style.display='inline-block';}else{lp.style.display='none';}
   document.getElementById('agStatus').value=a.status||'active';
   document.getElementById('agLimit').value=a.credit_limit||0;
   document.getElementById('agBalance').value=a.balance||0;
@@ -1954,15 +1994,16 @@ async function saveAgent(){
     supabase_uid:document.getElementById('agUid').value.trim()||null,
     updated_at:new Date().toISOString()
   };
+  if(pendingAgLogo)d.logo_url=pendingAgLogo;
   try{
-    if(id){await PATCH('agents',id,d);agents=agents.map(a=>a.id===id?{...a,...d,id}:a);}
-    else{const r=await POST('agents',d);agents=[r,...agents];}
+    if(id){const r=await agentsWrite('update',id,d);agents=agents.map(a=>a.id===id?{...a,...d,id}:a);}
+    else{const r=await agentsWrite('create',null,d);agents=[r,...agents];}
     closeModal('agentModal');renderAgents(agents);toast(id?'Agent updated!':'Agent added!');
   }catch(e){toast('Error: '+e.message,true);}
 }
 async function delAgent(id){
   if(!confirm('Delete this agent? This cannot be undone.'))return;
-  try{await DEL('agents',id);agents=agents.filter(a=>a.id!==id);renderAgents(agents);toast('Agent deleted.');}
+  try{await agentsWrite('delete',id,null);agents=agents.filter(a=>a.id!==id);renderAgents(agents);toast('Agent deleted.');}
   catch(e){toast('Error: '+e.message,true);}
 }
 
@@ -1986,7 +2027,7 @@ async function saveBalanceAdjustment(){
   const a=agents.find(x=>x.id===agentId);if(!a)return;
   const newBal=type==='credit'?parseFloat(a.balance||0)+amt:parseFloat(a.balance||0)-amt;
   try{
-    await PATCH('agents',agentId,{balance:newBal,updated_at:new Date().toISOString()});
+    await agentsWrite('update',agentId,{balance:newBal,updated_at:new Date().toISOString()});
     await POST('agent_transactions',{agent_id:agentId,type:type==='credit'?'credit':'debit',amount:amt,balance_after:newBal,description:reason,created_by:'admin'});
     agents=agents.map(x=>x.id===agentId?{...x,balance:newBal}:x);
     renderAgents(agents);closeModal('balModal');toast('Balance adjusted successfully!');
@@ -2103,7 +2144,7 @@ async function performIssue(b){
     });
     // Debit the agent's balance now — this is the single moment money
     // actually moves for this booking.
-    await PATCH('agents',ag.id,{balance:newBal});
+    await agentsWrite('update',ag.id,{balance:newBal});
     await POST('agent_transactions',{
       agent_id:ag.id,type:'debit',amount:b.sell_price,balance_after:newBal,
       description:`Booking ${b.booking_ref} issued`,booking_id:b.id,created_by:'admin'
@@ -2202,7 +2243,7 @@ async function approveSlip(){
   try{
     const newBal=a?parseFloat(a.balance||0)+parseFloat(s.amount||0):null;
     if(a&&newBal!==null){
-      await PATCH('agents',a.id,{balance:newBal});
+      await agentsWrite('update',a.id,{balance:newBal});
       await POST('agent_transactions',{agent_id:a.id,type:'credit',amount:s.amount,balance_after:newBal,description:`Payment slip approved — ${s.bank_name||''} ${s.reference_no||''}`,created_by:'admin'});
       agents=agents.map(x=>x.id===a.id?{...x,balance:newBal}:x);
       renderAgents(agents);

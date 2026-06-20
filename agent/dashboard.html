@@ -532,6 +532,25 @@ tbody td strong{color:var(--text);font-weight:700}
         <div id="comm-rates" style="display:flex;flex-direction:column;gap:10px"></div>
       </div>
     </div>
+    <div class="card" style="grid-column:1/-1">
+      <div class="ch"><h3>Business Branding</h3><p style="font-size:11px;color:var(--muted);margin-top:4px">Shown on tickets, vouchers, and certificates you issue to customers.</p></div>
+      <div style="padding:20px">
+        <div class="field-row">
+          <div class="field"><label>Company Name</label><input type="text" id="br-company" placeholder="Your travel agency name"></div>
+          <div class="field"><label>Phone</label><input type="text" id="br-phone" placeholder="Business contact number"></div>
+        </div>
+        <div class="field"><label>Address</label><input type="text" id="br-address" placeholder="Business address"></div>
+        <div class="field">
+          <label>Logo</label>
+          <div style="display:flex;align-items:center;gap:14px">
+            <img id="br-logo-preview" src="" style="width:64px;height:64px;border-radius:8px;border:1.5px solid var(--bdr);object-fit:contain;background:#fff;display:none">
+            <input type="file" id="br-logo-file" accept="image/png,image/jpeg,image/webp" onchange="handleLogoSelect(event)">
+          </div>
+        </div>
+        <button class="btn btn-gold" style="margin-top:10px" onclick="saveBranding()">Save Branding</button>
+        <span id="br-status" style="font-size:12px;margin-left:10px"></span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -771,6 +790,16 @@ async function POST(table, data) {
     body: JSON.stringify(data)
   });
   return r.json();
+}
+async function PATCH(table, id, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.message || JSON.stringify(d));
+  return Array.isArray(d) ? d[0] : d;
 }
 
 async function sendOtpEmail(email, otp, purpose, agentName) {
@@ -1545,6 +1574,49 @@ function renderProfile() {
     <span style="font-size:12px;color:var(--text2);font-weight:600">${k}</span>
     <span style="font-size:18px;font-weight:800;color:var(--gold)">${v}%</span>
   </div>`).join('');
+
+  document.getElementById('br-company').value = agent.company_name||'';
+  document.getElementById('br-phone').value = agent.phone||'';
+  document.getElementById('br-address').value = agent.address||'';
+  const preview = document.getElementById('br-logo-preview');
+  if (agent.logo_url) { preview.src = agent.logo_url; preview.style.display = 'inline-block'; }
+  else { preview.style.display = 'none'; }
+}
+
+let pendingLogoData = null;
+function handleLogoSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 1024*1024) { toast('Logo must be under 1MB.', true); e.target.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    pendingLogoData = reader.result;
+    const preview = document.getElementById('br-logo-preview');
+    preview.src = pendingLogoData;
+    preview.style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveBranding() {
+  const status = document.getElementById('br-status');
+  status.textContent = 'Saving…'; status.style.color = 'var(--muted)';
+  const data = {
+    company_name: document.getElementById('br-company').value.trim(),
+    phone: document.getElementById('br-phone').value.trim(),
+    address: document.getElementById('br-address').value.trim()
+  };
+  if (pendingLogoData) data.logo_url = pendingLogoData;
+  try {
+    const updated = await PATCH('agents', agent.id, data);
+    agent = { ...agent, ...updated };
+    sessionStorage.setItem('ew_agent', JSON.stringify(agent));
+    renderAgentInfo();
+    status.textContent = 'Saved!'; status.style.color = 'var(--green)';
+    setTimeout(()=>status.textContent='', 2500);
+  } catch (e) {
+    status.textContent = 'Error: ' + e.message; status.style.color = 'var(--red)';
+  }
 }
 
 // ── HELPERS ──
