@@ -262,6 +262,7 @@ async function doLogin() {
     if (res.error) { showAlert(res.error.message || 'Invalid credentials.', true); setLoading('loginBtn', false); return; }
 
     const token = res.access_token;
+    const refreshTok = res.refresh_token;
     // Fetch agent profile
     const agents = await fetch(`${SB_URL}/rest/v1/agents?supabase_uid=eq.${res.user.id}&select=*`, {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}` }
@@ -274,6 +275,7 @@ async function doLogin() {
 
     // Store session
     sessionStorage.setItem('ew_agent_token', token);
+    sessionStorage.setItem('ew_agent_refresh', refreshTok || '');
     sessionStorage.setItem('ew_agent', JSON.stringify(agent));
     window.location.href = '/agent/dashboard';
   } catch(e) {

@@ -55,7 +55,7 @@ input,select,textarea,button{font-family:inherit}
 .sb-out:hover{border-color:#F87171;color:#F87171}
 
 /* ── MAIN ── */
-.main{margin-left:220px;flex:1;padding:24px 28px;min-height:100vh;overflow-x:hidden}
+.main{margin-left:220px;flex:1;padding:80px 28px 24px;min-height:100vh;overflow-x:hidden}
 .page{display:none}.page.active{display:block}
 
 /* PAGE HEADER */
@@ -216,11 +216,31 @@ tbody td strong{color:var(--text);font-weight:700}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* TOPBAR */
+.tbar{position:fixed;top:0;left:220px;right:0;height:56px;background:#fff;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:0 22px;z-index:90}
+.tbar-bal{display:flex;align-items:center;gap:9px;padding:6px 12px;border-radius:9px;background:#F6F8FB;border:1px solid var(--bdr)}
+.tbar-bal-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.tbar-bal-amt{font-size:14px;font-weight:800;color:var(--navy);letter-spacing:-0.02em}
+.tbar-bal-amt.neg{color:#DC2626}
+.tbar-refresh{width:28px;height:28px;border-radius:7px;border:1px solid var(--bdr);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:12px}
+.tbar-refresh:hover{color:var(--navy);border-color:var(--navy)}
+.tbar-refresh.spinning i{animation:spin .6s linear infinite}
+.tbar-divider{width:1px;height:24px;background:var(--bdr)}
+.tbar-acct{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:9px;border:1px solid var(--bdr);background:#fff;cursor:pointer;transition:all .15s}
+.tbar-acct:hover{border-color:var(--navy)}
+.tbar-acct img{width:24px;height:24px;border-radius:6px;object-fit:contain;background:#fff;border:1px solid var(--bdr)}
+.tbar-acct span{font-size:12.5px;font-weight:700;color:var(--navy)}
+.tbar-out{width:34px;height:34px;border-radius:9px;border:1px solid var(--bdr);background:#fff;color:#DC2626;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:13px}
+.tbar-out:hover{background:#FEF2F2;border-color:#FCA5A5}
+
 /* MOBILE */
 @media(max-width:900px){
   .sb{transform:translateX(-100%)}
   .sb.open{transform:translateX(0)}
-  .main{margin-left:0;padding:16px}
+  .main{margin-left:0;padding:72px 16px 16px}
+  .tbar{left:0;padding:0 12px;gap:6px}
+  .tbar-bal-label{display:none}
+  .tbar-acct span{display:none}
   .sg{grid-template-columns:1fr 1fr}
   .grid2{grid-template-columns:1fr}
   .field-row{grid-template-columns:1fr}
@@ -265,6 +285,21 @@ tbody td strong{color:var(--text);font-weight:700}
     <button class="sb-out" onclick="doLogout()"><i class="fa fa-right-from-bracket"></i> Sign Out</button>
   </div>
 </aside>
+
+<!-- TOPBAR -->
+<div class="tbar" id="topbar">
+  <div class="tbar-bal">
+    <span class="tbar-bal-label">Balance</span>
+    <span class="tbar-bal-amt" id="tb-balance">—</span>
+  </div>
+  <button class="tbar-refresh" id="tb-refresh-btn" onclick="manualRefresh()" title="Refresh balance & data"><i class="fa fa-rotate-right"></i></button>
+  <div class="tbar-divider"></div>
+  <div class="tbar-acct" onclick="goToProfile()">
+    <img src="../assets/images/logo.jpg" alt="" onerror="this.style.display='none'">
+    <span>My Account</span>
+  </div>
+  <button class="tbar-out" onclick="doLogout()" title="Sign Out"><i class="fa fa-right-from-bracket"></i></button>
+</div>
 
 <!-- MAIN -->
 <main class="main">
@@ -676,7 +711,7 @@ tbody td strong{color:var(--text);font-weight:700}
 const SB_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjaXFsbXZoZXFsc21vZ3BubWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjY2NjYsImV4cCI6MjA4ODkwMjY2Nn0.NpwnG7NSx4YCcm--fT3-tcP_fSyoaXVgSxzHLRP9P3o';
 
-let agent = null, token = null;
+let agent = null, token = null, refreshToken = null;
 let flights = [], packages = [], bookings = [], transactions = [];
 let selectedFlight = null, selectedPkg = null, selectedIns = null;
 let pendingBookingData = null, pendingOtpId = null, pendingIssueBookingId = null;
@@ -686,6 +721,7 @@ let tTimer;
 // ── INIT ──
 function init() {
   token = sessionStorage.getItem('ew_agent_token');
+  refreshToken = sessionStorage.getItem('ew_agent_refresh');
   const raw = sessionStorage.getItem('ew_agent');
   if (!token || !raw) { window.location.href = '/agent/login'; return; }
   agent = JSON.parse(raw);
@@ -707,6 +743,31 @@ function init() {
     if (document.getElementById('pg-bookings')?.classList.contains('active')) loadBookings();
     if (document.getElementById('pg-home')?.classList.contains('active')) loadHome();
   }, 20000);
+
+  // Supabase access tokens expire after ~1hr. Proactively refresh the
+  // session well before that so balance/data never silently goes stale.
+  setInterval(refreshSessionToken, 50 * 60 * 1000);
+}
+
+// Exchanges the stored refresh_token for a brand-new access_token (and
+// rotates the refresh_token), keeping the agent signed in indefinitely
+// without their balance/data ever freezing on an expired token.
+async function refreshSessionToken() {
+  if (!refreshToken) return false;
+  try {
+    const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=refresh_token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY },
+      body: JSON.stringify({ refresh_token: refreshToken })
+    });
+    const d = await r.json();
+    if (!r.ok || !d.access_token) return false;
+    token = d.access_token;
+    refreshToken = d.refresh_token || refreshToken;
+    sessionStorage.setItem('ew_agent_token', token);
+    sessionStorage.setItem('ew_agent_refresh', refreshToken);
+    return true;
+  } catch(e) { return false; }
 }
 
 // Re-check the agent's live status/balance against the database on load
@@ -729,6 +790,17 @@ async function validateSession() {
 }
 setInterval(()=>{ if (agent) validateSession(); }, 60000);
 
+// Manual refresh button in the topbar — forces an immediate token
+// refresh + balance re-fetch, with a spin animation for feedback.
+async function manualRefresh() {
+  const btn = document.getElementById('tb-refresh-btn');
+  btn?.classList.add('spinning');
+  await refreshSessionToken();
+  await validateSession();
+  setTimeout(()=>btn?.classList.remove('spinning'), 400);
+  toast('Refreshed!');
+}
+
 function renderAgentInfo() {
   document.getElementById('sb-name').textContent = agent.full_name || 'Agent';
   document.getElementById('sb-code').textContent = agent.agent_code || '—';
@@ -747,6 +819,13 @@ function renderAgentInfo() {
   document.getElementById('hm-balance').textContent = (bal < 0 ? '-' : '') + 'PKR ' + fmt(Math.abs(bal));
   document.getElementById('hm-limit').textContent = 'Limit: PKR ' + fmt(lim);
 
+  // topbar
+  const tbBal = document.getElementById('tb-balance');
+  if (tbBal) {
+    tbBal.textContent = (bal < 0 ? '-' : '') + 'PKR ' + fmt(Math.abs(bal));
+    tbBal.className = 'tbar-bal-amt' + (bal < 0 ? ' neg' : '');
+  }
+
   // bar
   if (lim > 0) {
     const used = Math.max(0, -bal);
@@ -762,6 +841,14 @@ async function GET(table, qs) {
   const r = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
     headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}` }
   });
+  // Access token expired mid-session — refresh once and retry transparently
+  // so the agent never sees a silent stale-data failure.
+  if (r.status === 401 && await refreshSessionToken()) {
+    const retry = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}` }
+    });
+    return retry.json();
+  }
   return r.json();
 }
 async function POST(table, data) {
@@ -770,7 +857,30 @@ async function POST(table, data) {
     headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
     body: JSON.stringify(data)
   });
+  if (r.status === 401 && await refreshSessionToken()) {
+    const retry = await fetch(`${SB_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+      body: JSON.stringify(data)
+    });
+    return retry.json();
+  }
   return r.json();
+}
+async function PATCH(table, qs, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (r.status === 401 && await refreshSessionToken()) {
+    return fetch(`${SB_URL}/rest/v1/${table}?${qs}`, {
+      method: 'PATCH',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  }
+  return r;
 }
 
 async function sendOtpEmail(email, otp, purpose, agentName) {
@@ -1191,11 +1301,7 @@ async function submitBookingDirect(data) {
         loadFlights();
         return false;
       }
-      await fetch(`${SB_URL}/rest/v1/group_flights?id=eq.${selectedFlight.id}`,{
-        method:'PATCH',
-        headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-        body:JSON.stringify({booked_seats:(selectedFlight.booked_seats||0)+data.seats_reserved})
-      });
+      await PATCH('group_flights', `id=eq.${selectedFlight.id}`, {booked_seats:(selectedFlight.booked_seats||0)+data.seats_reserved});
     }
 
     // Create booking — no balance change yet. East & West deducts the
@@ -1266,20 +1372,13 @@ async function confirmIssueRequestOTP() {
     if(new Date(otpRow.expires_at)<new Date()){toast('OTP expired.',true);return;}
     if (new Date(b.expires_at) < new Date()) { toast('This booking just expired — could not request issue.', true); closeModal('otpModal'); loadBookings(); return; }
 
-    await fetch(`${SB_URL}/rest/v1/agent_otps?id=eq.${pendingOtpId}`,{
-      method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-      body:JSON.stringify({used:true})
-    });
+    await PATCH('agent_otps', `id=eq.${pendingOtpId}`, {used:true});
 
-    await fetch(`${SB_URL}/rest/v1/agent_bookings?id=eq.${b.id}`,{
-      method:'PATCH',
-      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-      body:JSON.stringify({
-        status:'issue_requested',
-        issue_requested_at:new Date().toISOString(),
-        issue_requested_by:'agent',
-        updated_at:new Date().toISOString()
-      })
+    await PATCH('agent_bookings', `id=eq.${b.id}`, {
+      status:'issue_requested',
+      issue_requested_at:new Date().toISOString(),
+      issue_requested_by:'agent',
+      updated_at:new Date().toISOString()
     });
 
     closeModal('otpModal');
@@ -1558,9 +1657,13 @@ function showPage(name,btn){
   if(name==='finance') loadTransactions();
   if(name==='bookings') loadBookings();
 }
+function goToProfile(){
+  const btn=document.querySelector('.sbn[onclick*="profile"]');
+  showPage('profile', btn);
+}
 function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
-function doLogout(){sessionStorage.removeItem('ew_agent_token');sessionStorage.removeItem('ew_agent');window.location.href='/agent/login';}
+function doLogout(){sessionStorage.removeItem('ew_agent_token');sessionStorage.removeItem('ew_agent_refresh');sessionStorage.removeItem('ew_agent');window.location.href='/agent/login';}
 function fmt(n){return parseFloat(n||0).toLocaleString('en-PK',{maximumFractionDigits:0})}
 function fmtDate(d){return d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}
 function svcLabel(t){const m={group_ticket:'✈ Ticket',umrah:'🕌 Umrah',insurance:'🛡 Insurance'};return m[t]||t}
