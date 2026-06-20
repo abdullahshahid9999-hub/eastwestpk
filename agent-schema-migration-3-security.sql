@@ -66,3 +66,29 @@ revoke all on agents from anon;
 
 -- 6. Add the logo_url column if it doesn't exist yet (needed for step 3 above).
 alter table agents add column if not exists logo_url text;
+
+-- ═══════════════════════════════════════════════════════════════
+-- SAME CLEANUP — payment_slips, agent_bookings, agent_transactions
+--
+-- These tables already had RLS on with correct agent-scoped policies
+-- (agents can only see/touch their own rows) — that part was fine.
+-- The problem was only ever that admin's dashboard wasn't using its
+-- real session, which a previous attempt "fixed" by adding wide-open
+-- "using (true)" policies — removing all restriction for everyone.
+--
+-- Admin no longer needs a database-level policy at all: admin reads
+-- and writes to these three tables now go through /api/admin-data,
+-- which uses the secret service-role key (bypasses RLS entirely,
+-- server-side only) after verifying a real admin session. So the only
+-- thing needed here is removing the dangerous leftover policies —
+-- agents' own existing policies are untouched and still apply.
+-- ═══════════════════════════════════════════════════════════════
+
+drop policy if exists "Admin reads all slips" on payment_slips;
+drop policy if exists "Admin updates slips" on payment_slips;
+
+drop policy if exists "Admin reads all agent_bookings" on agent_bookings;
+drop policy if exists "Admin updates agent_bookings" on agent_bookings;
+
+drop policy if exists "Admin reads all agent_transactions" on agent_transactions;
+drop policy if exists "Admin inserts agent_transactions" on agent_transactions;

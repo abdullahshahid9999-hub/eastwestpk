@@ -1433,6 +1433,19 @@ async function agentsWrite(action,id,data){
   return d;
 }
 
+/* Secure reads/writes for payment_slips, agent_bookings, agent_transactions —
+   same pattern as agentsWrite(), routed through /api/admin-data. */
+async function adminData(table,action,id,data,query){
+  const r=await fetch('/api/admin-data',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+(admin&&admin.token||'')},
+    body:JSON.stringify({table,action,id,data,query})
+  });
+  const d=await r.json();
+  if(!r.ok)throw new Error(d.error||JSON.stringify(d));
+  return d;
+}
+
 /* State */
 let bks=[],cus=[],trs=[],umrahPkgs=[],tourPkgs=[],visas=[],flights=[],blogs=[];
 let agents=[],agentBookings=[],agentTx=[],paymentSlips=[],commRules=[];
@@ -1464,9 +1477,9 @@ async function loadAgentData(){
   try{
     const results=await Promise.allSettled([
       agentsWrite('list',null,null),
-      GET('agent_bookings','order=created_at.desc'),
-      GET('agent_transactions','order=created_at.desc&limit=200'),
-      GET('payment_slips','order=created_at.desc'),
+      adminData('agent_bookings','list',null,null,'order=created_at.desc'),
+      adminData('agent_transactions','list',null,null,'order=created_at.desc&limit=200'),
+      adminData('payment_slips','list',null,null,'order=created_at.desc'),
       GET('commission_rules','order=tier.asc'),
     ]);
     const labels=['agents','agent_bookings','agent_transactions','payment_slips','commission_rules'];
@@ -1505,7 +1518,7 @@ async function sweepExpiredBookings(){
 
   for(const b of toExpire){
     try{
-      await PATCH('agent_bookings',b.id,{status:'expired',updated_at:new Date().toISOString()});
+      await adminData('agent_bookings','update',b.id,{status:'expired',updated_at:new Date().toISOString()});
       // Release reserved seats back to the flight if this was an internal group ticket booking.
       // (No balance refund needed — balance is only ever debited at the moment
       // of actual issuance in performIssue(), never when the booking was first made.)
@@ -2073,7 +2086,7 @@ async function saveBalanceAdjustment(){
   const newBal=type==='credit'?parseFloat(a.balance||0)+amt:parseFloat(a.balance||0)-amt;
   try{
     await agentsWrite('update',agentId,{balance:newBal,updated_at:new Date().toISOString()});
-    await POST('agent_transactions',{agent_id:agentId,type:type==='credit'?'credit':'debit',amount:amt,balance_after:newBal,description:reason,created_by:'admin'});
+    await adminData('agent_transactions','create',null,{agent_id:agentId,type:type==='credit'?'credit':'debit',amount:amt,balance_after:newBal,description:reason,created_by:'admin'});
     agents=agents.map(x=>x.id===agentId?{...x,balance:newBal}:x);
     renderAgents(agents);closeModal('balModal');toast('Balance adjusted successfully!');
     loadFinance();
@@ -2355,7 +2368,7 @@ async function performIssue(b){
       supplierRef = 'MOCK-'+Date.now().toString(36).toUpperCase();
       supplierStatus = 'issued_mock';
     }
-    await PATCH('agent_bookings',b.id,{
+    await adminData('agent_bookings','update',b.id,{
       status:'issued',
       supplier_ref:supplierRef,
       supplier_status:supplierStatus,
@@ -2365,7 +2378,7 @@ async function performIssue(b){
     // actually moves for this booking. Only the NET amount (sell price
     // minus the agent's own commission) is debited.
     await agentsWrite('update',ag.id,{balance:newBal});
-    await POST('agent_transactions',{
+    await adminData('agent_transactions','create',null,{
       agent_id:ag.id,type:'debit',amount:netPayable,balance_after:newBal,
       description:`Booking ${b.booking_ref} issued (Rs. ${parseFloat(b.sell_price).toLocaleString()} sell price − Rs. ${parseFloat(b.commission_amt||0).toLocaleString()} commission)`,booking_id:b.id,created_by:'admin'
     });
@@ -2417,7 +2430,7 @@ async function saveAgentBookingStatus(){
   const status=document.getElementById('agbkStatus').value;
   const notes=document.getElementById('agbkNotes').value.trim();
   try{
-    await PATCH('agent_bookings',id,{status,admin_notes:notes,updated_at:new Date().toISOString()});
+    await adminData('agent_bookings','update',id,{status,admin_notes:notes,updated_at:new Date().toISOString()});
     agentBookings=agentBookings.map(b=>b.id===id?{...b,status,admin_notes:notes}:b);
     renderAgentBookings(agentBookings);closeModal('agbkModal');toast('Booking updated!');
     loadFinance();
@@ -2464,11 +2477,11 @@ async function approveSlip(){
     const newBal=a?parseFloat(a.balance||0)+parseFloat(s.amount||0):null;
     if(a&&newBal!==null){
       await agentsWrite('update',a.id,{balance:newBal});
-      await POST('agent_transactions',{agent_id:a.id,type:'credit',amount:s.amount,balance_after:newBal,description:`Payment slip approved — ${s.bank_name||''} ${s.reference_no||''}`,created_by:'admin'});
+      await adminData('agent_transactions','create',null,{agent_id:a.id,type:'credit',amount:s.amount,balance_after:newBal,description:`Payment slip approved — ${s.bank_name||''} ${s.reference_no||''}`,created_by:'admin'});
       agents=agents.map(x=>x.id===a.id?{...x,balance:newBal}:x);
       renderAgents(agents);
     }
-    await PATCH('payment_slips',id,{status:'approved',admin_notes:notes,reviewed_at:new Date().toISOString()});
+    await adminData('payment_slips','update',id,{status:'approved',admin_notes:notes,reviewed_at:new Date().toISOString()});
     paymentSlips=paymentSlips.map(x=>x.id===id?{...x,status:'approved',admin_notes:notes}:x);
     renderSlips(paymentSlips);closeModal('slipModal');toast('Slip approved & balance credited!');
     loadFinance();
@@ -2479,7 +2492,7 @@ async function rejectSlip(){
   const notes=document.getElementById('slipNotesInput').value.trim();
   if(!notes){toast('Please provide a reason for rejection.',true);return;}
   try{
-    await PATCH('payment_slips',id,{status:'rejected',admin_notes:notes,reviewed_at:new Date().toISOString()});
+    await adminData('payment_slips','update',id,{status:'rejected',admin_notes:notes,reviewed_at:new Date().toISOString()});
     paymentSlips=paymentSlips.map(x=>x.id===id?{...x,status:'rejected',admin_notes:notes}:x);
     renderSlips(paymentSlips);closeModal('slipModal');toast('Slip rejected.');
   }catch(e){toast('Error: '+e.message,true);}
