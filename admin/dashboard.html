@@ -1441,13 +1441,20 @@ async function loadAll(){
 /* Load agent system data separately so a failure here doesn't break core admin */
 async function loadAgentData(){
   try{
-    const [ag,agbk,tx,sl,cr]=await Promise.all([
-      GET('agents','order=created_at.desc').catch(()=>[]),
-      GET('agent_bookings','order=created_at.desc').catch(()=>[]),
-      GET('agent_transactions','order=created_at.desc&limit=200').catch(()=>[]),
-      GET('payment_slips','order=created_at.desc').catch(()=>[]),
-      GET('commission_rules','order=tier.asc').catch(()=>[]),
+    const results=await Promise.allSettled([
+      GET('agents','order=created_at.desc'),
+      GET('agent_bookings','order=created_at.desc'),
+      GET('agent_transactions','order=created_at.desc&limit=200'),
+      GET('payment_slips','order=created_at.desc'),
+      GET('commission_rules','order=tier.asc'),
     ]);
+    const labels=['agents','agent_bookings','agent_transactions','payment_slips','commission_rules'];
+    const [ag,agbk,tx,sl,cr]=results.map((r,i)=>{
+      if(r.status==='fulfilled') return r.value;
+      console.error(`Failed to load ${labels[i]}:`,r.reason);
+      toast(`Could not load ${labels[i].replace('_',' ')} — check Supabase RLS policies.`,true);
+      return [];
+    });
     agents=ag;agentBookings=agbk;agentTx=tx;paymentSlips=sl;commRules=cr;
     await sweepExpiredBookings();
     renderAgents(agents);
@@ -2272,10 +2279,15 @@ async function performIssue(b){
   const ag=agents.find(a=>a.id===b.agent_id);
   if(!ag){toast('Agent record not found.',true);return;}
 
+  // The agent owes the gross sell price MINUS their own commission —
+  // commission is money East & West pays the agent, so it reduces what
+  // the agent actually has to pay, it is never a separate add-on.
+  const netPayable=parseFloat(b.sell_price||0)-parseFloat(b.commission_amt||0);
+
   // Final credit-limit check — balance is charged only now, at the moment
   // of actual issuance, never when the agent first submits the booking.
   const limit=parseFloat(ag.credit_limit||0);
-  const newBal=parseFloat(ag.balance||0)-parseFloat(b.sell_price||0);
+  const newBal=parseFloat(ag.balance||0)-netPayable;
   if(newBal < -limit){
     if(!confirm(`Issuing this will push ${ag.full_name}'s balance to Rs. ${newBal.toLocaleString()}, beyond their Rs. ${limit.toLocaleString()} credit limit.\n\nIssue anyway?`)) return;
   }
@@ -2298,17 +2310,18 @@ async function performIssue(b){
       updated_at:new Date().toISOString()
     });
     // Debit the agent's balance now — this is the single moment money
-    // actually moves for this booking.
+    // actually moves for this booking. Only the NET amount (sell price
+    // minus the agent's own commission) is debited.
     await PATCH('agents',ag.id,{balance:newBal});
     await POST('agent_transactions',{
-      agent_id:ag.id,type:'debit',amount:b.sell_price,balance_after:newBal,
-      description:`Booking ${b.booking_ref} issued`,booking_id:b.id,created_by:'admin'
+      agent_id:ag.id,type:'debit',amount:netPayable,balance_after:newBal,
+      description:`Booking ${b.booking_ref} issued (Rs. ${parseFloat(b.sell_price).toLocaleString()} sell price − Rs. ${parseFloat(b.commission_amt||0).toLocaleString()} commission)`,booking_id:b.id,created_by:'admin'
     });
     agents=agents.map(x=>x.id===ag.id?{...x,balance:newBal}:x);
     agentBookings=agentBookings.map(x=>x.id===b.id?{...x,status:'issued',supplier_ref:supplierRef,supplier_status:supplierStatus}:x);
     renderAgents(agents);
     renderAgentBookings(agentBookings);
-    toast(`Booking ${b.booking_ref} issued! Rs. ${parseFloat(b.sell_price).toLocaleString()} debited from ${ag.full_name}.`);
+    toast(`Booking ${b.booking_ref} issued! Rs. ${netPayable.toLocaleString()} debited from ${ag.full_name} (after commission).`);
     loadFinance();
   }catch(e){toast('Error issuing booking: '+e.message,true);}
 }

@@ -609,6 +609,10 @@ tbody td strong{color:var(--text);font-weight:700}
           <span style="font-size:11px;color:var(--muted)">Your Commission</span>
           <span id="tk-comm" style="font-size:12px;color:var(--green);font-weight:700">—</span>
         </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px dashed var(--bdr)">
+          <span style="font-size:11px;color:var(--muted);font-weight:700">Amount Payable by You</span>
+          <strong id="tk-payable" style="font-size:13px;color:var(--navy)">—</strong>
+        </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
           <span style="font-size:11px;color:var(--muted)">Current Balance</span>
           <span id="tk-bal" style="font-size:12px;font-weight:700">—</span>
@@ -664,6 +668,10 @@ tbody td strong{color:var(--text);font-weight:700}
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
           <span style="font-size:11px;color:var(--muted)">Your Commission</span>
           <span id="um-comm" style="font-size:12px;color:var(--green);font-weight:700">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px dashed var(--bdr)">
+          <span style="font-size:11px;color:var(--muted);font-weight:700">Amount Payable by You</span>
+          <strong id="um-payable" style="font-size:13px;color:var(--navy)">—</strong>
         </div>
       </div>
     </div>
@@ -1006,6 +1014,7 @@ function updateTicketTotal() {
   const bal = parseFloat(agent.balance || 0);
   document.getElementById('tk-total').textContent = 'PKR ' + fmt(base);
   document.getElementById('tk-comm').textContent = 'PKR ' + fmt(comm) + ' (' + commPct + '%)';
+  document.getElementById('tk-payable').textContent = 'PKR ' + fmt(base - comm);
   const balEl = document.getElementById('tk-bal');
   balEl.textContent = (bal < 0 ? '-' : '') + 'PKR ' + fmt(Math.abs(bal));
   balEl.style.color = bal < 0 ? 'var(--red)' : 'var(--green)';
@@ -1059,6 +1068,7 @@ function updateUmrahTotal() {
   const comm = base * commPct/100;
   document.getElementById('um-total').textContent = 'PKR '+fmt(base);
   document.getElementById('um-comm').textContent = 'PKR '+fmt(comm)+' ('+commPct+'%)';
+  document.getElementById('um-payable').textContent = 'PKR '+fmt(base - comm);
 }
 
 // ── INSURANCE ──
@@ -1099,6 +1109,8 @@ async function searchInsurance() {
 
 function openInsModal(rateId, price, planName, coName) {
   selectedIns = { rateId, price, planName, coName };
+  const commPct = parseFloat(agent.commission_ins||0);
+  const comm = parseFloat(price) * commPct / 100;
   // quick inline booking for insurance — just pax details
   const html = `<div class="overlay open" id="insModal">
     <div class="modal">
@@ -1114,6 +1126,20 @@ function openInsModal(rateId, price, planName, coName) {
           <div class="field"><label>Travel Date</label><input type="date" id="ins-tdate"></div>
         </div>
         <div class="field"><label>Notes</label><textarea id="ins-notes" placeholder="Any details..."></textarea></div>
+        <div style="background:var(--surface);border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-top:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:var(--muted)">Plan Price</span>
+            <strong style="font-size:18px;color:var(--navy)">PKR ${fmt(price)}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+            <span style="font-size:11px;color:var(--muted)">Your Commission</span>
+            <span style="font-size:12px;color:var(--green);font-weight:700">PKR ${fmt(comm)} (${commPct}%)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px dashed var(--bdr)">
+            <span style="font-size:11px;color:var(--muted);font-weight:700">Amount Payable by You</span>
+            <strong style="font-size:13px;color:var(--navy)">PKR ${fmt(price - comm)}</strong>
+          </div>
+        </div>
       </div>
       <div class="mf">
         <button class="btn btn-ghost" onclick="document.getElementById('insModal').remove()">Cancel</button>
@@ -1192,7 +1218,7 @@ async function requestTicketBooking() {
   if (seats > avail) { toast(`Only ${avail} seat(s) left on this flight.`, true); return; }
   const base = parseFloat(f.price_per_seat)*seats;
   const comm = base*parseFloat(agent.commission_ticket||0)/100;
-  if (!checkCreditLimit(base)) return;
+  if (!checkCreditLimit(base - comm)) return;
   const tl = getBookingTimeLimit('group_ticket', f);
   pendingBookingData = {
     agent_id: agent.id,
@@ -1229,7 +1255,7 @@ async function requestUmrahBooking() {
   const p = selectedPkg;
   const base = parseFloat(p.price||0)*pax_cnt;
   const comm = base*parseFloat(agent.commission_umrah||0)/100;
-  if (!checkCreditLimit(base)) return;
+  if (!checkCreditLimit(base - comm)) return;
   const tl = getBookingTimeLimit('umrah', p);
   pendingBookingData = {
     agent_id: agent.id,
@@ -1257,7 +1283,7 @@ async function requestInsBooking() {
   const pax = [{name,passport:document.getElementById('ins-pno')?.value,dob:document.getElementById('ins-dob')?.value}];
   const price = selectedIns.price;
   const comm = price*parseFloat(agent.commission_ins||0)/100;
-  if (!checkCreditLimit(price)) return;
+  if (!checkCreditLimit(price - comm)) return;
   const tl = getBookingTimeLimit('insurance', selectedIns);
   pendingBookingData = {
     agent_id: agent.id,
@@ -1486,6 +1512,7 @@ function viewBookingDetail(id) {
           <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Travel Date</span><strong>${b.travel_date||'—'}</strong></div>
           <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Sell Price</span><strong>PKR ${fmt(b.sell_price)}</strong></div>
           <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Your Commission</span><strong style="color:var(--green)">PKR ${fmt(b.commission_amt)}</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Amount Payable by You</span><strong>PKR ${fmt(parseFloat(b.sell_price||0)-parseFloat(b.commission_amt||0))}</strong></div>
           <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Source</span><strong>${b.source==='supplier_api'?'Supplier API':'East & West Inventory'}</strong></div>
           ${b.issue_requested_at?`<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Issue Requested</span><strong>${fmtDate(b.issue_requested_at)}</strong></div>`:''}
           ${b.supplier_ref?`<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Supplier Ref</span><strong style="font-family:monospace">${b.supplier_ref}</strong></div>`:''}
