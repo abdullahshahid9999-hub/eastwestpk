@@ -1455,6 +1455,7 @@ function renderBookings(data) {
     <td style="font-size:11px">${fmtDate(b.created_at)}</td>
     <td style="display:flex;gap:4px">
       <button class="btn btn-ghost btn-sm" onclick="viewBookingDetail('${b.id}')"><i class="fa fa-eye"></i></button>
+      ${b.status==='issued'?`<button class="btn btn-ghost btn-sm" onclick="printBookingVoucher('${b.id}')" title="Print Voucher"><i class="fa fa-print"></i></button>`:''}
       ${canRequestIssue(b)?`<button class="btn-issue" onclick="startIssueRequest('${b.id}')"><i class="fa fa-bolt"></i> Issue</button>`:''}
     </td>
   </tr>`).join('');
@@ -1540,11 +1541,173 @@ function viewBookingDetail(id) {
       </div>
       <div class="mf">
         ${canRequestIssue(b)?`<button class="btn btn-gold" onclick="document.getElementById('detailModal').remove();startIssueRequest('${b.id}')"><i class="fa fa-bolt"></i> Request Issue</button>`:''}
+        ${b.status==='issued'?`<button class="btn btn-ghost" onclick="printBookingVoucher('${b.id}')"><i class="fa fa-print"></i> Print Voucher</button>`:''}
         <button class="btn btn-ghost" onclick="document.getElementById('detailModal').remove()">Close</button>
       </div>
     </div>
   </div>`;
   document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function printBookingVoucher(id){
+  const b=bookings.find(x=>x.id===id);
+  if(!b){toast('Booking not found.',true);return;}
+  const ag=agent;
+  const pax=Array.isArray(b.passengers)?b.passengers:[];
+  const svcLbl={group_ticket:'Group Air Ticket',umrah:'Umrah Package',insurance:'Travel Insurance'}[b.service_type]||b.service_type;
+  const svcIcon={group_ticket:'✈',umrah:'🕌',insurance:'🛡'}[b.service_type]||'';
+  const statusLbl=(b.status||'pending').replace('_',' ').toUpperCase();
+  const issuedDate=b.status==='issued'?new Date(b.updated_at||b.created_at):null;
+
+  const paxRows=pax.length?pax.map((p,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${p.name||'—'}</td>
+      <td>${p.passport||'—'}</td>
+      <td>${p.dob||'—'}</td>
+    </tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:#999">No passenger details recorded</td></tr>';
+
+  let extraRows='';
+  if(b.travel_date) extraRows+=`<tr><td>Travel Date</td><td>${new Date(b.travel_date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</td></tr>`;
+  if(b.supplier_ref) extraRows+=`<tr><td>${b.service_type==='group_ticket'?'Airline/Supplier Ref':'Reference No.'}</td><td style="font-family:monospace">${b.supplier_ref}</td></tr>`;
+
+  const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Voucher — ${b.booking_ref}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;color:#1a1a1a;padding:36px;font-size:13px;line-height:1.5}
+.voucher{max-width:760px;margin:0 auto;border:1px solid #ddd}
+.letterhead{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;border-bottom:3px solid #0B3D5C;background:#F8FAFC}
+.lh-left{display:flex;align-items:center;gap:14px}
+.lh-left img{width:58px;height:58px;object-fit:contain;background:#fff;border-radius:6px;border:1px solid #e2e2e2;padding:4px}
+.lh-name{font-size:19px;font-weight:800;color:#0B3D5C;letter-spacing:-0.01em}
+.lh-tag{font-size:11px;color:#666;margin-top:2px}
+.lh-right{text-align:right;font-size:11px;color:#444;line-height:1.6}
+.lh-right strong{color:#0B3D5C}
+.certs{display:flex;gap:6px;margin-top:6px;justify-content:flex-end}
+.cert-pill{font-size:9px;font-weight:700;color:#0B3D5C;border:1px solid #0B3D5C;border-radius:10px;padding:2px 8px}
+.agent-strip{display:flex;align-items:center;gap:12px;padding:10px 28px;background:#fff;border-bottom:1px solid #E2E8F0}
+.agent-strip img{width:38px;height:38px;border-radius:6px;object-fit:contain;border:1px solid #E2E8F0;background:#fff}
+.agent-strip .al{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;font-weight:700}
+.agent-strip .an{font-size:13px;font-weight:700;color:#0B3D5C}
+.agent-strip .ac{font-size:10.5px;color:#64748B}
+.title-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:#0B3D5C;color:#fff}
+.title-bar h1{font-size:16px;font-weight:700}
+.title-bar .ref{font-family:monospace;font-size:13px;letter-spacing:0.5px}
+.status-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:0.5px;padding:3px 10px;border-radius:4px;margin-top:4px}
+.status-issued{background:#DCFCE7;color:#15803D}
+.status-pending{background:#FEF3C7;color:#92400E}
+.status-other{background:#E0E7FF;color:#3730A3}
+.body{padding:24px 28px}
+.section-title{font-size:12px;font-weight:800;color:#0B3D5C;text-transform:uppercase;letter-spacing:0.04em;margin:18px 0 8px;border-bottom:1px solid #e2e2e2;padding-bottom:4px}
+.section-title:first-child{margin-top:0}
+table.info{width:100%;border-collapse:collapse}
+table.info td{padding:5px 0;font-size:12.5px;vertical-align:top}
+table.info td:first-child{color:#666;width:180px;font-weight:600}
+table.pax{width:100%;border-collapse:collapse;margin-top:4px}
+table.pax th{background:#F1F5F9;color:#0B3D5C;font-size:10.5px;text-transform:uppercase;text-align:left;padding:7px 8px;border:1px solid #e2e2e2}
+table.pax td{padding:7px 8px;border:1px solid #e2e2e2;font-size:12px}
+.amounts{margin-top:8px;width:100%;border-collapse:collapse}
+.amounts td{padding:7px 0;font-size:13px}
+.amounts tr.total td{border-top:2px solid #0B3D5C;font-weight:800;font-size:15px;color:#0B3D5C;padding-top:10px}
+.amounts td:last-child{text-align:right;font-weight:700}
+.footer{padding:18px 28px;border-top:1px solid #e2e2e2;display:flex;justify-content:space-between;align-items:flex-end;background:#F8FAFC}
+.footer-note{font-size:10.5px;color:#888;max-width:420px;line-height:1.6}
+.signature{text-align:center;font-size:11px;color:#444}
+.signature .line{width:150px;border-top:1px solid #999;margin-bottom:4px}
+.contact-strip{padding:10px 28px;font-size:10.5px;color:#666;text-align:center;border-top:1px solid #e2e2e2}
+.contact-strip a{color:#0B3D5C;text-decoration:none}
+@media print{
+  body{padding:0}
+  .voucher{border:none;max-width:100%}
+  .no-print{display:none}
+}
+.print-btn-bar{text-align:center;padding:14px;background:#f0f0f0}
+.print-btn-bar button{background:#0B3D5C;color:#fff;border:none;padding:9px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="print-btn-bar no-print">
+  <button onclick="window.print()"><i class="fa fa-print"></i> Print / Save as PDF</button>
+</div>
+<div class="voucher">
+  <div class="letterhead">
+    <div class="lh-left">
+      <img src="../assets/images/logo.jpg" alt="East & West Travel Services" onerror="this.style.display='none'">
+      <div>
+        <div class="lh-name">East &amp; West Travel Services</div>
+        <div class="lh-tag">Faisalabad's Trusted Travel Partner Since 2003</div>
+      </div>
+    </div>
+    <div class="lh-right">
+      <strong>G-07, Chaudhry Arcade, Regency Road,</strong><br>
+      New Civil Lines, Faisalabad, Punjab, Pakistan<br>
+      Tel/WhatsApp: +92 333 651 5349<br>
+      Email: eastwestpk@hotmail.com &nbsp;|&nbsp; eastwestpk.com
+      <div class="certs">
+        <span class="cert-pill">IATA Certified</span>
+        <span class="cert-pill">DTS Certified</span>
+      </div>
+    </div>
+  </div>
+  ${ag?`<div class="agent-strip">
+    ${ag.logo_url?`<img src="${ag.logo_url}" alt="">`:''}
+    <div>
+      <div class="al">Issued via agent</div>
+      <div class="an">${ag.company_name||ag.full_name}${ag.agent_code?' · '+ag.agent_code:''}</div>
+      <div class="ac">${ag.phone||'—'} &nbsp;|&nbsp; ${ag.email||'—'}${ag.address?' &nbsp;|&nbsp; '+ag.address:''}</div>
+    </div>
+  </div>`:''}
+  <div class="title-bar">
+    <div>
+      <h1>${svcIcon} ${svcLbl} Voucher</h1>
+      <span class="status-badge ${b.status==='issued'?'status-issued':b.status==='pending'?'status-pending':'status-other'}">${statusLbl}</span>
+    </div>
+    <div class="ref">Ref: ${b.booking_ref}</div>
+  </div>
+  <div class="body">
+    <div class="section-title">Booking Information</div>
+    <table class="info">
+      <tr><td>Service</td><td>${b.service_name||svcLbl}</td></tr>
+      <tr><td>No. of Passengers</td><td>${b.pax_count||pax.length||1}</td></tr>
+      ${extraRows}
+      <tr><td>Booking Date</td><td>${b.created_at?new Date(b.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td></tr>
+      ${issuedDate?`<tr><td>Issued Date</td><td>${issuedDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</td></tr>`:''}
+    </table>
+
+    <div class="section-title">Passenger Details</div>
+    <table class="pax">
+      <thead><tr><th>#</th><th>Full Name</th><th>Passport / CNIC</th><th>Date of Birth</th></tr></thead>
+      <tbody>${paxRows}</tbody>
+    </table>
+
+    <div class="section-title">Payment Summary</div>
+    <table class="amounts">
+      <tr><td>Sell Price (Total Charged)</td><td>Rs. ${parseFloat(b.sell_price||0).toLocaleString()}</td></tr>
+      <tr class="total"><td>Total Payable</td><td>Rs. ${parseFloat(b.sell_price||0).toLocaleString()}</td></tr>
+    </table>
+  </div>
+  <div class="footer">
+    <div class="footer-note">This voucher confirms the above booking details as recorded with East &amp; West Travel Services. Please verify all passenger names and travel dates carefully. For any discrepancy, contact our office immediately.</div>
+    <div class="signature">
+      <div class="line"></div>
+      Authorized Signatory
+    </div>
+  </div>
+  <div class="contact-strip">
+    East &amp; West Travel Services &nbsp;·&nbsp; <a href="https://eastwestpk.com">eastwestpk.com</a> &nbsp;·&nbsp; eastwestpk@hotmail.com &nbsp;·&nbsp; +92 333 651 5349
+  </div>
+</div>
+</body>
+</html>`;
+
+  const w=window.open('','_blank');
+  if(!w){toast('Please allow pop-ups to print the voucher.',true);return;}
+  w.document.write(html);
+  w.document.close();
 }
 
 // ── FINANCE ──
