@@ -585,7 +585,7 @@ tbody td strong{color:var(--text);font-weight:700}
     </div>
     <div class="mf">
       <button class="btn btn-ghost" onclick="closeModal('ticketModal')">Cancel</button>
-      <button class="btn btn-gold" onclick="requestTicketBooking()"><i class="fa fa-lock"></i> Confirm & Send OTP</button>
+      <button class="btn btn-gold" onclick="requestTicketBooking()"><i class="fa fa-check"></i> Confirm Booking</button>
     </div>
   </div>
 </div>
@@ -634,7 +634,7 @@ tbody td strong{color:var(--text);font-weight:700}
     </div>
     <div class="mf">
       <button class="btn btn-ghost" onclick="closeModal('umrahModal')">Cancel</button>
-      <button class="btn btn-gold" onclick="requestUmrahBooking()"><i class="fa fa-lock"></i> Confirm & Send OTP</button>
+      <button class="btn btn-gold" onclick="requestUmrahBooking()"><i class="fa fa-check"></i> Confirm Booking</button>
     </div>
   </div>
 </div>
@@ -643,13 +643,13 @@ tbody td strong{color:var(--text);font-weight:700}
 <div class="overlay" id="otpModal">
   <div class="modal" style="max-width:420px">
     <div class="mh">
-      <h3 id="otpModalTitle">Booking <span>Confirmation</span></h3>
+      <h3 id="otpModalTitle">Issue <span>Request</span></h3>
       <button class="m-close" onclick="closeModal('otpModal')"><i class="fa fa-xmark"></i></button>
     </div>
     <div class="mc">
       <div class="otp-wrap">
         <i class="fa fa-envelope-open-text" style="font-size:36px;color:var(--gold);margin-bottom:12px"></i>
-        <div class="otp-info" id="otpModalInfo">A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this booking.</div>
+        <div class="otp-info" id="otpModalInfo">A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this issue request.</div>
         <div class="otp-boxes">
           <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,0)">
           <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,1)">
@@ -663,7 +663,7 @@ tbody td strong{color:var(--text);font-weight:700}
     </div>
     <div class="mf">
       <button class="btn btn-ghost" onclick="closeModal('otpModal')">Cancel</button>
-      <button class="btn btn-gold" id="otpModalConfirmBtn" onclick="confirmBookingOTP()"><i class="fa fa-check"></i> Confirm Booking</button>
+      <button class="btn btn-gold" id="otpModalConfirmBtn" onclick="confirmBookingOTP()"><i class="fa fa-bolt"></i> Send Issue Request</button>
     </div>
   </div>
 </div>
@@ -679,11 +679,9 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 let agent = null, token = null;
 let flights = [], packages = [], bookings = [], transactions = [];
 let selectedFlight = null, selectedPkg = null, selectedIns = null;
-let pendingBookingData = null, pendingOtpId = null;
+let pendingBookingData = null, pendingOtpId = null, pendingIssueBookingId = null;
 let salesChart = null, commChart = null;
 let tTimer;
-let otpMode = 'new_booking'; // 'new_booking' | 'issue_request'
-let pendingIssueBookingId = null;
 
 // ── INIT ──
 function init() {
@@ -1009,7 +1007,7 @@ function openInsModal(rateId, price, planName, coName) {
       </div>
       <div class="mf">
         <button class="btn btn-ghost" onclick="document.getElementById('insModal').remove()">Cancel</button>
-        <button class="btn btn-gold" onclick="requestInsBooking()"><i class="fa fa-lock"></i> Confirm & Send OTP</button>
+        <button class="btn btn-gold" onclick="requestInsBooking()"><i class="fa fa-check"></i> Confirm Booking</button>
       </div>
     </div>
   </div>`;
@@ -1104,7 +1102,7 @@ async function requestTicketBooking() {
     seats_reserved: seats
   };
   closeModal('ticketModal');
-  await sendBookingOTP();
+  await submitBookingDirect(pendingBookingData);
 }
 
 async function requestUmrahBooking() {
@@ -1140,7 +1138,7 @@ async function requestUmrahBooking() {
     expires_at: buildExpiry(tl.minutes)
   };
   closeModal('umrahModal');
-  await sendBookingOTP();
+  await submitBookingDirect(pendingBookingData);
 }
 
 async function requestInsBooking() {
@@ -1168,97 +1166,53 @@ async function requestInsBooking() {
     expires_at: buildExpiry(tl.minutes)
   };
   document.getElementById('insModal')?.remove();
-  await sendBookingOTP();
+  await submitBookingDirect(pendingBookingData);
 }
 
-async function sendBookingOTP() {
-  otpMode = 'new_booking';
-  document.getElementById('otpModalTitle').innerHTML = 'Booking <span>Confirmation</span>';
-  document.getElementById('otpModalInfo').innerHTML = 'A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this booking.';
-  document.getElementById('otpModalConfirmBtn').innerHTML = '<i class="fa fa-check"></i> Confirm Booking';
-
-  // Generate OTP
-  const otp = Math.floor(100000+Math.random()*900000).toString();
-  const exp = new Date(Date.now()+10*60*1000).toISOString();
+// New bookings are submitted directly — no OTP at this step. OTP is only
+// required later, when the agent requests ISSUE on a booking (see below).
+// Credit limit + seat-reservation checks still run here so a no-OTP
+// submission can't bypass the same guards the old OTP-gated flow had.
+async function submitBookingDirect(data) {
   try {
-    const r = await POST('agent_otps',{agent_id:agent.id,otp_code:otp,purpose:'booking_confirm',expires_at:exp});
-    if(Array.isArray(r)&&r[0]) pendingOtpId = r[0].id;
-
-    const sent = await sendOtpEmail(agent.email, otp, 'booking_confirm', agent.full_name);
-    if (sent) {
-      toast('OTP sent to your email.');
-    } else {
-      toast('Could not send OTP email. Contact East & West.', true);
-      return;
-    }
-    // clear otp boxes
-    document.querySelectorAll('#otpModal .otp-box').forEach(b=>b.value='');
-    openModal('otpModal');
-    startBkOtpTimer();
-  } catch(e){ toast('Error sending OTP.',true); }
-}
-
-async function confirmBookingOTP() {
-  // Router — dispatches based on which flow opened the OTP modal
-  if (otpMode === 'issue_request') { return confirmIssueRequestOTP(); }
-  return confirmNewBookingOTP();
-}
-
-async function confirmNewBookingOTP() {
-  const boxes = document.querySelectorAll('#otpModal .otp-box');
-  const code = Array.from(boxes).map(b=>b.value).join('');
-  if(code.length!==6){toast('Enter full 6-digit OTP.',true);return;}
-
-  try {
-    const rows = await GET('agent_otps',`id=eq.${pendingOtpId}&otp_code=eq.${code}&used=eq.false`);
-    if(!rows||!rows.length){toast('Invalid OTP.',true);return;}
-    const otpRow = rows[0];
-    if(new Date(otpRow.expires_at)<new Date()){toast('OTP expired.',true);return;}
-
-    // Credit limit guard — a booking is only HELD here, not charged yet.
-    // The actual debit happens when East & West issues it (see admin
-    // dashboard performIssue()). We still block here so an agent can't
-    // queue up bookings that would blow past their limit once issued.
     const limit = parseFloat(agent.credit_limit||0);
-    const projectedBal = parseFloat(agent.balance||0) - parseFloat(pendingBookingData.sell_price||0);
+    const projectedBal = parseFloat(agent.balance||0) - parseFloat(data.sell_price||0);
     if (projectedBal < -limit) {
       toast(`This booking would exceed your credit limit (PKR ${fmt(limit)}). Please call East & West to proceed.`, true);
-      closeModal('otpModal');
-      return;
+      return false;
     }
 
     // For internal group tickets, reserve the seats now so two agents can't
     // both grab the same inventory during the hold window.
-    if (pendingBookingData.service_type === 'group_ticket' && selectedFlight) {
+    if (data.service_type === 'group_ticket' && selectedFlight) {
       const avail = Math.max(0,(selectedFlight.total_seats||0)-(selectedFlight.booked_seats||0));
-      if (avail < pendingBookingData.seats_reserved) {
+      if (avail < data.seats_reserved) {
         toast('Not enough seats left on this flight. Please choose another flight.', true);
-        closeModal('otpModal');
         loadFlights();
-        return;
+        return false;
       }
       await fetch(`${SB_URL}/rest/v1/group_flights?id=eq.${selectedFlight.id}`,{
         method:'PATCH',
         headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-        body:JSON.stringify({booked_seats:(selectedFlight.booked_seats||0)+pendingBookingData.seats_reserved})
+        body:JSON.stringify({booked_seats:(selectedFlight.booked_seats||0)+data.seats_reserved})
       });
     }
 
-    // Mark OTP used
-    await fetch(`${SB_URL}/rest/v1/agent_otps?id=eq.${pendingOtpId}`,{
-      method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-      body:JSON.stringify({used:true})
-    });
-
     // Create booking — no balance change yet. East & West deducts the
     // agent's balance only at the moment of actual issuance.
-    const bk = await POST('agent_bookings',{...pendingBookingData,otp_verified:true});
+    const bk = await POST('agent_bookings', data);
     if(Array.isArray(bk)&&bk[0]){
-      closeModal('otpModal');
-      toast(`Booking ${pendingBookingData.booking_ref} submitted! Request "Issue" before the timer runs out.`);
+      toast(`Booking ${data.booking_ref} submitted! Request "Issue" before the timer runs out.`);
       loadHome(); loadBookings(); loadFlights();
-    } else { toast('Booking error. Contact support.',true); }
-  } catch(e){ toast('Error confirming booking.',true); }
+      return true;
+    } else { toast('Booking error. Contact support.',true); return false; }
+  } catch(e){ toast('Error submitting booking.',true); return false; }
+}
+
+// ── OTP MODAL ROUTER ──
+// The OTP modal is now used ONLY for the issue-request flow below.
+async function confirmBookingOTP() {
+  return confirmIssueRequestOTP();
 }
 
 // ── ISSUE REQUEST FLOW ──
@@ -1272,7 +1226,6 @@ function startIssueRequest(bookingId) {
   if (!canRequestIssue(b)) { toast('This booking can no longer be issued — it may have expired.', true); loadBookings(); return; }
 
   pendingIssueBookingId = bookingId;
-  otpMode = 'issue_request';
 
   document.getElementById('otpModalTitle').innerHTML = 'Issue <span>Request</span>';
   document.getElementById('otpModalInfo').innerHTML = `Confirm you want East &amp; West to issue booking <strong>${b.booking_ref}</strong> now.<br>An OTP has been sent to your email.`;
