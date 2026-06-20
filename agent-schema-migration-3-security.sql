@@ -18,6 +18,17 @@
 --    actual fix — everything else here builds on top of it.
 alter table agents enable row level security;
 
+-- 1b. SAFETY: remove any wide-open "using (true)" policies that may have
+--     been created by mistake elsewhere (these allow ANYONE, no
+--     restriction at all — the opposite of what we want). Postgres OR's
+--     multiple policies together, so even one leftover wide-open policy
+--     would silently cancel out everything below. Safe to run even if
+--     these were never created — DROP IF EXISTS just does nothing.
+drop policy if exists "Admin reads all agents" on agents;
+drop policy if exists "Admin updates agents" on agents;
+drop policy if exists "Admin inserts agents" on agents;
+drop policy if exists "Admin deletes agents" on agents;
+
 -- 2. Agents can read their own profile only (their own balance, tier, etc).
 --    This already existed but was never enforced because RLS was off.
 --    Recreated here so it's explicit and correct.
