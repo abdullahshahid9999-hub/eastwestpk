@@ -91,13 +91,31 @@ tbody td strong{color:var(--text);font-weight:700}
 
 /* PILLS */
 .pill{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;white-space:nowrap}
+.p-pending{background:#FFFBEB;color:#B45309;border:1px solid #FDE68A}
+.p-confirmed{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.p-cancelled{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
 .p-pend{background:#FFFBEB;color:#B45309;border:1px solid #FDE68A}
 .p-conf{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
 .p-canc{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.p-expired{background:#F3F4F6;color:#6B7280;border:1px solid #E5E7EB}
+.p-issue_requested{background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE}
 .p-issued{background:var(--blue-bg);color:var(--blue);border:1px solid #BFDBFE}
 .p-debit{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
 .p-credit{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
 .p-comm{background:var(--gold-bg);color:#92601A;border:1px solid var(--gold-bd)}
+
+/* COUNTDOWN TIMER */
+.cd-timer{font-family:monospace;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:5px}
+.cd-safe{background:var(--green-bg);color:var(--green)}
+.cd-warn{background:#FFFBEB;color:#B45309}
+.cd-danger{background:var(--red-bg);color:var(--red);animation:cdPulse 1s infinite}
+.cd-done{background:#F3F4F6;color:#9CA3AF}
+@keyframes cdPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* BUTTONS */
+.btn-issue{background:var(--navy);color:#fff;padding:5px 11px;border-radius:6px;font-size:11px;font-weight:700;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.btn-issue:hover{background:var(--navy2)}
+.btn-issue:disabled{opacity:0.4;cursor:not-allowed}
 
 /* BUTTONS */
 .btn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;border:none;letter-spacing:0.01em}
@@ -388,8 +406,8 @@ tbody td strong{color:var(--text);font-weight:700}
   <div class="card">
     <div class="tw">
       <table>
-        <thead><tr><th>Booking Ref</th><th>Service</th><th>Passengers</th><th>Sell Price</th><th>Commission</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
-        <tbody id="bk-tb"><tr><td colspan="8" class="etd">Loading...</td></tr></tbody>
+        <thead><tr><th>Booking Ref</th><th>Service</th><th>Passengers</th><th>Sell Price</th><th>Commission</th><th>Status</th><th>Time Left</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="bk-tb"><tr><td colspan="9" class="etd">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -557,8 +575,11 @@ tbody td strong{color:var(--text);font-weight:700}
           <span id="tk-comm" style="font-size:12px;color:var(--green);font-weight:700">—</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
-          <span style="font-size:11px;color:var(--muted)">Available Balance</span>
+          <span style="font-size:11px;color:var(--muted)">Current Balance</span>
           <span id="tk-bal" style="font-size:12px;font-weight:700">—</span>
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--bdr);font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px">
+          <i class="fa fa-circle-info"></i> Your balance is only charged once East &amp; West issues this booking.
         </div>
       </div>
     </div>
@@ -622,13 +643,13 @@ tbody td strong{color:var(--text);font-weight:700}
 <div class="overlay" id="otpModal">
   <div class="modal" style="max-width:420px">
     <div class="mh">
-      <h3>Booking <span>Confirmation</span></h3>
+      <h3 id="otpModalTitle">Booking <span>Confirmation</span></h3>
       <button class="m-close" onclick="closeModal('otpModal')"><i class="fa fa-xmark"></i></button>
     </div>
     <div class="mc">
       <div class="otp-wrap">
         <i class="fa fa-envelope-open-text" style="font-size:36px;color:var(--gold);margin-bottom:12px"></i>
-        <div class="otp-info">A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this booking.</div>
+        <div class="otp-info" id="otpModalInfo">A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this booking.</div>
         <div class="otp-boxes">
           <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,0)">
           <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,1)">
@@ -642,13 +663,14 @@ tbody td strong{color:var(--text);font-weight:700}
     </div>
     <div class="mf">
       <button class="btn btn-ghost" onclick="closeModal('otpModal')">Cancel</button>
-      <button class="btn btn-gold" onclick="confirmBookingOTP()"><i class="fa fa-check"></i> Confirm Booking</button>
+      <button class="btn btn-gold" id="otpModalConfirmBtn" onclick="confirmBookingOTP()"><i class="fa fa-check"></i> Confirm Booking</button>
     </div>
   </div>
 </div>
 
 <!-- ── TOAST ── -->
 <div class="toast" id="toast"><i class="fa fa-check-circle" id="tIco"></i><span id="tTxt"></span></div>
+
 
 <script>
 const SB_URL = 'https://bciqlmvheqlsmogpnmal.supabase.co';
@@ -660,6 +682,8 @@ let selectedFlight = null, selectedPkg = null, selectedIns = null;
 let pendingBookingData = null, pendingOtpId = null;
 let salesChart = null, commChart = null;
 let tTimer;
+let otpMode = 'new_booking'; // 'new_booking' | 'issue_request'
+let pendingIssueBookingId = null;
 
 // ── INIT ──
 function init() {
@@ -668,6 +692,7 @@ function init() {
   if (!token || !raw) { window.location.href = '/agent/login'; return; }
   agent = JSON.parse(raw);
   renderAgentInfo();
+  validateSession();
   loadHome();
   loadFlights();
   loadPackages();
@@ -677,7 +702,34 @@ function init() {
   loadChart('7', document.querySelector('.cf-btn'));
   renderProfile();
   document.getElementById('ph-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // Refresh bookings every 20s so countdowns, admin actions, and expiry
+  // sweeps are reflected without the agent needing to reload the page.
+  setInterval(()=>{
+    if (document.getElementById('pg-bookings')?.classList.contains('active')) loadBookings();
+    if (document.getElementById('pg-home')?.classList.contains('active')) loadHome();
+  }, 20000);
 }
+
+// Re-check the agent's live status/balance against the database on load
+// and periodically — protects against a suspended/inactive agent
+// continuing to use a stale cached session.
+async function validateSession() {
+  try {
+    const rows = await GET('agents', `id=eq.${agent.id}&select=*`);
+    if (!Array.isArray(rows) || !rows.length) { doLogout(); return; }
+    const fresh = rows[0];
+    if (fresh.status !== 'active') {
+      toast('Your account has been ' + fresh.status + '. Contact East & West.', true);
+      setTimeout(doLogout, 2500);
+      return;
+    }
+    agent = fresh;
+    sessionStorage.setItem('ew_agent', JSON.stringify(agent));
+    renderAgentInfo();
+  } catch(e) { /* fail silently — don't block the UI on a transient network error */ }
+}
+setInterval(()=>{ if (agent) validateSession(); }, 60000);
 
 function renderAgentInfo() {
   document.getElementById('sb-name').textContent = agent.full_name || 'Agent';
@@ -981,6 +1033,39 @@ function buildPaxFields(containerId, count, isUmrah=false) {
     </div>`).join('');
 }
 
+// ── SUPPLIER API CONFIG (mock placeholder — swap when New Chaudhry API is live) ──
+// When the real supplier API is integrated, replace getSupplierTimeLimit() with
+// an actual API call that returns { source:'supplier_api', minutes: <real_value> }.
+// Until then every booking is treated as internal inventory (East & West's own stock).
+const SUPPLIER_SAFETY_BUFFER_MIN = 3; // always show agent 3 min LESS than supplier's real limit
+
+function getBookingTimeLimit(serviceType, serviceObj) {
+  // TODO: once New Chaudhry (or any supplier) API is connected, check here:
+  // if (serviceObj.source === 'supplier_api') {
+  //   const supplierMinutes = serviceObj.supplier_time_limit_minutes; // from their API
+  //   const safeMinutes = Math.max(1, supplierMinutes - SUPPLIER_SAFETY_BUFFER_MIN);
+  //   return { source: 'supplier_api', minutes: safeMinutes, rawSupplierMinutes: supplierMinutes };
+  // }
+  // Internal inventory (our own group_flights / packages / insurance) → 30 min
+  return { source: 'internal', minutes: 30, rawSupplierMinutes: null };
+}
+
+function buildExpiry(minutes) {
+  return new Date(Date.now() + minutes * 60 * 1000).toISOString();
+}
+
+// Pre-check before sending an OTP — avoids wasting an OTP email on a
+// booking that will be rejected anyway for exceeding the credit limit.
+function checkCreditLimit(sellPrice) {
+  const newBal = parseFloat(agent.balance||0) - parseFloat(sellPrice||0);
+  const limit = parseFloat(agent.credit_limit||0);
+  if (newBal < -limit) {
+    toast(`This booking exceeds your credit limit (PKR ${fmt(limit)}). Please contact East & West to proceed.`, true);
+    return false;
+  }
+  return true;
+}
+
 // ── BOOKING REQUESTS ──
 async function requestTicketBooking() {
   const seats = parseInt(document.getElementById('tk-seats').value)||1;
@@ -995,8 +1080,12 @@ async function requestTicketBooking() {
   }
   if(!pax[0].name){toast('Enter at least passenger 1 name.',true);return;}
   const f = selectedFlight;
+  const avail = Math.max(0,(f.total_seats||0)-(f.booked_seats||0));
+  if (seats > avail) { toast(`Only ${avail} seat(s) left on this flight.`, true); return; }
   const base = parseFloat(f.price_per_seat)*seats;
   const comm = base*parseFloat(agent.commission_ticket||0)/100;
+  if (!checkCreditLimit(base)) return;
+  const tl = getBookingTimeLimit('group_ticket', f);
   pendingBookingData = {
     agent_id: agent.id,
     booking_ref: genRef('AT'),
@@ -1009,7 +1098,10 @@ async function requestTicketBooking() {
     commission_amt: comm,
     pax_count: seats,
     travel_date: document.getElementById('tk-date').value||null,
-    agent_notes: document.getElementById('tk-notes').value
+    agent_notes: document.getElementById('tk-notes').value,
+    source: tl.source,
+    expires_at: buildExpiry(tl.minutes),
+    seats_reserved: seats
   };
   closeModal('ticketModal');
   await sendBookingOTP();
@@ -1029,6 +1121,8 @@ async function requestUmrahBooking() {
   const p = selectedPkg;
   const base = parseFloat(p.price||0)*pax_cnt;
   const comm = base*parseFloat(agent.commission_umrah||0)/100;
+  if (!checkCreditLimit(base)) return;
+  const tl = getBookingTimeLimit('umrah', p);
   pendingBookingData = {
     agent_id: agent.id,
     booking_ref: genRef('AU'),
@@ -1041,7 +1135,9 @@ async function requestUmrahBooking() {
     commission_amt: comm,
     pax_count: pax_cnt,
     travel_date: p.dep_date||null,
-    agent_notes: document.getElementById('um-notes').value
+    agent_notes: document.getElementById('um-notes').value,
+    source: tl.source,
+    expires_at: buildExpiry(tl.minutes)
   };
   closeModal('umrahModal');
   await sendBookingOTP();
@@ -1053,6 +1149,8 @@ async function requestInsBooking() {
   const pax = [{name,passport:document.getElementById('ins-pno')?.value,dob:document.getElementById('ins-dob')?.value}];
   const price = selectedIns.price;
   const comm = price*parseFloat(agent.commission_ins||0)/100;
+  if (!checkCreditLimit(price)) return;
+  const tl = getBookingTimeLimit('insurance', selectedIns);
   pendingBookingData = {
     agent_id: agent.id,
     booking_ref: genRef('AI'),
@@ -1065,13 +1163,20 @@ async function requestInsBooking() {
     commission_amt: comm,
     pax_count: 1,
     travel_date: document.getElementById('ins-tdate')?.value||null,
-    agent_notes: document.getElementById('ins-notes')?.value
+    agent_notes: document.getElementById('ins-notes')?.value,
+    source: tl.source,
+    expires_at: buildExpiry(tl.minutes)
   };
   document.getElementById('insModal')?.remove();
   await sendBookingOTP();
 }
 
 async function sendBookingOTP() {
+  otpMode = 'new_booking';
+  document.getElementById('otpModalTitle').innerHTML = 'Booking <span>Confirmation</span>';
+  document.getElementById('otpModalInfo').innerHTML = 'A 6-digit OTP has been sent to your registered email.<br>Enter it below to confirm this booking.';
+  document.getElementById('otpModalConfirmBtn').innerHTML = '<i class="fa fa-check"></i> Confirm Booking';
+
   // Generate OTP
   const otp = Math.floor(100000+Math.random()*900000).toString();
   const exp = new Date(Date.now()+10*60*1000).toISOString();
@@ -1094,6 +1199,12 @@ async function sendBookingOTP() {
 }
 
 async function confirmBookingOTP() {
+  // Router — dispatches based on which flow opened the OTP modal
+  if (otpMode === 'issue_request') { return confirmIssueRequestOTP(); }
+  return confirmNewBookingOTP();
+}
+
+async function confirmNewBookingOTP() {
   const boxes = document.querySelectorAll('#otpModal .otp-box');
   const code = Array.from(boxes).map(b=>b.value).join('');
   if(code.length!==6){toast('Enter full 6-digit OTP.',true);return;}
@@ -1104,31 +1215,124 @@ async function confirmBookingOTP() {
     const otpRow = rows[0];
     if(new Date(otpRow.expires_at)<new Date()){toast('OTP expired.',true);return;}
 
+    // Credit limit guard — a booking is only HELD here, not charged yet.
+    // The actual debit happens when East & West issues it (see admin
+    // dashboard performIssue()). We still block here so an agent can't
+    // queue up bookings that would blow past their limit once issued.
+    const limit = parseFloat(agent.credit_limit||0);
+    const projectedBal = parseFloat(agent.balance||0) - parseFloat(pendingBookingData.sell_price||0);
+    if (projectedBal < -limit) {
+      toast(`This booking would exceed your credit limit (PKR ${fmt(limit)}). Please call East & West to proceed.`, true);
+      closeModal('otpModal');
+      return;
+    }
+
+    // For internal group tickets, reserve the seats now so two agents can't
+    // both grab the same inventory during the hold window.
+    if (pendingBookingData.service_type === 'group_ticket' && selectedFlight) {
+      const avail = Math.max(0,(selectedFlight.total_seats||0)-(selectedFlight.booked_seats||0));
+      if (avail < pendingBookingData.seats_reserved) {
+        toast('Not enough seats left on this flight. Please choose another flight.', true);
+        closeModal('otpModal');
+        loadFlights();
+        return;
+      }
+      await fetch(`${SB_URL}/rest/v1/group_flights?id=eq.${selectedFlight.id}`,{
+        method:'PATCH',
+        headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+        body:JSON.stringify({booked_seats:(selectedFlight.booked_seats||0)+pendingBookingData.seats_reserved})
+      });
+    }
+
     // Mark OTP used
     await fetch(`${SB_URL}/rest/v1/agent_otps?id=eq.${pendingOtpId}`,{
       method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
       body:JSON.stringify({used:true})
     });
 
-    // Create booking
+    // Create booking — no balance change yet. East & West deducts the
+    // agent's balance only at the moment of actual issuance.
     const bk = await POST('agent_bookings',{...pendingBookingData,otp_verified:true});
     if(Array.isArray(bk)&&bk[0]){
-      // Create debit transaction
-      const newBal = parseFloat(agent.balance||0) - parseFloat(pendingBookingData.sell_price||0);
-      await POST('agent_transactions',{
-        agent_id:agent.id,type:'debit',amount:pendingBookingData.sell_price,
-        balance_after:newBal,description:`Booking ${pendingBookingData.booking_ref}`,
-        booking_id:bk[0].id,created_by:'agent'
-      });
-      // Update local balance
-      agent.balance = newBal;
-      sessionStorage.setItem('ew_agent',JSON.stringify(agent));
-      renderAgentInfo();
       closeModal('otpModal');
-      toast(`Booking ${pendingBookingData.booking_ref} submitted! Admin will confirm shortly.`);
-      loadHome(); loadBookings();
+      toast(`Booking ${pendingBookingData.booking_ref} submitted! Request "Issue" before the timer runs out.`);
+      loadHome(); loadBookings(); loadFlights();
     } else { toast('Booking error. Contact support.',true); }
   } catch(e){ toast('Error confirming booking.',true); }
+}
+
+// ── ISSUE REQUEST FLOW ──
+// Agent clicks "Issue" on a pending/confirmed booking before it expires.
+// OTP goes to the agent's own email. On success, status flips to
+// 'issue_requested' and ADMIN takes it from there — admin holds full
+// control over the real issuance (including the supplier-API call).
+function startIssueRequest(bookingId) {
+  const b = bookings.find(x=>x.id===bookingId);
+  if (!b) { toast('Booking not found.', true); return; }
+  if (!canRequestIssue(b)) { toast('This booking can no longer be issued — it may have expired.', true); loadBookings(); return; }
+
+  pendingIssueBookingId = bookingId;
+  otpMode = 'issue_request';
+
+  document.getElementById('otpModalTitle').innerHTML = 'Issue <span>Request</span>';
+  document.getElementById('otpModalInfo').innerHTML = `Confirm you want East &amp; West to issue booking <strong>${b.booking_ref}</strong> now.<br>An OTP has been sent to your email.`;
+  document.getElementById('otpModalConfirmBtn').innerHTML = '<i class="fa fa-bolt"></i> Send Issue Request';
+
+  sendIssueRequestOTP(b);
+}
+
+async function sendIssueRequestOTP(b) {
+  const otp = Math.floor(100000+Math.random()*900000).toString();
+  const exp = new Date(Date.now()+10*60*1000).toISOString();
+  try {
+    const r = await POST('agent_otps',{agent_id:agent.id,otp_code:otp,purpose:'issue_request',expires_at:exp});
+    if(Array.isArray(r)&&r[0]) pendingOtpId = r[0].id;
+
+    const sent = await sendOtpEmail(agent.email, otp, 'issue_request', agent.full_name);
+    if (sent) { toast('OTP sent to your email.'); }
+    else { toast('Could not send OTP email. Contact East & West.', true); return; }
+
+    document.querySelectorAll('#otpModal .otp-box').forEach(box=>box.value='');
+    openModal('otpModal');
+    startBkOtpTimer();
+  } catch(e){ toast('Error sending OTP.',true); }
+}
+
+async function confirmIssueRequestOTP() {
+  const boxes = document.querySelectorAll('#otpModal .otp-box');
+  const code = Array.from(boxes).map(b=>b.value).join('');
+  if(code.length!==6){toast('Enter full 6-digit OTP.',true);return;}
+
+  const b = bookings.find(x=>x.id===pendingIssueBookingId);
+  if (!b) { toast('Booking not found.', true); closeModal('otpModal'); return; }
+
+  try {
+    const rows = await GET('agent_otps',`id=eq.${pendingOtpId}&otp_code=eq.${code}&used=eq.false`);
+    if(!rows||!rows.length){toast('Invalid OTP.',true);return;}
+    const otpRow = rows[0];
+    if(new Date(otpRow.expires_at)<new Date()){toast('OTP expired.',true);return;}
+    if (new Date(b.expires_at) < new Date()) { toast('This booking just expired — could not request issue.', true); closeModal('otpModal'); loadBookings(); return; }
+
+    await fetch(`${SB_URL}/rest/v1/agent_otps?id=eq.${pendingOtpId}`,{
+      method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({used:true})
+    });
+
+    await fetch(`${SB_URL}/rest/v1/agent_bookings?id=eq.${b.id}`,{
+      method:'PATCH',
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        status:'issue_requested',
+        issue_requested_at:new Date().toISOString(),
+        issue_requested_by:'agent',
+        updated_at:new Date().toISOString()
+      })
+    });
+
+    closeModal('otpModal');
+    toast(`Issue request sent for ${b.booking_ref}! East & West will issue it shortly.`);
+    loadBookings();
+  } catch(e){ toast('Error confirming issue request.',true); }
 }
 
 // ── BOOKINGS PAGE ──
@@ -1145,23 +1349,107 @@ function filterBookings(status, btn) {
 
 function renderBookings(data) {
   const tb = document.getElementById('bk-tb');
-  if(!data.length){tb.innerHTML='<tr><td colspan="8" class="etd">No bookings found.</td></tr>';return;}
-  tb.innerHTML = data.map(b=>`<tr>
+  if(!data.length){tb.innerHTML='<tr><td colspan="9" class="etd">No bookings found.</td></tr>';return;}
+  tb.innerHTML = data.map(b=>`<tr data-bid="${b.id}">
     <td><strong style="font-family:monospace;font-size:11px">${b.booking_ref}</strong></td>
     <td>${svcLabel(b.service_type)}<div style="font-size:10px;color:var(--muted)">${b.service_name||''}</div></td>
     <td>${b.pax_count||1} pax</td>
     <td style="font-weight:700">PKR ${fmt(b.sell_price)}</td>
     <td style="color:var(--green);font-weight:600">PKR ${fmt(b.commission_amt)}</td>
-    <td><span class="pill p-${b.status}">${b.status}</span></td>
+    <td><span class="pill p-${b.status}">${(b.status||'').replace('_',' ')}</span></td>
+    <td class="cd-cell">${renderCountdown(b)}</td>
     <td style="font-size:11px">${fmtDate(b.created_at)}</td>
-    <td><button class="btn btn-ghost btn-sm" onclick="viewBookingDetail('${b.id}')"><i class="fa fa-eye"></i></button></td>
+    <td style="display:flex;gap:4px">
+      <button class="btn btn-ghost btn-sm" onclick="viewBookingDetail('${b.id}')"><i class="fa fa-eye"></i></button>
+      ${canRequestIssue(b)?`<button class="btn-issue" onclick="startIssueRequest('${b.id}')"><i class="fa fa-bolt"></i> Issue</button>`:''}
+    </td>
   </tr>`).join('');
+  startCountdownTicker();
+}
+
+// ── COUNTDOWN / EXPIRY ──
+function canRequestIssue(b) {
+  if (!['pending','confirmed'].includes(b.status)) return false;
+  if (!b.expires_at) return false;
+  return new Date(b.expires_at) > new Date();
+}
+
+function renderCountdown(b) {
+  if (!b.expires_at) return '<span style="color:var(--dim);font-size:11px">—</span>';
+  if (!['pending','confirmed'].includes(b.status)) return '<span style="color:var(--dim);font-size:11px">—</span>';
+  const ms = new Date(b.expires_at) - new Date();
+  if (ms <= 0) return '<span class="cd-timer cd-done"><i class="fa fa-hourglass-end"></i> Expired</span>';
+  return `<span class="cd-timer ${cdClass(ms)}" data-expires="${b.expires_at}"><i class="fa fa-clock"></i> ${fmtCountdown(ms)}</span>`;
+}
+
+function cdClass(ms) {
+  const mins = ms / 60000;
+  if (mins <= 3) return 'cd-danger';
+  if (mins <= 8) return 'cd-warn';
+  return 'cd-safe';
+}
+
+function fmtCountdown(ms) {
+  const totalSec = Math.max(0, Math.floor(ms/1000));
+  const m = Math.floor(totalSec/60);
+  const s = totalSec%60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+let countdownInterval = null;
+function startCountdownTicker() {
+  clearInterval(countdownInterval);
+  countdownInterval = setInterval(()=>{
+    document.querySelectorAll('.cd-timer[data-expires]').forEach(el=>{
+      const ms = new Date(el.dataset.expires) - new Date();
+      if (ms <= 0) {
+        el.outerHTML = '<span class="cd-timer cd-done"><i class="fa fa-hourglass-end"></i> Expired</span>';
+        loadBookings(); // refresh to move it out of actionable state / show cancelled
+      } else {
+        el.className = 'cd-timer ' + cdClass(ms);
+        el.innerHTML = `<i class="fa fa-clock"></i> ${fmtCountdown(ms)}`;
+      }
+    });
+  }, 1000);
 }
 
 function viewBookingDetail(id) {
   const b = bookings.find(x=>x.id===id); if(!b) return;
   const pax = Array.isArray(b.passengers)?b.passengers:[];
-  alert(`Booking: ${b.booking_ref}\nService: ${b.service_name}\nStatus: ${b.status}\nPax: ${pax.map(p=>p.name).join(', ')}\nAmount: PKR ${fmt(b.sell_price)}\nAdmin Notes: ${b.admin_notes||'—'}`);
+  const statusLbl = (b.status||'').replace('_',' ');
+  const html = `<div class="overlay open" id="detailModal">
+    <div class="modal">
+      <div class="mh">
+        <h3>Booking <span>${b.booking_ref}</span></h3>
+        <button class="m-close" onclick="document.getElementById('detailModal').remove()"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div class="mc">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span class="pill p-${b.status}" style="font-size:11px;padding:5px 10px">${statusLbl}</span>
+          ${b.expires_at && ['pending','confirmed'].includes(b.status) ? renderCountdown(b) : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:13px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Service</span><strong>${b.service_name||'—'}</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Passengers</span><strong>${pax.map(p=>p.name).filter(Boolean).join(', ')||'—'}</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Travel Date</span><strong>${b.travel_date||'—'}</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Sell Price</span><strong>PKR ${fmt(b.sell_price)}</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Your Commission</span><strong style="color:var(--green)">PKR ${fmt(b.commission_amt)}</strong></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Source</span><strong>${b.source==='supplier_api'?'Supplier API':'East & West Inventory'}</strong></div>
+          ${b.issue_requested_at?`<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Issue Requested</span><strong>${fmtDate(b.issue_requested_at)}</strong></div>`:''}
+          ${b.supplier_ref?`<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Supplier Ref</span><strong style="font-family:monospace">${b.supplier_ref}</strong></div>`:''}
+          <div style="border-top:1px solid var(--bdr);margin-top:6px;padding-top:10px">
+            <div style="color:var(--muted);font-size:11px;margin-bottom:3px">Admin Notes</div>
+            <div>${b.admin_notes||'—'}</div>
+          </div>
+        </div>
+      </div>
+      <div class="mf">
+        ${canRequestIssue(b)?`<button class="btn btn-gold" onclick="document.getElementById('detailModal').remove();startIssueRequest('${b.id}')"><i class="fa fa-bolt"></i> Request Issue</button>`:''}
+        <button class="btn btn-ghost" onclick="document.getElementById('detailModal').remove()">Close</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
 }
 
 // ── FINANCE ──

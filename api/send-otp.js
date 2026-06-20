@@ -29,6 +29,8 @@ export default async function handler(req, res) {
 
   const purposeText = purpose === 'password_reset'
     ? 'Password Reset Request'
+    : purpose === 'issue_request'
+    ? 'Issue Request Confirmation'
     : 'Booking Confirmation';
 
   const greeting = agentName ? `Hi ${agentName},` : 'Hello,';

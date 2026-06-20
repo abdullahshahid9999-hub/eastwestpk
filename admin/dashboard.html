@@ -72,9 +72,20 @@ tbody td strong{color:var(--text);font-weight:600}
 /* PILLS */
 .pill{padding:2px 7px;border-radius:3px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;white-space:nowrap}
 .p-new{background:rgba(96,165,250,0.1);color:var(--blue);border:1px solid rgba(96,165,250,0.18)}
-.p-pend{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bd)}
-.p-conf,.p-act,.p-pub{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,0.18)}
-.p-canc,.p-inact,.p-drft{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.15)}
+.p-pend,.p-pending{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bd)}
+.p-conf,.p-confirmed,.p-act,.p-pub,.p-issued{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,0.18)}
+.p-canc,.p-cancelled,.p-inact,.p-drft,.p-expired{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,0.15)}
+.p-issue_requested{background:rgba(96,165,250,0.15);color:#60A5FA;border:1px solid rgba(96,165,250,0.3);animation:pillBlink 1.2s infinite}
+@keyframes pillBlink{0%,100%{opacity:1}50%{opacity:0.45}}
+/* COUNTDOWN */
+.cd-timer{font-family:monospace;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:4px}
+.cd-safe{background:rgba(34,197,94,0.1);color:var(--green)}
+.cd-warn{background:var(--gold-bg);color:var(--gold)}
+.cd-danger{background:var(--red-bg);color:var(--red);animation:cdPulse 0.9s infinite}
+.cd-done{background:rgba(255,255,255,0.05);color:var(--dim)}
+@keyframes cdPulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.btn-issue-now{background:var(--gold);color:#000;padding:5px 10px;border-radius:4px;font-size:11px;font-weight:700;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.btn-issue-now:hover{background:var(--gold-hi)}
 /* BUTTONS */
 .btn{padding:7px 13px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .12s;border:none;letter-spacing:0.01em}
 .btn-g{background:var(--gold);color:#000}.btn-g:hover{background:var(--gold-hi)}
@@ -296,13 +307,19 @@ tbody td strong{color:var(--text);font-weight:600}
 <!-- ═══ AGENT BOOKINGS ═══ -->
 <div class="page" id="pg-agent-bookings">
   <div class="ph"><div><h2>Agent <em>Bookings</em></h2><p>All bookings submitted by agents — confirm, issue or cancel</p></div></div>
+  <div id="issueAlertBanner" style="display:none;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.3);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+    <i class="fa fa-triangle-exclamation" style="color:#60A5FA;font-size:16px;animation:cdPulse 0.9s infinite"></i>
+    <span style="font-size:13px;color:var(--text)"><strong id="issueAlertCount">0</strong> booking(s) waiting to be issued — supplier time limit is running out!</span>
+  </div>
   <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
     <select class="ss" onchange="filterAgentBk(this.value)" style="padding:8px 12px">
       <option value="">All Status</option>
       <option value="pending">Pending</option>
       <option value="confirmed">Confirmed</option>
+      <option value="issue_requested">⚡ Issue Requested</option>
       <option value="issued">Issued</option>
       <option value="cancelled">Cancelled</option>
+      <option value="expired">Expired</option>
     </select>
     <select class="ss" onchange="filterAgentBkType(this.value)" style="padding:8px 12px">
       <option value="">All Services</option>
@@ -313,8 +330,8 @@ tbody td strong{color:var(--text);font-weight:600}
   </div>
   <div class="card">
     <div class="tw"><table>
-      <thead><tr><th>Ref</th><th>Agent</th><th>Service</th><th>Pax</th><th>Sell Price</th><th>Commission</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-      <tbody id="agbk-tb"><tr><td colspan="9" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+      <thead><tr><th>Ref</th><th>Agent</th><th>Service</th><th>Pax</th><th>Sell Price</th><th>Commission</th><th>Status</th><th>Time Left</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody id="agbk-tb"><tr><td colspan="10" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
     </table></div>
   </div>
 </div>
@@ -1283,8 +1300,10 @@ async function deleteRt(id) {
         <select id="agbkStatus">
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
+          <option value="issue_requested">⚡ Issue Requested</option>
           <option value="issued">Issued</option>
           <option value="cancelled">Cancelled</option>
+          <option value="expired">Expired</option>
         </select>
       </div>
       <div class="mf">
@@ -1392,17 +1411,50 @@ async function loadAgentData(){
       GET('commission_rules','order=tier.asc').catch(()=>[]),
     ]);
     agents=ag;agentBookings=agbk;agentTx=tx;paymentSlips=sl;commRules=cr;
+    await sweepExpiredBookings();
     renderAgents(agents);
     renderAgentBookings(agentBookings);
     renderSlips(paymentSlips);
     const pendingSlips=paymentSlips.filter(s=>s.status==='pending').length;
     const badge=document.getElementById('slipBadge');
     if(pendingSlips>0){badge.style.display='inline';badge.textContent=pendingSlips;}else{badge.style.display='none';}
-    const pendingAg=agentBookings.filter(b=>b.status==='pending').length;
+    const urgentAg=agentBookings.filter(b=>b.status==='pending'||b.status==='issue_requested').length;
     const abadge=document.getElementById('agentBadge');
-    if(pendingAg>0){abadge.style.display='inline';abadge.textContent=pendingAg;}else{abadge.style.display='none';}
+    if(urgentAg>0){abadge.style.display='inline';abadge.textContent=urgentAg;}else{abadge.style.display='none';}
     loadFinance();
   }catch(e){console.error('Agent data load error:',e);}
+}
+
+// ── AUTO-EXPIRY SWEEP ──
+// Any booking past its expires_at that hasn't been issued yet gets
+// automatically cancelled, and if it held reserved seats on an internal
+// flight, those seats are released back into available inventory.
+async function sweepExpiredBookings(){
+  const now=new Date();
+  const toExpire=agentBookings.filter(b=>
+    ['pending','confirmed','issue_requested'].includes(b.status) &&
+    b.expires_at && new Date(b.expires_at) < now
+  );
+  if(!toExpire.length) return;
+
+  for(const b of toExpire){
+    try{
+      await PATCH('agent_bookings',b.id,{status:'expired',updated_at:new Date().toISOString()});
+      // Release reserved seats back to the flight if this was an internal group ticket booking.
+      // (No balance refund needed — balance is only ever debited at the moment
+      // of actual issuance in performIssue(), never when the booking was first made.)
+      if(b.service_type==='group_ticket' && b.seats_reserved>0 && b.service_id){
+        const flightRows=await GET('group_flights',`id=eq.${b.service_id}&select=id,booked_seats`).catch(()=>[]);
+        if(Array.isArray(flightRows)&&flightRows.length){
+          const newBooked=Math.max(0,(flightRows[0].booked_seats||0)-b.seats_reserved);
+          await PATCH('group_flights',b.service_id,{booked_seats:newBooked}).catch(()=>{});
+        }
+      }
+    }catch(e){console.error('Expiry sweep error for booking',b.id,e);}
+  }
+  // Refresh local state to reflect the sweep
+  agentBookings=agentBookings.map(b=>toExpire.find(x=>x.id===b.id)?{...b,status:'expired'}:b);
+  toast(`${toExpire.length} expired booking(s) auto-cancelled and refunded.`,true);
 }
 
 /* ─── DASHBOARD ─── */
@@ -1947,28 +1999,129 @@ function agentName(id){const a=agents.find(x=>x.id===id);return a?`${a.full_name
 function renderAgentBookings(data){
   const tb=document.getElementById('agbk-tb');
   if(!tb)return;
-  if(!data.length){tb.innerHTML='<tr><td colspan="9" class="etd">No agent bookings yet.</td></tr>';return;}
+  if(!data.length){tb.innerHTML='<tr><td colspan="10" class="etd">No agent bookings yet.</td></tr>';return;}
   tb.innerHTML=data.map(b=>{
     const svcLbl={group_ticket:'✈ Ticket',umrah:'🕌 Umrah',insurance:'🛡 Insurance'}[b.service_type]||b.service_type;
-    return `<tr>
+    const statusLbl=(b.status||'').replace('_',' ');
+    return `<tr data-bid="${b.id}">
       <td style="font-family:monospace;font-size:11px;color:var(--teal)">${b.booking_ref}</td>
       <td style="font-size:12px">${agentName(b.agent_id)}</td>
       <td>${svcLbl}<div style="font-size:10px;color:var(--muted)">${b.service_name||''}</div></td>
       <td>${b.pax_count||1}</td>
       <td style="font-weight:700">Rs. ${parseFloat(b.sell_price||0).toLocaleString()}</td>
       <td style="color:var(--gold)">Rs. ${parseFloat(b.commission_amt||0).toLocaleString()}</td>
-      <td><span class="pill ${b.status==='confirmed'?'p-conf':b.status==='issued'?'p-conf':b.status==='cancelled'?'p-canc':'p-pend'}">${b.status}</span></td>
+      <td><span class="pill p-${b.status}">${statusLbl}</span></td>
+      <td class="cd-cell">${renderAdminCountdown(b)}</td>
       <td style="font-size:11px">${b.created_at?new Date(b.created_at).toLocaleDateString('en-GB'):'—'}</td>
-      <td><button class="btn-s" onclick="openAgbkModal('${b.id}')"><i class="fa fa-eye"></i></button></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn-s" onclick="openAgbkModal('${b.id}')" title="View"><i class="fa fa-eye"></i></button>
+        ${b.status==='issue_requested'?`<button class="btn-issue-now" onclick="quickIssue('${b.id}')" title="Issue Now"><i class="fa fa-bolt"></i> Issue</button>`:''}
+      </td>
     </tr>`;
   }).join('');
+  updateIssueAlertBanner(data);
+  startAdminCountdownTicker();
 }
+
+function renderAdminCountdown(b){
+  if(!b.expires_at) return '<span style="color:var(--dim);font-size:11px">—</span>';
+  if(!['pending','confirmed','issue_requested'].includes(b.status)) return '<span style="color:var(--dim);font-size:11px">—</span>';
+  const ms=new Date(b.expires_at)-new Date();
+  if(ms<=0) return '<span class="cd-timer cd-done"><i class="fa fa-hourglass-end"></i> Expired</span>';
+  return `<span class="cd-timer ${cdClassAdmin(ms)}" data-expires="${b.expires_at}"><i class="fa fa-clock"></i> ${fmtCountdownAdmin(ms)}</span>`;
+}
+function cdClassAdmin(ms){const m=ms/60000;if(m<=3)return'cd-danger';if(m<=8)return'cd-warn';return'cd-safe';}
+function fmtCountdownAdmin(ms){const t=Math.max(0,Math.floor(ms/1000));return `${Math.floor(t/60)}:${(t%60).toString().padStart(2,'0')}`;}
+
+let adminCdInterval=null;
+function startAdminCountdownTicker(){
+  clearInterval(adminCdInterval);
+  adminCdInterval=setInterval(()=>{
+    document.querySelectorAll('#agbk-tb .cd-timer[data-expires]').forEach(el=>{
+      const ms=new Date(el.dataset.expires)-new Date();
+      if(ms<=0){el.outerHTML='<span class="cd-timer cd-done"><i class="fa fa-hourglass-end"></i> Expired</span>';loadAgentData();}
+      else{el.className='cd-timer '+cdClassAdmin(ms);el.innerHTML=`<i class="fa fa-clock"></i> ${fmtCountdownAdmin(ms)}`;}
+    });
+  },1000);
+}
+
+function updateIssueAlertBanner(data){
+  const requested=data.filter(b=>b.status==='issue_requested');
+  const banner=document.getElementById('issueAlertBanner');
+  if(!banner)return;
+  if(requested.length>0){
+    banner.style.display='flex';
+    document.getElementById('issueAlertCount').textContent=requested.length;
+  } else {
+    banner.style.display='none';
+  }
+}
+
 function filterAgentBk(status){renderAgentBookings(status?agentBookings.filter(b=>b.status===status):agentBookings);}
 function filterAgentBkType(type){renderAgentBookings(type?agentBookings.filter(b=>b.service_type===type):agentBookings);}
+
+// Fast-path "Issue Now" directly from the table row — same logic as the
+// modal's issue confirmation, skips straight to the supplier call.
+async function quickIssue(id){
+  const b=agentBookings.find(x=>x.id===id);if(!b)return;
+  await performIssue(b);
+}
+
+async function performIssue(b){
+  if(new Date(b.expires_at)<new Date()){
+    toast('This booking has expired — it can no longer be issued.',true);
+    loadAgentData();
+    return;
+  }
+  const ag=agents.find(a=>a.id===b.agent_id);
+  if(!ag){toast('Agent record not found.',true);return;}
+
+  // Final credit-limit check — balance is charged only now, at the moment
+  // of actual issuance, never when the agent first submits the booking.
+  const limit=parseFloat(ag.credit_limit||0);
+  const newBal=parseFloat(ag.balance||0)-parseFloat(b.sell_price||0);
+  if(newBal < -limit){
+    if(!confirm(`Issuing this will push ${ag.full_name}'s balance to Rs. ${newBal.toLocaleString()}, beyond their Rs. ${limit.toLocaleString()} credit limit.\n\nIssue anyway?`)) return;
+  }
+
+  try{
+    let supplierRef=null, supplierStatus='internal_ok';
+    if(b.source==='supplier_api'){
+      // TODO: replace this mock with a real call to the supplier (e.g. New Chaudhry) issue endpoint.
+      // Example shape once integrated:
+      //   const r = await fetch(SUPPLIER_ISSUE_URL, {method:'POST', headers:{...}, body: JSON.stringify({bookingRef:b.booking_ref, ...})});
+      //   const d = await r.json();
+      //   supplierRef = d.ticketNumber; supplierStatus = d.status;
+      supplierRef = 'MOCK-'+Date.now().toString(36).toUpperCase();
+      supplierStatus = 'issued_mock';
+    }
+    await PATCH('agent_bookings',b.id,{
+      status:'issued',
+      supplier_ref:supplierRef,
+      supplier_status:supplierStatus,
+      updated_at:new Date().toISOString()
+    });
+    // Debit the agent's balance now — this is the single moment money
+    // actually moves for this booking.
+    await PATCH('agents',ag.id,{balance:newBal});
+    await POST('agent_transactions',{
+      agent_id:ag.id,type:'debit',amount:b.sell_price,balance_after:newBal,
+      description:`Booking ${b.booking_ref} issued`,booking_id:b.id,created_by:'admin'
+    });
+    agents=agents.map(x=>x.id===ag.id?{...x,balance:newBal}:x);
+    agentBookings=agentBookings.map(x=>x.id===b.id?{...x,status:'issued',supplier_ref:supplierRef,supplier_status:supplierStatus}:x);
+    renderAgents(agents);
+    renderAgentBookings(agentBookings);
+    toast(`Booking ${b.booking_ref} issued! Rs. ${parseFloat(b.sell_price).toLocaleString()} debited from ${ag.full_name}.`);
+    loadFinance();
+  }catch(e){toast('Error issuing booking: '+e.message,true);}
+}
+
 function openAgbkModal(id){
   const b=agentBookings.find(x=>x.id===id);if(!b)return;
   document.getElementById('agbkId').value=id;
   const pax=Array.isArray(b.passengers)?b.passengers:[];
+  const expiryInfo = b.expires_at ? `<br><strong>Time Limit:</strong> ${new Date(b.expires_at)<new Date()?'<span style="color:var(--red)">Expired</span>':renderAdminCountdown(b)} ${b.source==='supplier_api'?'(Supplier API)':'(Internal)'}` : '';
   document.getElementById('agbkDetail').innerHTML=`
     <strong>Ref:</strong> ${b.booking_ref}<br>
     <strong>Agent:</strong> ${agentName(b.agent_id)}<br>
@@ -1979,9 +2132,23 @@ function openAgbkModal(id){
     <strong>Sell Price:</strong> Rs. ${parseFloat(b.sell_price||0).toLocaleString()}<br>
     <strong>Commission:</strong> Rs. ${parseFloat(b.commission_amt||0).toLocaleString()}<br>
     <strong>Agent Notes:</strong> ${b.agent_notes||'—'}
+    ${expiryInfo}
+    ${b.supplier_ref?`<br><strong>Supplier Ref:</strong> <span style="font-family:monospace">${b.supplier_ref}</span>`:''}
   `;
   document.getElementById('agbkNotes').value=b.admin_notes||'';
   document.getElementById('agbkStatus').value=b.status||'pending';
+  // Show a dedicated Issue button in the modal footer if this is an issue_requested booking
+  const mf=document.querySelector('#agbkModal .mf');
+  const existingIssueBtn=document.getElementById('agbkIssueBtn');
+  if(existingIssueBtn) existingIssueBtn.remove();
+  if(b.status==='issue_requested'||b.status==='confirmed'||b.status==='pending'){
+    const issueBtn=document.createElement('button');
+    issueBtn.id='agbkIssueBtn';
+    issueBtn.className='btn btn-g';
+    issueBtn.innerHTML='<i class="fa fa-bolt"></i> Issue Now';
+    issueBtn.onclick=()=>{closeModal('agbkModal');performIssue(b);};
+    mf.insertBefore(issueBtn, mf.firstChild);
+  }
   openModal('agbkModal');
 }
 async function saveAgentBookingStatus(){
@@ -2154,6 +2321,11 @@ function toast(msg,isErr=false){
 }
 
 loadAll();
+
+// Keep agent bookings / issue-request alerts fresh while the admin
+// dashboard is open — runs the expiry sweep on every poll so nothing
+// silently overruns its supplier deadline unnoticed.
+setInterval(()=>{ loadAgentData(); }, 30000);
 
 function previewLogo(url) {
   const prev = document.getElementById('logoPreview');
