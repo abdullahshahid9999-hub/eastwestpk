@@ -59,7 +59,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'East & West Travel <onboarding@resend.dev>',
+        from: 'East & West Travel <otp@eastwestpk.com>',
         to: [email],
         subject: `Your OTP Code — ${otp}`,
         html
