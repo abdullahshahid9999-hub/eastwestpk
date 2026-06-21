@@ -1,9 +1,9 @@
 // Secure read/write path for admin-only access to payment_slips,
-// agent_bookings, and agent_transactions. Same model as admin-agents.js:
-// verify the caller has a real, currently-valid Supabase session (and
-// optionally check it's on the admin allow-list), then perform the
-// request using the secret service-role key, which bypasses RLS and
-// is never exposed to the browser.
+// agent_bookings, agent_transactions, client_bookings, and
+// client_payments. Same model: verify the caller has a real,
+// currently-valid Supabase session (and is on the admin allow-list),
+// then perform the request using the secret service-role key, which
+// bypasses RLS and is never exposed to the browser.
 //
 // Required Vercel env vars (same ones used by admin-agents.js):
 //   SUPABASE_SERVICE_ROLE_KEY
@@ -14,7 +14,7 @@ const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 
 // Only these tables can be touched through this endpoint. Anything else
 // is rejected outright, regardless of what the request body says.
-const ALLOWED_TABLES = new Set(['payment_slips', 'agent_bookings', 'agent_transactions']);
+const ALLOWED_TABLES = new Set(['payment_slips', 'agent_bookings', 'agent_transactions', 'client_bookings', 'client_payments']);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
