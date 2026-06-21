@@ -4,79 +4,104 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agent Login — East & West Travel</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --gold:#D4A843;--gold-l:#F0C050;
-  --navy:#071120;--navy2:#0A1828;
+  --gold:#C9A24D;--gold-l:#E2C16F;--gold-dim:#9C7E3A;
+  --navy:#0A1626;--navy2:#0D1F36;--navy3:#11283F;
   --bg:#F7F6F2;--white:#FFFFFF;
   --text:#14142B;--text2:#3D3D5C;--muted:#8888A0;
   --bdr:#E4DFD4;--bdr2:#D0C8BC;
   --green:#22C55E;--red:#EF4444;
   --r:10px;
 }
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.wrap{width:100%;max-width:420px}
+html,body{height:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--navy);min-height:100vh;overflow-x:hidden}
+.stage{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr}
 
-/* LOGO AREA */
-.logo-area{text-align:center;margin-bottom:28px}
-.logo-area img{height:52px;border-radius:8px;margin-bottom:12px}
-.logo-area h1{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
-.logo-area h1 span{color:var(--gold)}
-.logo-area p{font-size:12px;color:var(--muted);margin-top:4px}
+/* ───────── LEFT: ATMOSPHERE PANEL ───────── */
+.panel-visual{position:relative;overflow:hidden;background:var(--navy);display:flex;flex-direction:column;justify-content:space-between;padding:44px 48px}
+.panel-visual::before{
+  content:'';position:absolute;inset:0;
+  background:url('../assets/images/makarem_1.jpeg') center 30%/cover no-repeat;
+  opacity:.55;
+}
+.panel-visual::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(10,22,38,.55) 0%, rgba(10,22,38,.35) 38%, rgba(10,22,38,.92) 100%),
+              linear-gradient(100deg, rgba(10,22,38,.9) 0%, rgba(10,22,38,.15) 55%);
+}
+.pv-top,.pv-bottom{position:relative;z-index:2}
+.pv-brand{display:flex;align-items:center;gap:11px}
+.pv-brand img{width:36px;height:36px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.18)}
+.pv-brand-txt{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:#fff;letter-spacing:-0.01em}
+.pv-brand-txt em{color:var(--gold);font-style:normal}
+
+.pv-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);margin-bottom:18px}
+.pv-eyebrow::before{content:'';width:18px;height:1px;background:var(--gold-l)}
+.pv-bottom h1{font-family:'Fraunces',serif;font-size:34px;line-height:1.18;font-weight:500;color:#fff;letter-spacing:-0.01em;max-width:420px;margin-bottom:14px}
+.pv-bottom h1 em{color:var(--gold-l);font-style:italic;font-weight:500}
+.pv-bottom p{font-size:13px;color:rgba(255,255,255,.62);max-width:380px;line-height:1.6;margin-bottom:28px}
+
+.pv-stats{display:flex;gap:28px;border-top:1px solid rgba(255,255,255,.14);padding-top:20px}
+.pv-stat strong{display:block;font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:#fff;letter-spacing:-0.01em}
+.pv-stat span{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+/* ───────── RIGHT: FORM PANEL ───────── */
+.panel-form{background:var(--bg);display:flex;align-items:center;justify-content:center;padding:36px}
+.wrap{width:100%;max-width:380px}
+
+.logo-area{margin-bottom:26px}
+.logo-area .tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px}
+.logo-area .tag i{font-size:9px}
+.logo-area h2{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--text);letter-spacing:-0.01em}
+.logo-area p{font-size:12.5px;color:var(--muted);margin-top:5px}
 
 /* CARD */
-.card{background:var(--white);border:1px solid var(--bdr);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(7,17,32,0.06)}
+.card{background:var(--white);border:1px solid var(--bdr);border-radius:16px;padding:26px;box-shadow:0 4px 28px rgba(10,22,38,0.07)}
 
 /* TAB BAR */
-.tabs{display:flex;gap:4px;background:#F0EDE8;border-radius:8px;padding:4px;margin-bottom:24px}
-.tab{flex:1;padding:8px;border:none;background:none;border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
+.tabs{display:flex;gap:4px;background:#F0EDE8;border-radius:9px;padding:4px;margin-bottom:22px}
+.tab{flex:1;padding:9px;border:none;background:none;border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
 .tab.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
 
 /* FORM */
-.panel{display:none}.panel.active{display:block}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;letter-spacing:0.04em;text-transform:uppercase}
+.panel{display:none}.panel.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:10.5px;font-weight:700;color:var(--text2);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase}
 .field-wrap{position:relative}
-.field input,.field select{width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
-.field input:focus,.field select:focus{border-color:var(--gold)}
+.field input,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;font-family:inherit;color:var(--text);background:var(--white);outline:none;transition:border-color .15s,box-shadow .15s}
+.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,77,0.12)}
 .field input.err{border-color:var(--red)}
 .field .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px}
 
 /* SUBMIT BTN */
-.btn-submit{width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.btn-submit{width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;position:relative;overflow:hidden}
 .btn-submit:hover{background:var(--navy2)}
-.btn-submit:disabled{opacity:0.6;cursor:not-allowed}
-.btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold-l)}
+.btn-submit:active{transform:scale(.99)}
+.btn-submit:disabled{opacity:0.7;cursor:not-allowed}
+.btn-submit::after{content:'';position:absolute;bottom:0;left:0;height:2px;width:0;background:var(--gold-l);transition:width .5s ease}
+.btn-submit.flying::after{width:100%}
+.btn-gold{background:var(--gold);color:#1a1305}.btn-gold:hover{background:var(--gold-l)}
 
 /* ALERTS */
 .alert{padding:10px 14px;border-radius:8px;font-size:12px;font-weight:500;margin-bottom:16px;display:none;align-items:center;gap:8px}
 .alert.err{background:#FEF2F2;color:var(--red);border:1px solid #FECACA;display:flex}
 .alert.ok{background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;display:flex}
 
-/* DIVIDER */
-.divider{text-align:center;position:relative;margin:18px 0}
-.divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--bdr)}
-.divider span{position:relative;background:var(--white);padding:0 12px;font-size:11px;color:var(--muted);font-weight:500}
-
-/* BADGE */
-.tier-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.tier-silver{background:#F1F5F9;color:#475569}
-.tier-gold{background:#FFFBEB;color:#B45309}
-.tier-platinum{background:#F5F3FF;color:#6D28D9}
-
 /* OTP BOX */
 .otp-boxes{display:flex;gap:8px;justify-content:center;margin:16px 0}
-.otp-box{width:44px;height:50px;border:2px solid var(--bdr);border-radius:8px;font-size:20px;font-weight:700;text-align:center;color:var(--text);outline:none;transition:border-color .15s;font-family:inherit}
-.otp-box:focus{border-color:var(--gold)}
+.otp-box{width:42px;height:48px;border:2px solid var(--bdr);border-radius:8px;font-size:19px;font-weight:700;text-align:center;color:var(--text);outline:none;transition:border-color .15s;font-family:inherit}
+.otp-box:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,77,0.12)}
 .otp-hint{text-align:center;font-size:12px;color:var(--muted);margin-bottom:8px}
-.otp-timer{text-align:center;font-size:12px;color:var(--gold);font-weight:600;margin-top:8px}
+.otp-timer{text-align:center;font-size:12px;color:var(--gold-dim);font-weight:600;margin-top:8px}
 
 /* FOOTER */
-.page-footer{text-align:center;margin-top:18px;font-size:11px;color:var(--muted)}
-.page-footer a{color:var(--gold);text-decoration:none;font-weight:600}
+.page-footer{text-align:center;margin-top:18px;font-size:11.5px;color:var(--muted)}
+.page-footer a{color:var(--gold-dim);text-decoration:none;font-weight:600}
 
 /* SPINNER */
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
@@ -85,105 +110,149 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);min-height:
 /* BACK LINK */
 .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:inherit;margin-bottom:12px;padding:0}
 .back-link:hover{color:var(--text)}
+
+/* MOBILE BRAND STRIP (hidden on desktop) */
+.mobile-brand{display:none}
+
+@media (max-width:880px){
+  .stage{grid-template-columns:1fr}
+  .panel-visual{display:none}
+  .panel-form{align-items:flex-start;padding-top:28px}
+  .mobile-brand{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:22px}
+  .mobile-brand img{width:30px;height:30px;border-radius:7px;object-fit:cover}
+  .mobile-brand span{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--text)}
+  .mobile-brand em{color:var(--gold-dim);font-style:normal}
+}
+@media (max-width:420px){
+  .panel-form{padding:24px 18px}
+}
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <div class="logo-area">
-    <img src="../assets/images/logo.jpg" alt="East West" onerror="this.style.display='none'">
-    <h1>East & <span>West</span> Travel</h1>
-    <p>Agent Portal — Authorized Access Only</p>
+<div class="stage">
+
+  <!-- LEFT: ATMOSPHERE / BRAND PANEL -->
+  <div class="panel-visual">
+    <div class="pv-top pv-brand">
+      <img src="../assets/images/logo.jpg" alt="" onerror="this.style.display='none'">
+      <div class="pv-brand-txt">East & <em>West</em></div>
+    </div>
+    <div class="pv-bottom">
+      <div class="pv-eyebrow">Agent Network Portal</div>
+      <h1>Every booking you issue carries <em>our name</em> across the counter.</h1>
+      <p>Sign in to manage group tickets, Umrah packages and insurance for your clients — with live credit tracking and instant OTP-confirmed issuance.</p>
+      <div class="pv-stats">
+        <div class="pv-stat"><strong>3</strong><span>Agent Tiers</span></div>
+        <div class="pv-stat"><strong>24/7</strong><span>Issue Window</span></div>
+        <div class="pv-stat"><strong>OTP</strong><span>Secured</span></div>
+      </div>
+    </div>
   </div>
 
-  <div class="card">
-    <!-- TAB BAR -->
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('login',this)">Sign In</button>
-      <button class="tab" onclick="switchTab('reset',this)">Reset Password</button>
+  <!-- RIGHT: FORM PANEL -->
+  <div class="panel-form">
+  <div class="wrap">
+    <div class="mobile-brand">
+      <img src="../assets/images/logo.jpg" alt="" onerror="this.style.display='none'">
+      <span>East & <em>West</em></span>
+    </div>
+    <div class="logo-area">
+      <div class="tag"><i class="fa fa-lock"></i> Authorized Access Only</div>
+      <h2>Agent Sign In</h2>
+      <p>Enter your credentials to access your dashboard.</p>
     </div>
 
-    <!-- ALERT -->
-    <div class="alert" id="alert"><i class="fa fa-circle-exclamation"></i><span id="alertMsg"></span></div>
-
-    <!-- ── LOGIN PANEL ── -->
-    <div class="panel active" id="panel-login">
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="loginEmail" placeholder="agent@email.com" autocomplete="email">
+    <div class="card">
+      <!-- TAB BAR -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('login',this)">Sign In</button>
+        <button class="tab" onclick="switchTab('reset',this)">Reset Password</button>
       </div>
-      <div class="field">
-        <label>Password</label>
-        <div class="field-wrap">
-          <input type="password" id="loginPwd" placeholder="Enter password" autocomplete="current-password">
-          <button class="eye" onclick="togglePwd('loginPwd',this)"><i class="fa fa-eye"></i></button>
-        </div>
-      </div>
-      <button class="btn-submit" id="loginBtn" onclick="doLogin()">
-        <i class="fa fa-right-to-bracket"></i> Sign In
-      </button>
-    </div>
 
-    <!-- ── RESET PANEL ── -->
-    <div class="panel" id="panel-reset">
-      <!-- Step 1: verify identity -->
-      <div id="reset-step1">
-        <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Enter your Agent ID, phone number and email to verify your identity.</p>
-        <div class="field">
-          <label>Agent ID</label>
-          <input type="text" id="rAgentCode" placeholder="EW-001">
-        </div>
-        <div class="field">
-          <label>Phone Number</label>
-          <input type="tel" id="rPhone" placeholder="03XX XXXXXXX">
-        </div>
+      <!-- ALERT -->
+      <div class="alert" id="alert"><i class="fa fa-circle-exclamation"></i><span id="alertMsg"></span></div>
+
+      <!-- ── LOGIN PANEL ── -->
+      <div class="panel active" id="panel-login">
         <div class="field">
           <label>Email Address</label>
-          <input type="email" id="rEmail" placeholder="agent@email.com">
+          <input type="email" id="loginEmail" placeholder="agent@email.com" autocomplete="email">
         </div>
-        <button class="btn-submit" id="resetVerifyBtn" onclick="verifyIdentity()">
-          <i class="fa fa-shield-halved"></i> Verify Identity
+        <div class="field">
+          <label>Password</label>
+          <div class="field-wrap">
+            <input type="password" id="loginPwd" placeholder="Enter password" autocomplete="current-password">
+            <button class="eye" onclick="togglePwd('loginPwd',this)"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn-submit" id="loginBtn" onclick="doLogin()">
+          <i class="fa fa-right-to-bracket"></i> Sign In
         </button>
       </div>
 
-      <!-- Step 2: OTP sent to email -->
-      <div id="reset-step2" style="display:none">
-        <button class="back-link" onclick="resetStep(1)"><i class="fa fa-arrow-left"></i> Back</button>
-        <p style="font-size:12px;color:var(--muted);margin-bottom:4px">A 6-digit code was sent to your email.</p>
-        <div class="otp-hint">Enter OTP below</div>
-        <div class="otp-boxes" id="otpBoxes">
-          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,0)">
-          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,1)">
-          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,2)">
-          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,3)">
-          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,4)">
-          <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,5)">
-        </div>
-        <div class="otp-timer" id="otpTimer">Resend in 60s</div>
-        <button class="btn-submit btn-gold" onclick="verifyOTP()"><i class="fa fa-check"></i> Verify OTP</button>
-      </div>
-
-      <!-- Step 3: new password -->
-      <div id="reset-step3" style="display:none">
-        <button class="back-link" onclick="resetStep(1)"><i class="fa fa-arrow-left"></i> Start Over</button>
-        <div class="field">
-          <label>New Password</label>
-          <div class="field-wrap">
-            <input type="password" id="newPwd1" placeholder="Min 8 characters">
-            <button class="eye" onclick="togglePwd('newPwd1',this)"><i class="fa fa-eye"></i></button>
+      <!-- ── RESET PANEL ── -->
+      <div class="panel" id="panel-reset">
+        <!-- Step 1: verify identity -->
+        <div id="reset-step1">
+          <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Enter your Agent ID, phone number and email to verify your identity.</p>
+          <div class="field">
+            <label>Agent ID</label>
+            <input type="text" id="rAgentCode" placeholder="EW-001">
           </div>
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="tel" id="rPhone" placeholder="03XX XXXXXXX">
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="rEmail" placeholder="agent@email.com">
+          </div>
+          <button class="btn-submit" id="resetVerifyBtn" onclick="verifyIdentity()">
+            <i class="fa fa-shield-halved"></i> Verify Identity
+          </button>
         </div>
-        <div class="field">
-          <label>Confirm Password</label>
-          <input type="password" id="newPwd2" placeholder="Repeat password">
+
+        <!-- Step 2: OTP sent to email -->
+        <div id="reset-step2" style="display:none">
+          <button class="back-link" onclick="resetStep(1)"><i class="fa fa-arrow-left"></i> Back</button>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:4px">A 6-digit code was sent to your email.</p>
+          <div class="otp-hint">Enter OTP below</div>
+          <div class="otp-boxes" id="otpBoxes">
+            <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,0)">
+            <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,1)">
+            <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,2)">
+            <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,3)">
+            <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,4)">
+            <input class="otp-box" maxlength="1" type="tel" oninput="otpNext(this,5)">
+          </div>
+          <div class="otp-timer" id="otpTimer">Resend in 60s</div>
+          <button class="btn-submit btn-gold" onclick="verifyOTP()"><i class="fa fa-check"></i> Verify OTP</button>
         </div>
-        <button class="btn-submit btn-gold" onclick="setNewPassword()"><i class="fa fa-lock"></i> Set New Password</button>
+
+        <!-- Step 3: new password -->
+        <div id="reset-step3" style="display:none">
+          <button class="back-link" onclick="resetStep(1)"><i class="fa fa-arrow-left"></i> Start Over</button>
+          <div class="field">
+            <label>New Password</label>
+            <div class="field-wrap">
+              <input type="password" id="newPwd1" placeholder="Min 8 characters">
+              <button class="eye" onclick="togglePwd('newPwd1',this)"><i class="fa fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Confirm Password</label>
+            <input type="password" id="newPwd2" placeholder="Repeat password">
+          </div>
+          <button class="btn-submit btn-gold" onclick="setNewPassword()"><i class="fa fa-lock"></i> Set New Password</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="page-footer">
-    <a href="/">← Back to Website</a> &nbsp;·&nbsp; Need help? Call <a href="tel:+923336515349">+92 333 651 5349</a>
+    <div class="page-footer">
+      <a href="/">← Back to Website</a> &nbsp;·&nbsp; Need help? Call <a href="tel:+923336515349">+92 333 651 5349</a>
+    </div>
+  </div>
   </div>
 </div>
 
@@ -382,8 +451,16 @@ function clearAlert() { document.getElementById('alert').className = 'alert'; }
 
 function setLoading(btnId, loading) {
   const b = document.getElementById(btnId);
-  if (loading) { b.disabled = true; b.innerHTML = '<span class="spin"></span> Please wait...'; }
-  else { b.disabled = false; b.innerHTML = b.dataset.orig || b.innerHTML; }
+  if (loading) {
+    b.disabled = true;
+    if (!b.dataset.orig) b.dataset.orig = b.innerHTML;
+    b.innerHTML = '<span class="spin"></span> Please wait...';
+    b.classList.add('flying');
+  } else {
+    b.disabled = false;
+    b.innerHTML = b.dataset.orig || b.innerHTML;
+    b.classList.remove('flying');
+  }
 }
 
 function togglePwd(id, btn) {
