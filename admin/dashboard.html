@@ -168,7 +168,6 @@ tbody td strong{color:var(--text);font-weight:600}
       <div class="sb-lbl">Overview</div>
       <button class="sbn active" onclick="showPage('dashboard',this)"><i class="fa fa-chart-line"></i> Dashboard</button>
       <button class="sbn" onclick="showPage('bookings',this)"><i class="fa fa-calendar-check"></i> Bookings <span class="sbn-badge" id="newBadge" style="display:none">0</span></button>
-      <button class="sbn" onclick="showPage('customers',this)"><i class="fa fa-users"></i> Customers</button>
       <button class="sbn" onclick="showPage('travellers',this)"><i class="fa fa-id-card"></i> Travellers</button>
       <div class="sb-lbl">Services</div>
       <button class="sbn" onclick="showPage('umrah',this)"><i class="fa fa-star-and-crescent"></i> Umrah Packages</button>
@@ -233,7 +232,7 @@ tbody td strong{color:var(--text);font-weight:600}
   <div class="sg">
     <div class="sc"><div class="sc-ico" style="background:var(--tg)"><i class="fa fa-calendar-check" style="color:var(--teal)"></i></div><div class="sc-n" id="ds-bk">—</div><div class="sc-l">Total Bookings</div></div>
     <div class="sc"><div class="sc-ico" style="background:rgba(14,165,233,0.1)"><i class="fa fa-star" style="color:var(--teal)"></i></div><div class="sc-n" id="ds-new">—</div><div class="sc-l">New Today</div></div>
-    <div class="sc"><div class="sc-ico" style="background:var(--gd)"><i class="fa fa-users" style="color:var(--gold)"></i></div><div class="sc-n" id="ds-cu">—</div><div class="sc-l">Customers</div></div>
+    <div class="sc"><div class="sc-ico" style="background:var(--gd)"><i class="fa fa-id-card" style="color:var(--gold)"></i></div><div class="sc-n" id="ds-trav">—</div><div class="sc-l">Travellers</div></div>
     <div class="sc"><div class="sc-ico" style="background:rgba(16,185,129,0.1)"><i class="fa fa-star-and-crescent" style="color:#10B981"></i></div><div class="sc-n" id="ds-um">—</div><div class="sc-l">Umrah Packages</div></div>
   </div>
   <div class="card">
@@ -259,14 +258,6 @@ tbody td strong{color:var(--text);font-weight:600}
 </div>
 
 <!-- CUSTOMERS -->
-<div class="page" id="pg-customers">
-  <div class="ph"><div><h2>All <em>Customers</em></h2></div></div>
-  <div class="card">
-    <div class="ch"><h3>Customers</h3><input class="si" style="width:200px" placeholder="Search..." oninput="searchCu(this.value)"></div>
-    <div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="cu-tb"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
-  </div>
-</div>
-
 <!-- TRAVELLERS -->
 <div class="page" id="pg-travellers">
   <div class="ph"><div><h2>Traveller <em>Records</em></h2></div><button class="btn btn-t" onclick="openModal('travModal')"><i class="fa fa-plus"></i> Add</button></div>
@@ -1457,26 +1448,25 @@ async function adminData(table,action,id,data,query){
 }
 
 /* State */
-let bks=[],cus=[],trs=[],umrahPkgs=[],tourPkgs=[],visas=[],flights=[],blogs=[];
+let bks=[],trs=[],umrahPkgs=[],tourPkgs=[],visas=[],flights=[],blogs=[];
 let agents=[],agentBookings=[],agentTx=[],paymentSlips=[],commRules=[];
 
 /* Load all */
 async function loadAll(){
   try{
-    const [b,c,t,p,v,f,bl]=await Promise.all([
+    const [b,t,p,v,f,bl]=await Promise.all([
       GET('bookings','order=created_at.desc'),
-      GET('customers','order=created_at.desc'),
       GET('travellers','order=created_at.desc'),
       GET('packages','order=created_at.desc').catch(()=>[]),
       GET('visa_services','order=sort_order.asc').catch(()=>[]),
       GET('group_flights','order=dep_date.asc').catch(()=>[]),
       GET('blogs','order=created_at.desc'),
     ]);
-    bks=b;cus=c;trs=t;
+    bks=b;trs=t;
     umrahPkgs=p.filter(x=>x.type==='Umrah'||x.type==='Hajj'||x.category==='umrah');
     tourPkgs=p.filter(x=>x.type!=='Umrah'&&x.type!=='Hajj'&&x.category!=='umrah');
     visas=v;flights=f;blogs=bl;
-    renderDash();renderBk(bks);renderCu(cus);renderTr(trs);
+    renderDash();renderBk(bks);renderTr(trs);
     renderUmrah();renderTours();renderVisa();renderFlights(flights);renderBlog();
   }catch(e){toast('Load error: '+e.message,true);}
   loadAgentData();
@@ -1551,7 +1541,7 @@ function renderDash(){
   const n=bks.filter(b=>b.status==='new').length;
   document.getElementById('ds-bk').textContent=bks.length;
   document.getElementById('ds-new').textContent=n;
-  document.getElementById('ds-cu').textContent=cus.length;
+  document.getElementById('ds-trav').textContent=trs.length;
   document.getElementById('ds-um').textContent=umrahPkgs.length;
   if(n>0){document.getElementById('newBadge').style.display='inline';document.getElementById('newBadge').textContent=n;}
   const tb=document.getElementById('dash-tb');
@@ -1594,20 +1584,6 @@ async function updateBkSt(id,status){try{await PATCH('bookings',id,{status});bks
 async function delBk(id){if(!confirm('Delete booking?'))return;try{await DEL('bookings',id);bks=bks.filter(b=>b.id!==id);renderBk(bks);renderDash();toast('Deleted.');}catch(e){toast('Error: '+e.message,true);}}
 
 /* ─── CUSTOMERS ─── */
-function renderCu(data){
-  const tb=document.getElementById('cu-tb');
-  if(!data.length){tb.innerHTML='<tr><td colspan="5" class="etd">No customers</td></tr>';return;}
-  tb.innerHTML=data.map(c=>`<tr>
-    <td><strong>${c.full_name||'—'}</strong></td>
-    <td style="color:var(--teal)">${c.email||'—'}</td>
-    <td>${c.phone||'—'}</td>
-    <td style="font-size:12px">${c.created_at?new Date(c.created_at).toLocaleDateString('en-GB'):'—'}</td>
-    <td><button class="btn-r" onclick="delCu('${c.id}')"><i class="fa fa-trash"></i></button></td>
-  </tr>`).join('');
-}
-function searchCu(q){renderCu(q?cus.filter(c=>(c.full_name||'').toLowerCase().includes(q.toLowerCase())||(c.email||'').toLowerCase().includes(q.toLowerCase())):cus);}
-async function delCu(id){if(!confirm('Remove?'))return;try{await DEL('customers',id);cus=cus.filter(c=>c.id!==id);renderCu(cus);toast('Removed.');}catch(e){toast('Error: '+e.message,true);}}
-
 /* ─── TRAVELLERS ─── */
 function renderTr(data){
   const tb=document.getElementById('tr-tb');
