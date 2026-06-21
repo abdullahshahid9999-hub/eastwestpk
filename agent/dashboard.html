@@ -6,7 +6,23 @@
 <title>Agent Portal — East & West Travel</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Chart.js is loaded on demand (see loadChart()) only when the agent
+     opens Sales & Finance — most sessions never need it, so it's not
+     worth blocking page load for. -->
+<script>
+let _chartJsLoading=null;
+function ensureChartJs(){
+  if(window.Chart) return Promise.resolve();
+  if(_chartJsLoading) return _chartJsLoading;
+  _chartJsLoading=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+    s.onload=resolve; s.onerror=reject;
+    document.head.appendChild(s);
+  });
+  return _chartJsLoading;
+}
+</script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -755,13 +771,6 @@ function init() {
   renderAgentInfo();
   validateSession();
   loadHome();
-  loadFlights();
-  loadPackages();
-  loadSlips();
-  loadTransactions();
-  loadBookings();
-  loadChart('7', document.querySelector('.cf-btn'));
-  renderProfile();
   document.getElementById('ph-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
   // Refresh bookings every 20s so countdowns, admin actions, and expiry
@@ -1735,6 +1744,7 @@ function renderTxTable(data) {
 async function loadChart(days, btn) {
   document.querySelectorAll('.cf-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
+  await ensureChartJs();
 
   const since = new Date(Date.now()-parseInt(days)*24*60*60*1000).toISOString();
   const data = await GET('agent_bookings',`agent_id=eq.${agent.id}&created_at=gte.${since}&select=sell_price,commission_amt,service_type,created_at,status`);
@@ -1896,15 +1906,31 @@ async function saveBranding() {
 }
 
 // ── HELPERS ──
+const _loadedPages={home:true}; // home is loaded eagerly in init()
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sbn').forEach(b=>b.classList.remove('active'));
   const pg=document.getElementById('pg-'+name);
   if(pg)pg.classList.add('active');
   if(btn)btn.classList.add('active');
-  // load data on demand
-  if(name==='finance') loadTransactions();
-  if(name==='bookings') loadBookings();
+  // Load each page's data once, the first time it's opened — keeps the
+  // initial dashboard load fast (only Home fetches on login) while
+  // every page still feels instant on repeat visits since it's cached
+  // in memory after the first load.
+  if(!_loadedPages[name]){
+    _loadedPages[name]=true;
+    if(name==='tickets') loadFlights();
+    else if(name==='umrah') loadPackages();
+    else if(name==='insurance') { /* insurance searches on demand via searchInsurance() */ }
+    else if(name==='bookings') loadBookings();
+    else if(name==='finance') { loadTransactions(); loadChart('7', document.querySelector('.cf-btn')); }
+    else if(name==='payments') loadSlips();
+    else if(name==='profile') renderProfile();
+  } else {
+    // Still on-demand refresh for the two pages that show live/changing data
+    if(name==='finance') loadTransactions();
+    if(name==='bookings') loadBookings();
+  }
 }
 function goToProfile(){
   const btn=document.querySelector('.sbn[onclick*="profile"]');
