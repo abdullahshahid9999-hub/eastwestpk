@@ -43,7 +43,10 @@ export default async function handler(req, res) {
 
   const allowList = (process.env.ADMIN_EMAILS || '')
     .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-  if (allowList.length && !allowList.includes((user.email || '').toLowerCase())) {
+  if (!allowList.length) {
+    return res.status(403).json({ error: 'Admin access is not configured (ADMIN_EMAILS missing in Vercel env vars).' });
+  }
+  if (!allowList.includes((user.email || '').toLowerCase())) {
     return res.status(403).json({ error: 'This account is not authorized as an admin.' });
   }
 

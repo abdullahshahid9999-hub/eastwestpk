@@ -245,6 +245,25 @@
         throw new Error(data.error_description || data.msg || 'Invalid email or password.');
       }
 
+      // Confirm this account is actually on the admin allow-list before
+      // letting them in — a valid Supabase login alone is not enough,
+      // since agents log in through the exact same auth system.
+      document.getElementById('loginTxt').textContent = 'Checking access…';
+      const checkRes = await fetch('/api/verify-admin', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${data.access_token}` }
+      });
+      const checkData = await checkRes.json();
+      if (!checkData.isAdmin) {
+        // Not an admin — sign this session out immediately, don't leave
+        // a dangling authenticated session sitting in the browser.
+        await fetch(`${SUPA_URL}/auth/v1/logout`, {
+          method: 'POST',
+          headers: { 'apikey': SUPA_ANON, 'Authorization': `Bearer ${data.access_token}` }
+        }).catch(()=>{});
+        throw new Error('This account does not have admin access.');
+      }
+
       // Save session
       sessionStorage.setItem('ew_admin', JSON.stringify({
         email: data.user.email,
