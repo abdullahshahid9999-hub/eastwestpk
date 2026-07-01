@@ -916,24 +916,7 @@ async function PATCH(table, qs, data) {
   return Array.isArray(d) ? d[0] : d;
 }
 
-async function sendOtpEmail(email, otp, purpose, agentName) {
-  try {
-    const r = await fetch('/api/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp, purpose, agentName })
-    });
-    if (!r.ok) {
-      const err = await r.json();
-      console.error('OTP email failed:', err);
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error('OTP email error:', e);
-    return false;
-  }
-}
+
 
 // ── HOME ──
 async function loadHome() {
@@ -1392,15 +1375,16 @@ function startIssueRequest(bookingId) {
 }
 
 async function sendIssueRequestOTP(b) {
-  const otp = Math.floor(100000+Math.random()*900000).toString();
-  const exp = new Date(Date.now()+10*60*1000).toISOString();
   try {
-    const r = await POST('agent_otps',{agent_id:agent.id,otp_code:otp,purpose:'issue_request',expires_at:exp});
-    if(Array.isArray(r)&&r[0]) pendingOtpId = r[0].id;
-
-    const sent = await sendOtpEmail(agent.email, otp, 'issue_request', agent.full_name);
-    if (sent) { toast('OTP sent to your email.'); }
-    else { toast('Could not send OTP email. Contact East & West.', true); return; }
+    const r = await fetch('/api/agent-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ action: 'request-issue-otp' })
+    });
+    const d = await r.json();
+    if (!r.ok) { toast(d.error || 'Could not send OTP email.', true); return; }
+    pendingOtpId = d.otpId;
+    toast('OTP sent to your email.');
 
     document.querySelectorAll('#otpModal .otp-box').forEach(box=>box.value='');
     openModal('otpModal');
@@ -1417,13 +1401,14 @@ async function confirmIssueRequestOTP() {
   if (!b) { toast('Booking not found.', true); closeModal('otpModal'); return; }
 
   try {
-    const rows = await GET('agent_otps',`id=eq.${pendingOtpId}&otp_code=eq.${code}&used=eq.false`);
-    if(!rows||!rows.length){toast('Invalid OTP.',true);return;}
-    const otpRow = rows[0];
-    if(new Date(otpRow.expires_at)<new Date()){toast('OTP expired.',true);return;}
+    const vr = await fetch('/api/agent-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ action: 'verify-issue-otp', otpId: pendingOtpId, code })
+    });
+    const vd = await vr.json();
+    if (!vr.ok || !vd.valid) { toast(vd.error || 'Invalid OTP.', true); return; }
     if (new Date(b.expires_at) < new Date()) { toast('This booking just expired — could not request issue.', true); closeModal('otpModal'); loadBookings(); return; }
-
-    await PATCH('agent_otps', `id=eq.${pendingOtpId}`, {used:true});
 
     await PATCH('agent_bookings', `id=eq.${b.id}`, {
       status:'issue_requested',

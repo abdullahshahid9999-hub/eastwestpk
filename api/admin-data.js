@@ -1,9 +1,15 @@
-// Secure read/write path for admin-only access to payment_slips,
-// agent_bookings, agent_transactions, client_bookings, and
-// client_payments. Same model: verify the caller has a real,
-// currently-valid Supabase session (and is on the admin allow-list),
-// then perform the request using the secret service-role key, which
-// bypasses RLS and is never exposed to the browser.
+// Secure read/write path for admin-only access. Originally covered
+// payment_slips/agent_bookings/agent_transactions only — expanded to also
+// cover blogs, bookings, group_flights, packages, travellers,
+// visa_services, and the insurance tables (ins_companies/ins_plans/
+// ins_rates), which were previously written to DIRECTLY from the browser
+// using the public anon key with no auth check at all. Since the anon key
+// is visible in every page's source, that meant anyone could INSERT,
+// UPDATE, or DELETE rows in those tables without ever logging in. Same
+// model as before: verify the caller has a real, currently-valid Supabase
+// session (and is on the admin allow-list), then perform the request
+// using the secret service-role key, which bypasses RLS and is never
+// exposed to the browser.
 //
 // Required Vercel env vars (same ones used by admin-agents.js):
 //   SUPABASE_SERVICE_ROLE_KEY
@@ -14,7 +20,11 @@ const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 
 // Only these tables can be touched through this endpoint. Anything else
 // is rejected outright, regardless of what the request body says.
-const ALLOWED_TABLES = new Set(['payment_slips', 'agent_bookings', 'agent_transactions', 'client_bookings', 'client_payments']);
+const ALLOWED_TABLES = new Set([
+  'payment_slips', 'agent_bookings', 'agent_transactions',
+  'blogs', 'bookings', 'group_flights', 'packages', 'travellers', 'visa_services',
+  'ins_companies', 'ins_plans', 'ins_rates'
+]);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -84,6 +94,12 @@ export default async function handler(req, res) {
       result = await r.json();
       if (!r.ok) throw new Error(JSON.stringify(result));
       result = Array.isArray(result) ? result[0] : result;
+
+    } else if (action === 'delete') {
+      if (!id) return res.status(400).json({ error: 'Missing id.' });
+      const r = await fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`, { method: 'DELETE', headers: H });
+      if (!r.ok) { const e = await r.json(); throw new Error(JSON.stringify(e)); }
+      result = { success: true };
 
     } else {
       return res.status(400).json({ error: 'Unknown action.' });

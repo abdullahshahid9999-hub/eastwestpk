@@ -298,25 +298,6 @@ async function sbPost(table, data, token) {
   return r.json();
 }
 
-async function sendOtpEmail(email, otp, purpose, agentName) {
-  try {
-    const r = await fetch('/api/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp, purpose, agentName })
-    });
-    if (!r.ok) {
-      const err = await r.json();
-      console.error('OTP email failed:', err);
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error('OTP email error:', e);
-    return false;
-  }
-}
-
 // ── LOGIN ──
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
@@ -354,6 +335,7 @@ async function doLogin() {
 }
 
 // ── RESET: STEP 1 — verify identity ──
+let resetAgentCode = null, resetEmail = null;
 async function verifyIdentity() {
   const code  = document.getElementById('rAgentCode').value.trim().toUpperCase();
   const phone = document.getElementById('rPhone').value.trim();
@@ -363,27 +345,17 @@ async function verifyIdentity() {
   setLoading('resetVerifyBtn', true); clearAlert();
 
   try {
-    const rows = await sbGet('agents', `agent_code=eq.${code}&email=eq.${email}&select=id,phone,status`);
-    if (!rows || !rows.length) { showAlert('No matching agent found. Check your details.', true); setLoading('resetVerifyBtn', false); return; }
-    const agent = rows[0];
-    // Normalize phone comparison
-    const clean = (p) => p.replace(/\D/g,'');
-    if (clean(agent.phone) !== clean(phone)) { showAlert('Phone number does not match our records.', true); setLoading('resetVerifyBtn', false); return; }
+    const r = await fetch('/api/agent-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'request-reset-otp', agentCode: code, email, phone })
+    });
+    const d = await r.json();
+    if (!r.ok) { showAlert(d.error || 'Could not verify identity.', true); setLoading('resetVerifyBtn', false); return; }
 
-    resetAgentId = agent.id;
-    // Generate & store OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const exp = new Date(Date.now() + 10 * 60 * 1000).toISOString();
-    await sbPost('agent_otps', { agent_id: agent.id, otp_code: otp, purpose: 'password_reset', expires_at: exp });
-
-    const sent = await sendOtpEmail(email, otp, 'password_reset', null);
-    if (sent) {
-      showAlert(`OTP sent to ${email}. Check your inbox.`, false);
-    } else {
-      showAlert(`Could not send email. Contact East & West for help.`, true);
-      setLoading('resetVerifyBtn', false);
-      return;
-    }
+    resetAgentCode = code;
+    resetEmail = email;
+    showAlert(`OTP sent to ${d.maskedEmail || email}. Check your inbox.`, false);
 
     resetStep(2);
     startOtpTimer();
@@ -402,12 +374,14 @@ async function verifyOTP() {
 
   clearAlert();
   try {
-    const rows = await sbGet('agent_otps', `agent_id=eq.${resetAgentId}&otp_code=eq.${code}&purpose=eq.password_reset&used=eq.false&select=id,expires_at`);
-    if (!rows || !rows.length) { showAlert('Invalid OTP. Try again.', true); return; }
-    const otp = rows[0];
-    if (new Date(otp.expires_at) < new Date()) { showAlert('OTP expired. Request a new one.', true); return; }
-    // Mark used
-    await sbPatch('agent_otps', otp.id, { used: true });
+    const r = await fetch('/api/agent-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify-reset-otp', agentCode: resetAgentCode, email: resetEmail, code })
+    });
+    const d = await r.json();
+    if (!r.ok || !d.valid) { showAlert(d.error || 'Invalid OTP. Try again.', true); return; }
+    resetAgentId = d.agentId;
     clearInterval(otpCountdown);
     resetStep(3);
   } catch(e) {

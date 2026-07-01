@@ -188,7 +188,6 @@ tbody td strong{color:var(--text);font-weight:600}
       <button class="sbn" onclick="showPage('bookings',this)"><i class="fa fa-calendar-check"></i> Bookings <span class="sbn-badge" id="newBadge" style="display:none">0</span></button>
       <button class="sbn" onclick="showPage('travellers',this)"><i class="fa fa-id-card"></i> Travellers</button>
       <div class="sb-lbl">Direct Sales</div>
-      <button class="sbn" onclick="showPage('client-bookings',this)"><i class="fa fa-user-tag"></i> Client Bookings <span class="sbn-badge" id="clientBkBadge" style="display:none">0</span></button>
       <div class="sb-lbl">Services</div>
       <button class="sbn" onclick="showPage('umrah',this)"><i class="fa fa-star-and-crescent"></i> Umrah Packages</button>
       <button class="sbn" onclick="showPage('tours',this)"><i class="fa fa-globe"></i> World Tours</button>
@@ -259,42 +258,6 @@ tbody td strong{color:var(--text);font-weight:600}
   <div class="card">
     <div class="ch"><h3>Recent Bookings</h3><button class="btn btn-t" onclick="showPage('bookings')"><i class="fa fa-arrow-right"></i> All</button></div>
     <div class="tw"><table><thead><tr><th>Ref</th><th>Customer</th><th>Tour</th><th>Date</th><th>Status</th></tr></thead><tbody id="dash-tb"><tr><td colspan="5" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody></table></div>
-  </div>
-</div>
-
-<!-- ═══ CLIENT BOOKINGS (Admin's own direct clients — no agent involved) ═══ -->
-<div class="page" id="pg-client-bookings">
-  <div class="ph">
-    <div><h2>Client <em>Bookings</em></h2><p>Bookings you create directly for your own clients — separate from the agent network</p></div>
-    <button class="btn btn-g" onclick="openClbkModal()"><i class="fa fa-plus"></i> New Client Booking</button>
-  </div>
-  <div class="sg">
-    <div class="sc"><div class="sc-ico" style="background:var(--gold-bg)"><i class="fa fa-receipt" style="color:var(--gold)"></i></div><div class="sc-n" id="clbk-total">—</div><div class="sc-l">Total Bookings</div></div>
-    <div class="sc"><div class="sc-ico" style="background:rgba(220,38,38,0.08)"><i class="fa fa-hand-holding-dollar" style="color:var(--red)"></i></div><div class="sc-n" id="clbk-unpaid">—</div><div class="sc-l">Unpaid / Partial</div></div>
-    <div class="sc"><div class="sc-ico" style="background:var(--green-bg)"><i class="fa fa-sack-dollar" style="color:var(--green)"></i></div><div class="sc-n" id="clbk-collected">—</div><div class="sc-l">Collected (30d)</div></div>
-    <div class="sc"><div class="sc-ico" style="background:rgba(96,165,250,0.1)"><i class="fa fa-coins" style="color:var(--blue)"></i></div><div class="sc-n" id="clbk-profit">—</div><div class="sc-l">Gross Profit (30d)</div></div>
-  </div>
-  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
-    <select class="ss" onchange="filterClbk(this.value)" style="padding:8px 12px">
-      <option value="">All Status</option>
-      <option value="pending">Pending</option>
-      <option value="confirmed">Confirmed</option>
-      <option value="issued">Issued</option>
-      <option value="cancelled">Cancelled</option>
-    </select>
-    <select class="ss" onchange="filterClbkPay(this.value)" style="padding:8px 12px">
-      <option value="">All Payment</option>
-      <option value="unpaid">Unpaid</option>
-      <option value="partial">Partial</option>
-      <option value="paid">Paid</option>
-    </select>
-    <input class="si" style="width:220px" placeholder="Search client name, ref, phone..." oninput="searchClbk(this.value)">
-  </div>
-  <div class="card">
-    <div class="tw"><table>
-      <thead><tr><th>Ref</th><th>Client</th><th>Service</th><th>Pax</th><th>Sell Price</th><th>Received</th><th>Payment</th><th>Status</th><th>Travel Date</th><th>Actions</th></tr></thead>
-      <tbody id="clbk-tb"><tr><td colspan="10" class="etd"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
-    </table></div>
   </div>
 </div>
 
@@ -586,7 +549,15 @@ tbody td strong{color:var(--text);font-weight:600}
         </div>
         <div class="fg"><label>Sort Order</label><input id="coSort" class="mfi" type="number" value="0"></div>
       </div>
-      <div class="fg"><label>Logo URL</label><input id="coLogo" class="mfi" placeholder="https://... paste image URL" oninput="prevCoLogo(this.value)"></div>
+      <div class="fg">
+        <label>Logo</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label for="coLogoFile" style="display:flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px dashed var(--gold);border-radius:5px;padding:8px 11px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;white-space:nowrap"><i class="fa fa-upload"></i> Upload</label>
+          <input type="file" id="coLogoFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="adminImageUpload(this,'insurance', 'coLogo', prevCoLogo)">
+          <input id="coLogo" class="mfi" placeholder="...or paste an image link" oninput="prevCoLogo(this.value)" style="flex:1">
+        </div>
+        <div id="coLogoUploadStatus" style="font-size:10px;color:var(--gold);margin-top:4px;min-height:12px"></div>
+      </div>
       <div id="coLogoPreview" style="margin-top:8px;display:none"><img id="coLogoImg" style="max-height:50px;max-width:120px;object-fit:contain;background:#fff;border-radius:6px;padding:4px;border:1px solid var(--border2)"></div>
       <div class="fg"><label>Description</label><textarea id="coDesc" class="mfi" rows="2" placeholder="Brief description of company"></textarea></div>
       <div class="mf">
@@ -721,15 +692,13 @@ async function supaGet(table, qs='') {
   return data;
 }
 async function supaPost(table, data) {
-  const r = await fetch(`${INS_SUPA}/rest/v1/${table}`, {method:'POST',headers:INS_H,body:JSON.stringify(data)});
-  return r.json();
+  return adminData(table, 'create', null, data);
 }
 async function supaPatch(table, id, data) {
-  const r = await fetch(`${INS_SUPA}/rest/v1/${table}?id=eq.${id}`, {method:'PATCH',headers:INS_H,body:JSON.stringify(data)});
-  return r.json();
+  return adminData(table, 'update', id, data);
 }
 async function supaDelete(table, id) {
-  await fetch(`${INS_SUPA}/rest/v1/${table}?id=eq.${id}`, {method:'DELETE',headers:INS_H});
+  await adminData(table, 'delete', id);
 }
 
 /* ── TAB SWITCHING ── */
@@ -778,6 +747,7 @@ function openCoModal(co) {
   document.getElementById('coType').value  = co?.type||'Conventional';
   document.getElementById('coSort').value  = co?.sort_order??0;
   document.getElementById('coLogo').value  = co?.logo_url||'';
+  document.getElementById('coLogoUploadStatus').textContent='';
   document.getElementById('coDesc').value  = co?.description||'';
   prevCoLogo(co?.logo_url||'');
   document.getElementById('coModal').classList.add('open');
@@ -1208,7 +1178,16 @@ async function deleteRt(id) {
       <div class="fg"><label>Hotels</label><input type="text" id="pkgHt" placeholder="Makarem Ajyad (Makkah), Pullman ZamZam (Madinah)"></div>
       <div class="fg"><label>Includes (comma separated)</label><input type="text" id="pkgInc" placeholder="Breakfast, Transfers, Ziyarat"></div>
       <div class="fg"><label>Excludes</label><input type="text" id="pkgExc" placeholder="Flights, Visa"></div>
-      <div class="fg"><label>Image URL</label><input type="url" id="pkgImg" placeholder="https://..."></div>
+      <div class="fg">
+        <label>Package Image</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label for="pkgImgFile" style="display:flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px dashed var(--gold);border-radius:5px;padding:8px 11px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;white-space:nowrap"><i class="fa fa-upload"></i> Upload</label>
+          <input type="file" id="pkgImgFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="adminImageUpload(this,'packages','pkgImg',url=>document.getElementById('pkgImgPreview').src=url)">
+          <input type="url" id="pkgImg" placeholder="...or paste an image link" style="flex:1">
+          <img id="pkgImgPreview" src="" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border2);display:none" onerror="this.style.display='none'" onload="this.style.display='block'">
+        </div>
+        <div id="pkgImgUploadStatus" style="font-size:10px;color:var(--gold);margin-top:4px;min-height:12px"></div>
+      </div>
       <div class="fg"><label>Status</label><select id="pkgSt"><option value="active">Active (visible)</option><option value="inactive">Inactive (hidden)</option></select></div>
       <div class="fg" style="display:flex;align-items:center;gap:10px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:12px 16px">
         <input type="checkbox" id="pkgFeatured" style="width:18px;height:18px;accent-color:#C9A84C;cursor:pointer">
@@ -1241,7 +1220,16 @@ async function deleteRt(id) {
       <div class="fg"><label>Requirements</label><textarea id="vReq" placeholder="Passport (6mo valid), Photo, Bank Statement..."></textarea></div>
       <div class="fr">
         <div class="fg"><label>Country Flag Emoji</label><input type="text" id="vFlag" placeholder="🇦🇪" style="font-size:20px" maxlength="4"></div>
-        <div class="fg"><label>Country Image URL</label><input type="url" id="vImg" placeholder="https://... (optional country photo)"></div>
+        <div class="fg">
+          <label>Country Image</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label for="vImgFile" style="display:flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px dashed var(--gold);border-radius:5px;padding:8px 11px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;white-space:nowrap"><i class="fa fa-upload"></i> Upload</label>
+            <input type="file" id="vImgFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="adminImageUpload(this,'visa','vImg',url=>{const p=document.getElementById('vImgPreview');p.src=url;p.style.display='block';})">
+            <input type="url" id="vImg" placeholder="...or paste an image link" style="flex:1">
+            <img id="vImgPreview" src="" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border2);display:none">
+          </div>
+          <div id="vImgUploadStatus" style="font-size:10px;color:var(--gold);margin-top:4px;min-height:12px"></div>
+        </div>
       </div>
       <div class="fg"><label>Status</label><select id="vSt"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
       <div class="mf">
@@ -1275,18 +1263,20 @@ async function deleteRt(id) {
       </div>
       <!-- LOGO FIELD — outside 2-col grid so it spans full width -->
       <div class="fg" style="margin-bottom:14px">
-        <label style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Airline Logo URL <span style="color:var(--dim);font-weight:400;font-size:9px;text-transform:none;letter-spacing:0">— paste image link (PNG/JPG)</span></label>
+        <label style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Airline Logo</label>
         <div style="display:flex;gap:10px;align-items:center;margin-top:5px">
-          <input type="url" id="flLogo" placeholder="https://... right-click airline logo online → Copy image address → paste here" 
-            style="flex:1;background:var(--raised);border:1px solid var(--border2);border-radius:5px;padding:9px 11px;font-size:12px;color:var(--text);outline:none;transition:border-color .15s" 
+          <label for="flLogoFile" style="display:flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px dashed var(--gold);border-radius:5px;padding:9px 12px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;white-space:nowrap">
+            <i class="fa fa-upload"></i> Upload Image
+          </label>
+          <input type="file" id="flLogoFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="adminImageUpload(this,'group-tickets','flLogo',previewLogo)">
+          <input type="url" id="flLogo" placeholder="...or paste an image link"
+            style="flex:1;background:var(--raised);border:1px solid var(--border2);border-radius:5px;padding:9px 11px;font-size:12px;color:var(--text);outline:none;transition:border-color .15s"
             oninput="previewLogo(this.value)">
           <div id="logoPreview" style="width:52px;height:52px;background:#fff;border-radius:8px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:3px">
             <span style="font-size:9px;color:var(--dim);text-align:center">Logo<br>Preview</span>
           </div>
         </div>
-        <div style="font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5">
-          💡 Google Images → search <strong style="color:var(--text)">"[Airline] logo PNG"</strong> → right-click image → <strong style="color:var(--text)">"Copy image address"</strong> → paste above
-        </div>
+        <div id="flLogoUploadStatus" style="font-size:10px;color:var(--gold);margin-top:5px;min-height:12px"></div>
       </div>
       <div class="fr">
         <div class="fg"><label>Route *</label><input type="text" id="flRt" placeholder="LHE → JED"></div>
@@ -1445,112 +1435,21 @@ async function deleteRt(id) {
         <div class="fg"><label>Category</label><input type="text" id="blCat" placeholder="Umrah Tips, Travel..."></div>
         <div class="fg"><label>Status</label><select id="blSt"><option value="false">Draft (hidden)</option><option value="true">Published (live)</option></select></div>
       </div>
-      <div class="fg"><label>Cover Image URL</label><input type="url" id="blImg" placeholder="https://..."></div>
+      <div class="fg">
+        <label>Cover Image</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label for="blImgFile" style="display:flex;align-items:center;gap:6px;background:var(--gold-bg);border:1px dashed var(--gold);border-radius:5px;padding:8px 11px;font-size:11px;font-weight:700;color:var(--gold);cursor:pointer;white-space:nowrap"><i class="fa fa-upload"></i> Upload</label>
+          <input type="file" id="blImgFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="adminImageUpload(this,'blog','blImg',url=>{const p=document.getElementById('blImgPreview');p.src=url;p.style.display='block';})">
+          <input type="url" id="blImg" placeholder="...or paste an image link" style="flex:1">
+          <img id="blImgPreview" src="" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border2);display:none">
+        </div>
+        <div id="blImgUploadStatus" style="font-size:10px;color:var(--gold);margin-top:4px;min-height:12px"></div>
+      </div>
       <div class="fg"><label>Excerpt</label><input type="text" id="blEx" placeholder="Short description..."></div>
       <div class="fg"><label>Content *</label><textarea id="blCon" style="min-height:160px" placeholder="Write blog post..."></textarea></div>
       <div class="mf">
         <button class="btn btn-g" onclick="saveBlog()"><i class="fa fa-save"></i> Save</button>
         <button class="btn btn-gh" onclick="closeModal('blogModal')">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ CLIENT BOOKING MODAL ═══ -->
-<div class="modal-bg" id="clbkModal">
-  <div class="modal" style="max-width:640px">
-    <div class="mh"><h3 id="clbkModalTitle">New <em>Client Booking</em></h3><button class="mc" onclick="closeModal('clbkModal')"><i class="fa fa-times"></i></button></div>
-    <div class="mb" style="padding:16px 18px">
-      <input type="hidden" id="clbkId">
-      <div class="ins-section-title">Client Details</div>
-      <div class="fr">
-        <div class="fg"><label>Client Name *</label><input type="text" id="clbkName" placeholder="Full name"></div>
-        <div class="fg"><label>Phone *</label><input type="tel" id="clbkPhone" placeholder="03XX XXXXXXX"></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label>Email</label><input type="email" id="clbkEmail" placeholder="optional"></div>
-        <div class="fg"><label>CNIC</label><input type="text" id="clbkCnic" placeholder="optional"></div>
-      </div>
-      <div class="ins-section-title" style="margin-top:14px">Service Details</div>
-      <div class="fr">
-        <div class="fg"><label>Service Type *</label>
-          <select id="clbkSvcType">
-            <option value="group_ticket">Group Ticket</option>
-            <option value="umrah">Umrah Package</option>
-            <option value="tour">World Tour</option>
-            <option value="visa">Visa</option>
-            <option value="insurance">Insurance</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="fg"><label>Pax Count</label><input type="number" id="clbkPax" value="1" min="1"></div>
-      </div>
-      <div class="fg"><label>Service Name / Description *</label><input type="text" id="clbkSvcName" placeholder="e.g. PIA Lahore–Jeddah, 14 Dec departure"></div>
-      <div class="fg"><label>Travel Date</label><input type="date" id="clbkDate"></div>
-      <div class="ins-section-title" style="margin-top:14px">Pricing</div>
-      <div class="fr">
-        <div class="fg"><label>Cost Price (PKR)</label><input type="number" id="clbkCost" placeholder="What we pay supplier" value="0"></div>
-        <div class="fg"><label>Sell Price (PKR) *</label><input type="number" id="clbkSell" placeholder="What client pays us" value="0"></div>
-      </div>
-      <div style="background:var(--raised);border:1px solid var(--border2);border-radius:6px;padding:9px 12px;font-size:11px;color:var(--muted);margin-bottom:12px">
-        <i class="fa fa-circle-info" style="color:var(--gold)"></i> Gross profit on this booking: <strong id="clbkProfitPreview" style="color:var(--text)">Rs. 0</strong>
-      </div>
-      <div class="fg"><label>Admin Notes</label><textarea id="clbkNotes" placeholder="Internal notes..."></textarea></div>
-      <div class="mf">
-        <button class="btn btn-g" onclick="saveClbk()"><i class="fa fa-save"></i> Save Booking</button>
-        <button class="btn btn-gh" onclick="closeModal('clbkModal')">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ CLIENT BOOKING DETAIL / STATUS MODAL ═══ -->
-<div class="modal-bg" id="clbkDetailModal">
-  <div class="modal" style="max-width:560px">
-    <div class="mh"><h3>Booking <em>Details</em></h3><button class="mc" onclick="closeModal('clbkDetailModal')"><i class="fa fa-times"></i></button></div>
-    <div class="mb" style="padding:16px 18px">
-      <input type="hidden" id="clbkDId">
-      <div id="clbkDDetail" style="font-size:12px;color:var(--text);line-height:1.8;margin-bottom:14px"></div>
-      <div class="fg"><label>Update Status</label>
-        <select id="clbkDStatus">
-          <option value="pending">Pending</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="issued">Issued</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-      </div>
-      <div class="mf">
-        <button class="btn btn-g" onclick="saveClbkStatus()"><i class="fa fa-check"></i> Update</button>
-        <button class="btn btn-t" onclick="closeModal('clbkDetailModal');openPayModal(document.getElementById('clbkDId').value)"><i class="fa fa-money-bill"></i> Record Payment</button>
-        <button class="btn btn-gh" onclick="closeModal('clbkDetailModal')">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ RECORD PAYMENT MODAL ═══ -->
-<div class="modal-bg" id="payModal">
-  <div class="modal" style="max-width:420px">
-    <div class="mh"><h3>Record <em>Payment</em></h3><button class="mc" onclick="closeModal('payModal')"><i class="fa fa-times"></i></button></div>
-    <div class="mb" style="padding:16px 18px">
-      <input type="hidden" id="payBookingId">
-      <p id="payBookingInfo" style="font-size:12px;color:var(--muted);margin-bottom:14px"></p>
-      <div class="fg"><label>Amount Received (PKR) *</label><input type="number" id="payAmount" placeholder="50000"></div>
-      <div class="fg"><label>Payment Method</label>
-        <select id="payMethod">
-          <option value="cash">Cash</option>
-          <option value="bank_transfer">Bank Transfer</option>
-          <option value="jazzcash">JazzCash</option>
-          <option value="easypaisa">Easypaisa</option>
-          <option value="cheque">Cheque</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div class="fg"><label>Reference No.</label><input type="text" id="payRef" placeholder="optional"></div>
-      <div class="fg"><label>Notes</label><input type="text" id="payNotes" placeholder="optional"></div>
-      <div class="mf">
-        <button class="btn btn-g" onclick="savePayment()"><i class="fa fa-check"></i> Record Payment</button>
-        <button class="btn btn-gh" onclick="closeModal('payModal')">Cancel</button>
       </div>
     </div>
   </div>
@@ -1573,9 +1472,9 @@ document.getElementById('dashDate').textContent=new Date().toLocaleDateString('e
 /* REST helpers */
 const H = {apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'};
 async function GET(t,q=''){const r=await fetch(URL0+'/rest/v1/'+t+'?'+q,{headers:H});const d=await r.json();if(!Array.isArray(d))throw new Error(JSON.stringify(d));return d;}
-async function POST(t,b){const r=await fetch(URL0+'/rest/v1/'+t,{method:'POST',headers:{...H,Prefer:'return=representation'},body:JSON.stringify(b)});const d=await r.json();if(r.ok)return Array.isArray(d)?d[0]:d;throw new Error(JSON.stringify(d));}
-async function PATCH(t,id,b){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{method:'PATCH',headers:{...H,Prefer:'return=representation'},body:JSON.stringify(b)});const d=await r.json();if(r.ok)return Array.isArray(d)?d[0]:d;throw new Error(JSON.stringify(d));}
-async function DEL(t,id){const r=await fetch(URL0+'/rest/v1/'+t+'?id=eq.'+id,{method:'DELETE',headers:H});if(!r.ok){const d=await r.json();throw new Error(JSON.stringify(d));}}
+async function POST(t,b){return adminData(t,'create',null,b);}
+async function PATCH(t,id,b){return adminData(t,'update',id,b);}
+async function DEL(t,id){return adminData(t,'delete',id);}
 
 /* Secure agents-table writes — balances, credit limits, tiers, create/delete.
    Routed through /api/admin-agents using the real admin session token, since
@@ -1627,29 +1526,6 @@ async function loadAll(){
     renderUmrah();renderTours();renderVisa();renderFlights(flights);renderBlog();
   }catch(e){toast('Load error: '+e.message,true);}
   loadAgentData();
-  loadClientBookings();
-}
-
-/* Load Client Bookings (admin's own direct clients) — separate table,
-   separate endpoint call, so a failure here never blocks the agent
-   system or the core admin pages from loading. */
-let clientBookings=[],clientPayments=[];
-async function loadClientBookings(){
-  try{
-    const [cb,cp]=await Promise.all([
-      adminData('client_bookings','list',null,null,'order=created_at.desc'),
-      adminData('client_payments','list',null,null,'order=created_at.desc&limit=300'),
-    ]);
-    clientBookings=cb;clientPayments=cp;
-    renderClbk(clientBookings);
-    renderClbkStats();
-    const needsAttn=clientBookings.filter(b=>b.status!=='cancelled'&&b.payment_status!=='paid').length;
-    const badge=document.getElementById('clientBkBadge');
-    if(needsAttn>0){badge.style.display='inline';badge.textContent=needsAttn;}else{badge.style.display='none';}
-  }catch(e){
-    console.error('Client bookings load error:',e);
-    toast('Could not load client bookings — check Supabase setup.',true);
-  }
 }
 
 /* Load agent system data separately so a failure here doesn't break core admin */
@@ -1861,6 +1737,8 @@ function openPkgModal(cat){
   document.getElementById('pkgId').value='';
   document.getElementById('pkgCat').value=cat;
   ['pkgName','pkgDur','pkgPrice','pkgPn','pkgDest','pkgDep','pkgRet','pkgAl','pkgRt','pkgHt','pkgInc','pkgExc','pkgImg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('pkgImgPreview').style.display='none';
+  document.getElementById('pkgImgUploadStatus').textContent='';
   document.getElementById('pkgSt').value='active';
   openModal('pkgModal');
 }
@@ -1883,6 +1761,9 @@ function editPkg(id,cat){
   document.getElementById('pkgInc').value=p.includes||'';
   document.getElementById('pkgExc').value=p.excludes||'';
   document.getElementById('pkgImg').value=p.image_url||'';
+  document.getElementById('pkgImgUploadStatus').textContent='';
+  const pkgImgPrev=document.getElementById('pkgImgPreview');
+  if(p.image_url){pkgImgPrev.src=p.image_url;pkgImgPrev.style.display='block';}else{pkgImgPrev.style.display='none';}
   document.getElementById('pkgFeatured').checked=p.featured||false;
   document.getElementById('pkgSt').value=p.status||'active';
   openModal('pkgModal');
@@ -1942,7 +1823,9 @@ function renderVisa(){
 function openVisaModal(){
   document.getElementById('visaTitle').innerHTML='Add <em>Visa Service</em>';
   document.getElementById('visaId').value='';
-  ['vTitle','vCountry','vPrice','vDays','vValidity','vMaxStay','vProc','vReq'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['vTitle','vCountry','vPrice','vDays','vValidity','vMaxStay','vProc','vReq','vImg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('vImgPreview').style.display='none';
+  document.getElementById('vImgUploadStatus').textContent='';
   document.getElementById('vType').value='tourist';
   document.getElementById('vSt').value='active';
   openModal('visaModal');
@@ -1963,6 +1846,9 @@ function editVisa(id){
   document.getElementById('vSt').value=v.status||'active';
   document.getElementById('vFlag').value=v.country_flag||'';
   document.getElementById('vImg').value=v.country_image||'';
+  document.getElementById('vImgUploadStatus').textContent='';
+  const vImgPrev=document.getElementById('vImgPreview');
+  if(v.country_image){vImgPrev.src=v.country_image;vImgPrev.style.display='block';}else{vImgPrev.style.display='none';}
   openModal('visaModal');
 }
 async function saveVisa(){
@@ -2008,6 +1894,7 @@ function openFlightModal(){
   document.getElementById('flightId').value='';
   ['flNo','flAl','flAlC','flRt','flDt','flAt','flDd','flBg','flMl','flPr','flLogo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('logoPreview').innerHTML='<span style="font-size:10px;color:var(--dim)">Preview</span>';
+  document.getElementById('flLogoUploadStatus').textContent='';
   document.getElementById('flCat').value='umrah';
   document.getElementById('flCl').value='Economy';
   document.getElementById('flTs').value='';
@@ -2024,6 +1911,7 @@ function editFlight(id){
   document.getElementById('flAl').value=f.airline||'';
   document.getElementById('flAlC').value=f.airline_code||'';
   document.getElementById('flLogo').value=f.airline_logo_url||'';
+  document.getElementById('flLogoUploadStatus').textContent='';
   previewLogo(f.airline_logo_url||'');
   document.getElementById('flRt').value=f.route||'';
   document.getElementById('flDt').value=f.dep_time||'';
@@ -2072,6 +1960,8 @@ function openBlogModal(){
   document.getElementById('blogTitle').innerHTML='New <em>Blog Post</em>';
   document.getElementById('blogId').value='';
   ['blT','blCat','blImg','blEx','blCon'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('blImgPreview').style.display='none';
+  document.getElementById('blImgUploadStatus').textContent='';
   document.getElementById('blSt').value='false';
   openModal('blogModal');
 }
@@ -2082,6 +1972,10 @@ function editBlog(id){
   document.getElementById('blT').value=b.title||'';
   document.getElementById('blCat').value=b.category||'';
   document.getElementById('blImg').value=b.cover_image||b.image_url||'';
+  document.getElementById('blImgUploadStatus').textContent='';
+  const blImgPrev=document.getElementById('blImgPreview');
+  const blImgUrl=b.cover_image||b.image_url;
+  if(blImgUrl){blImgPrev.src=blImgUrl;blImgPrev.style.display='block';}else{blImgPrev.style.display='none';}
   document.getElementById('blEx').value=b.excerpt||'';
   document.getElementById('blCon').value=b.content||'';
   document.getElementById('blSt').value=String(b.published||false);
@@ -2732,181 +2626,6 @@ function loadFinance(){
   }
 }
 
-/* ─── CLIENT BOOKINGS (admin's own direct clients) ─── */
-function clbkRef(){
-  const d=new Date();
-  const ymd=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
-  const rand=Math.floor(100+Math.random()*900);
-  return `CB-${ymd}-${rand}`;
-}
-function renderClbk(data){
-  const tb=document.getElementById('clbk-tb');
-  if(!tb)return;
-  if(!data.length){tb.innerHTML='<tr><td colspan="10" class="etd">No client bookings yet. Click "New Client Booking" to create one.</td></tr>';return;}
-  const svcLbl={group_ticket:'✈ Ticket',umrah:'🕌 Umrah',tour:'🌍 Tour',visa:'🛂 Visa',insurance:'🛡 Insurance',other:'Other'};
-  tb.innerHTML=data.map(b=>{
-    const sell=parseFloat(b.sell_price||0),recv=parseFloat(b.amount_received||0);
-    const payPill={unpaid:'p-canc',partial:'p-pend',paid:'p-conf'}[b.payment_status]||'p-pend';
-    const stPill={pending:'p-pend',confirmed:'p-conf',issued:'p-issued',cancelled:'p-canc'}[b.status]||'p-pend';
-    return `<tr>
-      <td style="font-family:monospace;font-size:11px;color:var(--gold)">${b.booking_ref}</td>
-      <td><strong>${b.client_name}</strong><div style="font-size:10px;color:var(--muted)">${b.client_phone||'—'}</div></td>
-      <td style="font-size:12px">${svcLbl[b.service_type]||b.service_type}<div style="font-size:10px;color:var(--muted)">${b.service_name||''}</div></td>
-      <td>${b.pax_count||1}</td>
-      <td>Rs. ${sell.toLocaleString()}</td>
-      <td>Rs. ${recv.toLocaleString()}</td>
-      <td><span class="pill ${payPill}">${b.payment_status}</span></td>
-      <td><span class="pill ${stPill}">${b.status}</span></td>
-      <td style="font-size:12px">${b.travel_date||'—'}</td>
-      <td><button class="btn-s" onclick="openClbkDetail('${b.id}')"><i class="fa fa-eye"></i> View</button></td>
-    </tr>`;
-  }).join('');
-}
-function filterClbk(status){renderClbk(status?clientBookings.filter(b=>b.status===status):clientBookings);}
-function filterClbkPay(pay){renderClbk(pay?clientBookings.filter(b=>b.payment_status===pay):clientBookings);}
-function searchClbk(q){
-  const s=q.toLowerCase();
-  renderClbk(s?clientBookings.filter(b=>(b.client_name||'').toLowerCase().includes(s)||(b.booking_ref||'').toLowerCase().includes(s)||(b.client_phone||'').includes(s)):clientBookings);
-}
-function renderClbkStats(){
-  const total=clientBookings.filter(b=>b.status!=='cancelled');
-  const unpaid=total.filter(b=>b.payment_status!=='paid').length;
-  const since=new Date(Date.now()-30*24*60*60*1000);
-  const recent=total.filter(b=>new Date(b.created_at)>=since);
-  const collected=clientPayments.filter(p=>new Date(p.created_at)>=since).reduce((s,p)=>s+parseFloat(p.amount||0),0);
-  const profit=recent.reduce((s,b)=>s+(parseFloat(b.sell_price||0)-parseFloat(b.cost_price||0)),0);
-  document.getElementById('clbk-total').textContent=total.length;
-  document.getElementById('clbk-unpaid').textContent=unpaid;
-  document.getElementById('clbk-collected').textContent='Rs. '+collected.toLocaleString();
-  document.getElementById('clbk-profit').textContent='Rs. '+profit.toLocaleString();
-}
-function clbkUpdateProfitPreview(){
-  const cost=parseFloat(document.getElementById('clbkCost').value||0);
-  const sell=parseFloat(document.getElementById('clbkSell').value||0);
-  const profit=sell-cost;
-  const el=document.getElementById('clbkProfitPreview');
-  el.textContent='Rs. '+profit.toLocaleString();
-  el.style.color=profit>=0?'var(--green)':'var(--red)';
-}
-function openClbkModal(){
-  document.getElementById('clbkModalTitle').innerHTML='New <em>Client Booking</em>';
-  document.getElementById('clbkId').value='';
-  ['clbkName','clbkPhone','clbkEmail','clbkCnic','clbkSvcName','clbkDate','clbkNotes'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('clbkSvcType').value='group_ticket';
-  document.getElementById('clbkPax').value=1;
-  document.getElementById('clbkCost').value=0;
-  document.getElementById('clbkSell').value=0;
-  clbkUpdateProfitPreview();
-  openModal('clbkModal');
-  // live profit preview while typing
-  document.getElementById('clbkCost').oninput=clbkUpdateProfitPreview;
-  document.getElementById('clbkSell').oninput=clbkUpdateProfitPreview;
-}
-async function saveClbk(){
-  const name=document.getElementById('clbkName').value.trim();
-  const phone=document.getElementById('clbkPhone').value.trim();
-  const svcName=document.getElementById('clbkSvcName').value.trim();
-  const sell=parseFloat(document.getElementById('clbkSell').value||0);
-  if(!name||!phone){toast('Client name and phone are required.',true);return;}
-  if(!svcName){toast('Service name / description is required.',true);return;}
-  const payload={
-    booking_ref:clbkRef(),
-    client_name:name,
-    client_phone:phone,
-    client_email:document.getElementById('clbkEmail').value.trim()||null,
-    client_cnic:document.getElementById('clbkCnic').value.trim()||null,
-    service_type:document.getElementById('clbkSvcType').value,
-    service_name:svcName,
-    pax_count:parseInt(document.getElementById('clbkPax').value||1),
-    travel_date:document.getElementById('clbkDate').value||null,
-    cost_price:parseFloat(document.getElementById('clbkCost').value||0),
-    sell_price:sell,
-    admin_notes:document.getElementById('clbkNotes').value.trim()||null,
-    created_by:admin&&admin.email||'admin',
-  };
-  try{
-    const created=await adminData('client_bookings','create',null,payload);
-    clientBookings=[created,...clientBookings];
-    renderClbk(clientBookings);renderClbkStats();
-    closeModal('clbkModal');
-    toast(`Client booking ${created.booking_ref} created!`);
-  }catch(e){toast('Error: '+e.message,true);}
-}
-function openClbkDetail(id){
-  const b=clientBookings.find(x=>x.id===id);if(!b)return;
-  document.getElementById('clbkDId').value=id;
-  const sell=parseFloat(b.sell_price||0),cost=parseFloat(b.cost_price||0),recv=parseFloat(b.amount_received||0);
-  document.getElementById('clbkDDetail').innerHTML=`
-    <strong>Ref:</strong> ${b.booking_ref}<br>
-    <strong>Client:</strong> ${b.client_name} (${b.client_phone||'—'})<br>
-    <strong>Email:</strong> ${b.client_email||'—'}<br>
-    <strong>Service:</strong> ${b.service_name||'—'} · ${b.pax_count||1} pax<br>
-    <strong>Travel Date:</strong> ${b.travel_date||'—'}<br>
-    <strong>Cost Price:</strong> Rs. ${cost.toLocaleString()}<br>
-    <strong>Sell Price:</strong> Rs. ${sell.toLocaleString()}<br>
-    <strong>Gross Profit:</strong> <span style="color:${(sell-cost)>=0?'var(--green)':'var(--red)'}">Rs. ${(sell-cost).toLocaleString()}</span><br>
-    <strong>Received So Far:</strong> Rs. ${recv.toLocaleString()} <span class="pill ${b.payment_status==='paid'?'p-conf':b.payment_status==='partial'?'p-pend':'p-canc'}">${b.payment_status}</span><br>
-    <strong>Balance Due:</strong> Rs. ${Math.max(0,sell-recv).toLocaleString()}<br>
-    ${b.admin_notes?`<strong>Notes:</strong> ${b.admin_notes}<br>`:''}
-    ${b.supplier_ref?`<strong>Supplier Ref:</strong> <span style="font-family:monospace">${b.supplier_ref}</span>`:''}
-  `;
-  document.getElementById('clbkDStatus').value=b.status||'pending';
-  openModal('clbkDetailModal');
-}
-async function saveClbkStatus(){
-  const id=document.getElementById('clbkDId').value;
-  const status=document.getElementById('clbkDStatus').value;
-  try{
-    let extra={status,updated_at:new Date().toISOString()};
-    if(status==='issued'){
-      const b=clientBookings.find(x=>x.id===id);
-      if(b&&b.source==='supplier_api'&&!b.supplier_ref){
-        // TODO: replace this mock with a real call to the supplier (e.g. New Chaudhry) issue endpoint,
-        // same pattern as performIssue() for agent_bookings.
-        extra.supplier_ref='MOCK-'+Date.now().toString(36).toUpperCase();
-        extra.supplier_status='issued_mock';
-      }
-    }
-    await adminData('client_bookings','update',id,extra);
-    clientBookings=clientBookings.map(b=>b.id===id?{...b,...extra}:b);
-    renderClbk(clientBookings);renderClbkStats();
-    closeModal('clbkDetailModal');
-    toast('Booking updated!');
-  }catch(e){toast('Error: '+e.message,true);}
-}
-function openPayModal(bookingId){
-  const b=clientBookings.find(x=>x.id===bookingId);if(!b)return;
-  document.getElementById('payBookingId').value=bookingId;
-  const sell=parseFloat(b.sell_price||0),recv=parseFloat(b.amount_received||0);
-  document.getElementById('payBookingInfo').innerHTML=`<strong>${b.booking_ref}</strong> — ${b.client_name}<br>Sell Price: Rs. ${sell.toLocaleString()} · Received: Rs. ${recv.toLocaleString()} · Due: Rs. ${Math.max(0,sell-recv).toLocaleString()}`;
-  document.getElementById('payAmount').value='';
-  document.getElementById('payRef').value='';
-  document.getElementById('payNotes').value='';
-  openModal('payModal');
-}
-async function savePayment(){
-  const bookingId=document.getElementById('payBookingId').value;
-  const amount=parseFloat(document.getElementById('payAmount').value||0);
-  if(!amount||amount<=0){toast('Enter a valid amount.',true);return;}
-  const b=clientBookings.find(x=>x.id===bookingId);if(!b)return;
-  try{
-    await adminData('client_payments','create',null,{
-      booking_id:bookingId,amount,method:document.getElementById('payMethod').value,
-      reference_no:document.getElementById('payRef').value.trim()||null,
-      notes:document.getElementById('payNotes').value.trim()||null,
-      received_by:admin&&admin.email||'admin'
-    });
-    const newRecv=parseFloat(b.amount_received||0)+amount;
-    const sell=parseFloat(b.sell_price||0);
-    const newPayStatus=newRecv>=sell?'paid':(newRecv>0?'partial':'unpaid');
-    await adminData('client_bookings','update',bookingId,{amount_received:newRecv,payment_status:newPayStatus,updated_at:new Date().toISOString()});
-    clientBookings=clientBookings.map(x=>x.id===bookingId?{...x,amount_received:newRecv,payment_status:newPayStatus}:x);
-    renderClbk(clientBookings);renderClbkStats();
-    closeModal('payModal');
-    toast(`Rs. ${amount.toLocaleString()} payment recorded for ${b.booking_ref}.`);
-  }catch(e){toast('Error: '+e.message,true);}
-}
-
 /* ─── SETTINGS ─── */
 async function changePwd(){
   const c=document.getElementById('cp1').value,n=document.getElementById('cp2').value,cf=document.getElementById('cp3').value;
@@ -2969,6 +2688,71 @@ function previewLogo(url) {
   const prev = document.getElementById('logoPreview');
   if (!url) { prev.innerHTML = '<span style="font-size:10px;color:var(--dim)">Preview</span>'; return; }
   prev.innerHTML = `<img src="${url}" style="width:44px;height:44px;object-fit:contain" onerror="this.parentElement.innerHTML='<span style=\'font-size:10px;color:var(--red)\'>Error</span>'">`;
+}
+
+/* ─── ADMIN IMAGE UPLOAD ───
+   Resizes/compresses the picked file in-browser (keeps uploads small and
+   fast — no giant phone-camera photos hitting the API), then sends it to
+   /api/admin-upload which stores it in Supabase Storage using the
+   service-role key. The resulting public URL is written into whichever
+   text input the field normally uses, so nothing else about how these
+   forms save has to change. */
+function compressImageFile(file, maxDim=1280, quality=0.82){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        let {width,height}=img;
+        if(width>maxDim||height>maxDim){
+          if(width>height){height=Math.round(height*maxDim/width);width=maxDim;}
+          else{width=Math.round(width*maxDim/height);height=maxDim;}
+        }
+        const canvas=document.createElement('canvas');
+        canvas.width=width;canvas.height=height;
+        canvas.getContext('2d').drawImage(img,0,0,width,height);
+        canvas.toBlob(blob=>{
+          if(!blob){reject(new Error('Could not process image.'));return;}
+          const r2=new FileReader();
+          r2.onload=()=>resolve({base64:r2.result.split(',')[1],contentType:'image/jpeg'});
+          r2.onerror=()=>reject(new Error('Could not read compressed image.'));
+          r2.readAsDataURL(blob);
+        }, 'image/jpeg', quality);
+      };
+      img.onerror=()=>reject(new Error('Could not read image file.'));
+      img.src=reader.result;
+    };
+    reader.onerror=()=>reject(new Error('Could not read file.'));
+    reader.readAsDataURL(file);
+  });
+}
+async function adminImageUpload(inputEl, folder, targetInputId, onDone){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ toast('Please select an image file.',true); inputEl.value=''; return; }
+  const statusId = targetInputId+'UploadStatus';
+  const statusEl = document.getElementById(statusId);
+  if(statusEl) statusEl.textContent='Uploading…';
+  try{
+    const {base64,contentType} = await compressImageFile(file);
+    const r = await fetch('/api/admin-upload',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+(admin&&admin.token||'')},
+      body:JSON.stringify({folder,fileName:file.name,fileBase64:base64,contentType})
+    });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error||'Upload failed.');
+    const target=document.getElementById(targetInputId);
+    if(target) target.value=d.url;
+    if(onDone) onDone(d.url);
+    if(statusEl) statusEl.textContent='Uploaded ✓';
+    toast('Image uploaded!');
+  }catch(e){
+    if(statusEl) statusEl.textContent='';
+    toast('Upload error: '+e.message,true);
+  } finally {
+    inputEl.value='';
+  }
 }
 </script>
 </body>
