@@ -167,7 +167,8 @@ tbody td strong{color:var(--text);font-weight:700}
 .otp-boxes{display:flex;gap:8px;justify-content:center;margin:16px 0}
 .otp-box{width:48px;height:56px;border:2px solid var(--bdr);border-radius:10px;font-size:22px;font-weight:800;text-align:center;color:var(--text);outline:none;transition:border-color .15s}
 .otp-box:focus{border-color:var(--gold)}
-.otp-timer{font-size:12px;color:var(--gold);font-weight:600;margin-top:8px}
+.otp-timer{font-size:12px;color:var(--dim);font-weight:600;margin-top:8px;cursor:default}
+.otp-timer.clickable{color:var(--gold);cursor:pointer;text-decoration:underline}
 
 /* TOAST */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:9999;transform:translateY(80px);opacity:0;transition:all .25s}
@@ -722,7 +723,7 @@ tbody td strong{color:var(--text);font-weight:700}
   <div class="modal" style="max-width:420px">
     <div class="mh">
       <h3 id="otpModalTitle">Issue <span>Request</span></h3>
-      <button class="m-close" onclick="closeModal('otpModal')"><i class="fa fa-xmark"></i></button>
+      <button class="m-close" onclick="cancelIssueRequest()"><i class="fa fa-xmark"></i></button>
     </div>
     <div class="mc">
       <div class="otp-wrap">
@@ -736,11 +737,11 @@ tbody td strong{color:var(--text);font-weight:700}
           <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,4)">
           <input class="otp-box" maxlength="1" type="tel" oninput="otpNext2(this,5)">
         </div>
-        <div class="otp-timer" id="bk-otp-timer">Resend in 60s</div>
+        <div class="otp-timer" id="bk-otp-timer">Sending OTP…</div>
       </div>
     </div>
     <div class="mf">
-      <button class="btn btn-ghost" onclick="closeModal('otpModal')">Cancel</button>
+      <button class="btn btn-ghost" onclick="cancelIssueRequest()">Cancel</button>
       <button class="btn btn-gold" id="otpModalConfirmBtn" onclick="confirmBookingOTP()"><i class="fa fa-bolt"></i> Send Issue Request</button>
     </div>
   </div>
@@ -1360,21 +1361,45 @@ async function confirmBookingOTP() {
 // OTP goes to the agent's own email. On success, status flips to
 // 'issue_requested' and ADMIN takes it from there — admin holds full
 // control over the real issuance (including the supplier-API call).
+let issueRequestInFlight = false;   // true while an OTP send/resend is in flight
+let otpModalOpenForBooking = null;  // booking id the OTP modal is currently active for
+let bkOtpTimerInterval = null;
+
 function startIssueRequest(bookingId) {
   const b = bookings.find(x=>x.id===bookingId);
   if (!b) { toast('Booking not found.', true); return; }
   if (!canRequestIssue(b)) { toast('This booking can no longer be issued — it may have expired.', true); loadBookings(); return; }
 
+  // Already open for this exact booking (e.g. user clicked the row's
+  // Issue button again while the modal was already up) — just bring it
+  // back into view instead of sending another OTP.
+  if (otpModalOpenForBooking === bookingId) { openModal('otpModal'); return; }
+  if (issueRequestInFlight) { toast('Already sending an OTP — one second…'); return; }
+
   pendingIssueBookingId = bookingId;
 
   document.getElementById('otpModalTitle').innerHTML = 'Issue <span>Request</span>';
-  document.getElementById('otpModalInfo').innerHTML = `Confirm you want East &amp; West to issue booking <strong>${b.booking_ref}</strong> now.<br>An OTP has been sent to your email.`;
-  document.getElementById('otpModalConfirmBtn').innerHTML = '<i class="fa fa-bolt"></i> Send Issue Request';
+  document.getElementById('otpModalInfo').innerHTML = `Confirm you want East &amp; West to issue booking <strong>${b.booking_ref}</strong> now.<br>Sending OTP to your email…`;
+  const confirmBtn = document.getElementById('otpModalConfirmBtn');
+  confirmBtn.disabled = true;
+  document.querySelectorAll('#otpModal .otp-box').forEach(box=>{box.value='';box.disabled=true;});
+  const timerEl = document.getElementById('bk-otp-timer');
+  timerEl.textContent = 'Sending OTP…';
+  timerEl.classList.remove('clickable');
+  timerEl.onclick = null;
 
-  sendIssueRequestOTP(b);
+  // Open the modal RIGHT NOW, in a loading state — this is what actually
+  // stops duplicate sends: the row's button is instantly covered by the
+  // overlay, so a second click can't slip through in the gap before the
+  // network request resolves.
+  openModal('otpModal');
+
+  sendIssueRequestOTP(b, false);
 }
 
-async function sendIssueRequestOTP(b) {
+async function sendIssueRequestOTP(b, isResend) {
+  if (issueRequestInFlight) return;
+  issueRequestInFlight = true;
   try {
     const r = await fetch('/api/agent-otp', {
       method: 'POST',
@@ -1382,23 +1407,91 @@ async function sendIssueRequestOTP(b) {
       body: JSON.stringify({ action: 'request-issue-otp' })
     });
     const d = await r.json();
-    if (!r.ok) { toast(d.error || 'Could not send OTP email.', true); return; }
+    if (!r.ok) {
+      toast(d.error || 'Could not send OTP email.', true);
+      if (isResend) {
+        // Let them try again once the cooldown passes rather than
+        // trapping them in a modal with no way forward.
+        document.getElementById('bk-otp-timer').textContent = 'Request new OTP';
+        document.getElementById('bk-otp-timer').classList.add('clickable');
+        document.getElementById('bk-otp-timer').onclick = requestNewBkOtp;
+      } else {
+        closeModal('otpModal');
+        otpModalOpenForBooking = null;
+      }
+      return;
+    }
     pendingOtpId = d.otpId;
-    toast('OTP sent to your email.');
+    otpModalOpenForBooking = b.id;
+    toast(isResend ? 'New OTP sent to your email.' : 'OTP sent to your email.');
 
-    document.querySelectorAll('#otpModal .otp-box').forEach(box=>box.value='');
-    openModal('otpModal');
+    document.getElementById('otpModalInfo').innerHTML = `Confirm you want East &amp; West to issue booking <strong>${b.booking_ref}</strong> now.<br>An OTP has been sent to your email.`;
+    const boxes = document.querySelectorAll('#otpModal .otp-box');
+    boxes.forEach(box=>{box.value='';box.disabled=false;});
+    document.getElementById('otpModalConfirmBtn').disabled = false;
+    boxes[0]?.focus();
     startBkOtpTimer();
-  } catch(e){ toast('Error sending OTP.',true); }
+  } catch(e) {
+    toast('Error sending OTP — check your connection.', true);
+    if (!isResend) { closeModal('otpModal'); otpModalOpenForBooking = null; }
+  } finally {
+    issueRequestInFlight = false;
+  }
 }
 
+function requestNewBkOtp() {
+  if (issueRequestInFlight) return;
+  const b = bookings.find(x=>x.id===pendingIssueBookingId);
+  if (!b) return;
+  const timerEl = document.getElementById('bk-otp-timer');
+  timerEl.classList.remove('clickable');
+  timerEl.onclick = null;
+  timerEl.textContent = 'Sending…';
+  sendIssueRequestOTP(b, true);
+}
+
+function cancelIssueRequest() {
+  closeModal('otpModal');
+  otpModalOpenForBooking = null;
+  pendingOtpId = null;
+  if (bkOtpTimerInterval) { clearInterval(bkOtpTimerInterval); bkOtpTimerInterval = null; }
+}
+
+function startBkOtpTimer(){
+  if (bkOtpTimerInterval) clearInterval(bkOtpTimerInterval);
+  let s = 60;
+  const el = document.getElementById('bk-otp-timer');
+  el.classList.remove('clickable');
+  el.onclick = null;
+  el.textContent = `Resend in ${s}s`;
+  bkOtpTimerInterval = setInterval(()=>{
+    s--;
+    if (s > 0) { el.textContent = `Resend in ${s}s`; }
+    else {
+      clearInterval(bkOtpTimerInterval);
+      bkOtpTimerInterval = null;
+      el.textContent = 'Request new OTP';
+      el.classList.add('clickable');
+      el.onclick = requestNewBkOtp;
+    }
+  }, 1000);
+}
+
+let confirmOtpInFlight = false;
 async function confirmIssueRequestOTP() {
+  if (confirmOtpInFlight) return; // blocks double-click on "Send Issue Request"
   const boxes = document.querySelectorAll('#otpModal .otp-box');
   const code = Array.from(boxes).map(b=>b.value).join('');
   if(code.length!==6){toast('Enter full 6-digit OTP.',true);return;}
 
   const b = bookings.find(x=>x.id===pendingIssueBookingId);
-  if (!b) { toast('Booking not found.', true); closeModal('otpModal'); return; }
+  if (!b) { toast('Booking not found.', true); cancelIssueRequest(); return; }
+
+  confirmOtpInFlight = true;
+  const confirmBtn = document.getElementById('otpModalConfirmBtn');
+  const prevBtnHtml = confirmBtn.innerHTML;
+  confirmBtn.disabled = true;
+  confirmBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Confirming…';
 
   try {
     const vr = await fetch('/api/agent-otp', {
@@ -1408,7 +1501,7 @@ async function confirmIssueRequestOTP() {
     });
     const vd = await vr.json();
     if (!vr.ok || !vd.valid) { toast(vd.error || 'Invalid OTP.', true); return; }
-    if (new Date(b.expires_at) < new Date()) { toast('This booking just expired — could not request issue.', true); closeModal('otpModal'); loadBookings(); return; }
+    if (new Date(b.expires_at) < new Date()) { toast('This booking just expired — could not request issue.', true); cancelIssueRequest(); loadBookings(); return; }
 
     await PATCH('agent_bookings', `id=eq.${b.id}`, {
       status:'issue_requested',
@@ -1417,10 +1510,18 @@ async function confirmIssueRequestOTP() {
       updated_at:new Date().toISOString()
     });
 
+    otpModalOpenForBooking = null;
+    if (bkOtpTimerInterval) { clearInterval(bkOtpTimerInterval); bkOtpTimerInterval = null; }
     closeModal('otpModal');
+
     toast(`Issue request sent for ${b.booking_ref}! East & West will issue it shortly.`);
     loadBookings();
   } catch(e){ toast('Error confirming issue request.',true); }
+  finally {
+    confirmOtpInFlight = false;
+    confirmBtn.disabled = false;
+    confirmBtn.innerHTML = prevBtnHtml;
+  }
 }
 
 // ── BOOKINGS PAGE ──
@@ -1938,10 +2039,6 @@ function toast(msg,isErr=false){
 function otpNext2(el,idx){
   const boxes=document.querySelectorAll('#otpModal .otp-box');
   if(el.value&&idx<5)boxes[idx+1].focus();
-}
-function startBkOtpTimer(){
-  let s=60; const el=document.getElementById('bk-otp-timer');
-  const iv=setInterval(()=>{s--;el.textContent=s>0?`Resend in ${s}s`:'Request new OTP';if(s<=0)clearInterval(iv);},1000);
 }
 
 init();
